@@ -9,7 +9,8 @@ export class SelectionControlField extends ListFormComponent {
   getViewModel(formData: FormData, errors: FormSubmissionErrors) {
     const { name, items } = this;
     const options: any = this.options;
-    const viewModel = super.getViewModel(formData, errors);
+    const viewModel: ViewModel = super.getViewModel(formData, errors);
+    viewModel.label!.classes = "govuk-fieldset__legend--s";
 
     viewModel.fieldset = {
       legend: viewModel.label,
