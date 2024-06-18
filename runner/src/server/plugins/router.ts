@@ -148,7 +148,6 @@ export default {
           let name = "";
 
           const { referer } = request.headers;
-          console.log("🚀 ~ referer", referer)
 
           if (referer) {
             const match = referer.match(/https?:\/\/[^/]+\/([^/]+)(\/([^/]+))?.*/);
