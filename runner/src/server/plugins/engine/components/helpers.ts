@@ -145,6 +145,12 @@ export function getCustomDateValidator(
       return helpers.error("date.year4digits", { label: helpers.state.key });
     }
 
+    if (value.getFullYear() == 1900) {
+      return helpers.error("date.chronological", {
+        label: helpers.state.key,
+      });
+    }
+
     return value;
   };
 }

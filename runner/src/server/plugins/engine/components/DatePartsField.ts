@@ -13,6 +13,8 @@ import {
 } from "../types";
 import { FormModel } from "../models";
 import { DataType } from "server/plugins/engine/components/types";
+import { check } from "prettier";
+import { array } from "joi";
 
 export class DatePartsField extends FormComponent {
   children: ComponentCollection;
@@ -125,11 +127,44 @@ export class DatePartsField extends FormComponent {
     const month = payload[`${name}__month`];
     const year = payload[`${name}__year`];
 
-    if (day && month && year) {
+    const firstDateDay = payload[`S4Q6__day`];
+    const firstDateMonth = payload[`S4Q6__month`];
+    const firstDateYear = payload[`S4Q6__year`];
+
+    const mostRecentDateDay = payload[`S4Q8__day`];
+    const mostRecentDateMonth = payload[`S4Q8__month`];
+    const mostRecentDateYear = payload[`S4Q8__year`];
+
+    if (day || month || year) {
       const indexedMonth = month - 1; // Adjust month for zero-based index
       const parsedDate = new Date(year, indexedMonth, day);
 
       if (month - 1 === parsedDate.getMonth()) {
+        if (name == "S4Q8") {
+          if (
+            firstDateDay &&
+            firstDateMonth &&
+            firstDateYear &&
+            mostRecentDateDay &&
+            mostRecentDateMonth &&
+            mostRecentDateYear
+          ) {
+            const firstDate = new Date(
+              Date.UTC(firstDateYear, firstDateMonth - 1, firstDateDay)
+            );
+            const mostRecentDate = new Date(
+              Date.UTC(
+                mostRecentDateYear,
+                mostRecentDateMonth - 1,
+                mostRecentDateDay
+              )
+            );
+            const invalidDate = firstDate > mostRecentDate;
+            if (invalidDate) {
+              return new Date(1900, 0, 1);
+            }
+          }
+        }
         return parsedDate;
       } else {
         return new Date(0, 0, 0); // Invalid date fallback

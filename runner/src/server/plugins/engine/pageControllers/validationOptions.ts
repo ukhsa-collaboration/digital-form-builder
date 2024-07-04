@@ -29,6 +29,8 @@ const messageTemplate = {
   dateDayYear: "{{#label}} must include a day and a year",
   dateDayMonth: "{{#label}} must include a day and a month",
   dateYear4digits: "The year must include 4 numbers",
+  dateChronological:
+    "Symptom onset date of first case must be on or before the Symptom onset date of most recent case",
 };
 
 export const messages: ValidationOptions["messages"] = {
@@ -46,6 +48,7 @@ export const messages: ValidationOptions["messages"] = {
   "date.min": messageTemplate.dateMin,
   "date.max": messageTemplate.dateMax,
   "date.format": messageTemplate.dateFormat,
+  "date.chronological": messageTemplate.dateChronological,
 
   "number.base": messageTemplate.number,
   "number.empty": messageTemplate.required,
