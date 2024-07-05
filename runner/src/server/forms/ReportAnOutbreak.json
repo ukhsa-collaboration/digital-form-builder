@@ -33,7 +33,7 @@
       "title": "Acute Respiratory Infections (ARI) - COVID-19, Flu or unknown infection in Adult Social Care settings",
       "components": [
         {
-          "name": "S0Q4",
+          "name": "S0Q1",
           "options": {
             "customValidationMessages": {
               "string.regex.base": "Enter a full UK postcode",
@@ -41,48 +41,63 @@
             }
           },
           "type": "TextField",
-          "title": "Please enter your setting Postcode",
+          "title": "Your setting postcode",
           "schema": {
             "regex": "^([a-zA-Z]{1,2}[0-9][a-zA-Z0-9]? *[0-9][a-zA-Z]{2}|[a-zA-Z]{1,2}[0-9][a-zA-Z0-9]?)$"
           },
           "nameHasError": false,
-          "hint": "Please provide the postcode of the specific setting affected (i.e. not the overarching management company if applicable). If there is no one specific setting affected e.g. Domiciliary or Home Care, then please provide the postcode of the care provider company"
+          "hint": "Give the postcode of your care setting, not the management company. If you provide domiciliary or home care, enter the postcode of the care provider company."
         },
         {
           "name": "S0Q2",
+          "options": { "required": true },
+          "type": "SelectField",
+          "title": "Your local UKHSA health protection team",
+          "list": "sjgMDe",
+          "nameHasError": false,
+          "schema": {},
+          "values": {
+            "type": "listRef"
+          }
+        },
+        {
+          "name": "cstZQG",
+          "options": {},
+          "type": "Para",
+          "content": "<a target=\"_blank\" id=\"local-health-protection-team\" href=\"https://www.gov.uk/health-protection-team\">Use your postcode to find your local health protection team (opens in a new tab)</a>",
+          "schema": {}
+        },
+        {
+          "name": "S0Q3",
+          "options": { "required": false },
+          "type": "TextField",
+          "title": "Your Care Quality Commission (CQC) location ID",
+          "nameHasError": false,
+          "schema": {}
+        },
+        {
+          "name": "rIpMWq",
+          "options": {},
+          "type": "Para",
+          "content": "<div class='govuk-checkboxes__divider'>or</div>\n<script>\ndocument.addEventListener('DOMContentLoaded', function() {\nconst consultationLocation = document.getElementById('S0Q3');\nconst checkbox = document.getElementById('S0Q4');\nfunction updateTextFieldRequiredState() {\nconst isChecked = checkbox.checked;\nconsultationLocation.required = !isChecked;\n}\nfunction clearCheckbox() {\ncheckbox.checked = false;\n}\ncheckbox.addEventListener('change', function() {\nif (checkbox.checked) {\nconsultationLocation.value = '';\n}\nupdateTextFieldRequiredState();\n});\nconsultationLocation.addEventListener('input', function() {\nif (consultationLocation.value !== '') {\nclearCheckbox();\n}\nupdateTextFieldRequiredState()\n});\n});\n</script>"
+        },
+        {
+          "name": "S0Q4",
           "options": {
+            "hideTitle": true,
             "required": false
           },
-          "type": "TextField",
-          "title": "Please enter your CQC Location ID",
+          "type": "CheckboxesField",
+          "title": "  ",
           "nameHasError": false,
+          "list": "OZDejp",
           "schema": {}
         },
         {
           "name": "VMOkqi",
           "options": {},
           "type": "Para",
-          "content": "If you don’t know your CQC Location ID then please visit <a id=\"cqc number\" target=\"_blank\" href=\"https://www.cqc.org.uk/about-us/transparency/using-cqc-data\">Using CQC data - Care Quality Commission</a> and scroll about half way down the page to <b style=\"color:#1d70b8\">CQC care directory - csv</b>. You will find your CQC Location ID in this look up table.\n</br></br>",
-          "schema": {}
-        },
-        {
-          "name": "S0Q3",
-          "options": { "required": true },
-          "type": "SelectField",
-          "title": "Please enter your local HPT here",
-          "list": "sjgMDe",
-          "nameHasError": false,
-          "schema": {},
-          "values": {
-            "type": "listRef"
-          },
-          "hint": "Please make sure you've selected the correct local health protection team (HPT) to guarantee you receive the appropriate support"
-        },
-        {
-          "name": "cstZQG",
-          "options": {},
-          "type": "Para",
-          "content": "Click on the link to <a target=\"_blank\" id=\"local-health-protection-team\" href=\"https://www.gov.uk/health-protection-team\">Find your local health protection team in England - GOV.UK</a> (www.gov.uk) [Enter the postcode of your care setting]",
+          "content": "<a id=\"cqc number\" target=\"_blank\" href=\"https://www.cqc.org.uk/about-us/transparency/using-cqc-data\">Find your CQC location ID on the CQC website (opens in a new tab).</a> Find the care directory .csv file under the Data sheets heading.",
           "schema": {}
         }
       ],
@@ -1607,6 +1622,17 @@
     }
   ],
   "lists": [
+    {
+      "title": "cqc-location-unknown",
+      "name": "OZDejp",
+      "type": "string",
+      "items": [
+        {
+          "text": "My setting is not registered with the CQC",
+          "value": "My setting is not registered with the CQC"
+        }
+      ]
+    },
     {
       "title": "social-care-provider-type",
       "name": "MpSRIP",
