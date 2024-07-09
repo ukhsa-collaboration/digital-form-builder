@@ -51,12 +51,16 @@
         {
           "name": "S0Q2",
           "options": {
-            "required": false
+            "required":false,
+            "customValidationMessages": {
+              "string.regex.base": "Enter a valid CQC Location ID",
+              "string.pattern.base": "Enter a valid CQC Location ID"
+            }
           },
           "type": "TextField",
           "title": "Please enter your CQC Location ID",
           "nameHasError": false,
-          "schema": { "regex": "^(?:(1-)(\\d){1,9})|(?:[a-zA-Z0-9]{3,7})$" }
+          "schema": { "regex": "^(1-\\d{1,9}|[a-zA-Z0-9]{3,7})$" }
         },
         {
           "name": "VMOkqi",
@@ -125,7 +129,7 @@
         {
           "name": "S1Q7",
           "options": {
-            "customValidationMessage":"Enter a telephone number, like 01632 960 001, 07700 900 982 or +44 808 157 0192"
+            "customValidationMessage": "Enter a telephone number, like 01632 960 001, 07700 900 982 or +44 808 157 0192"
           },
           "type": "TelephoneNumberField",
           "title": "S1Q7. Telephone number/s of Key Contact Person",
@@ -189,7 +193,7 @@
         {
           "name": "S1Q7",
           "options": {
-            "customValidationMessage":"Enter a telephone number, like 01632 960 001, 07700 900 982 or +44 808 157 0192"
+            "customValidationMessage": "Enter a telephone number, like 01632 960 001, 07700 900 982 or +44 808 157 0192"
           },
           "type": "TelephoneNumberField",
           "title": "S1Q7. Telephone number/s of Key Contact Person",
@@ -267,7 +271,7 @@
         {
           "name": "S1Q7",
           "options": {
-            "customValidationMessage":"Enter a telephone number, like 01632 960 001, 07700 900 982 or +44 808 157 0192"
+            "customValidationMessage": "Enter a telephone number, like 01632 960 001, 07700 900 982 or +44 808 157 0192"
           },
           "type": "TelephoneNumberField",
           "title": "S1Q7. Telephone number/s of Key Contact Person",
