@@ -780,7 +780,8 @@ export class PageControllerBase {
     }
     // setting the feedbackLink to undefined here for feedback forms prevents the feedback link from being shown
     if (this.def.feedback?.url) {
-      viewModel.feedbackLink = this.feedbackUrlFromRequest(request);
+      viewModel.feedbackLink = this.def.feedback.url;
+      // viewModel.feedbackLink = this.feedbackUrlFromRequest(request);
     }
     if (this.def.feedback?.emailAddress) {
       viewModel.feedbackLink = `mailto:${this.def.feedback.emailAddress}`;
