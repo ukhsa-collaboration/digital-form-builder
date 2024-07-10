@@ -166,10 +166,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   {% block beforeContent %} 
     {% if phaseTag %} 
       {% if feedbackLink %} 
-        {{ govukPhaseBanner({ tag: { text: phaseTag }, html: 'This is
-        a new service – your
-        <a class="govuk-link" href=" + feedbackLink + " target="_blank">feedback</a>
-        will help us to improve it.' }) }} 
+      {{ govukPhaseBanner({ 
+        tag: { text: phaseTag }, 
+        html: 'This is a new service – your <a class="govuk-link" href="' + feedbackLink + '" target="_blank">feedback</a> will help us to improve it.' 
+      }) }}      
       {% else %}
         {{
           govukPhaseBanner({
