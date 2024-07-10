@@ -12,7 +12,7 @@ const messageTemplate = {
   min: "{{#label}} must be {{#limit}} characters or more",
   regex: "enter a valid {{#label}}",
   email: "{{#label}} must be a valid email address",
-  date: "{{#label}} must be a valid date",
+  date: "{{#label}} must be a real date",
   dateMin: "{{#label}} must be on or after {{#limit}}",
   dateMax: "{{#label}} must be on or before {{#limit}}",
   number: "{{#label}} must be a number",
@@ -22,8 +22,15 @@ const messageTemplate = {
   maxWords: "{{#label}} must be {{#limit}} words or fewer",
   dateRequired: "{{#label}} must be a real date",
   dateFormat: "{{#label}} must be a real date",
+  dateMonth: "{{#label}} must include a month",
+  dateYear: "{{#label}} must include a year",
+  dateDay: "{{#label}} must include a day",
+  dateMonthYear: "{{#label}} must include a month and a year",
+  dateDayYear: "{{#label}} must include a day and a year",
+  dateDayMonth: "{{#label}} must include a day and a month",
+  dateYear4digits: "The year must include 4 numbers",
   cqc:
-    "Enter your CQC location ID or select 'My setting is not registered with the CQC'",
+    "Enter your CQC location ID or select 'My setting is not registered with the CQC'"
 };
 
 export const messages: ValidationOptions["messages"] = {
@@ -51,6 +58,14 @@ export const messages: ValidationOptions["messages"] = {
 
   "any.required": messageTemplate.selectRequired,
   "any.empty": messageTemplate.required,
+
+  "date.year": messageTemplate.dateYear,
+  "date.month": messageTemplate.dateMonth,
+  "date.day": messageTemplate.dateDay,
+  "date.monthYear": messageTemplate.dateMonthYear,
+  "date.dayYear": messageTemplate.dateDayYear,
+  "date.dayMonth": messageTemplate.dateDayMonth,
+  "date.year4digits": messageTemplate.dateYear4digits,
 };
 
 export const validationOptions: ValidationOptions = {
