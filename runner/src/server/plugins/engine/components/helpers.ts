@@ -126,6 +126,17 @@ export function getCustomDateValidator(
   };
 }
 
+export function customCqcValidator() {
+  return (value: string, helpers: joi.CustomHelpers) => {
+    if (!value) {
+      return helpers.error("string.cqc", {
+        label: helpers.state.key,
+      });
+    }
+    return value;
+  };
+}
+
 export function internationalPhoneValidator(
   value: string,
   _helpers: joi.CustomHelpers

@@ -1,5 +1,6 @@
 export enum ComponentTypeEnum {
   TextField = "TextField",
+  TextFieldCustom = "TextFieldCustom",
   MultilineTextField = "MultilineTextField",
   YesNoField = "YesNoField",
   DateField = "DateField",
@@ -28,6 +29,7 @@ export enum ComponentTypeEnum {
 
 export type ComponentType =
   | "TextField"
+  | "TextFieldCustom"
   | "MultilineTextField"
   | "YesNoField"
   | "DateField"
@@ -169,6 +171,13 @@ interface DateFieldBase {
 // Text Fields
 export interface TextFieldComponent extends TextFieldBase {
   type: "TextField";
+  options: TextFieldBase["options"] & {
+    customValidationMessage?: string;
+  };
+}
+
+export interface TextFieldCustomComponent extends TextFieldBase {
+  type: "TextFieldCustom";
   options: TextFieldBase["options"] & {
     customValidationMessage?: string;
   };
@@ -340,6 +349,7 @@ export type ComponentDef =
   | SelectFieldComponent
   | TelephoneNumberFieldComponent
   | TextFieldComponent
+  | TextFieldCustomComponent
   | TimeFieldComponent
   | UkAddressFieldComponent
   | YesNoFieldComponent

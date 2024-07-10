@@ -22,6 +22,8 @@ const messageTemplate = {
   maxWords: "{{#label}} must be {{#limit}} words or fewer",
   dateRequired: "{{#label}} must be a real date",
   dateFormat: "{{#label}} must be a real date",
+  cqc:
+    "Enter your CQC location ID or select 'My setting is not registered with the CQC'",
 };
 
 export const messages: ValidationOptions["messages"] = {
@@ -32,6 +34,7 @@ export const messages: ValidationOptions["messages"] = {
   "string.email": messageTemplate.email,
   "string.regex.base": messageTemplate.format,
   "string.maxWords": messageTemplate.maxWords,
+  "string.cqc": messageTemplate.cqc,
 
   "date.base": messageTemplate.date,
   "date.empty": messageTemplate.required,

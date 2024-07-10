@@ -69,8 +69,8 @@
         },
         {
           "name": "S0Q3",
-          "options": { "required": false },
-          "type": "TextField",
+          "options": { "required": false, "optionalText": false },
+          "type": "TextFieldCustom",
           "title": "Your Care Quality Commission (CQC) location ID",
           "nameHasError": false,
           "schema": {}
@@ -79,7 +79,7 @@
           "name": "rIpMWq",
           "options": {},
           "type": "Para",
-          "content": "<div class='govuk-checkboxes__divider'>or</div>\n<script>\ndocument.addEventListener('DOMContentLoaded', function() {\nconst consultationLocation = document.getElementById('S0Q3');\nconst checkbox = document.getElementById('S0Q4');\nfunction updateTextFieldRequiredState() {\nconst isChecked = checkbox.checked;\nconsultationLocation.required = !isChecked;\n}\nfunction clearCheckbox() {\ncheckbox.checked = false;\n}\ncheckbox.addEventListener('change', function() {\nif (checkbox.checked) {\nconsultationLocation.value = '';\n}\nupdateTextFieldRequiredState();\n});\nconsultationLocation.addEventListener('input', function() {\nif (consultationLocation.value !== '') {\nclearCheckbox();\n}\nupdateTextFieldRequiredState()\n});\n});\n</script>"
+          "content": "<div class='govuk-checkboxes__divider'>or</div>"
         },
         {
           "name": "S0Q4",
@@ -97,8 +97,14 @@
           "name": "VMOkqi",
           "options": {},
           "type": "Para",
-          "content": "<a id=\"cqc number\" target=\"_blank\" href=\"https://www.cqc.org.uk/about-us/transparency/using-cqc-data\">Find your CQC location ID on the CQC website (opens in a new tab).</a> Find the care directory .csv file under the Data sheets heading.",
+          "content": "<a id=\"cqc number\" target=\"_blank\" href=\"https://www.cqc.org.uk/about-us/transparency/using-cqc-data\">Find your CQC location ID in the care directory on the CQC website (opens in a new tab).</a>",
           "schema": {}
+        },
+        {
+          "name": "rIpMWr",
+          "options": {},
+          "type": "Html",
+          "content": "<script>\ndocument.addEventListener('DOMContentLoaded', function() {\nconst cqcIdText = document.getElementById('S0Q3');\nconst cqcIdCheckbox = document.getElementById('S0Q4');\nfunction updateTextFieldRequiredState() {\nconst isChecked = cqcIdCheckbox.checked;\ncqcIdText.required = !isChecked;\n}\nfunction clearCheckbox() {\ncqcIdCheckbox.checked = false;\n}\ncqcIdCheckbox.addEventListener('change', function() {\nif (cqcIdCheckbox.checked) {\ncqcIdText.value = '';\n}\nupdateTextFieldRequiredState();\n});\ncqcIdText.addEventListener('input', function() {\nif (cqcIdText.value !== '') {\nclearCheckbox();\n}\nupdateTextFieldRequiredState()\n});\n});\n</script>"
         }
       ],
       "next": [

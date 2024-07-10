@@ -28,6 +28,7 @@ export { RadiosField } from "./RadiosField";
 export { SelectField } from "./SelectField";
 export { TelephoneNumberField } from "./TelephoneNumberField";
 export { TextField } from "./TextField";
+export { TextFieldCustom } from "./TextFieldCustom";
 export { TimeField } from "./TimeField";
 export { UkAddressField } from "./UkAddressField";
 export { WebsiteField } from "./WebsiteField";
