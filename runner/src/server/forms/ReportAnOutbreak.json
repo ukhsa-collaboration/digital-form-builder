@@ -69,7 +69,10 @@
         },
         {
           "name": "S0Q3",
-          "options": { "required": false, "optionalText": false },
+          "options": {
+            "required": false,
+            "optionalText": false
+          },
           "type": "TextFieldCustom",
           "title": "Your Care Quality Commission (CQC) location ID",
           "nameHasError": false,

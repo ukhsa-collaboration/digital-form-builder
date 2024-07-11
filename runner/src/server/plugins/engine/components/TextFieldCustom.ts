@@ -9,6 +9,7 @@ import { FormPayload } from "../types";
 export class TextFieldCustom extends TextField {
   formSchema;
   stateSchema;
+  pattern = "^(1-\\d{1,9}|[a-zA-Z0-9]{3,7})$";
 
   constructor(def: TextFieldCustomComponent, model: FormModel) {
     super(def, model);
@@ -18,9 +19,11 @@ export class TextFieldCustom extends TextField {
     this.schema = schema;
 
     let componentSchema = joi.optional().allow(null).allow("");
+
     componentSchema = componentSchema.label(
       def.title.en ?? def.title ?? def.name
     );
+
     this.formSchema = componentSchema;
   }
 
@@ -34,8 +37,12 @@ export class TextFieldCustom extends TextField {
 
   getStateValueFromValidForm(payload: FormPayload) {
     const cqcTextValue = payload["S0Q3"].trim();
+    const pattern = new RegExp(this.pattern);
     if (cqcTextValue === "" && !payload["S0Q4"]) {
       return false;
+    }
+    if (!pattern.test(cqcTextValue)) {
+      return "regex";
     }
     return cqcTextValue;
   }

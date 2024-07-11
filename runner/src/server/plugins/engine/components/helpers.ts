@@ -156,6 +156,11 @@ export function customCqcValidator() {
         label: helpers.state.key,
       });
     }
+    if (value == "regex") {
+      return helpers.error("string.cqc.regex", {
+        label: helpers.state.key,
+      });
+    }
     return value;
   };
 }
