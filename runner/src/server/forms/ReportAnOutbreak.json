@@ -51,12 +51,16 @@
         {
           "name": "S0Q2",
           "options": {
-            "required": false
+            "required":false,
+            "customValidationMessages": {
+              "string.regex.base": "Enter a valid CQC Location ID",
+              "string.pattern.base": "Enter a valid CQC Location ID"
+            }
           },
           "type": "TextField",
           "title": "Please enter your CQC Location ID",
           "nameHasError": false,
-          "schema": {}
+          "schema": { "regex": "^(1-\\d{1,9}|[a-zA-Z0-9]{3,7})$" }
         },
         {
           "name": "VMOkqi",
