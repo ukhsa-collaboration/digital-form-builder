@@ -76,7 +76,9 @@
           "type": "TextFieldCustom",
           "title": "Your Care Quality Commission (CQC) location ID",
           "nameHasError": false,
-          "schema": {}
+          "schema": {
+            "regex": "^(1-\\d{1,9}|[a-zA-Z0-9]{3,7})$"
+          }
         },
         {
           "name": "rIpMWq",
