@@ -184,6 +184,9 @@ export interface TextFieldCustomComponent extends TextFieldBase {
   type: "TextFieldCustom";
   options: TextFieldBase["options"] & {
     customValidationMessage?: string;
+    conditionalTextField?: {
+      dependsOn: string;
+    };
   };
 }
 

@@ -1,15 +1,16 @@
 import { TextFieldCustomComponent } from "@xgovformbuilder/model";
 import { FormModel } from "../models";
 import joi from "joi";
-import { TextField } from "./TextField";
 import * as helpers from "./helpers";
 import { FormPayload } from "../types";
+import { FormComponent } from "./FormComponent";
 
 // Currently only used on the ReportAnOutbreak/uon-and-cqc page to handle textfield and checkbox comparisons
-export class TextFieldCustom extends TextField {
+export class TextFieldCustom extends FormComponent {
   formSchema;
   stateSchema;
   pattern;
+  dependentField;
 
   constructor(def: TextFieldCustomComponent, model: FormModel) {
     super(def, model);
@@ -18,13 +19,15 @@ export class TextFieldCustom extends TextField {
     this.options = options;
     this.schema = schema;
 
-    this.pattern = schema.regex ? new RegExp(schema.regex) : null;
+    if (schema.regex) {
+      this.pattern = new RegExp(schema.regex);
+    }
+
+    if (options.conditionalTextField) {
+      this.dependentField = options.conditionalTextField.dependsOn;
+    }
 
     let componentSchema = joi.optional().allow(null).allow("");
-
-    componentSchema = componentSchema.label(
-      def.title.en ?? def.title ?? def.name
-    );
 
     this.formSchema = componentSchema;
   }
@@ -38,8 +41,10 @@ export class TextFieldCustom extends TextField {
   }
 
   getStateValueFromValidForm(payload: FormPayload) {
-    const cqcTextValue = payload["S0Q3"].trim();
-    if (cqcTextValue === "" && !payload["S0Q4"]) {
+    const cqcTextValue = payload[this.name].trim();
+    const cqcCheckbox = payload[this.dependentField];
+
+    if (cqcTextValue === "" && !cqcCheckbox) {
       return false;
     }
     if (cqcTextValue && !this.pattern.test(cqcTextValue)) {
