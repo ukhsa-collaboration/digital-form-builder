@@ -41,7 +41,7 @@ export class TextFieldCustom extends TextField {
     if (cqcTextValue === "" && !payload["S0Q4"]) {
       return false;
     }
-    if (!pattern.test(cqcTextValue)) {
+    if (cqcTextValue && !pattern.test(cqcTextValue)) {
       return "regex";
     }
     return cqcTextValue;
