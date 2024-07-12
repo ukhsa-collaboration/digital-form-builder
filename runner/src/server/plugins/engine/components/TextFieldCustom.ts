@@ -41,15 +41,15 @@ export class TextFieldCustom extends FormComponent {
   }
 
   getStateValueFromValidForm(payload: FormPayload) {
-    const cqcTextValue = payload[this.name].trim();
-    const cqcCheckbox = payload[this.dependentField];
+    const currentFieldValue = payload[this.name].trim();
+    const dependentFieldValue = payload[this.dependentField];
 
-    if (cqcTextValue === "" && !cqcCheckbox) {
+    if (currentFieldValue === "" && !dependentFieldValue) {
       return false;
     }
-    if (cqcTextValue && !this.pattern.test(cqcTextValue)) {
+    if (currentFieldValue && !this.pattern.test(dependentFieldValue)) {
       return "regex";
     }
-    return cqcTextValue;
+    return currentFieldValue;
   }
 }
