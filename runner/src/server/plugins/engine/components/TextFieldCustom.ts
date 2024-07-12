@@ -11,6 +11,7 @@ export class TextFieldCustom extends FormComponent {
   stateSchema;
   pattern;
   dependentField;
+  fieldName;
 
   constructor(def: TextFieldCustomComponent, model: FormModel) {
     super(def, model);
@@ -27,6 +28,10 @@ export class TextFieldCustom extends FormComponent {
       this.dependentField = options.conditionalTextField.dependsOn;
     }
 
+    if (options.fieldName) {
+      this.fieldName = options.fieldName;
+    }
+
     let componentSchema = joi.optional().allow(null).allow("");
 
     this.formSchema = componentSchema;
@@ -34,7 +39,12 @@ export class TextFieldCustom extends FormComponent {
 
   getStateSchemaKeys() {
     let schema: any = this.formSchema;
-    schema = schema.custom(helpers.customCqcValidator());
+
+    if (this.fieldName) {
+      schema = schema.custom(
+        helpers.customTextCheckboxValidator(this.fieldName)
+      );
+    }
 
     this.schema = schema;
     return { [this.name]: schema };
@@ -47,7 +57,7 @@ export class TextFieldCustom extends FormComponent {
     if (currentFieldValue === "" && !dependentFieldValue) {
       return false;
     }
-    if (currentFieldValue && !this.pattern.test(dependentFieldValue)) {
+    if (currentFieldValue && !this.pattern.test(currentFieldValue)) {
       return "regex";
     }
     return currentFieldValue;

@@ -74,7 +74,8 @@
             "optionalText": false,
             "conditionalTextField": {
               "dependsOn": "S0Q4"
-            }
+            },
+            "fieldName": "cqc"
           },
           "type": "TextFieldCustom",
           "title": "Your Care Quality Commission (CQC) location ID",

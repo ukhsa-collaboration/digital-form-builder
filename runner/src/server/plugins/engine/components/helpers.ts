@@ -149,15 +149,15 @@ export function getCustomDateValidator(
   };
 }
 
-export function customCqcValidator() {
+export function customTextCheckboxValidator(fieldName: string) {
   return (value: string, helpers: joi.CustomHelpers) => {
     if (!value) {
-      return helpers.error("string.cqc", {
+      return helpers.error(`string.${fieldName}`, {
         label: helpers.state.key,
       });
     }
     if (value == "regex") {
-      return helpers.error("string.cqc.regex", {
+      return helpers.error(`string.${fieldName}.regex`, {
         label: helpers.state.key,
       });
     }

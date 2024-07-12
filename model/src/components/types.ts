@@ -187,6 +187,7 @@ export interface TextFieldCustomComponent extends TextFieldBase {
     conditionalTextField?: {
       dependsOn: string;
     };
+    fieldName?: string;
   };
 }
 
