@@ -674,7 +674,7 @@
             "min": 0,
             "max": 50
           },
-          "hint": "Please count all cases either currently in your setting or in hospital.\n</br>\nIf zero then please enter 0."
+          "hint": "Count all cases either currently in your setting or in hospital. If none, enter 0."
         },
         {
           "name": "S5Q3",
@@ -686,7 +686,7 @@
             "min": 0,
             "max": 50
           },
-          "hint": "Please count all cases either currently in your setting or in hospital.</br>\nIf zero then please enter 0."
+          "hint": "Count all cases either currently in your setting or in hospital. If none, enter 0."
         },
         {
           "name": "S5Q4",
@@ -698,7 +698,7 @@
             "min": 0,
             "max": 50
           },
-          "hint": "Suspected cases among elderly people may include people who have a sudden onset of acute respiratory symptoms OR Fever without other known cause OR sudden mental/physical deterioration without any other known cause. Please count all cases either currently in your setting or in hospital.</br>\nIf zero then please enter 0."
+          "hint": "In older adults this may be a sudden onset of acute respiratory symptoms, fever, or sudden mental or physical deterioration without other known cause. Include anyone currently in hospital. If none, enter 0."
         },
         {
           "name": "S5Q5",
@@ -712,7 +712,7 @@
             "min": 0,
             "max": 50
           },
-          "hint": "Suspected staff cases usually include people who have a sudden onset of acute respiratory symptoms AND Fever.  Please count all cases either currently in your setting or in hospital.<br>\nPlease enter a number between 0 to 50."
+          "hint": "This is usually a sudden onset of acute respiratory symptoms and fever. Include anyone currently in hospital. If none, enter 0."
         },
         {
           "name": "S5Q6",
@@ -726,7 +726,7 @@
             "min": 0,
             "max": 50
           },
-          "hint": "Please count all cases either currently in your setting or in hospital.<br>\nPlease enter a number between 0 to 50."
+          "hint": "Count all cases either currently in your setting or in hospital. If none, enter 0."
         },
         {
           "name": "S5Q7",
@@ -741,7 +741,7 @@
             "min": 0,
             "max": 50
           },
-          "hint": "Please count all cases either currently at home or in hospital.<br>\nPlease enter a number between 0 to 50."
+          "hint": "Count all cases either currently at home or in hospital. If none, enter 0."
         },
         {
           "name": "S5Q8",
@@ -754,7 +754,7 @@
             "min": 0,
             "max": 50
           },
-          "hint": "Please enter a number between 0 to 50."
+          "hint": "If none, enter 0"
         },
         {
           "name": "S5Q9",
@@ -768,7 +768,7 @@
             "min": 0,
             "max": 50
           },
-          "hint": "Please enter a number between 0 to 50."
+          "hint": "If none, enter 0."
         },
         {
           "name": "S5Q10",
@@ -782,7 +782,7 @@
             "min": 0,
             "max": 50
           },
-          "hint": "Please enter a number between 0 to 50."
+          "hint": "If none, enter 0."
         },
         {
           "name": "S5Q11",
@@ -796,7 +796,7 @@
             "min": 0,
             "max": 50
           },
-          "hint": "Please enter a number between 0 to 50."
+          "hint": "If none, enter 0."
         },
         {
           "name": "S5Q12",
