@@ -754,7 +754,7 @@
             "min": 0,
             "max": 50
           },
-          "hint": "If none, enter 0"
+          "hint": "If none, enter 0."
         },
         {
           "name": "S5Q9",
