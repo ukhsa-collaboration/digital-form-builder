@@ -28,6 +28,12 @@ export class DatePartsField extends FormComponent {
     const isRequired =
       "required" in options && options.required === false ? false : true;
     const optionalText = "optionalText" in options && options.optionalText;
+    if (options.first_date_to_compare) {
+      this.first_date_to_compare = options.first_date_to_compare
+    }
+    if (options.most_recent_date_to_compare) {
+      this.most_recent_date_to_compare = options.most_recent_date_to_compare
+    }
     this.children = new ComponentCollection(
       [
         {
@@ -123,24 +129,27 @@ export class DatePartsField extends FormComponent {
 
   getStateValueFromValidForm(payload: FormPayload) {
     const name = this.name;
+    const first_date_name = this.first_date_to_compare;
+    const most_recent_date_name = this.most_recent_date_to_compare;
+
     const day = payload[`${name}__day`];
     const month = payload[`${name}__month`];
     const year = payload[`${name}__year`];
 
-    const firstDateDay = payload[`S4Q6__day`];
-    const firstDateMonth = payload[`S4Q6__month`];
-    const firstDateYear = payload[`S4Q6__year`];
+    const firstDateDay = payload[`${first_date_name}__day`];
+    const firstDateMonth = payload[`${first_date_name}__month`];
+    const firstDateYear = payload[`${first_date_name}__year`];
 
-    const mostRecentDateDay = payload[`S4Q8__day`];
-    const mostRecentDateMonth = payload[`S4Q8__month`];
-    const mostRecentDateYear = payload[`S4Q8__year`];
+    const mostRecentDateDay = payload[`${most_recent_date_name}__day`];
+    const mostRecentDateMonth = payload[`${most_recent_date_name}__month`];
+    const mostRecentDateYear = payload[`${most_recent_date_name}__year`];
 
     if (day || month || year) {
       const indexedMonth = month - 1; // Adjust month for zero-based index
       const parsedDate = new Date(year, indexedMonth, day);
 
       if (month - 1 === parsedDate.getMonth()) {
-        if (name == "S4Q8") {
+        if (name == most_recent_date_name) {
           if (
             firstDateDay &&
             firstDateMonth &&

@@ -512,7 +512,9 @@
               "date.base": "The date that symptoms started must be a real date",
               "date.max": "The date that symptoms started must be in the past"
             },
-            "errorLabel": "The date that symptoms started"
+            "errorLabel": "The date that symptoms started",
+            "first_date_to_compare": "S4Q6",
+            "most_recent_date_to_compare": "S4Q8"
           },
           "type": "DatePartsField",
           "title": "S4Q8. Symptom onset date of most recent case",
