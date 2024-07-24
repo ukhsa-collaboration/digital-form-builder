@@ -60,7 +60,7 @@
           "type": "TextField",
           "title": "Please enter your CQC Location ID",
           "nameHasError": false,
-          "schema": { "regex": "^(1-\\d{1,9}|[a-zA-Z0-9]{3,7})$" }
+          "schema": { "regex": "^(1-\\d{1,11}|[a-zA-Z0-9]{3,7})$" }
         },
         {
           "name": "VMOkqi",
