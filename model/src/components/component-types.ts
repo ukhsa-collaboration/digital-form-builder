@@ -11,6 +11,15 @@ export const ComponentTypes: ComponentDef[] = [
     schema: {},
   },
   {
+    name: "TextFieldCustom",
+    type: "TextFieldCustom",
+    title: "Text field",
+    subType: "field",
+    hint: "",
+    options: {},
+    schema: {},
+  },
+  {
     name: "MultilineTextField",
     type: "MultilineTextField",
     title: "Multiline text field",

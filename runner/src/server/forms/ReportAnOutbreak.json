@@ -33,7 +33,7 @@
       "title": "Acute Respiratory Infections (ARI) - COVID-19, Flu or unknown infection in Adult Social Care settings",
       "components": [
         {
-          "name": "S0Q4",
+          "name": "S0Q1",
           "options": {
             "customValidationMessages": {
               "string.regex.base": "Enter a full UK postcode",
@@ -41,53 +41,79 @@
             }
           },
           "type": "TextField",
-          "title": "Please enter your setting Postcode",
+          "title": "Your setting postcode",
           "schema": {
             "regex": "^([a-zA-Z]{1,2}[0-9][a-zA-Z0-9]? *[0-9][a-zA-Z]{2}|[a-zA-Z]{1,2}[0-9][a-zA-Z0-9]?)$"
           },
           "nameHasError": false,
-          "hint": "Please provide the postcode of the specific setting affected (i.e. not the overarching management company if applicable). If there is no one specific setting affected e.g. Domiciliary or Home Care, then please provide the postcode of the care provider company"
+          "hint": "Give the postcode of your care setting, not the management company. If you provide domiciliary or home care, enter the postcode of the care provider company."
         },
         {
           "name": "S0Q2",
-          "options": {
-            "required":false,
-            "customValidationMessages": {
-              "string.regex.base": "Enter a valid CQC Location ID",
-              "string.pattern.base": "Enter a valid CQC Location ID"
-            }
-          },
-          "type": "TextField",
-          "title": "Please enter your CQC Location ID",
-          "nameHasError": false,
-          "schema": { "regex": "^(1-\\d{1,11}|[a-zA-Z0-9]{3,7})$" }
-        },
-        {
-          "name": "VMOkqi",
-          "options": {},
-          "type": "Para",
-          "content": "If you don’t know your CQC Location ID then please visit <a id=\"cqc number\" target=\"_blank\" href=\"https://www.cqc.org.uk/about-us/transparency/using-cqc-data\">Using CQC data - Care Quality Commission</a> and scroll about half way down the page to <b style=\"color:#1d70b8\">CQC care directory - csv</b>. You will find your CQC Location ID in this look up table.\n</br></br>",
-          "schema": {}
-        },
-        {
-          "name": "S0Q3",
           "options": { "required": true },
           "type": "SelectField",
-          "title": "Please enter your local HPT here",
+          "title": "Your local UKHSA health protection team",
           "list": "sjgMDe",
           "nameHasError": false,
           "schema": {},
           "values": {
             "type": "listRef"
-          },
-          "hint": "Please make sure you've selected the correct local health protection team (HPT) to guarantee you receive the appropriate support"
+          }
         },
         {
           "name": "cstZQG",
           "options": {},
           "type": "Para",
-          "content": "Click on the link to <a target=\"_blank\" id=\"local-health-protection-team\" href=\"https://www.gov.uk/health-protection-team\">Find your local health protection team in England - GOV.UK</a> (www.gov.uk) [Enter the postcode of your care setting]",
+          "content": "<a target=\"_blank\" id=\"local-health-protection-team\" href=\"https://www.gov.uk/health-protection-team\">Use your postcode to find your local health protection team (opens in a new tab)</a>",
           "schema": {}
+        },
+        {
+          "name": "S0Q3",
+          "options": {
+            "required": false,
+            "optionalText": false,
+            "conditionalTextField": {
+              "dependsOn": "S0Q4"
+            },
+            "fieldName": "cqc"
+          },
+          "type": "TextFieldCustom",
+          "title": "Your Care Quality Commission (CQC) location ID",
+          "nameHasError": false,
+          "schema": {
+            "regex": "^(1-\\d{1,9}|[a-zA-Z0-9]{3,7})$"
+          }
+        },
+        {
+          "name": "rIpMWq",
+          "options": {},
+          "type": "Para",
+          "content": "<div class='govuk-checkboxes__divider'>or</div>"
+        },
+        {
+          "name": "S0Q4",
+          "options": {
+            "hideTitle": true,
+            "required": false
+          },
+          "type": "CheckboxesField",
+          "title": "My setting is not registered with the CQC",
+          "nameHasError": false,
+          "list": "OZDejp",
+          "schema": {}
+        },
+        {
+          "name": "VMOkqi",
+          "options": {},
+          "type": "Para",
+          "content": "<a id=\"cqc number\" target=\"_blank\" href=\"https://www.cqc.org.uk/about-us/transparency/using-cqc-data\">Find your CQC location ID in the care directory on the CQC website (opens in a new tab).</a>",
+          "schema": {}
+        },
+        {
+          "name": "rIpMWr",
+          "options": {},
+          "type": "Html",
+          "content": "<script>\ndocument.addEventListener('DOMContentLoaded', function() {\nconst cqcIdText = document.getElementById('S0Q3');\nconst cqcIdCheckbox = document.getElementById('S0Q4');\nfunction updateTextFieldRequiredState() {\nconst isChecked = cqcIdCheckbox.checked;\ncqcIdText.required = !isChecked;\n}\nfunction clearCheckbox() {\ncqcIdCheckbox.checked = false;\n}\ncqcIdCheckbox.addEventListener('change', function() {\nif (cqcIdCheckbox.checked) {\ncqcIdText.value = '';\n}\nupdateTextFieldRequiredState();\n});\ncqcIdText.addEventListener('input', function() {\nif (cqcIdText.value !== '') {\nclearCheckbox();\n}\nupdateTextFieldRequiredState()\n});\n});\n</script>"
         }
       ],
       "next": [
@@ -648,7 +674,7 @@
             "min": 0,
             "max": 50
           },
-          "hint": "Please count all cases either currently in your setting or in hospital.\n</br>\nIf zero then please enter 0."
+          "hint": "Count all cases either currently in your setting or in hospital. If none, enter 0."
         },
         {
           "name": "S5Q3",
@@ -660,7 +686,7 @@
             "min": 0,
             "max": 50
           },
-          "hint": "Please count all cases either currently in your setting or in hospital.</br>\nIf zero then please enter 0."
+          "hint": "Count all cases either currently in your setting or in hospital. If none, enter 0."
         },
         {
           "name": "S5Q4",
@@ -672,7 +698,7 @@
             "min": 0,
             "max": 50
           },
-          "hint": "Suspected cases among elderly people may include people who have a sudden onset of acute respiratory symptoms OR Fever without other known cause OR sudden mental/physical deterioration without any other known cause. Please count all cases either currently in your setting or in hospital.</br>\nIf zero then please enter 0."
+          "hint": "In older adults this may be a sudden onset of acute respiratory symptoms, fever, or sudden mental or physical deterioration without other known cause. Include anyone currently in hospital. If none, enter 0."
         },
         {
           "name": "S5Q5",
@@ -686,7 +712,7 @@
             "min": 0,
             "max": 50
           },
-          "hint": "Suspected staff cases usually include people who have a sudden onset of acute respiratory symptoms AND Fever.  Please count all cases either currently in your setting or in hospital.<br>\nPlease enter a number between 0 to 50."
+          "hint": "This is usually a sudden onset of acute respiratory symptoms and fever. Include anyone currently in hospital. If none, enter 0."
         },
         {
           "name": "S5Q6",
@@ -700,7 +726,7 @@
             "min": 0,
             "max": 50
           },
-          "hint": "Please count all cases either currently in your setting or in hospital.<br>\nPlease enter a number between 0 to 50."
+          "hint": "Count all cases either currently in your setting or in hospital. If none, enter 0."
         },
         {
           "name": "S5Q7",
@@ -715,7 +741,7 @@
             "min": 0,
             "max": 50
           },
-          "hint": "Please count all cases either currently at home or in hospital.<br>\nPlease enter a number between 0 to 50."
+          "hint": "Count all cases either currently at home or in hospital. If none, enter 0."
         },
         {
           "name": "S5Q8",
@@ -728,7 +754,7 @@
             "min": 0,
             "max": 50
           },
-          "hint": "Please enter a number between 0 to 50."
+          "hint": "If none, enter 0."
         },
         {
           "name": "S5Q9",
@@ -742,7 +768,7 @@
             "min": 0,
             "max": 50
           },
-          "hint": "Please enter a number between 0 to 50."
+          "hint": "If none, enter 0."
         },
         {
           "name": "S5Q10",
@@ -756,7 +782,7 @@
             "min": 0,
             "max": 50
           },
-          "hint": "Please enter a number between 0 to 50."
+          "hint": "If none, enter 0."
         },
         {
           "name": "S5Q11",
@@ -770,7 +796,7 @@
             "min": 0,
             "max": 50
           },
-          "hint": "Please enter a number between 0 to 50."
+          "hint": "If none, enter 0."
         },
         {
           "name": "S5Q12",
@@ -1661,6 +1687,17 @@
     }
   ],
   "lists": [
+    {
+      "title": "care-setting-not-registered",
+      "name": "OZDejp",
+      "type": "string",
+      "items": [
+        {
+          "text": "My setting is not registered with the CQC",
+          "value": "My setting is not registered with the CQC"
+        }
+      ]
+    },
     {
       "title": "social-care-provider-type",
       "name": "MpSRIP",
@@ -2659,7 +2696,7 @@
   "name": "Report an outbreak",
   "feedback": {
     "feedbackForm": true,
-    "url": ""
+    "url": "https://www.smartsurvey.co.uk/s/Give-feedback-on-Report-an-outbreak/"
   },
   "phaseBanner": {
     "phase": "Beta"
