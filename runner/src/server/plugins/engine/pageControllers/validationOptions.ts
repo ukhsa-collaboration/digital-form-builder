@@ -29,8 +29,9 @@ const messageTemplate = {
   dateDayYear: "{{#label}} must include a day and a year",
   dateDayMonth: "{{#label}} must include a day and a month",
   dateYear4digits: "The year must include 4 numbers",
-  dateChronological:
-    "Symptom onset date of first case must be on or before the Symptom onset date of most recent case",
+  cqc:
+    "Enter your CQC location ID or select 'My setting is not registered with the CQC'",
+  cqcRegex: "Enter a valid CQC Location ID",
 };
 
 export const messages: ValidationOptions["messages"] = {
@@ -41,6 +42,8 @@ export const messages: ValidationOptions["messages"] = {
   "string.email": messageTemplate.email,
   "string.regex.base": messageTemplate.format,
   "string.maxWords": messageTemplate.maxWords,
+  "string.cqc": messageTemplate.cqc,
+  "string.cqc.regex": messageTemplate.cqcRegex,
 
   "date.base": messageTemplate.date,
   "date.empty": messageTemplate.required,

@@ -155,6 +155,22 @@ export function getCustomDateValidator(
   };
 }
 
+export function customTextCheckboxValidator(fieldName: string) {
+  return (value: string, helpers: joi.CustomHelpers) => {
+    if (!value) {
+      return helpers.error(`string.${fieldName}`, {
+        label: helpers.state.key,
+      });
+    }
+    if (value == "regex") {
+      return helpers.error(`string.${fieldName}.regex`, {
+        label: helpers.state.key,
+      });
+    }
+    return value;
+  };
+}
+
 export function internationalPhoneValidator(
   value: string,
   _helpers: joi.CustomHelpers

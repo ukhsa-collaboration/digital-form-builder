@@ -1,4 +1,9 @@
-import { FormData, FormSubmissionErrors, FormSubmissionState } from "../types";
+import {
+  FormData,
+  FormPayload,
+  FormSubmissionErrors,
+  FormSubmissionState,
+} from "../types";
 import { ListComponentsDef } from "@xgovformbuilder/model";
 import { FormModel } from "../models";
 import joi from "joi";
@@ -29,6 +34,10 @@ export class CheckboxesField extends SelectionControlField {
 
     this.formSchema = schema;
     this.stateSchema = schema;
+  }
+
+  getStateValueFromValidForm(payload: FormPayload) {
+    return payload[this.name];
   }
 
   getDisplayStringFromState(state: FormSubmissionState) {
