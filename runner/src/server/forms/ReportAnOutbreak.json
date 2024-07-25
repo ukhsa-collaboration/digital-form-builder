@@ -831,7 +831,9 @@
           "options": {
             "required": true,
             "maxDaysInFuture": "0",
-            "errorLabel": "The date that symptoms started"
+            "errorLabel": "The date that symptoms started",
+            "first_date_to_compare": "S5Q12",
+            "most_recent_date_to_compare": "S5Q14"
           },
           "type": "DatePartsField",
           "title": "S5Q14. Symptom onset date of most recent case (confirmed flu, suspected flu OR chest infections)",
@@ -1013,7 +1015,9 @@
           "options": {
             "required": true,
             "maxDaysInFuture": "0",
-            "errorLabel": "The date that symptoms started"
+            "errorLabel": "The date that symptoms started",
+            "first_date_to_compare": "S6Q4",
+            "most_recent_date_to_compare": "S6Q6"
           },
           "type": "DatePartsField",
           "title": "S6Q6. Symptom onset date of most recent case",
