@@ -151,7 +151,7 @@ export class DatePartsField extends FormComponent {
       const parsedDate = new Date(year, indexedMonth, day);
 
       if (month - 1 === parsedDate.getMonth()) {
-        if (name == most_recent_date_name) {
+        if (name === most_recent_date_name) {
           if (
             firstDateDay &&
             firstDateMonth &&
