@@ -51,9 +51,7 @@
         },
         {
           "name": "S0Q2",
-          "options": {
-            "required": true
-          },
+          "options": { "required": true },
           "type": "SelectField",
           "title": "Your local UKHSA health protection team",
           "list": "sjgMDe",
