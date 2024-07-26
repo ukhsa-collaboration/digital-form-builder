@@ -97,7 +97,8 @@ export const addClassOptionIfNone = (
 
 export function getCustomDateValidator(
   maxDaysInPast?: number,
-  maxDaysInFuture?: number
+  maxDaysInFuture?: number,
+  comparisonLabel?:string,
 ) {
   return (value: Date, helpers: joi.CustomHelpers) => {
     if (maxDaysInPast) {
@@ -148,6 +149,7 @@ export function getCustomDateValidator(
     if (value.getFullYear() == 1900) {
       return helpers.error("date.chronological", {
         label: helpers.state.key,
+        compLabel: comparisonLabel
       });
     }
 

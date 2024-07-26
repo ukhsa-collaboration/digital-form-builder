@@ -168,6 +168,7 @@ interface DateFieldBase {
     disableChangingFromSummary?: boolean;
     customValidationMessages?: Record<string, string>;
     errorLabel?: string;
+    comparisonLabel?:string;
     first_date_to_compare?: string;
     most_recent_date_to_compare?: string;
   };

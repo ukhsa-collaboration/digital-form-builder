@@ -34,6 +34,9 @@ export class DatePartsField extends FormComponent {
     if (options.most_recent_date_to_compare) {
       this.most_recent_date_to_compare = options.most_recent_date_to_compare
     }
+    if (options.comparisonLabel) {
+      this.comparisonLabel = options.comparisonLabel
+    }
     this.children = new ComponentCollection(
       [
         {
@@ -104,9 +107,14 @@ export class DatePartsField extends FormComponent {
     let schema: any = this.stateSchema;
 
     // Add custom date validator
+    if(this.comparisonLabel){
+      schema = schema.custom(
+        helpers.getCustomDateValidator(maxDaysInPast, maxDaysInFuture, this.comparisonLabel)
+      );
+    }else{
     schema = schema.custom(
       helpers.getCustomDateValidator(maxDaysInPast, maxDaysInFuture)
-    );
+    );}
 
     // Add custom validation messages if any
     if (options.customValidationMessages) {

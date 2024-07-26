@@ -29,7 +29,7 @@ const messageTemplate = {
   dateDayYear: "{{#label}} must include a day and a year",
   dateDayMonth: "{{#label}} must include a day and a month",
   dateYear4digits: "The year must include 4 numbers",
-  dateChronological: "The date that symptoms started in the most recent case must be the same as or after the date that symptoms started in the first case",
+  dateChronological: "The date that symptoms started in the {{#compLabel}} must be the same as or after the date that symptoms started in the first case",
   cqc:
     "Enter your CQC location ID or select 'My setting is not registered with the CQC'",
   cqcRegex: "Enter a valid CQC Location ID",

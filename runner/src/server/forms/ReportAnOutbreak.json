@@ -525,7 +525,10 @@
               "date.base": "The date that symptoms started must be a real date",
               "date.max": "The date that symptoms started must be in the past"
             },
-            "errorLabel": "The date that symptoms started"
+            "errorLabel": "The date that symptoms started",
+            "comparisonLabel": "second case",
+            "first_date_to_compare": "S4Q6",
+            "most_recent_date_to_compare": "S4Q7"
           },
           "type": "DatePartsField",
           "title": "S4Q7. Symptom onset date of second case",
@@ -543,6 +546,7 @@
               "date.max": "The date that symptoms started must be in the past"
             },
             "errorLabel": "The date that symptoms started",
+            "comparisonLabel": "most recent case",
             "first_date_to_compare": "S4Q6",
             "most_recent_date_to_compare": "S4Q8"
           },
@@ -818,7 +822,10 @@
           "options": {
             "required": false,
             "maxDaysInFuture": "0",
-            "errorLabel": "The date that symptoms started"
+            "errorLabel": "The date that symptoms started",
+            "comparisonLabel": "second case",
+            "first_date_to_compare": "S5Q12",
+            "most_recent_date_to_compare": "S5Q13"
           },
           "type": "DatePartsField",
           "title": "S5Q13. Symptom onset date of second case (confirmed flu, suspected flu OR chest infections)",
@@ -832,6 +839,7 @@
             "required": true,
             "maxDaysInFuture": "0",
             "errorLabel": "The date that symptoms started",
+            "comparisonLabel": "most recent case",
             "first_date_to_compare": "S5Q12",
             "most_recent_date_to_compare": "S5Q14"
           },
@@ -1002,7 +1010,10 @@
           "options": {
             "required": false,
             "maxDaysInFuture": "0",
-            "errorLabel": "The date that symptoms started"
+            "errorLabel": "The date that symptoms started",
+            "comparisonLabel": "second case",
+            "first_date_to_compare": "S6Q4",
+            "most_recent_date_to_compare": "S6Q5"
           },
           "type": "DatePartsField",
           "title": "S6Q5. Symptom onset date of second case",
@@ -1016,6 +1027,7 @@
             "required": true,
             "maxDaysInFuture": "0",
             "errorLabel": "The date that symptoms started",
+            "comparisonLabel": "most recent case",
             "first_date_to_compare": "S6Q4",
             "most_recent_date_to_compare": "S6Q6"
           },
