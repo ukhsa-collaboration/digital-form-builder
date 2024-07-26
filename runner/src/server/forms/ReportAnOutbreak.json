@@ -38,7 +38,8 @@
             "customValidationMessages": {
               "string.regex.base": "Enter a full UK postcode",
               "string.pattern.base": "Enter a full UK postcode"
-            }
+            },
+            "classes": "govuk-input--width-10"
           },
           "type": "TextField",
           "title": "Your setting postcode",
@@ -72,6 +73,7 @@
           "options": {
             "required": false,
             "optionalText": false,
+            "classes": "govuk-input--width-10",
             "conditionalTextField": {
               "dependsOn": "S0Q4"
             },
