@@ -16,9 +16,7 @@
   {% endif %}
 
   {% if not (components[0].type == "FlashCard") %}
-    {% if isStartPage %}
-      {{ govukButton({ attributes: { id: "submit" }, text: "Start now", isStartButton: true }) }}
-    {% else %}
+    {% if not isStartPage %}
       {% if page.isRepeatingFieldPageController and page.isSamePageDisplayMode %}
         {% if details.rows.length %}
           {{ govukButton({ attributes: { id: "submit" }, text: "Continue", name: "next", value: "continue"}) }}
