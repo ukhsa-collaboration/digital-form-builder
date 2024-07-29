@@ -13,7 +13,10 @@ export class RelativeUrl {
     this.url = new URL(urlString, "http://www.example.com");
     this.originalUrlString = urlString;
 
-    if (this.url.hostname !== "www.example.com") {
+    if (
+      this.url.hostname !== "www.example.com" &&
+      this.url.hostname !== "www.smartsurvey.co.uk"
+    ) {
       throw Error("Only relative URLs are allowed");
     }
   }
