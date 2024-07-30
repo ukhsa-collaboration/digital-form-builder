@@ -171,7 +171,8 @@
             "customValidationMessages": {
               "string.empty": "Enter an email address in the correct format, like name@example.com",
               "string.pattern.base": "Enter an email address in the correct format, like name@example.com"
-            }
+            },
+            "exposeToContext": true
           },
           "type": "TextField",
           "title": "S1Q8. Email of key contact person",
@@ -2720,5 +2721,13 @@
   },
   "phaseBanner": {
     "phase": "Beta"
+  },
+  "specialPages": {
+    "confirmationPage": {
+      "customText": {
+        "nextSteps": "We will send 2 automated emails to {{ S1Q8 }}",
+        "title": "Report sent"
+      }
+    }
   }
 }
