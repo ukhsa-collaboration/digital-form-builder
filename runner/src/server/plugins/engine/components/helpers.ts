@@ -149,6 +149,17 @@ export function getCustomDateValidator(
   };
 }
 
+export function getCustomCheckboxValidator() {
+  return (value, helpers: joi.CustomHelpers) => {
+    if (value === "__OTHER_SPECIFY_REQUIRED__") {
+      return helpers.error("string.base", {
+        label: helpers.state.key,
+      });
+    }
+    return value;
+  };
+}
+
 export function internationalPhoneValidator(
   value: string,
   _helpers: joi.CustomHelpers

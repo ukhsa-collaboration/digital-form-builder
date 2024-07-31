@@ -215,6 +215,10 @@ export interface MultilineTextFieldComponent extends TextFieldBase {
     customValidationMessage?: string;
     rows?: number;
     maxWords?: number;
+    conditionalTextBox?: {
+      dependsOnFieldName?: string;
+      dependsOnFieldValue?: string;
+    };
   };
   schema: {
     max?: number;

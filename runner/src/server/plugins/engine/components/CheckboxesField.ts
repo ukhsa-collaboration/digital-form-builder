@@ -13,7 +13,6 @@ export class CheckboxesField extends SelectionControlField {
     let schema = joi.array().single().label(def.title);
 
     if (options.required === false) {
-      // null or empty string is valid for optional fields
       schema = schema
         .empty(null)
         .items(joi[this.listType]().allow(...this.values, ""));
@@ -42,7 +41,10 @@ export class CheckboxesField extends SelectionControlField {
 
   getViewModel(formData: FormData, errors: FormSubmissionErrors) {
     const viewModel = super.getViewModel(formData, errors);
-    let formDataItems = (formData[this.name] ?? "").split(",");
+    let formDataItems = (Array.isArray(formData[this.name])
+      ? formData[this.name].join(",")
+      : formData[this.name] ?? ""
+    ).split(",");
     viewModel.items = (viewModel.items ?? []).map((item) => ({
       ...item,
       checked: !!formDataItems.find((i) => `${item.value}` === i),

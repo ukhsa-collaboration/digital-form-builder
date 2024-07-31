@@ -1589,10 +1589,14 @@
           "name": "S10Q2",
           "options": {
             "required": false,
-            "optionalText": false
+            "optionalText": false,
+            "conditionalTextBox": {
+              "dependsOnFieldName": "S10Q1",
+              "dependsOnFieldValue": "Other (specify below)"
+            }
           },
           "type": "MultilineTextField",
-          "title": "Tell us about any difficulties or highlights you experienced, and how we could improve the service.",
+          "title": "Tell us about any difficulties or highlights you experienced, and how we could improve the service",
           "nameHasError": false,
           "schema": {},
           "hint": "Do not include any personal information here, for example patient or disease details"
