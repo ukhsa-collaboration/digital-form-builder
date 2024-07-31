@@ -29,6 +29,8 @@ const messageTemplate = {
   dateDayYear: "{{#label}} must include a day and a year",
   dateDayMonth: "{{#label}} must include a day and a month",
   dateYear4digits: "The year must include 4 numbers",
+  conditionalFeedback:
+    "Give details of any difficulties or highlights you experienced, or how we could improve the service",
 };
 
 export const messages: ValidationOptions["messages"] = {
@@ -63,6 +65,8 @@ export const messages: ValidationOptions["messages"] = {
   "date.dayYear": messageTemplate.dateDayYear,
   "date.dayMonth": messageTemplate.dateDayMonth,
   "date.year4digits": messageTemplate.dateYear4digits,
+
+  "textbox.conditionalFeedback": messageTemplate.conditionalFeedback,
 };
 
 export const validationOptions: ValidationOptions = {

@@ -151,8 +151,8 @@ export function getCustomDateValidator(
 
 export function getCustomCheckboxValidator() {
   return (value, helpers: joi.CustomHelpers) => {
-    if (value === "__OTHER_SPECIFY_REQUIRED__") {
-      return helpers.error("string.base", {
+    if (value === "") {
+      return helpers.error("textbox.conditionalFeedback", {
         label: helpers.state.key,
       });
     }
