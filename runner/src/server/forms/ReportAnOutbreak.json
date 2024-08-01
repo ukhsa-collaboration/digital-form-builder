@@ -33,7 +33,7 @@
       "title": "Acute Respiratory Infections (ARI) - COVID-19, Flu or unknown infection in Adult Social Care settings",
       "components": [
         {
-          "name": "S0Q1",
+          "name": "S0Q4",
           "options": {
             "customValidationMessages": {
               "string.regex.base": "Enter a full UK postcode",
@@ -50,7 +50,7 @@
           "hint": "Give the postcode of your care setting, not the management company. If you provide domiciliary or home care, enter the postcode of the care provider company."
         },
         {
-          "name": "S0Q2",
+          "name": "S0Q3",
           "options": { "required": true },
           "type": "SelectField",
           "title": "Your local UKHSA health protection team",
@@ -69,13 +69,13 @@
           "schema": {}
         },
         {
-          "name": "S0Q3",
+          "name": "S0Q2",
           "options": {
             "required": false,
             "optionalText": false,
             "classes": "govuk-input--width-10",
             "conditionalTextField": {
-              "dependsOn": "S0Q4"
+              "dependsOn": "S0Q5"
             },
             "fieldName": "cqc"
           },
@@ -93,7 +93,7 @@
           "content": "<div class='govuk-checkboxes__divider'>or</div>"
         },
         {
-          "name": "S0Q4",
+          "name": "S0Q5",
           "options": {
             "hideTitle": true,
             "required": false
