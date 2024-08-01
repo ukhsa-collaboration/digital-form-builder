@@ -1596,7 +1596,7 @@
             }
           },
           "type": "MultilineTextField",
-          "title": "Tell us about any difficulties or highlights you experienced, and how we could improve the service",
+          "title": "Tell us about any difficulties or highlights you experienced, and how we could improve the service.",
           "nameHasError": false,
           "schema": {},
           "hint": "Do not include any personal information here, for example patient or disease details"

@@ -94,7 +94,7 @@ export class MultilineTextField extends FormComponent {
       checkboxSelection.includes(this.dependsOnFieldValue) &&
       textBoxValue === ""
     ) {
-      return "";
+      return "empty";
     }
 
     return textBoxValue;

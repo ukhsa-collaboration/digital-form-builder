@@ -151,7 +151,7 @@ export function getCustomDateValidator(
 
 export function getCustomCheckboxValidator() {
   return (value, helpers: joi.CustomHelpers) => {
-    if (value === "") {
+    if (value === "empty") {
       return helpers.error("textbox.conditionalFeedback", {
         label: helpers.state.key,
       });
