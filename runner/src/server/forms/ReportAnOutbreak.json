@@ -115,7 +115,7 @@
           "name": "rIpMWr",
           "options": {},
           "type": "Html",
-          "content": "<script>\ndocument.addEventListener('DOMContentLoaded', function() {\nconst cqcIdText = document.getElementById('S0Q3');\nconst cqcIdCheckbox = document.getElementById('S0Q4');\nfunction updateTextFieldRequiredState() {\nconst isChecked = cqcIdCheckbox.checked;\ncqcIdText.required = !isChecked;\n}\nfunction clearCheckbox() {\ncqcIdCheckbox.checked = false;\n}\ncqcIdCheckbox.addEventListener('change', function() {\nif (cqcIdCheckbox.checked) {\ncqcIdText.value = '';\n}\nupdateTextFieldRequiredState();\n});\ncqcIdText.addEventListener('input', function() {\nif (cqcIdText.value !== '') {\nclearCheckbox();\n}\nupdateTextFieldRequiredState()\n});\n});\n</script>"
+          "content": "<script>\ndocument.addEventListener('DOMContentLoaded', function() {\nconst cqcIdText = document.getElementById('S0Q2');\nconst cqcIdCheckbox = document.getElementById('S0Q5');\nfunction updateTextFieldRequiredState() {\nconst isChecked = cqcIdCheckbox.checked;\ncqcIdText.required = !isChecked;\n}\nfunction clearCheckbox() {\ncqcIdCheckbox.checked = false;\n}\ncqcIdCheckbox.addEventListener('change', function() {\nif (cqcIdCheckbox.checked) {\ncqcIdText.value = '';\n}\nupdateTextFieldRequiredState();\n});\ncqcIdText.addEventListener('input', function() {\nif (cqcIdText.value !== '') {\nclearCheckbox();\n}\nupdateTextFieldRequiredState()\n});\n});\n</script>"
         }
       ],
       "next": [
