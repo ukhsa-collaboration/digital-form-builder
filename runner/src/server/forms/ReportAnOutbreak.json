@@ -75,7 +75,7 @@
             "optionalText": false,
             "classes": "govuk-input--width-10",
             "conditionalTextField": {
-              "dependsOn": "S0Q4"
+              "dependsOn": "S0Q5"
             },
             "fieldName": "cqc"
           },
