@@ -19,14 +19,11 @@ export class NumberField extends FormComponent {
 
     componentSchema = componentSchema.label(def.title);
 
-    if (min && max) {
-      componentSchema = componentSchema.$;
-    }
-    if (min ?? false) {
+    if (min !== null && min !== undefined) {
       componentSchema = componentSchema.min(min);
     }
 
-    if (max ?? false) {
+    if (max !== null && max !== undefined) {
       componentSchema = componentSchema.max(max);
     }
 
@@ -43,12 +40,7 @@ export class NumberField extends FormComponent {
     }
 
     if (def.options.required === false) {
-      const optionalSchema = joi
-        .alternatives()
-        .try(
-          joi.string().allow(null).allow("").default("").optional(),
-          componentSchema
-        );
+      const optionalSchema = componentSchema.allow(null).allow("").optional();
       this.schema = optionalSchema;
     } else {
       this.schema = componentSchema;

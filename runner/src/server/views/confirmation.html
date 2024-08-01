@@ -20,42 +20,41 @@ it.'
   <div class="govuk-grid-column-two-thirds">
     {% set tmpl = 'Your reference number<br><strong>' + reference + '</strong>' if reference else '' %}
     {% if not customText %}
-    {{ govukPanel({
-    titleText: "Application complete",
-    html: tmpl
-    }) }}
-    <p class="govuk-body">
-      You will be receiving a confirmation email shortly
-    </p>
+      {{ govukPanel({
+        titleText: "Application complete",
+        html: tmpl
+      }) }}
+    {% else %}
+      {{ govukPanel({
+        titleText: customText.title,
+        html: tmpl
+      }) }}
+    {% endif %}
+
     <h2 class="govuk-heading-m">What happens next</h2>
     {% if paymentSkipped %}
-    <p class="govuk-body">
-      Someone will be in touch to make a payment.
-    </p>
+      <p class="govuk-body">Someone will be in touch to make a payment.</p>
     {% else %}
-    <p class="govuk-body">
-      You will be contacted by an agent from UKHSA as soon as possible who will advise you on next steps. <br /> <br />
-      If you need urgent medical advice, you can call NHS 111 or visit 111.nhs.uk. For life-threatening emergencies,
-      call 999.
-    </p>
-    {% endif %}
-    {% else %}
-    {{ govukPanel({
-    titleText: customText.title,
-    html: tmpl
-    }) }}
-    <h2 class="govuk-heading-m">What happens next</h2>
-    {% if paymentSkipped and customText.paymentSkipped %}
-    <p class="govuk-body">
-      {{ customText.paymentSkipped }}
-    </p>
-    {% else %}
-    {% if customText.nextSteps %}
-    <p class="govuk-body">
-      {{ customText.nextSteps }}
-    </p>
-    {% endif %}
-    {% endif %}
+      {% if customText.nextSteps %}
+        <p class="govuk-body">{{ customText.nextSteps | safe }}</p>
+      {% endif %}
+      <p class="govuk-body">
+        An acknowledgement email will give you your reference number and a copy of the information you've provided. The email will tell you if you have a low-risk COVID-19 outbreak, a medium-risk COVID-19 outbreak, a high-priority outbreak, or a single case of flu.
+      </p>
+      <p class="govuk-body">
+        An advice email will give you information specific to your situation to help you prevent the spread of infection. It explains what to expect from your local UKHSA health protection team or the community infection control team.
+      </p>
+      <p class="govuk-body">
+        If these emails do not arrive within one hour, or you need urgent advice, telephone your local <a class="govuk-link" href="https://www.gov.uk/health-protection-team">UKHSA health protection team</a> or community infection control team.
+      </p>
+      <h2 class="govuk-heading-m">If your outbreak is high priority on a weekend or bank holiday</h2>
+      <p class="govuk-body">
+        If your acknowledgment or advice email tells you that your outbreak is assessed as high priority on a weekend or a bank holiday, you also need to telephone your local <a class="govuk-link" href="https://www.gov.uk/health-protection-team">UKHSA health protection team</a>. Call during the daytime if possible. If you do not call the health protection team, a member of the health protection team will only call you on the next working day.
+      </p>
+      <h2 class="govuk-heading-m">If you need urgent medical advice</h2>
+      <p class="govuk-body">
+        If you need urgent medical advice, you should call NHS 111 or visit <a class="govuk-link" href="https://111.nhs.uk/">111.nhs.uk</a>. For life-threatening emergencies, call 999.
+      </p>
     {% endif %}
 
     {{ componentList(components) }}

@@ -16,8 +16,8 @@ const messageTemplate = {
   dateMin: "{{#label}} must be on or after {{#limit}}",
   dateMax: "{{#label}} must be on or before {{#limit}}",
   number: "{{#label}} must be a number",
-  numberMin: "{{#label}} must be {{#limit}} or higher",
-  numberMax: "{{#label}} must be {{#limit}} or lower",
+  numberMin: "Enter a number {{#limit}} or higher",
+  numberMax: "Enter a number {{#limit}} or lower",
   format: "Enter a valid {{#label}}",
   maxWords: "{{#label}} must be {{#limit}} words or fewer",
   dateRequired: "{{#label}} must be a real date",
@@ -29,6 +29,10 @@ const messageTemplate = {
   dateDayYear: "{{#label}} must include a day and a year",
   dateDayMonth: "{{#label}} must include a day and a month",
   dateYear4digits: "The year must include 4 numbers",
+  dateChronological: "The date that symptoms started in the {{#compLabel}} must be the same as or after the date that symptoms started in the first case",
+  cqc:
+    "Enter your CQC location ID or select 'My setting is not registered with the CQC'",
+  cqcRegex: "Enter a valid CQC Location ID",
   conditionalFeedback:
     "Give details of any difficulties or highlights you experienced, or how we could improve the service",
 };
@@ -41,6 +45,8 @@ export const messages: ValidationOptions["messages"] = {
   "string.email": messageTemplate.email,
   "string.regex.base": messageTemplate.format,
   "string.maxWords": messageTemplate.maxWords,
+  "string.cqc": messageTemplate.cqc,
+  "string.cqc.regex": messageTemplate.cqcRegex,
 
   "date.base": messageTemplate.date,
   "date.empty": messageTemplate.required,
@@ -65,8 +71,9 @@ export const messages: ValidationOptions["messages"] = {
   "date.dayYear": messageTemplate.dateDayYear,
   "date.dayMonth": messageTemplate.dateDayMonth,
   "date.year4digits": messageTemplate.dateYear4digits,
-
-  "textbox.conditionalFeedback": messageTemplate.conditionalFeedback,
+  "date.chronological": messageTemplate.dateChronological,
+   
+  "textbox.conditionalFeedback": messageTemplate.conditionalFeedback
 };
 
 export const validationOptions: ValidationOptions = {

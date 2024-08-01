@@ -13,6 +13,8 @@ import {
 } from "../types";
 import { FormModel } from "../models";
 import { DataType } from "server/plugins/engine/components/types";
+import { check } from "prettier";
+import { array } from "joi";
 
 export class DatePartsField extends FormComponent {
   children: ComponentCollection;
@@ -26,6 +28,15 @@ export class DatePartsField extends FormComponent {
     const isRequired =
       "required" in options && options.required === false ? false : true;
     const optionalText = "optionalText" in options && options.optionalText;
+    if (options.first_date_to_compare) {
+      this.first_date_to_compare = options.first_date_to_compare
+    }
+    if (options.most_recent_date_to_compare) {
+      this.most_recent_date_to_compare = options.most_recent_date_to_compare
+    }
+    if (options.comparisonLabel) {
+      this.comparisonLabel = options.comparisonLabel
+    }
     this.children = new ComponentCollection(
       [
         {
@@ -96,9 +107,14 @@ export class DatePartsField extends FormComponent {
     let schema: any = this.stateSchema;
 
     // Add custom date validator
+    if(this.comparisonLabel){
+      schema = schema.custom(
+        helpers.getCustomDateValidator(maxDaysInPast, maxDaysInFuture, this.comparisonLabel)
+      );
+    }else{
     schema = schema.custom(
       helpers.getCustomDateValidator(maxDaysInPast, maxDaysInFuture)
-    );
+    );}
 
     // Add custom validation messages if any
     if (options.customValidationMessages) {
@@ -123,15 +139,51 @@ export class DatePartsField extends FormComponent {
 
   getStateValueFromValidForm(payload: FormPayload) {
     const name = this.name;
+    const first_date_name = this.first_date_to_compare;
+    const most_recent_date_name = this.most_recent_date_to_compare;
+
     const day = payload[`${name}__day`];
     const month = payload[`${name}__month`];
     const year = payload[`${name}__year`];
 
-    if (day && month && year) {
+    const firstDateDay = payload[`${first_date_name}__day`];
+    const firstDateMonth = payload[`${first_date_name}__month`];
+    const firstDateYear = payload[`${first_date_name}__year`];
+
+    const mostRecentDateDay = payload[`${most_recent_date_name}__day`];
+    const mostRecentDateMonth = payload[`${most_recent_date_name}__month`];
+    const mostRecentDateYear = payload[`${most_recent_date_name}__year`];
+
+    if (day || month || year) {
       const indexedMonth = month - 1; // Adjust month for zero-based index
       const parsedDate = new Date(year, indexedMonth, day);
 
       if (month - 1 === parsedDate.getMonth()) {
+        if (name === most_recent_date_name) {
+          if (
+            firstDateDay &&
+            firstDateMonth &&
+            firstDateYear &&
+            mostRecentDateDay &&
+            mostRecentDateMonth &&
+            mostRecentDateYear
+          ) {
+            const firstDate = new Date(
+              Date.UTC(firstDateYear, firstDateMonth - 1, firstDateDay)
+            );
+            const mostRecentDate = new Date(
+              Date.UTC(
+                mostRecentDateYear,
+                mostRecentDateMonth - 1,
+                mostRecentDateDay
+              )
+            );
+            const invalidDate = firstDate > mostRecentDate;
+            if (invalidDate) {
+              return new Date(1900, 0, 1);
+            }
+          }
+        }
         return parsedDate;
       } else {
         return new Date(0, 0, 0); // Invalid date fallback
