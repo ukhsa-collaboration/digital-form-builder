@@ -173,6 +173,17 @@ export function customTextCheckboxValidator(fieldName: string) {
   };
 }
 
+export function getCustomCheckboxValidator() {
+  return (value, helpers: joi.CustomHelpers) => {
+    if (value === "empty") {
+      return helpers.error("textbox.conditionalFeedback", {
+        label: helpers.state.key,
+      });
+    }
+    return value;
+  };
+}
+
 export function internationalPhoneValidator(
   value: string,
   _helpers: joi.CustomHelpers

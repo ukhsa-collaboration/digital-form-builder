@@ -1622,26 +1622,35 @@
     },
     {
       "path": "/feedback-on-the-care-obra-tool",
-      "title": "Section 10 - Feedback on the Care OBRA Tool",
+      "title": "Section 10 - Give feedback on Report an outbreak",
       "components": [
-        {
-          "name": "zTXeZb",
-          "options": {},
-          "type": "Para",
-          "content": "Please provide your feedback.",
-          "schema": {}
-        },
         {
           "name": "S10Q1",
           "options": {
             "required": true
           },
           "type": "CheckboxesField",
-          "title": "S10Q1. How would you describe this risk assessment tool?",
+          "title": "How would you describe this risk assessment tool?",
           "nameHasError": false,
           "list": "icNyDJ",
           "schema": {},
-          "hint": "Please note that you can select more than one option"
+          "hint": "Select all that apply"
+        },
+        {
+          "name": "S10Q2",
+          "options": {
+            "required": false,
+            "optionalText": false,
+            "conditionalTextBox": {
+              "dependsOnFieldName": "S10Q1",
+              "dependsOnFieldValue": "Other (specify below)"
+            }
+          },
+          "type": "MultilineTextField",
+          "title": "Tell us about any difficulties or highlights you experienced, and how we could improve the service.",
+          "nameHasError": false,
+          "schema": {},
+          "hint": "Do not include any personal information here, for example patient or disease details"
         }
       ],
       "next": [
@@ -1924,12 +1933,24 @@
       "type": "string",
       "items": [
         {
+          "text": "Useful resource",
+          "value": "Useful resource"
+        },
+        {
+          "text": "Easy to understand",
+          "value": "Easy to understand"
+        },
+        {
           "text": "Easy to complete",
           "value": "Easy to complete"
         },
         {
-          "text": "Useful resource",
-          "value": "Useful resource"
+          "text": "Quick to complete",
+          "value": "Quick to complete"
+        },
+        {
+          "text": "Some questions were unclear",
+          "value": "Some questions were unclear"
         },
         {
           "text": "Not detailed enough",
@@ -1940,20 +1961,12 @@
           "value": "Too detailed"
         },
         {
-          "text": "Quick to complete",
-          "value": "Quick to complete"
-        },
-        {
           "text": "Too time consuming",
           "value": "Too time consuming"
         },
         {
-          "text": "Easy to understand",
-          "value": "Easy to understand"
-        },
-        {
-          "text": "Some questions were unclear",
-          "value": "Some questions were unclear"
+          "text": "Other (specify below)",
+          "value": "Other (specify below)"
         }
       ]
     },

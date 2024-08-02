@@ -1,9 +1,10 @@
 import { FormComponent } from "./FormComponent";
-import { FormData, FormSubmissionErrors } from "../types";
+import { FormData, FormPayload, FormSubmissionErrors } from "../types";
 import Joi, { Schema, StringSchema } from "joi";
 import { MultilineTextFieldComponent } from "@xgovformbuilder/model";
 import { FormModel } from "server/plugins/engine/models";
 import { MultilineTextFieldViewModel } from "server/plugins/engine/components/types";
+import * as helpers from "./helpers";
 
 function inputIsOverWordCount(input, maxWords) {
   /**
@@ -20,6 +21,8 @@ export class MultilineTextField extends FormComponent {
   schema: MultilineTextFieldComponent["schema"];
   customValidationMessage?: string;
   isCharacterOrWordCount: boolean = false;
+  dependsOnFieldName;
+  dependsOnFieldValue;
 
   constructor(def: MultilineTextFieldComponent, model: FormModel) {
     super(def, model);
@@ -27,6 +30,10 @@ export class MultilineTextField extends FormComponent {
     this.options = options;
     this.schema = schema;
     let componentSchema = Joi.string().label(def.title).required();
+
+    componentSchema = componentSchema.custom(
+      helpers.getCustomCheckboxValidator()
+    );
 
     if (options.required === false) {
       componentSchema = componentSchema.allow("").allow(null);
@@ -63,6 +70,11 @@ export class MultilineTextField extends FormComponent {
       );
     }
 
+    if (options.conditionalTextBox) {
+      this.dependsOnFieldName = options.conditionalTextBox.dependsOnFieldName;
+      this.dependsOnFieldValue = options.conditionalTextBox.dependsOnFieldValue;
+    }
+
     this.formSchema = componentSchema;
   }
 
@@ -72,6 +84,20 @@ export class MultilineTextField extends FormComponent {
 
   getStateSchemaKeys() {
     return { [this.name]: this.formSchema as Schema };
+  }
+
+  getStateValueFromValidForm(payload: FormPayload) {
+    const checkboxSelection = payload[this.dependsOnFieldName];
+    const textBoxValue = payload[this.name];
+
+    if (
+      checkboxSelection.includes(this.dependsOnFieldValue) &&
+      textBoxValue === ""
+    ) {
+      return "empty";
+    }
+
+    return textBoxValue;
   }
 
   getViewModel(
