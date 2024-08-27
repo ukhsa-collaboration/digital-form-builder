@@ -51,7 +51,10 @@
         },
         {
           "name": "S0Q3",
-          "options": { "required": true },
+          "options": {
+            "required": true,
+            "classes": "govuk-input--width-10"
+          },
           "type": "SelectField",
           "title": "Your local UKHSA health protection team",
           "list": "sjgMDe",
@@ -2017,6 +2020,10 @@
         {
           "text": "South West HPT",
           "value": "South West HPT"
+        },
+        {
+          "text": "Yorkshire and Humber HPT",
+          "value": "Yorkshire and Humber HPT"
         }
       ]
     },
