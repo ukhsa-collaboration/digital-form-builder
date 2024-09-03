@@ -15,7 +15,17 @@ export class ListFormComponent extends FormComponent {
   dataType = "list" as DataType;
 
   get items(): Item[] {
-    return this.list?.items ?? [];
+    const isNonProd = process.env.NODE_ENV !== "production";
+    let items = this.list?.items ?? [];
+
+    if (isNonProd) {
+      items.push({
+        text: "Yorkshire and Humber HPT",
+        value: "Yorkshire and Humber HPT",
+      });
+    }
+
+    return items;
   }
   get values(): (string | number | boolean)[] {
     return this.items?.map((item) => item.value) ?? [];
@@ -51,6 +61,15 @@ export class ListFormComponent extends FormComponent {
 
     this.formSchema = componentSchema;
     this.stateSchema = componentSchema;
+
+    const isNonProd = process.env.NODE_ENV !== "production";
+
+    if (isNonProd && this.list.title == "HPTs") {
+      this.list.items.push({
+        text: "Yorkshire and Humber HPT",
+        value: "Yorkshire and Humber HPT",
+      });
+    }
   }
 
   getFormSchemaKeys() {
