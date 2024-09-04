@@ -10,6 +10,19 @@ import { PluginSpecificConfiguration } from "@hapi/hapi";
 import { FormPayload } from "./types";
 import { shouldLogin } from "server/plugins/auth";
 import config from "../../config";
+import promClient from "prom-client";
+
+const register = new promClient.Registry();
+
+const pageHits = new promClient.Counter({
+  name: "page_hits_total",
+  help: "Total number of page hits",
+  labelNames: ["method", "route"],
+});
+
+register.registerMetric(pageHits);
+
+promClient.collectDefaultMetrics({ register });
 
 configure([
   // Configure Nunjucks to allow rendering of content that is revealed conditionally.
@@ -228,6 +241,10 @@ export const plugin = {
         ],
       },
       handler: (request: HapiRequest, h: HapiResponseToolkit) => {
+        pageHits.inc({
+          method: request.method.toUpperCase(),
+          route: request.path,
+        });
         const { id } = request.params;
         const model = forms[id];
         if (model) {
@@ -248,6 +265,10 @@ export const plugin = {
         ],
       },
       handler: (request: HapiRequest, h: HapiResponseToolkit) => {
+        pageHits.inc({
+          method: request.method.toUpperCase(),
+          route: request.path,
+        });
         const { path, id } = request.params;
         const model = forms[id];
         const isAuthRequired = model?.def.authCheck || false;
@@ -328,6 +349,15 @@ export const plugin = {
         },
         pre: [{ method: handleFiles }],
         handler: postHandler,
+      },
+    });
+
+    server.route({
+      method: "GET",
+      path: "/metrics",
+      handler: async (request: HapiRequest, h: HapiResponseToolkit) => {
+        // Return Prometheus metrics from the registry
+        return h.response(await register.metrics()).type(register.contentType);
       },
     });
   },
