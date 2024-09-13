@@ -165,10 +165,10 @@
         {
           "name": "S1Q7",
           "options": {
-            "customValidationMessage": "Enter a telephone number, like 01632 960 001, 07700 900 982 or +44 808 157 0192", 
-            "customValidationMessages":{
-              "string.base":"S1Q7. Telephone number/s of Key Contact Person is required",
-              "string.empty":"S1Q7. Telephone number/s of Key Contact Person is required"
+            "customValidationMessage": "Enter a telephone number, like 01632 960 001, 07700 900 982 or +44 808 157 0192",
+            "customValidationMessages": {
+              "string.base": "S1Q7. Telephone number/s of Key Contact Person is required",
+              "string.empty": "S1Q7. Telephone number/s of Key Contact Person is required"
             }
           },
           "type": "TelephoneNumberField",
@@ -234,7 +234,11 @@
         {
           "name": "S1Q7",
           "options": {
-            "customValidationMessage": "Enter a telephone number, like 01632 960 001, 07700 900 982 or +44 808 157 0192"
+            "customValidationMessage": "Enter a telephone number, like 01632 960 001, 07700 900 982 or +44 808 157 0192",
+            "customValidationMessages": {
+              "string.base": "S1Q7. Telephone number/s of Key Contact Person is required",
+              "string.empty": "S1Q7. Telephone number/s of Key Contact Person is required"
+            }
           },
           "type": "TelephoneNumberField",
           "title": "S1Q7. Telephone number/s of Key Contact Person",
@@ -312,7 +316,11 @@
         {
           "name": "S1Q7",
           "options": {
-            "customValidationMessage": "Enter a telephone number, like 01632 960 001, 07700 900 982 or +44 808 157 0192"
+            "customValidationMessage": "Enter a telephone number, like 01632 960 001, 07700 900 982 or +44 808 157 0192",
+            "customValidationMessages": {
+              "string.base": "S1Q7. Telephone number/s of Key Contact Person is required",
+              "string.empty": "S1Q7. Telephone number/s of Key Contact Person is required"
+            }
           },
           "type": "TelephoneNumberField",
           "title": "S1Q7. Telephone number/s of Key Contact Person",
