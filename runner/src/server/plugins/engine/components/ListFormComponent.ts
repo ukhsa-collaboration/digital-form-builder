@@ -52,14 +52,14 @@ export class ListFormComponent extends FormComponent {
     this.formSchema = componentSchema;
     this.stateSchema = componentSchema;
 
-    const isNonProd = process.env.NODE_ENV !== "production";
+    // const isNonProd = process.env.NODE_ENV !== "production";
 
-    if (isNonProd && this.list.title == "HPTs") {
-      this.list.items.push({
-        text: "Yorkshire and Humber HPT",
-        value: "Yorkshire and Humber HPT",
-      });
-    }
+    // if (isNonProd && this.list.title == "HPTs") {
+    //   this.list.items.push({
+    //     text: "Yorkshire and Humber HPT",
+    //     value: "Yorkshire and Humber HPT",
+    //   });
+    // }
   }
 
   getFormSchemaKeys() {
