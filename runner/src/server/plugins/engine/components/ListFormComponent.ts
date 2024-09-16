@@ -15,17 +15,7 @@ export class ListFormComponent extends FormComponent {
   dataType = "list" as DataType;
 
   get items(): Item[] {
-    const isNonProd = process.env.NODE_ENV !== "production";
-    let items = this.list?.items ?? [];
-
-    if (isNonProd) {
-      items.push({
-        text: "Yorkshire and Humber HPT",
-        value: "Yorkshire and Humber HPT",
-      });
-    }
-
-    return items;
+    return this.list?.items ?? [];
   }
   get values(): (string | number | boolean)[] {
     return this.items?.map((item) => item.value) ?? [];
