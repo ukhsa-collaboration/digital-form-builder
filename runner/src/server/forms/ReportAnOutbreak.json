@@ -55,6 +55,7 @@
           "name": "S0Q3",
           "options": {
             "required": true,
+            "classes": "govuk-input--width-10",
             "customValidationMessages": {
               "string.empty": "Your local UKHSA health protection team is required",
               "string.base": "Your local UKHSA health protection team is required"
