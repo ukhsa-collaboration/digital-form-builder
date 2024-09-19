@@ -52,7 +52,7 @@ export class ListFormComponent extends FormComponent {
     this.formSchema = componentSchema;
     this.stateSchema = componentSchema;
 
-    const isDevOrTest = process.env.NODE_ENV !== "development";
+    const isDevOrTest = process.env.NODE_ENV === "development";
 
     if (isDevOrTest && this.list.title == "HPTs") {
       this.list.items.push({
