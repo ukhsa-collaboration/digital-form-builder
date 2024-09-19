@@ -37,7 +37,9 @@
           "options": {
             "customValidationMessages": {
               "string.regex.base": "Enter a full UK postcode",
-              "string.pattern.base": "Enter a full UK postcode"
+              "string.pattern.base": "Enter a full UK postcode",
+              "string.empty": "Your setting postcode is required",
+              "string.base": "Your setting postcode is required"
             },
             "classes": "govuk-input--width-10"
           },
@@ -53,7 +55,11 @@
           "name": "S0Q3",
           "options": {
             "required": true,
-            "classes": "govuk-input--width-10"
+            "classes": "govuk-input--width-10",
+            "customValidationMessages": {
+              "string.empty": "Your local UKHSA health protection team is required",
+              "string.base": "Your local UKHSA health protection team is required"
+            }
           },
           "type": "SelectField",
           "title": "Your local UKHSA health protection team",
@@ -160,7 +166,11 @@
         {
           "name": "S1Q7",
           "options": {
-            "customValidationMessage": "Enter a telephone number, like 01632 960 001, 07700 900 982 or +44 808 157 0192"
+            "customValidationMessage": "Enter a telephone number, like 01632 960 001, 07700 900 982 or +44 808 157 0192",
+            "customValidationMessages": {
+              "string.base": "S1Q7. Telephone number/s of Key Contact Person is required",
+              "string.empty": "S1Q7. Telephone number/s of Key Contact Person is required"
+            }
           },
           "type": "TelephoneNumberField",
           "title": "S1Q7. Telephone number/s of Key Contact Person",
@@ -225,7 +235,11 @@
         {
           "name": "S1Q7",
           "options": {
-            "customValidationMessage": "Enter a telephone number, like 01632 960 001, 07700 900 982 or +44 808 157 0192"
+            "customValidationMessage": "Enter a telephone number, like 01632 960 001, 07700 900 982 or +44 808 157 0192",
+            "customValidationMessages": {
+              "string.base": "S1Q7. Telephone number/s of Key Contact Person is required",
+              "string.empty": "S1Q7. Telephone number/s of Key Contact Person is required"
+            }
           },
           "type": "TelephoneNumberField",
           "title": "S1Q7. Telephone number/s of Key Contact Person",
@@ -303,7 +317,11 @@
         {
           "name": "S1Q7",
           "options": {
-            "customValidationMessage": "Enter a telephone number, like 01632 960 001, 07700 900 982 or +44 808 157 0192"
+            "customValidationMessage": "Enter a telephone number, like 01632 960 001, 07700 900 982 or +44 808 157 0192",
+            "customValidationMessages": {
+              "string.base": "S1Q7. Telephone number/s of Key Contact Person is required",
+              "string.empty": "S1Q7. Telephone number/s of Key Contact Person is required"
+            }
           },
           "type": "TelephoneNumberField",
           "title": "S1Q7. Telephone number/s of Key Contact Person",
