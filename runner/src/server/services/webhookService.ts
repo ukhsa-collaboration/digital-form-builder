@@ -1,6 +1,11 @@
 import { post, put } from "./httpService";
 import { HapiServer } from "../types";
 
+import {
+  webhookSuccessCounter,
+  webhookFailureCounter,
+} from "config/metricsConfig";
+
 const DEFAULT_OPTIONS = {
   headers: {
     accept: "application/json",
@@ -55,9 +60,19 @@ export class WebhookService {
         ["WebhookService", "postRequest", `REF: ${reference}`],
         JSON.stringify(payload)
       );
+
+      webhookSuccessCounter.inc({
+        reference: `${reference}`,
+      });
+
       return reference;
     } catch (error) {
       this.logger.error(["WebhookService", "postRequest"], error);
+
+      webhookFailureCounter.inc({
+        reference: "UNKNOWN",
+      });
+
       return "UNKNOWN";
     }
   }

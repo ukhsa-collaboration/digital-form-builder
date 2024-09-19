@@ -11,19 +11,7 @@ import { FormPayload } from "./types";
 import { shouldLogin } from "server/plugins/auth";
 import config from "../../config";
 
-const client = require("prom-client");
-
-const register = new client.Registry();
-
-const pageHits = new client.Counter({
-  name: "page_hits_total",
-  help: "Total number of page hits",
-  labelNames: ["method", "route"],
-});
-
-register.registerMetric(pageHits);
-
-client.collectDefaultMetrics({ register });
+import { pageHits, register } from "config/metricsConfig";
 
 configure([
   // Configure Nunjucks to allow rendering of content that is revealed conditionally.

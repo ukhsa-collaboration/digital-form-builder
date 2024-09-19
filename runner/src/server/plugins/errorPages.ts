@@ -1,5 +1,7 @@
 import { HapiRequest, HapiResponseToolkit } from "../types";
 
+import { errorCounter } from "config/metricsConfig";
+
 /*
  * Add an `onPreResponse` listener to return error pages
  */
@@ -16,6 +18,8 @@ export default {
             // An error was raised during
             // processing the request
             const statusCode = response.output.statusCode;
+
+            errorCounter.inc({ status_code: statusCode }); // Increment error counter
 
             // In the event of 404
             // return the `404` view
