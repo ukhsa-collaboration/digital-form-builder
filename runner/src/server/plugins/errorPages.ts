@@ -1,7 +1,6 @@
 import { HapiRequest, HapiResponseToolkit } from "../types";
 import client from "prom-client";
-
-const register = new client.Registry();
+import register from "server/plugins/promRegistry";
 
 export const errorCounter = new client.Counter({
   name: "http_errors_total",
@@ -11,7 +10,6 @@ export const errorCounter = new client.Counter({
 
 register.registerMetric(errorCounter);
 
-client.collectDefaultMetrics({ register });
 /*
  * Add an `onPreResponse` listener to return error pages
  */

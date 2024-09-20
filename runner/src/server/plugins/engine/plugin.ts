@@ -9,10 +9,9 @@ import Boom from "boom";
 import { PluginSpecificConfiguration } from "@hapi/hapi";
 import { FormPayload } from "./types";
 import { shouldLogin } from "server/plugins/auth";
+import register from "server/plugins/promRegistry";
 import config from "../../config";
 import client from "prom-client";
-
-const register = new client.Registry();
 
 const pageHits = new client.Counter({
   name: "page_hits_total",
@@ -21,8 +20,6 @@ const pageHits = new client.Counter({
 });
 
 register.registerMetric(pageHits);
-
-client.collectDefaultMetrics({ register });
 
 configure([
   // Configure Nunjucks to allow rendering of content that is revealed conditionally.
