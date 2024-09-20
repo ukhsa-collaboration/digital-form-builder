@@ -1,6 +1,6 @@
 import { HapiRequest, HapiResponseToolkit } from "../types";
 
-import { errorCounter } from "config/metricsConfig";
+import { errorCounter } from "../metricsConfig";
 
 /*
  * Add an `onPreResponse` listener to return error pages

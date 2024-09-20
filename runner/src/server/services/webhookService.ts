@@ -1,10 +1,7 @@
 import { post, put } from "./httpService";
 import { HapiServer } from "../types";
 
-import {
-  webhookSuccessCounter,
-  webhookFailureCounter,
-} from "config/metricsConfig";
+import { webhookSuccessCounter, webhookFailureCounter } from "../metricsConfig";
 
 const DEFAULT_OPTIONS = {
   headers: {

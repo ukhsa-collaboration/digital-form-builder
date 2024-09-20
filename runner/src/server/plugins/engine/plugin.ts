@@ -11,7 +11,7 @@ import { FormPayload } from "./types";
 import { shouldLogin } from "server/plugins/auth";
 import config from "../../config";
 
-import { pageHits, register } from "config/metricsConfig";
+import { pageHits, register } from "../../metricsConfig";
 
 configure([
   // Configure Nunjucks to allow rendering of content that is revealed conditionally.
