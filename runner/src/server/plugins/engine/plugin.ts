@@ -10,8 +10,19 @@ import { PluginSpecificConfiguration } from "@hapi/hapi";
 import { FormPayload } from "./types";
 import { shouldLogin } from "server/plugins/auth";
 import config from "../../config";
+import client from "prom-client";
 
-import { pageHits, register } from "../../metricsConfig";
+const register = new client.Registry();
+
+const pageHits = new client.Counter({
+  name: "page_hits_total",
+  help: "Total number of page hits",
+  labelNames: ["method", "route"],
+});
+
+register.registerMetric(pageHits);
+
+client.collectDefaultMetrics({ register });
 
 configure([
   // Configure Nunjucks to allow rendering of content that is revealed conditionally.

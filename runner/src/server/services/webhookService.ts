@@ -1,7 +1,6 @@
 import { post, put } from "./httpService";
 import { HapiServer } from "../types";
-
-import { webhookSuccessCounter, webhookFailureCounter } from "../metricsConfig";
+import client from "prom-client";
 
 const DEFAULT_OPTIONS = {
   headers: {
@@ -11,6 +10,25 @@ const DEFAULT_OPTIONS = {
   timeout: 60000,
 };
 
+const register = new client.Registry();
+
+const webhookSuccessCounter = new client.Counter({
+  name: "successful_submissions_total",
+  help: "Total number of successful submissions",
+  labelNames: ["reference"],
+});
+
+register.registerMetric(webhookSuccessCounter);
+
+const webhookFailureCounter = new client.Counter({
+  name: "failed_submissions_total",
+  help: "Total number of failed submissions",
+  labelNames: ["reference"],
+});
+
+register.registerMetric(webhookFailureCounter);
+
+client.collectDefaultMetrics({ register });
 export class WebhookService {
   logger: any;
   constructor(server: HapiServer) {
