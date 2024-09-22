@@ -70,7 +70,7 @@ export class WebhookService {
         `Webhook request to ${url} submitted OK`
       );
       this.logger.debug(
-        ["WebhookService", "postRequest", `REF: ${reference}`],
+        ["WebhookService", "postRequest", "testing", `REF: ${reference}`],
         JSON.stringify(payload)
       );
 
@@ -80,7 +80,7 @@ export class WebhookService {
 
       return reference;
     } catch (error) {
-      this.logger.error(["WebhookService", "postRequest"], error);
+      this.logger.error(["WebhookService", "postRequest", "testing"], error);
 
       webhookFailureCounter.inc({
         reference: "UNKNOWN",
