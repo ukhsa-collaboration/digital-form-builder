@@ -162,7 +162,13 @@ export class SummaryPageController extends PageController {
       });
 
       request.logger.info(
-        ["Webhook data", "before send", request.yar.id],
+        [
+          "Webhook data",
+          "before send",
+          config.logLevel,
+          "line165",
+          request.yar.id,
+        ],
         JSON.stringify(summaryViewModel.validatedWebhookData)
       );
 
