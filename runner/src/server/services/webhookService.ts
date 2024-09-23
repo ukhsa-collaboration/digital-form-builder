@@ -61,6 +61,11 @@ export class WebhookService {
         payload: JSON.stringify(data),
       });
 
+      this.logger.info(
+        [payload, typeof payload, payload.reference],
+        "payload line 64"
+      );
+
       if (typeof payload === "object" && !Buffer.isBuffer(payload)) {
         return payload.reference;
       }
