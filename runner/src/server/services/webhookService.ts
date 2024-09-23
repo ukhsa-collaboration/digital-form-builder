@@ -48,7 +48,7 @@ export class WebhookService {
     sendAdditionalPayMetadata: boolean = false
   ) {
     console.log(data, "data50");
-    console.log(JSON.stringify(data), "stringified data51");
+    console.log(url, "url52");
     this.logger.info(
       ["WebhookService", "postRequest body"],
       JSON.stringify(data)
