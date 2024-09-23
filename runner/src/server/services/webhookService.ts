@@ -47,6 +47,8 @@ export class WebhookService {
     method: "POST" | "PUT" = "POST",
     sendAdditionalPayMetadata: boolean = false
   ) {
+    console.log(data, "data50");
+    console.log(JSON.stringify(data), "stringified data51");
     this.logger.info(
       ["WebhookService", "postRequest body"],
       JSON.stringify(data)
@@ -61,10 +63,25 @@ export class WebhookService {
         payload: JSON.stringify(data),
       });
 
-      this.logger.info(
-        [payload, typeof payload, payload.reference],
-        "payload line 64"
-      );
+      console.log(payload, "payload66");
+      let parsedPayload
+      if (Buffer.isBuffer(payload)) {
+        // Convert buffer to string
+        const payloadString = payload.toString("utf-8"); // Specify 'utf-8' encoding
+        console.log(payloadString, "payloadString");
+
+        try {
+          // Parse string to JSON
+          parsedPayload = JSON.parse(payloadString);
+        } catch (error) {
+          console.error("Failed to parse payload as JSON:", error);
+          throw new Error("Received an invalid JSON response.");
+        }
+      } else {
+        parsedPayload = payload; // Assume payload is already JSON if not a buffer
+      }
+
+      console.log(parsedPayload, "parsedPayload");
 
       if (typeof payload === "object" && !Buffer.isBuffer(payload)) {
         return payload.reference;
@@ -85,6 +102,7 @@ export class WebhookService {
 
       return reference;
     } catch (error) {
+      console.log(error);
       this.logger.error(["WebhookService", "postRequest", "testing"], error);
 
       webhookFailureCounter.inc({
