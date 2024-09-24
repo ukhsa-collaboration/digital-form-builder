@@ -1340,8 +1340,8 @@
             "required": true
           },
           "type": "YesNoField",
-          "title": "S8Q3. Does your setting undertake Aerosol Generating Procedures (AGPs)?",
-          "hint": "E.g. tracheotomy/ostomy insertion or removal, non-invasive ventilation (NIV), bi-level positive Airway Pressure Ventilation (BiBPAP), Continuous Positive Airway Pressure Ventilation (CPAP), Induction of sputum using nebulised saline, respiratory tract suctioning (mouth suctioning is not an AGP).",
+          "title": "S8Q3. Does your setting undertake aerosol generating procedures (AGPs)?",
+          "hint": "For example, inserting or removing a tracheotomy or ostomy, non-invasive ventilation (NIV), bi-level positive airway pressure (BPAP), continuous positive airway pressure (CPAP), sputum induction, respiratory tract suctioning (mouth suctioning is not an AGP).",
           "nameHasError": false,
           "schema": {},
           "values": {
