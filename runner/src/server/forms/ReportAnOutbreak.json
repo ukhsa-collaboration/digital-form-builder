@@ -643,7 +643,6 @@
           "name": "sBtyXQ",
           "options": {},
           "type": "Para",
-          "content": "This section is about influenza cases. You will automatically move to the next section if you answer NO to the first Question.",
           "schema": {}
         },
         {
@@ -937,20 +936,19 @@
           "name": "rkWfvT",
           "options": {},
           "type": "Para",
-          "content": "This section is about symptomatic cases of acute respiratory infection (ARI) where the causative organism/bug is not known. You will automatically move to the next section if you answer No.",
+          "content": "This section is about symptomatic cases of acute respiratory infection (ARI) where you do not know the causative organism or bug.\n<p class=\"govuk-body\">This includes ARIs:\n<ul class=\"govuk-list govuk-list--bullet\"><li>where the infection or microorganism causing it is unknown</li><li>for which you have had at least one positive test that isn't COVID-19 or flu, for example, respiratory syncytial virus, parainfluenza, rhinovirus, human metapneumovirus</li></ul></p><p class=\"govuk-body\">If you have already entered these ARI cases in the COVID-19 or flu section, select 'No'.</p><p class=\"govuk-body\">Care homes: you should test for COVID-19 the 5 residents or clients who most recently showed signs of an ARI. Use a rapid lateral flow test.</p>",
           "schema": {}
         },
         {
           "name": "S6Q1",
           "options": {},
           "type": "YesNoField",
-          "title": "S6Q1: Do you have two or more cases of ARI within your setting who have symptom onset dates within 5 days? This includes: ARI for which you do not know the infection/microorganism causing it OR you have had at least one person with a positive test for an ARI that isn't COVID-19 or Flu e.g. RSV parainfluenza, rhinovirus, human metapneumovirus etc and other/s with symptoms. If you have already entered these ARI cases in the COVID-19 or Flu section, do NOT re-enter them in this section and click \"No\" below",
+          "title": "S6Q1: Do you have two or more cases of ARI within your setting who have symptom onset dates within 5 days?",
           "nameHasError": false,
           "schema": {},
           "values": {
             "type": "listRef"
-          },
-          "hint": "For care homes only: If you haven't already, you should test the most recent five of your symptomatic residents/clients as soon as you can by COVID-19 LFD test."
+          }
         },
         {
           "name": "DqLzcF",
