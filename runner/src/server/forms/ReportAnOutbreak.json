@@ -1450,14 +1450,13 @@
           "name": "HBWjJk",
           "options": {},
           "type": "Para",
-          "content": "This section will go over the staffing in your setting.",
           "schema": {}
         },
         {
           "name": "S9Q2",
           "options": {},
           "type": "RadiosField",
-          "title": "S9Q2. By how many have you had to increase your agency staff and/or how many more staff have you had to share across other care settings? ",
+          "title": "S9Q2. How many additional agency staff or staff from other care settings have you used during this outbreak?",
           "nameHasError": false,
           "list": "LiqmvS",
           "schema": {},
@@ -2046,8 +2045,8 @@
       "type": "string",
       "items": [
         {
-          "text": "Less than 5",
-          "value": "Less than 5"
+          "text": "Fewer than 5",
+          "value": "Fewer than 5"
         },
         {
           "text": "5 or more",
