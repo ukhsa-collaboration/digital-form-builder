@@ -72,6 +72,7 @@ export class YesNoField extends ListFormComponent {
 
   getViewModel(formData: FormData, errors: FormSubmissionErrors) {
     const viewModel = super.getViewModel(formData, errors);
+    viewModel.label!.classes = "govuk-fieldset__legend--s";
 
     viewModel.fieldset = {
       legend: viewModel.label,
