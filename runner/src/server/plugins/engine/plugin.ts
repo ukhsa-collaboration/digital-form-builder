@@ -314,7 +314,17 @@ export const plugin = {
       return uploadService.handleUploadRequest(request, h, page.pageDef);
     };
 
-    const uniqueSessionIds = new Set(); // Using a Set to store unique session IDs
+    const uniqueSessionIds = new Map(); // Using a Set to store unique session IDs
+
+    const cleanupExpiredSessions = () => {
+      const now = Date.now();
+      uniqueSessionIds.forEach((timestamp, sessionId) => {
+        if (now - timestamp > config.sessionTimeout) {
+          uniqueSessionIds.delete(sessionId); // Remove expired sessions
+          console.log(`Expired session removed: ${sessionId}`);
+        }
+      });
+    };
 
     const postHandler = async (
       request: HapiRequest,
@@ -324,8 +334,9 @@ export const plugin = {
         const sessionId: string = request.state.session?.id; // Safely accessing the session ID
         if (sessionId) {
           // Check if sessionId is already in the Set
+          const now = Date.now();
           if (!uniqueSessionIds.has(sessionId)) {
-            uniqueSessionIds.add(sessionId); // Add session ID to the Set
+            uniqueSessionIds.set(sessionId, now); // Add session ID to the Set
             console.log(`New unique visitor: ${sessionId}`); // Log the new unique visitor
             uniqueVisitors.inc({
               sessionId: sessionId,
@@ -334,6 +345,7 @@ export const plugin = {
             console.log(`Returning visitor: ${sessionId}`); // Log returning visitor
           }
         }
+        cleanupExpiredSessions();
       }
 
       const { path, id } = request.params;
