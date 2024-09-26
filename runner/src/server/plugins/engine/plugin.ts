@@ -275,6 +275,10 @@ export const plugin = {
           route: request.path,
         });
 
+        uniqueVisitors.inc({
+          sessionId: "hello test",
+        });
+
         const { path, id } = request.params;
         const model = forms[id];
         const isAuthRequired = model?.def.authCheck || false;
