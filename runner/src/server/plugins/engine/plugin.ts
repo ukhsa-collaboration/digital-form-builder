@@ -331,18 +331,20 @@ export const plugin = {
       h: HapiResponseToolkit
     ) => {
       if (request.path.includes(startPage)) {
+        request.logger.info("Inside startPage condition");
         const sessionId: string = request.state.session?.id; // Safely accessing the session ID
         if (sessionId) {
+          request.logger.info("Inside sessionId condition");
           // Check if sessionId is already in the Set
           const now = Date.now();
           if (!uniqueSessionIds.has(sessionId)) {
             uniqueSessionIds.set(sessionId, now); // Add session ID to the Set
-            console.log(`New unique visitor: ${sessionId}`); // Log the new unique visitor
+            request.logger.info(`New unique visitor: ${sessionId}`); // Log the new unique visitor
             uniqueVisitors.inc({
               sessionId: sessionId,
             });
           } else {
-            console.log(`Returning visitor: ${sessionId}`); // Log returning visitor
+            request.logger.info(`Returning visitor: ${sessionId}`); // Log returning visitor
           }
         }
         cleanupExpiredSessions();
