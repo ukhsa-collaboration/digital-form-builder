@@ -9,17 +9,26 @@ import Boom from "boom";
 import { PluginSpecificConfiguration } from "@hapi/hapi";
 import { FormPayload } from "./types";
 import { shouldLogin } from "server/plugins/auth";
-import register from "server/plugins/promRegistry";
 import config from "../../config";
+import register from "server/plugins/promRegistry";
 import client from "prom-client";
 
-const pageHits = new client.Counter({
+let startPage: string;
+
+export const pageHits = new client.Counter({
   name: "page_hits_total",
   help: "Total number of page hits",
-  labelNames: ["method", "route"],
+  labelNames: ["route"],
+});
+
+const uniqueVisitors = new client.Counter({
+  name: "unique_visitor_count",
+  help: "Estimated total number of unique visitors",
+  labelNames: ["sessionId"],
 });
 
 register.registerMetric(pageHits);
+register.registerMetric(uniqueVisitors);
 
 configure([
   // Configure Nunjucks to allow rendering of content that is revealed conditionally.
@@ -41,7 +50,7 @@ function getStartPageRedirect(
   id: string,
   model: FormModel
 ) {
-  const startPage = normalisePath(model.def.startPage ?? "");
+  startPage = normalisePath(model.def.startPage ?? "");
   let startPageRedirect: any;
   if (startPage.startsWith("http")) {
     startPageRedirect = redirectTo(request, h, startPage);
@@ -239,9 +248,9 @@ export const plugin = {
       },
       handler: (request: HapiRequest, h: HapiResponseToolkit) => {
         pageHits.inc({
-          method: request.method.toUpperCase(),
           route: request.path,
         });
+
         const { id } = request.params;
         const model = forms[id];
         if (model) {
@@ -263,9 +272,9 @@ export const plugin = {
       },
       handler: (request: HapiRequest, h: HapiResponseToolkit) => {
         pageHits.inc({
-          method: request.method.toUpperCase(),
           route: request.path,
         });
+
         const { path, id } = request.params;
         const model = forms[id];
         const isAuthRequired = model?.def.authCheck || false;
@@ -305,10 +314,28 @@ export const plugin = {
       return uploadService.handleUploadRequest(request, h, page.pageDef);
     };
 
+    const uniqueSessionIds = new Set(); // Using a Set to store unique session IDs
+
     const postHandler = async (
       request: HapiRequest,
       h: HapiResponseToolkit
     ) => {
+      if (request.path.includes(startPage)) {
+        const sessionId: string = request.state.session?.id; // Safely accessing the session ID
+        if (sessionId) {
+          // Check if sessionId is already in the Set
+          if (!uniqueSessionIds.has(sessionId)) {
+            uniqueSessionIds.add(sessionId); // Add session ID to the Set
+            console.log(`New unique visitor: ${sessionId}`); // Log the new unique visitor
+            uniqueVisitors.inc({
+              sessionId: sessionId,
+            });
+          } else {
+            console.log(`Returning visitor: ${sessionId}`); // Log returning visitor
+          }
+        }
+      }
+
       const { path, id } = request.params;
       const model = forms[id];
 

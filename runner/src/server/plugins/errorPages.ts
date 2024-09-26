@@ -2,7 +2,7 @@ import { HapiRequest, HapiResponseToolkit } from "../types";
 import client from "prom-client";
 import register from "server/plugins/promRegistry";
 
-export const errorCounter = new client.Counter({
+const errorCounter = new client.Counter({
   name: "http_errors_total",
   help: "Total number of HTTP errors",
   labelNames: ["status_code"],

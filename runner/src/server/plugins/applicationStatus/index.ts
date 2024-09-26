@@ -9,6 +9,7 @@ import {
   continueToPayAfterPaymentSkippedWarning,
   paymentSkippedWarning,
 } from "./paymentSkippedWarning";
+import { pageHits } from "../engine/plugin";
 
 const preHandlers = {
   retryPay: {
@@ -41,6 +42,10 @@ const index = {
             preHandlers.checkUserCompletedSummary,
           ],
           handler: async (request: HapiRequest, h: HapiResponseToolkit) => {
+            pageHits.inc({
+              route: request.path,
+            });
+
             const { statusService, cacheService } = request.services([]);
             const { params } = request;
             const form = server.app.forms[params.id];
