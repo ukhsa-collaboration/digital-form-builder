@@ -5,15 +5,15 @@ export default {
   options: {
     prettyPrint:
       config.logPrettyPrint === "true" || config.logPrettyPrint === true,
-    level: config.logLevel,
+    level: "trace",
     formatters: {
       level: (label) => {
         return { level: label };
       },
     },
     debug: config.isDev,
-    logRequestStart: false,
-    logRequestComplete: false,
+    logRequestStart: config.isDev,
+    logRequestComplete: config.isDev,
     ignoreFunc: (_options, request) =>
       request.path.startsWith("/assets") || request.url.contains("assets"),
     redact: {
