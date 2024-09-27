@@ -5,7 +5,7 @@ export default {
   options: {
     prettyPrint:
       config.logPrettyPrint === "true" || config.logPrettyPrint === true,
-    level: "trace",
+    level: config.logLevel,
     formatters: {
       level: (label) => {
         return { level: label };

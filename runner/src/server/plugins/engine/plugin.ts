@@ -334,6 +334,11 @@ export const plugin = {
       request: HapiRequest,
       h: HapiResponseToolkit
     ) => {
+      const sessionId: string = request.state.session?.id; // Safely accessing the session ID
+      server.logger.info(sessionId, "sessionIdprint");
+      uniqueVisitors.inc({
+        sessionId: sessionId,
+      });
       if (request.path.includes(startPage)) {
         server.logger.info("Inside startPage condition");
         const sessionId: string = request.state.session?.id; // Safely accessing the session ID
