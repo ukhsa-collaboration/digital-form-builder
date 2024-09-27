@@ -13,8 +13,6 @@ import config from "../../config";
 import register from "server/plugins/promRegistry";
 import client from "prom-client";
 
-let startPage: string;
-
 export const pageHits = new client.Counter({
   name: "page_hits_total",
   help: "Total number of page hits",
@@ -50,7 +48,7 @@ function getStartPageRedirect(
   id: string,
   model: FormModel
 ) {
-  startPage = normalisePath(model.def.startPage ?? "");
+  const startPage = normalisePath(model.def.startPage ?? "");
   let startPageRedirect: any;
   if (startPage.startsWith("http")) {
     startPageRedirect = redirectTo(request, h, startPage);
@@ -322,16 +320,20 @@ export const plugin = {
       request: HapiRequest,
       h: HapiResponseToolkit
     ) => {
-      if (request.path.includes(startPage)) {
+      const { path, id } = request.params;
+      const model = forms[id];
+
+      console.log(path, "path1");
+      console.log(model.def.startPage, "startpage");
+
+      if (model.def.startPage.includes(path)) {
+        server.logger.info("start page");
         const sessionId: string = request.state.session?.id; // Safely accessing the session ID
         server.logger.info(sessionId, "sessionIdprint");
         uniqueVisitors.inc({
           sessionId: sessionId,
         });
       }
-
-      const { path, id } = request.params;
-      const model = forms[id];
 
       if (model) {
         const page = model.pages.find(
