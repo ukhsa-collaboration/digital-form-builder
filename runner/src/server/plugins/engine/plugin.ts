@@ -318,45 +318,16 @@ export const plugin = {
       return uploadService.handleUploadRequest(request, h, page.pageDef);
     };
 
-    const uniqueSessionIds = new Map(); // Using a Set to store unique session IDs
-
-    const cleanupExpiredSessions = () => {
-      const now = Date.now();
-      uniqueSessionIds.forEach((timestamp, sessionId) => {
-        if (now - timestamp > config.sessionTimeout) {
-          uniqueSessionIds.delete(sessionId); // Remove expired sessions
-          console.log(`Expired session removed: ${sessionId}`);
-        }
-      });
-    };
-
     const postHandler = async (
       request: HapiRequest,
       h: HapiResponseToolkit
     ) => {
-      const sessionId: string = request.state.session?.id; // Safely accessing the session ID
-      server.logger.info(sessionId, "sessionIdprint");
-      uniqueVisitors.inc({
-        sessionId: sessionId,
-      });
       if (request.path.includes(startPage)) {
-        server.logger.info("Inside startPage condition");
         const sessionId: string = request.state.session?.id; // Safely accessing the session ID
-        if (sessionId) {
-          server.logger.info("Inside sessionId condition");
-          // Check if sessionId is already in the Set
-          const now = Date.now();
-          if (!uniqueSessionIds.has(sessionId)) {
-            uniqueSessionIds.set(sessionId, now); // Add session ID to the Set
-            server.logger.info(`New unique visitor: ${sessionId}`); // Log the new unique visitor
-            uniqueVisitors.inc({
-              sessionId: sessionId,
-            });
-          } else {
-            server.logger.info(`Returning visitor: ${sessionId}`); // Log returning visitor
-          }
-        }
-        cleanupExpiredSessions();
+        server.logger.info(sessionId, "sessionIdprint");
+        uniqueVisitors.inc({
+          sessionId: sessionId,
+        });
       }
 
       const { path, id } = request.params;
