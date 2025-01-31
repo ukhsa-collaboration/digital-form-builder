@@ -1022,6 +1022,20 @@
           }
         },
         {
+          "name": "ServiceUsersChestInfection",
+          "options": {
+            "required": false
+          },
+          "type": "NumberField",
+          "schema": {
+            "min": 0,
+            "max": 200
+          },
+          "nameHasError": false,
+          "title": "How many service users have been diagnosed with a chest infection by a GP?",
+          "hint": "Include those who are currently in hospital or on visits out<br>If none, enter 0"
+        },
+        {
           "name": "StaffTestedCovid",
           "type": "NumberField",
           "title": "How many staff have been tested for COVID-19?",
@@ -2183,7 +2197,7 @@
         {
           "type": "NumberField",
           "name": "StaffSymptomsNotTested",
-          "title": "How many service users have symptoms of an acute respiratory infection, but have not been tested for any infection?",
+          "title": "How many staff users have symptoms of an acute respiratory infection, but have not been tested for any infection?",
           "hint": "Include those who are currently in hospital or on visits out<br>If none, enter 0",
           "options": {
             "required": true
