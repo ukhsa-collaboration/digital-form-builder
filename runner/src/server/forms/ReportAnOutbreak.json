@@ -2606,7 +2606,7 @@
             "conditionallyRevealedComponents": {
               "true": {
                 "type": "TextField",
-                "name": "Yes",
+                "name": "true",
                 "title": "Enter your CQC location ID, for example, 1-123456789",
                 "options": {},
                 "schema": {}
