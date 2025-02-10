@@ -17,7 +17,6 @@ export interface Page {
   section?: string; // the section ID
   sectionForExitJourneySummaryPages?: string;
   sectionForMultiSummaryPages?: string;
-  sidebarContent?: any;
   next?: { path: string; condition?: string }[];
 }
 

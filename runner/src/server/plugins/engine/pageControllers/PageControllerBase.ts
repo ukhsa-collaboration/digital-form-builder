@@ -55,7 +55,6 @@ export class PageControllerBase {
   section: any; // TODO
   sectionForExitJourneySummaryPages: any;
   sectionForMultiSummaryPages: any;
-  sidebarContent: any;
   components: ComponentCollection;
   hasFormComponents: boolean;
   hasConditionalFormComponents: boolean;
@@ -85,7 +84,6 @@ export class PageControllerBase {
     this.sectionForExitJourneySummaryPages =
       pageDef.sectionForExitJourneySummaryPages;
     this.sectionForMultiSummaryPages = pageDef.sectionForMultiSummaryPages;
-    this.sidebarContent = pageDef.sidebarContent;
 
     // Components collection
     const components = new ComponentCollection(pageDef.components, model);
