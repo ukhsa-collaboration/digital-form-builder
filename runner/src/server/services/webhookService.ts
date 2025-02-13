@@ -43,19 +43,22 @@ export class WebhookService {
         payload: JSON.stringify(data),
       });
 
+      this.logger.info("PAYLOAD", JSON.stringify(payload), JSON.parse(payload));
+
       if (typeof payload === "object" && !Buffer.isBuffer(payload)) {
         return payload.reference;
       }
-      const { reference } = JSON.parse(payload);
+      const { Name } = JSON.parse(payload);
+
       this.logger.info(
         ["WebhookService", "postRequest"],
         `Webhook request to ${url} submitted OK`
       );
-      this.logger.debug(
-        ["WebhookService", "postRequest", `REF: ${reference}`],
-        JSON.stringify(payload)
+      this.logger.info(
+        ["WebhookService", "postRequest", `REF: ${Name}`],
+        JSON.parse(payload)
       );
-      return reference;
+      return Name;
     } catch (error) {
       this.logger.error(["WebhookService", "postRequest"], error);
       return "UNKNOWN";

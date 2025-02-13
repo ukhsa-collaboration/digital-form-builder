@@ -5388,7 +5388,7 @@
       "title": "CareOBRA SalesForce",
       "type": "webhook",
       "outputConfiguration": {
-        "url": "${Webhook.URL}"
+        "url": "https://dhsccovid19--preprod.sandbox.my.salesforce-sites.com/assessment/services/apexrest/riskassessment"
       }
     }
   ],
