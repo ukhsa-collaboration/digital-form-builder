@@ -174,7 +174,7 @@ export class PageControllerBase {
 
       if (!this.disableSingleComponentAsHeading) {
         if (pageTitle) {
-          label.text = pageTitle;
+          label.text = pageTitle + " [" + singleFormComponent.model.name + "]";
         }
 
         label.isPageHeading = true;

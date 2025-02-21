@@ -84,7 +84,7 @@ export class FormComponent extends ComponentBase {
     this.lang = formData.lang;
     const label = options.hideTitle
       ? ""
-      : `${this.localisedString(this.title)}${optionalPostfix}`;
+      : `${this.localisedString(this.title)}${optionalPostfix} [${this.name}]`;
 
     const name = this.name;
 
