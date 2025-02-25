@@ -12,6 +12,7 @@ import { Page } from "@xgovformbuilder/model";
 import { UploadPageController } from "server/plugins/engine/pageControllers/UploadPageController";
 import { MultiStartPageController } from "server/plugins/engine/pageControllers/MultiStartPageController";
 import { CheckpointSummaryPageController } from "src/server/plugins/engine/pageControllers/CheckpointSummaryPageController";
+import { ResubmitPageController } from "./ResubmitPageController";
 
 const PageControllers = {
   DobPageController,
@@ -25,6 +26,7 @@ const PageControllers = {
   UploadPageController,
   MultiStartPageController,
   CheckpointSummaryPageController,
+  ResubmitPageController,
 };
 
 export const controllerNameFromPath = (filePath: string) => {

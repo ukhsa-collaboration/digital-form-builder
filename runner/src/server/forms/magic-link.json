@@ -28,7 +28,24 @@
       ],
       "next": [
         {
-          "path": "/summary"
+          "path": "/submit1"
+        }
+      ]
+    },
+    {
+      "path": "/submit1",
+      "controller": "ResubmitPageController"
+    },
+    {
+      "path": "/check-your-email",
+      "title": "Check your email",
+      "components": [
+        {
+          "name": "SentAnotherEmail",
+          "options": {},
+          "type": "Para",
+          "content": "We’ve sent an email to {{ email }}. <p class=\"govuk-body\">Click the link in the email to continue to Report an outbreak. <br><br> You can change the email address if it’s not correct or if you’d like to use a different email.</p><h3 class=\"govuk-heading-m\">If you've not received an email</h3><p class=\"govuk-body\">Check your spam or junk folder.<br><br>If you’ve not received the email, you can resubmit the email.</p><a href='/magic-link/summary' role='button' draggable='false' class='govuk-button' data-module='govuk-button' data-prevent-double-click='true'>Resubmit</button></a>",
+          "schema": {}
         }
       ]
     },
@@ -104,9 +121,9 @@
   "specialPages": {
     "confirmationPage": {
       "customText": {
-        "title": "Check your email",
+        "title": "We've sent you another email",
         "useNormalHeading": true,
-        "nextSteps": "<p class=\"govuk-body\">We’ve sent an email to {{ email }}.</p> <p class=\"govuk-body\">Click the link in the email to continue to Report an outbreak. <br><br> You can change the email address if it’s not correct or if you’d like to use a different email.</p><h3 class=\"govuk-heading-m\">If you've not received an email</h3><p class=\"govuk-body\">Check your spam or junk folder.<br><br>If you’ve not received the email, you can resubmit the email.</p><a href='/magic-link/resubmit-email' role='button' draggable='false' class='govuk-button' data-module='govuk-button' data-prevent-double-click='true'>Resubmit</button></a>"
+        "nextSteps": "We’ve sent another email to {{ email }}. <br><br> Click the link in the email to continue to Report an outbreak. <br><br> You can <a href='/magic-link'>change the email address</a> if it’s not correct or if you’d like to use a different email.<h3 class=\"govuk-heading-m\">If you've not received an email</h3><p class=\"govuk-body\">Check your spam or junk folder.<br><br>If you’ve not received the email, you can resubmit the email.</p><a href='/magic-link' role='button' draggable='false' class='govuk-button' data-module='govuk-button' data-prevent-double-click='true'>Request a new link</button></a>"
       }
     }
   },

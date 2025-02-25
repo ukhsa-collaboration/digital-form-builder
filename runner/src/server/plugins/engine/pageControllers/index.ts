@@ -7,3 +7,4 @@ export { SummaryPageController } from "./SummaryPageController";
 export { PageControllerBase } from "./PageControllerBase";
 export { getPageController, controllerNameFromPath } from "./helpers";
 export { CheckpointSummaryPageController } from "./CheckpointSummaryPageController";
+export { ResubmitPageController } from "./ResubmitPageController";
