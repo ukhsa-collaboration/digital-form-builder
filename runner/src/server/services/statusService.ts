@@ -164,7 +164,8 @@ export class StatusService {
       otherOutputs,
       formData,
       newReference,
-      state.pay
+      state.pay,
+      state.hmacSignature
     );
 
     const requests = [
@@ -218,7 +219,8 @@ export class StatusService {
   emailOutputsFromState(
     outputData,
     reference,
-    payReference
+    payReference,
+    hmacSignature
   ): SendNotificationArgs {
     const {
       apiKey,
@@ -239,6 +241,7 @@ export class StatusService {
           hasPaymentReference: !!payReference,
           paymentReference: payReference || "",
         }),
+        hmacSignature,
       },
       reference,
       apiKey,
@@ -253,7 +256,8 @@ export class StatusService {
     outputs: OutputModel[] = [],
     formData = {},
     reference,
-    payReference
+    payReference,
+    hmacSignature
   ): OutputArgs {
     this.logger.trace(["StatusService", "outputArgs"], JSON.stringify(outputs));
     return outputs.reduce<OutputArgs>(
@@ -263,7 +267,8 @@ export class StatusService {
           const args = this.emailOutputsFromState(
             currentValue.outputData,
             reference,
-            payReference
+            payReference,
+            hmacSignature
           );
           this.logger.trace(
             ["StatusService", "outputArgs", "notify"],

@@ -10,12 +10,15 @@ import {
 import config from "server/config";
 import { FeesModel } from "server/plugins/engine/models/submission";
 import { isMultipleApiKey } from "@xgovformbuilder/model";
+import { HMACAuthService } from "src/server/services/HMACAuthService";
 
 export class ResubmitPageController extends PageController {
-  /**
-   * The controller which is used when Page["controller"] is defined as "./pages/summary.js"
-   */
+  hmacAuthService: HMACAuthService;
 
+  constructor(model, pageDef) {
+    super(model, pageDef);
+    this.hmacAuthService = new HMACAuthService(); // You'll need access to the server object
+  }
   /**
    * Returns an async function. This is called in plugin.ts when there is a GET request at `/{id}/{path*}`,
    */
@@ -101,7 +104,7 @@ export class ResubmitPageController extends PageController {
    */
   makePostRouteHandler() {
     return async (request: HapiRequest, h: HapiResponseToolkit) => {
-      const { payService, cacheService } = request.services([]);
+      const { cacheService } = request.services([]);
       const model = this.model;
       const state = await cacheService.getState(request);
       const summaryViewModel = new SummaryViewModel(
@@ -143,30 +146,37 @@ export class ResubmitPageController extends PageController {
         return startPageRedirect;
       }
 
-      /**
-       * If a form is configured with a declaration, a checkbox will be rendered with the configured declaration text.
-       * If the user does not agree to the declaration, the page will be rerendered with a warning.
-       */
-      if (summaryViewModel.declaration && !summaryViewModel.skipSummary) {
-        const { declaration } = request.payload as {
-          declaration?: any;
-        };
+      // Get user email from state or request
+      const email = state["email"];
 
-        if (!declaration) {
-          request.yar.flash(
-            "declarationError",
-            "You must declare to be able to submit this application"
-          );
-          const url = request.headers.referer ?? request.path;
-          return redirectTo(request, h, `${url}#declaration`);
-        }
-        summaryViewModel.addDeclarationAsQuestion();
+      if (email) {
+        const hmac = await this.hmacAuthService.createHmac(request, h, email);
+
+        // Store HMAC signature in state
+        await cacheService.mergeState(request, {
+          hmacSignature: hmac,
+        });
+
+        const updatedState = await cacheService.getState(request);
+
+        // Continue with the normal flow...
+        await cacheService.mergeState(request, {
+          hmacSignature: updatedState.hmacSignature,
+          outputs: summaryViewModel.outputs,
+          userCompletedSummary: true,
+        });
+
+        // The webhookData will be stored separately, without modification
+        await cacheService.mergeState(request, {
+          webhookData: summaryViewModel.validatedWebhookData,
+        });
+      } else {
+        request.logger.warn([
+          "HMAC",
+          "No email found in state",
+          JSON.stringify(state),
+        ]);
       }
-
-      await cacheService.mergeState(request, {
-        outputs: summaryViewModel.outputs,
-        userCompletedSummary: true,
-      });
 
       request.logger.info(
         ["Webhook data", "before send", request.yar.id],
@@ -191,6 +201,28 @@ export class ResubmitPageController extends PageController {
         return redirectTo(request, h, `/${request.params.id}/check-your-email`);
       }
     };
+  }
+
+  get postRouteOptions() {
+    return {
+      ext: {
+        onPreHandler: {
+          method: async (_request: HapiRequest, h: HapiResponseToolkit) => {
+            return h.continue;
+          },
+        },
+      },
+    };
+  }
+
+  get payApiKey(): string {
+    const modelDef = this.model.def;
+    const payApiKey = modelDef.feeOptions?.payApiKey ?? def.payApiKey;
+
+    if (isMultipleApiKey(payApiKey)) {
+      return payApiKey[config.apiEnv] ?? payApiKey.test ?? payApiKey.production;
+    }
+    return payApiKey;
   }
 
   setFeedbackDetails(viewModel: SummaryViewModel, request: HapiRequest) {
@@ -228,27 +260,5 @@ export class ResubmitPageController extends PageController {
     }
 
     return undefined;
-  }
-
-  get postRouteOptions() {
-    return {
-      ext: {
-        onPreHandler: {
-          method: async (_request: HapiRequest, h: HapiResponseToolkit) => {
-            return h.continue;
-          },
-        },
-      },
-    };
-  }
-
-  get payApiKey(): string {
-    const modelDef = this.model.def;
-    const payApiKey = modelDef.feeOptions?.payApiKey ?? def.payApiKey;
-
-    if (isMultipleApiKey(payApiKey)) {
-      return payApiKey[config.apiEnv] ?? payApiKey.test ?? payApiKey.production;
-    }
-    return payApiKey;
   }
 }

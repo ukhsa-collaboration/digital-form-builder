@@ -145,7 +145,7 @@
         "templateId": "ccc44436-deb0-4e38-9bdf-8d5ce2aaa4cd",
         "emailField": "email",
         "addReferencesToPersonalisation": false,
-        "personalisation": ["email"]
+        "personalisation": ["email", "hmacSignature"]
       }
     }
   ],
