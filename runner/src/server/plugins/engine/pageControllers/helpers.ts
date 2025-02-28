@@ -13,6 +13,7 @@ import { UploadPageController } from "server/plugins/engine/pageControllers/Uplo
 import { MultiStartPageController } from "server/plugins/engine/pageControllers/MultiStartPageController";
 import { CheckpointSummaryPageController } from "src/server/plugins/engine/pageControllers/CheckpointSummaryPageController";
 import { ResubmitPageController } from "./ResubmitPageController";
+import { MagicLinkController } from "./MagicLinkController";
 
 const PageControllers = {
   DobPageController,
@@ -27,6 +28,7 @@ const PageControllers = {
   MultiStartPageController,
   CheckpointSummaryPageController,
   ResubmitPageController,
+  MagicLinkController,
 };
 
 export const controllerNameFromPath = (filePath: string) => {

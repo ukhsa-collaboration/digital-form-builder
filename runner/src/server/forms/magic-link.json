@@ -85,10 +85,16 @@
           "name": "EmailConfirmed",
           "options": {},
           "type": "Para",
-          "content": "You have successfully confirmed your email address. You can continue to Report an outbreak.<br><br><a href='/ReportAnOutbreak/start' role='button' draggable='false' class='govuk-button' data-module='govuk-button' data-prevent-double-click='true'>Continue</button></a>",
+          "content": "You have successfully confirmed your email address. You can continue to Report an outbreak.<br><br><a href='/ReportAnOutbreak/setting' role='button' draggable='false' class='govuk-button' data-module='govuk-button' data-prevent-double-click='true'>Continue</button></a>",
           "schema": {}
         }
       ]
+    },
+    {
+      "title": "return",
+      "path": "/return",
+      "controller": "MagicLinkController",
+      "components": []
     },
     {
       "path": "/incorrect-email",
@@ -104,7 +110,7 @@
       ]
     },
     {
-      "path": "/expired-link",
+      "path": "/expired",
       "title": "This link has expired",
       "components": [
         {
@@ -145,7 +151,7 @@
         "templateId": "ccc44436-deb0-4e38-9bdf-8d5ce2aaa4cd",
         "emailField": "email",
         "addReferencesToPersonalisation": false,
-        "personalisation": ["email", "hmacSignature"]
+        "personalisation": ["email", "hmacSignature", "hmacExpiryTime"]
       }
     }
   ],

@@ -8,3 +8,4 @@ export { PageControllerBase } from "./PageControllerBase";
 export { getPageController, controllerNameFromPath } from "./helpers";
 export { CheckpointSummaryPageController } from "./CheckpointSummaryPageController";
 export { ResubmitPageController } from "./ResubmitPageController";
+export { MagicLinkController } from "./MagicLinkController";

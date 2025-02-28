@@ -1,29 +1,34 @@
 import { SummaryViewModel } from "../models";
 import { PageController } from "./PageController";
-import { feedbackReturnInfoKey, redirectTo, redirectUrl } from "../helpers";
+import { redirectTo, redirectUrl } from "../helpers";
 import { HapiRequest, HapiResponseToolkit } from "server/types";
-import {
-  decodeFeedbackContextInfo,
-  FeedbackContextInfo,
-  RelativeUrl,
-} from "../feedback";
-import config from "server/config";
-import { FeesModel } from "server/plugins/engine/models/submission";
-import { isMultipleApiKey } from "@xgovformbuilder/model";
 import { HMACAuthService } from "src/server/services/HMACAuthService";
 
-export class ResubmitPageController extends PageController {
+export class MagicLinkController extends PageController {
   hmacAuthService: HMACAuthService;
 
   constructor(model, pageDef) {
     super(model, pageDef);
     this.hmacAuthService = new HMACAuthService(); // You'll need access to the server object
   }
-  /**
-   * Returns an async function. This is called in plugin.ts when there is a GET request at `/{id}/{path*}`,
-   */
+
   makeGetRouteHandler() {
     return async (request: HapiRequest, h: HapiResponseToolkit) => {
+      // Validate the token using your HMACAuthService
+      const validation = await this.hmacAuthService.validateHmac(request, h);
+
+      if (!validation.isValid) {
+        // Handle different invalid token cases
+        switch (validation.reason) {
+          case "expired":
+            return h.redirect("/magic-link/expired").code(302);
+          case "invalid_signature":
+            return h.redirect("/magic-link/incorrect-email").code(302);
+          default:
+            return h.redirect("/magic-link/error").code(302);
+        }
+      }
+
       this.langFromRequest(request);
 
       const { cacheService } = request.services([]);
@@ -98,10 +103,6 @@ export class ResubmitPageController extends PageController {
     };
   }
 
-  /**
-   * Returns an async function. This is called in plugin.ts when there is a POST request at `/{id}/{path*}`.
-   * If a form is incomplete, a user will be redirected to the start page.
-   */
   makePostRouteHandler() {
     return async (request: HapiRequest, h: HapiResponseToolkit) => {
       const { cacheService } = request.services([]);
@@ -146,137 +147,14 @@ export class ResubmitPageController extends PageController {
         return startPageRedirect;
       }
 
-      // Get user email from state or request
-      const email = state["email"];
+      // Get StatusService
+      const { statusService } = request.services([]);
 
-      if (email) {
-        const [
-          hmac,
-          currentTimestamp,
-          hmacExpiryTime,
-        ] = await this.hmacAuthService.createHmac(request, h, email);
+      // Submit the form
+      await statusService.outputRequests(request);
 
-        // TODO env var for the start url?
-        const localUrl = "http://localhost:3009/magic-link/";
-
-        const hmacUrl = localUrl.concat(
-          "return?email=",
-          email,
-          "&request_time=",
-          currentTimestamp,
-          "&signature=",
-          hmac
-        );
-
-        // Store HMAC signature in state
-        await cacheService.mergeState(request, {
-          hmacSignature: hmacUrl,
-          hmacExpiryTime: hmacExpiryTime,
-        });
-
-        const updatedState = await cacheService.getState(request);
-
-        // Continue with the normal flow...
-        await cacheService.mergeState(request, {
-          hmacSignature: updatedState.hmacSignature,
-          hmacExpiryTime: updatedState.hmacExpiryTime,
-          outputs: summaryViewModel.outputs,
-          userCompletedSummary: true,
-        });
-
-        // The webhookData will be stored separately, without modification
-        await cacheService.mergeState(request, {
-          webhookData: summaryViewModel.validatedWebhookData,
-        });
-      } else {
-        request.logger.warn([
-          "HMAC",
-          "No email found in state",
-          JSON.stringify(state),
-        ]);
-      }
-
-      request.logger.info(
-        ["Webhook data", "before send", request.yar.id],
-        JSON.stringify(summaryViewModel.validatedWebhookData)
-      );
-      // After preparing the webhook data
-      await cacheService.mergeState(request, {
-        webhookData: summaryViewModel.validatedWebhookData,
-      });
-
-      const feesModel = FeesModel(model, state);
-
-      // If no fees, submit directly and redirect to custom page
-      if ((feesModel?.details ?? [])?.length === 0) {
-        // Get StatusService
-        const { statusService } = request.services([]);
-
-        // Submit the form
-        await statusService.outputRequests(request);
-
-        // Redirect to custom page instead of status
-        return redirectTo(request, h, `/${request.params.id}/check-your-email`);
-      }
+      // Redirect to custom page instead of status
+      return redirectTo(request, h, `/${request.params.id}/email-confirmed`);
     };
-  }
-
-  get postRouteOptions() {
-    return {
-      ext: {
-        onPreHandler: {
-          method: async (_request: HapiRequest, h: HapiResponseToolkit) => {
-            return h.continue;
-          },
-        },
-      },
-    };
-  }
-
-  get payApiKey(): string {
-    const modelDef = this.model.def;
-    const payApiKey = modelDef.feeOptions?.payApiKey ?? def.payApiKey;
-
-    if (isMultipleApiKey(payApiKey)) {
-      return payApiKey[config.apiEnv] ?? payApiKey.test ?? payApiKey.production;
-    }
-    return payApiKey;
-  }
-
-  setFeedbackDetails(viewModel: SummaryViewModel, request: HapiRequest) {
-    const feedbackContextInfo = this.getFeedbackContextInfo(request);
-
-    if (feedbackContextInfo) {
-      // set the form name to the source form name if this is a feedback form
-      viewModel.name = feedbackContextInfo.formTitle;
-    }
-
-    // setting the feedbackLink to undefined here for feedback forms prevents the feedback link from being shown
-    viewModel.feedbackLink = this.feedbackUrlFromRequest(request);
-  }
-
-  getFeedbackContextInfo(request: HapiRequest) {
-    if (this.model.def.feedback?.feedbackForm) {
-      if (request.url.searchParams.get(feedbackReturnInfoKey)) {
-        return decodeFeedbackContextInfo(
-          request.url.searchParams.get(feedbackReturnInfoKey)
-        );
-      }
-    }
-  }
-
-  feedbackUrlFromRequest(request: HapiRequest) {
-    if (this.model.def.feedback?.url) {
-      let feedbackLink = new RelativeUrl(this.model.def.feedback.url);
-      const returnInfo = new FeedbackContextInfo(
-        this.model.name,
-        "Summary",
-        `${request.url.pathname}${request.url.search}`
-      );
-      feedbackLink.setParam(feedbackReturnInfoKey, returnInfo.toString());
-      return feedbackLink.toString();
-    }
-
-    return undefined;
   }
 }
