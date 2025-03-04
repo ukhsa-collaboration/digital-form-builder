@@ -8,16 +8,12 @@ import {
   RelativeUrl,
 } from "../feedback";
 import config from "server/config";
-import { FeesModel } from "server/plugins/engine/models/submission";
 import { isMultipleApiKey } from "@xgovformbuilder/model";
-import { HMACAuthService } from "src/server/services/HMACAuthService";
+import { createHmac } from "src/server/utils/hmac";
 
 export class ResubmitPageController extends PageController {
-  hmacAuthService: HMACAuthService;
-
   constructor(model, pageDef) {
     super(model, pageDef);
-    this.hmacAuthService = new HMACAuthService(); // You'll need access to the server object
   }
   /**
    * Returns an async function. This is called in plugin.ts when there is a GET request at `/{id}/{path*}`,
@@ -150,17 +146,12 @@ export class ResubmitPageController extends PageController {
       const email = state["email"];
 
       if (email) {
-        const [
-          hmac,
-          currentTimestamp,
-          hmacExpiryTime,
-        ] = await this.hmacAuthService.createHmac(request, h, email);
+        const [hmac, currentTimestamp, hmacExpiryTime] = await createHmac(
+          email
+        );
 
-        // TODO env var for the start url?
-        const localUrl = "http://localhost:3009/magic-link/";
-
-        const hmacUrl = localUrl.concat(
-          "return?email=",
+        const hmacUrl = config.serviceUrl.concat(
+          "/magic-link/return?email=",
           email,
           "&request_time=",
           currentTimestamp,
@@ -205,19 +196,14 @@ export class ResubmitPageController extends PageController {
         webhookData: summaryViewModel.validatedWebhookData,
       });
 
-      const feesModel = FeesModel(model, state);
+      // Get StatusService
+      const { statusService } = request.services([]);
 
-      // If no fees, submit directly and redirect to custom page
-      if ((feesModel?.details ?? [])?.length === 0) {
-        // Get StatusService
-        const { statusService } = request.services([]);
+      // Submit the form
+      await statusService.outputRequests(request);
 
-        // Submit the form
-        await statusService.outputRequests(request);
-
-        // Redirect to custom page instead of status
-        return redirectTo(request, h, `/${request.params.id}/check-your-email`);
-      }
+      // Redirect to custom page instead of status
+      return redirectTo(request, h, `/${request.params.id}/check-your-email`);
     };
   }
 

@@ -314,6 +314,7 @@ export const Schema = joi
     name: localisedString.optional(),
     feedback: feedbackSchema,
     startPage: joi.string().required(),
+    authentication: joi.boolean(),
     pages: joi
       .array()
       .required()

@@ -2,20 +2,22 @@ import { SummaryViewModel } from "../models";
 import { PageController } from "./PageController";
 import { redirectTo, redirectUrl } from "../helpers";
 import { HapiRequest, HapiResponseToolkit } from "server/types";
-import { HMACAuthService } from "src/server/services/HMACAuthService";
+import { validateHmac } from "src/server/utils/hmac";
+import Jwt from "@hapi/jwt";
+import config from "server/config";
 
 export class MagicLinkController extends PageController {
-  hmacAuthService: HMACAuthService;
-
   constructor(model, pageDef) {
     super(model, pageDef);
-    this.hmacAuthService = new HMACAuthService(); // You'll need access to the server object
   }
 
   makeGetRouteHandler() {
     return async (request: HapiRequest, h: HapiResponseToolkit) => {
-      // Validate the token using your HMACAuthService
-      const validation = await this.hmacAuthService.validateHmac(request, h);
+      const email = request.query.email;
+      const signature = request.query.signature;
+      const requestTime = request.query.request_time;
+
+      const validation = await validateHmac(email, signature, requestTime);
 
       if (!validation.isValid) {
         // Handle different invalid token cases
@@ -105,53 +107,41 @@ export class MagicLinkController extends PageController {
 
   makePostRouteHandler() {
     return async (request: HapiRequest, h: HapiResponseToolkit) => {
-      const { cacheService } = request.services([]);
-      const model = this.model;
-      const state = await cacheService.getState(request);
-      const summaryViewModel = new SummaryViewModel(
-        this.title,
-        model,
-        state,
-        request
-      );
-      this.setFeedbackDetails(summaryViewModel, request);
-
-      // redirect user to start page if there are incomplete form errors
-      if (summaryViewModel.result.error) {
-        request.logger.error(
-          `SummaryPage Error`,
-          summaryViewModel.result.error
-        );
-        /** defaults to the first page */
-        // @ts-ignore - tsc reports an error here, ignoring so docs can be generated (does not cause eslint errors otherwise). Remove when properly typed
-        let startPageRedirect = redirectTo(
-          request,
-          h,
-          `/${model.basePath}${model.def.pages[0].path}`
-        );
-        const startPage = model.def.startPage;
-
-        // @ts-ignore - tsc reports an error here, ignoring so docs can be generated (does not cause eslint errors otherwise). Remove when properly typed
-        if (startPage.startsWith("http")) {
-          // @ts-ignore - tsc reports an error here, ignoring so docs can be generated (does not cause eslint errors otherwise). Remove when properly typed
-          startPageRedirect = redirectTo(request, h, startPage);
-        } else if (model.def.pages.find((page) => page.path === startPage)) {
-          // @ts-ignore - tsc reports an error here, ignoring so docs can be generated (does not cause eslint errors otherwise). Remove when properly typed
-          startPageRedirect = redirectTo(
-            request,
-            h,
-            `/${model.basePath}${startPage}`
-          );
-        }
-
-        return startPageRedirect;
-      }
-
       // Get StatusService
       const { statusService } = request.services([]);
 
       // Submit the form
       await statusService.outputRequests(request);
+      const email = request.query.email;
+      const signature = request.query.signature;
+      const requestTime = request.query.request_time;
+
+      const validation = await validateHmac(email, signature, requestTime);
+
+      if (validation.isValid) {
+        // Then inside your if (validation.isValid) block:
+        const token = Jwt.token.generate(
+          { email: request.query.email },
+          {
+            key: "nrglmrgong", // TODO: set secret
+            algorithm: config.initialisedSessionAlgorithm,
+          },
+          {
+            ttlSec: config.initialisedSessionTimeout / 1000,
+          }
+        );
+
+        // Set the JWT in a cookie
+        h.state("auth_token", token, {
+          ttl: 20 * 60 * 1000,
+          isSecure: process.env.NODE_ENV === "production", // HTTPS only in production
+          isHttpOnly: true,
+          encoding: "none",
+          clearInvalid: true,
+          path: "/",
+          isSameSite: "Lax",
+        });
+      }
 
       // Redirect to custom page instead of status
       return redirectTo(request, h, `/${request.params.id}/email-confirmed`);

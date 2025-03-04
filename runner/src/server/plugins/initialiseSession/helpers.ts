@@ -83,3 +83,18 @@ export const callbackValidation = (safelist = config.safelist) =>
 
     return helpers.error("string.hostname");
   });
+
+export function verifyHmacToken(decodedToken) {
+  try {
+    Jwt.token.verify(decodedToken, {
+      key: "secret_key", // todo
+      algorithm: config.initialisedSessionAlgorithm,
+    });
+    return { isValid: true };
+  } catch (err) {
+    return {
+      isValid: false,
+      error: `${err}`,
+    };
+  }
+}
