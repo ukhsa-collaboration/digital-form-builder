@@ -148,10 +148,10 @@
       "type": "notify",
       "outputConfiguration": {
         "apiKey": {
-          "test": "test-db3df15e-136e-484b-8035-2ebe1f382799-783d8c84-f0d4-43e2-9429-5b7e8cfbcf96",
+          "test": "local_guest_list-db3df15e-136e-484b-8035-2ebe1f382799-e71ae908-dbd4-479f-97cf-3e3079b977c7",
           "production": "productionKey"
         },
-        "templateId": "ccc44436-deb0-4e38-9bdf-8d5ce2aaa4cd",
+        "templateId": "${NotifyTemplateId}",
         "emailField": "email",
         "addReferencesToPersonalisation": false,
         "personalisation": ["email", "hmacSignature", "hmacExpiryTime"]

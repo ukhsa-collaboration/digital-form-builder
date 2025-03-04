@@ -150,13 +150,14 @@ export class ResubmitPageController extends PageController {
           email
         );
 
-        const hmacUrl = config.serviceUrl.concat(
-          "/magic-link/return?email=",
+        const hamcUrlStart = "/magic-link/return?email=";
+
+        const hmacUrl = hamcUrlStart.concat(
           email,
           "&request_time=",
-          currentTimestamp,
+          currentTimestamp.toString(),
           "&signature=",
-          hmac
+          hmac.toString()
         );
 
         // Store HMAC signature in state

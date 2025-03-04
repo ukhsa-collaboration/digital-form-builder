@@ -37,8 +37,9 @@ export function NotifyModel(
     personalisationFieldCustomisation = {},
     emailReplyToIdConfiguration,
     escapeURLs = false,
-    templateId,
   } = outputConfiguration;
+
+  let { templateId } = outputConfiguration;
 
   // @ts-ignore - eslint does not report this as an error, only tsc
   const personalisation: NotifyModel["personalisation"] = personalisationConfiguration.reduce(
@@ -90,6 +91,12 @@ export function NotifyModel(
     conditionalReplyTos?.find(({ condition }) => {
       return model.conditions[condition!]?.fn?.(state);
     })?.emailReplyToId ?? defaultReplyToId;
+
+  console.log("process.env.NODE_ENV", process.env.NODE_ENV);
+
+  if (process.env.NODE_ENV === "development") {
+    templateId = "95bb579e-c3e6-4a8f-adfd-c94b621e025c";
+  }
 
   return {
     templateId: templateId,
