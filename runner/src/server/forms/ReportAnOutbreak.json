@@ -39,7 +39,6 @@
     {
       "path": "/setting",
       "title": "What type of adult social care do you provide?",
-      "section": "YourSetting",
       "sectionForExitJourneySummaryPages": "AcuteInfections",
       "sectionForMultiSummaryPages": "InfectionsInYourSetting",
       "components": [
@@ -76,7 +75,6 @@
     {
       "path": "/positive-ari",
       "title": "Do you have any positive test results for an acute respiratory infection?",
-      "section": "InfectionsYouAreReporting",
       "sectionForExitJourneySummaryPages": "AcuteInfections",
       "sectionForMultiSummaryPages": "InfectionsInYourSetting",
       "components": [
@@ -109,7 +107,6 @@
     {
       "path": "/which-ari",
       "title": "Which acute respiratory infections do you have a positive test result for?",
-      "section": "InfectionsYouAreReporting",
       "sectionForExitJourneySummaryPages": "AcuteInfections",
       "sectionForMultiSummaryPages": "InfectionsInYourSetting",
       "components": [
@@ -145,7 +142,6 @@
     {
       "path": "/2-or-more-covid",
       "title": "Are you reporting 2 or more cases?",
-      "section": "InfectionsYouAreReporting",
       "sectionForExitJourneySummaryPages": "AcuteInfections",
       "sectionForMultiSummaryPages": "Covid19InYourSetting",
       "components": [
@@ -180,7 +176,6 @@
     {
       "path": "/2-or-more-covid-descriptive",
       "title": "Are you reporting 2 or more cases of COVID-19?",
-      "section": "InfectionsYouAreReporting",
       "sectionForMultiSummaryPages": "Covid19InYourSetting",
       "components": [
         {
@@ -214,7 +209,6 @@
     {
       "path": "/2-or-more-covid-details",
       "title": "Acute respiratory infections in your setting",
-      "section": "InfectionsYouAreReporting",
       "sectionForExitJourneySummaryPages": "AcuteInfections",
       "sectionForMultiSummaryPages": "Covid19InYourSetting",
       "components": [
@@ -270,7 +264,6 @@
     {
       "path": "/2-or-more-ari",
       "title": "Are you reporting 2 or more cases of an acute respiratory infection?",
-      "section": "InfectionYouAreReporting",
       "sectionForExitJourneySummaryPages": "AcuteInfections",
       "sectionForMultiSummaryPages": "Covid19InYourSetting",
       "components": [
@@ -301,7 +294,6 @@
     {
       "path": "/do-not-need-to-report",
       "title": "You do not need to report",
-      "section": "InfectionsYouAreReporting",
       "controller": "CheckpointSummaryPageController",
       "options": {
         "customText": {
@@ -314,7 +306,6 @@
     {
       "path": "/do-not-need-to-report-multiple",
       "title": "You do not need to report",
-      "section": "InfectionsYouAreReporting",
       "controller": "CheckpointSummaryPageController",
       "options": {
         "multiSummary": true,
@@ -328,7 +319,6 @@
     {
       "path": "/2-or-more-cases-not-covid-or-flu",
       "title": "Are you reporting 2 or more cases of an acute respiratory infection that is not COVID-19 or flu?",
-      "section": "InfectionYouAreReporting",
       "sectionForExitJourneySummaryPages": "AcuteInfections",
       "sectionForMultiSummaryPages": "OtherInYourSetting",
       "components": [
@@ -376,7 +366,6 @@
     {
       "path": "/mid-way-summary",
       "title": "Check your answers before continuing",
-      "section": "InfectionsYouAreReporting",
       "controller": "CheckpointSummaryPageController",
       "options": {
         "multiSummary": true
@@ -386,7 +375,6 @@
     {
       "path": "/mid-way-summary-covid-yes-flu-yes-other-yes",
       "title": "Check your answers before continuing",
-      "section": "InfectionsYouAreReporting",
       "controller": "CheckpointSummaryPageController",
       "options": {
         "multiSummary": true
@@ -401,7 +389,6 @@
     {
       "path": "/mid-way-summary-covid-yes-other-no",
       "title": "Check your answers before continuing",
-      "section": "InfectionsYouAreReporting",
       "controller": "CheckpointSummaryPageController",
       "options": {
         "multiSummary": true,
@@ -414,7 +401,6 @@
     {
       "path": "/mid-way-summary-covid-no-other-yes",
       "title": "Check your answers before continuing",
-      "section": "InfectionsYouAreReporting",
       "controller": "CheckpointSummaryPageController",
       "options": {
         "multiSummary": true,
@@ -427,7 +413,6 @@
     {
       "path": "/ari-infection-type",
       "title": "What infection are you reporting?",
-      "section": "InfectionYouAreReporting",
       "sectionForMultiSummaryPages": "OtherInYourSetting",
       "components": [
         {
@@ -466,7 +451,6 @@
     {
       "path": "/service-users-ari-confirmed",
       "title": "Service users: number of cases",
-      "section": "InfectionsInYourSetting",
       "disableSingleComponentAsHeading": true,
       "components": [
         {
@@ -540,7 +524,6 @@
     {
       "path": "/service-users-ari-adenovirus",
       "title": "Service users: number of adenovirus cases",
-      "section": "InfectionsInYourSetting",
       "disableSingleComponentAsHeading": true,
       "components": [
         {
@@ -556,319 +539,44 @@
       ],
       "next": [
         {
+          "condition": "ARIInfectionType:Adenovirus&OtherARIServiceOrStaff:Staff",
+          "path": "/staff-ari-adenovirus"
+        },
+        {
           "condition": "ARIInfectionType:Hmpv&OtherARIServiceOrStaff:ServiceUser",
           "path": "/service-users-ari-hmpv"
         },
         {
-          "condition": "ARIInfectionType:Parainfluenza&OtherARIServiceOrStaff:ServiceUser",
-          "path": "/service-users-ari-parainfluenza"
-        },
-        {
-          "condition": "ARIInfectionType:RSV&OtherARIServiceOrStaff:ServiceUser",
-          "path": "/service-users-ari-rsv"
-        },
-        {
-          "condition": "ARIInfectionType:Rhinovirus&OtherARIServiceOrStaff:ServiceUser",
-          "path": "/service-users-ari-rhinovirus"
-        },
-        {
-          "condition": "ARIInfectionType:Unknown&OtherARIServiceOrStaff:ServiceUser",
-          "path": "/service-users-ari-other"
-        },
-        {
-          "condition": "ARIInfectionType:Adenovirus&OtherARIServiceOrStaff:Staff",
-          "path": "/staff-ari-adenovirus"
-        },
-        {
           "condition": "ARIInfectionType:Hmpv&OtherARIServiceOrStaff:Staff",
           "path": "/staff-ari-hmpv"
         },
-        {
-          "condition": "ARIInfectionType:Parainfluenza&OtherARIServiceOrStaff:Staff",
-          "path": "/staff-ari-parainfluenza"
-        },
-        {
-          "condition": "ARIInfectionType:RSV&OtherARIServiceOrStaff:Staff",
-          "path": "/staff-ari-rsv"
-        },
-        {
-          "condition": "ARIInfectionType:Rhinovirus&OtherARIServiceOrStaff:Staff",
-          "path": "/staff-ari-rhinovirus"
-        },
-        {
-          "condition": "ARIInfectionType:Unknown&OtherARIServiceOrStaff:Staff",
-          "path": "/staff-ari-other"
-        },
-        {
-          "path": "/severity-of-illness"
-        }
-      ]
-    },
-    {
-      "path": "/service-users-ari-hmpv",
-      "title": "Service users: number of human Metapneumovirus (hMPV) cases",
-      "section": "InfectionsInYourSetting",
-      "disableSingleComponentAsHeading": true,
-      "components": [
-        {
-          "name": "ServiceUsersHmpv",
-          "type": "NumberField",
-          "title": "How many service users have tested positive for human Metapneumovirus (hMPV)?",
-          "hint": "Include those who are currently in hospital or on visits out<br>If none, enter 0",
-          "schema": {
-            "min": 0,
-            "max": 999
-          }
-        }
-      ],
-      "next": [
         {
           "condition": "ARIInfectionType:Parainfluenza&OtherARIServiceOrStaff:ServiceUser",
           "path": "/service-users-ari-parainfluenza"
         },
         {
-          "condition": "ARIInfectionType:RSV&OtherARIServiceOrStaff:ServiceUser",
-          "path": "/service-users-ari-rsv"
-        },
-        {
-          "condition": "ARIInfectionType:Rhinovirus&OtherARIServiceOrStaff:ServiceUser",
-          "path": "/service-users-ari-rhinovirus"
-        },
-        {
-          "condition": "ARIInfectionType:Unknown&OtherARIServiceOrStaff:ServiceUser",
-          "path": "/service-users-ari-other"
-        },
-        {
-          "condition": "ARIInfectionType:Adenovirus&OtherARIServiceOrStaff:Staff",
-          "path": "/staff-ari-adenovirus"
-        },
-        {
-          "condition": "ARIInfectionType:Hmpv&OtherARIServiceOrStaff:Staff",
-          "path": "/staff-ari-hmpv"
-        },
-        {
           "condition": "ARIInfectionType:Parainfluenza&OtherARIServiceOrStaff:Staff",
           "path": "/staff-ari-parainfluenza"
         },
-        {
-          "condition": "ARIInfectionType:RSV&OtherARIServiceOrStaff:Staff",
-          "path": "/staff-ari-rsv"
-        },
-        {
-          "condition": "ARIInfectionType:Rhinovirus&OtherARIServiceOrStaff:Staff",
-          "path": "/staff-ari-rhinovirus"
-        },
-        {
-          "condition": "ARIInfectionType:Unknown&OtherARIServiceOrStaff:Staff",
-          "path": "/staff-ari-other"
-        },
-        {
-          "path": "/severity-of-illness"
-        }
-      ]
-    },
-    {
-      "path": "/service-users-ari-parainfluenza",
-      "title": "Service users: number of parainfluenza cases",
-      "section": "InfectionsInYourSetting",
-      "disableSingleComponentAsHeading": true,
-      "components": [
-        {
-          "name": "ServiceUsersParainfluenza",
-          "type": "NumberField",
-          "title": "How many service users have tested positive for parainfluenza?",
-          "hint": "Include those who are currently in hospital or on visits out<br>If none, enter 0",
-          "schema": {
-            "min": 0,
-            "max": 999
-          }
-        }
-      ],
-      "next": [
         {
           "condition": "ARIInfectionType:RSV&OtherARIServiceOrStaff:ServiceUser",
           "path": "/service-users-ari-rsv"
         },
         {
-          "condition": "ARIInfectionType:Rhinovirus&OtherARIServiceOrStaff:ServiceUser",
-          "path": "/service-users-ari-rhinovirus"
-        },
-        {
-          "condition": "ARIInfectionType:Unknown&OtherARIServiceOrStaff:ServiceUser",
-          "path": "/service-users-ari-other"
-        },
-        {
-          "condition": "ARIInfectionType:Adenovirus&OtherARIServiceOrStaff:Staff",
-          "path": "/staff-ari-adenovirus"
-        },
-        {
-          "condition": "ARIInfectionType:Hmpv&OtherARIServiceOrStaff:Staff",
-          "path": "/staff-ari-hmpv"
-        },
-        {
-          "condition": "ARIInfectionType:Parainfluenza&OtherARIServiceOrStaff:Staff",
-          "path": "/staff-ari-parainfluenza"
-        },
-        {
           "condition": "ARIInfectionType:RSV&OtherARIServiceOrStaff:Staff",
           "path": "/staff-ari-rsv"
         },
-        {
-          "condition": "ARIInfectionType:Rhinovirus&OtherARIServiceOrStaff:Staff",
-          "path": "/staff-ari-rhinovirus"
-        },
-        {
-          "condition": "ARIInfectionType:Unknown&OtherARIServiceOrStaff:Staff",
-          "path": "/staff-ari-other"
-        },
-        {
-          "path": "/severity-of-illness"
-        }
-      ]
-    },
-    {
-      "path": "/service-users-ari-rsv",
-      "title": "Service users: number of Respiratory Syncytial Virus (RSV) cases",
-      "section": "InfectionsInYourSetting",
-      "disableSingleComponentAsHeading": true,
-      "components": [
-        {
-          "name": "ServiceUsersRSV",
-          "type": "NumberField",
-          "title": "How many service users have tested positive for Respiratory Syncytial Virus (RSV)?",
-          "hint": "Include those who are currently in hospital or on visits out<br>If none, enter 0",
-          "schema": {
-            "min": 0,
-            "max": 999
-          }
-        }
-      ],
-      "next": [
         {
           "condition": "ARIInfectionType:Rhinovirus&OtherARIServiceOrStaff:ServiceUser",
           "path": "/service-users-ari-rhinovirus"
         },
         {
-          "condition": "ARIInfectionType:Unknown&OtherARIServiceOrStaff:ServiceUser",
-          "path": "/service-users-ari-other"
-        },
-        {
-          "condition": "ARIInfectionType:Adenovirus&OtherARIServiceOrStaff:Staff",
-          "path": "/staff-ari-adenovirus"
-        },
-        {
-          "condition": "ARIInfectionType:Hmpv&OtherARIServiceOrStaff:Staff",
-          "path": "/staff-ari-hmpv"
-        },
-        {
-          "condition": "ARIInfectionType:Parainfluenza&OtherARIServiceOrStaff:Staff",
-          "path": "/staff-ari-parainfluenza"
-        },
-        {
-          "condition": "ARIInfectionType:RSV&OtherARIServiceOrStaff:Staff",
-          "path": "/staff-ari-rsv"
-        },
-        {
           "condition": "ARIInfectionType:Rhinovirus&OtherARIServiceOrStaff:Staff",
           "path": "/staff-ari-rhinovirus"
         },
-        {
-          "condition": "ARIInfectionType:Unknown&OtherARIServiceOrStaff:Staff",
-          "path": "/staff-ari-other"
-        },
-        {
-          "path": "/severity-of-illness"
-        }
-      ]
-    },
-    {
-      "path": "/service-users-ari-rhinovirus",
-      "title": "Service users: number of rhinovirus cases",
-      "section": "InfectionsInYourSetting",
-      "disableSingleComponentAsHeading": true,
-      "components": [
-        {
-          "name": "ServiceUsersRhinovirus",
-          "type": "NumberField",
-          "title": "How many service users have tested positive for rhinovirus?",
-          "hint": "Include those who are currently in hospital or on visits out<br>If none, enter 0",
-          "schema": {
-            "min": 0,
-            "max": 999
-          }
-        }
-      ],
-      "next": [
         {
           "condition": "ARIInfectionType:Unknown&OtherARIServiceOrStaff:ServiceUser",
           "path": "/service-users-ari-other"
-        },
-        {
-          "condition": "ARIInfectionType:Adenovirus&OtherARIServiceOrStaff:Staff",
-          "path": "/staff-ari-adenovirus"
-        },
-        {
-          "condition": "ARIInfectionType:Hmpv&OtherARIServiceOrStaff:Staff",
-          "path": "/staff-ari-hmpv"
-        },
-        {
-          "condition": "ARIInfectionType:Parainfluenza&OtherARIServiceOrStaff:Staff",
-          "path": "/staff-ari-parainfluenza"
-        },
-        {
-          "condition": "ARIInfectionType:RSV&OtherARIServiceOrStaff:Staff",
-          "path": "/staff-ari-rsv"
-        },
-        {
-          "condition": "ARIInfectionType:Rhinovirus&OtherARIServiceOrStaff:Staff",
-          "path": "/staff-ari-rhinovirus"
-        },
-        {
-          "condition": "ARIInfectionType:Unknown&OtherARIServiceOrStaff:Staff",
-          "path": "/staff-ari-other"
-        },
-        {
-          "path": "/severity-of-illness"
-        }
-      ]
-    },
-    {
-      "path": "/service-users-ari-other",
-      "title": "Service users: number of other acute respiratory infection cases",
-      "section": "InfectionsInYourSetting",
-      "disableSingleComponentAsHeading": true,
-      "components": [
-        {
-          "name": "ServiceUsersOtherARI",
-          "type": "NumberField",
-          "title": "How many service users have tested positive for an other acute respiratory infection?",
-          "hint": "Include those who are currently in hospital or on visits out<br>If none, enter 0",
-          "schema": {
-            "min": 0,
-            "max": 999
-          }
-        }
-      ],
-      "next": [
-        {
-          "condition": "ARIInfectionType:Adenovirus&OtherARIServiceOrStaff:Staff",
-          "path": "/staff-ari-adenovirus"
-        },
-        {
-          "condition": "ARIInfectionType:Hmpv&OtherARIServiceOrStaff:Staff",
-          "path": "/staff-ari-hmpv"
-        },
-        {
-          "condition": "ARIInfectionType:Parainfluenza&OtherARIServiceOrStaff:Staff",
-          "path": "/staff-ari-parainfluenza"
-        },
-        {
-          "condition": "ARIInfectionType:RSV&OtherARIServiceOrStaff:Staff",
-          "path": "/staff-ari-rsv"
-        },
-        {
-          "condition": "ARIInfectionType:Rhinovirus&OtherARIServiceOrStaff:Staff",
-          "path": "/staff-ari-rhinovirus"
         },
         {
           "condition": "ARIInfectionType:Unknown&OtherARIServiceOrStaff:Staff",
@@ -882,7 +590,6 @@
     {
       "path": "/staff-ari-adenovirus",
       "title": "Staff: number of adenovirus cases",
-      "section": "InfectionsInYourSetting",
       "disableSingleComponentAsHeading": true,
       "components": [
         {
@@ -898,20 +605,98 @@
       ],
       "next": [
         {
+          "condition": "ARIInfectionType:Hmpv&OtherARIServiceOrStaff:ServiceUser",
+          "path": "/service-users-ari-hmpv"
+        },
+        {
           "condition": "ARIInfectionType:Hmpv&OtherARIServiceOrStaff:Staff",
           "path": "/staff-ari-hmpv"
+        },
+        {
+          "condition": "ARIInfectionType:Parainfluenza&OtherARIServiceOrStaff:ServiceUser",
+          "path": "/service-users-ari-parainfluenza"
         },
         {
           "condition": "ARIInfectionType:Parainfluenza&OtherARIServiceOrStaff:Staff",
           "path": "/staff-ari-parainfluenza"
         },
         {
+          "condition": "ARIInfectionType:RSV&OtherARIServiceOrStaff:ServiceUser",
+          "path": "/service-users-ari-rsv"
+        },
+        {
           "condition": "ARIInfectionType:RSV&OtherARIServiceOrStaff:Staff",
           "path": "/staff-ari-rsv"
         },
         {
+          "condition": "ARIInfectionType:Rhinovirus&OtherARIServiceOrStaff:ServiceUser",
+          "path": "/service-users-ari-rhinovirus"
+        },
+        {
           "condition": "ARIInfectionType:Rhinovirus&OtherARIServiceOrStaff:Staff",
           "path": "/staff-ari-rhinovirus"
+        },
+        {
+          "condition": "ARIInfectionType:Unknown&OtherARIServiceOrStaff:ServiceUser",
+          "path": "/service-users-ari-other"
+        },
+        {
+          "condition": "ARIInfectionType:Unknown&OtherARIServiceOrStaff:Staff",
+          "path": "/staff-ari-other"
+        },
+        {
+          "path": "/severity-of-illness"
+        }
+      ]
+    },
+    {
+      "path": "/service-users-ari-hmpv",
+      "title": "Service users: number of human Metapneumovirus (hMPV) cases",
+      "disableSingleComponentAsHeading": true,
+      "components": [
+        {
+          "name": "ServiceUsersHmpv",
+          "type": "NumberField",
+          "title": "How many service users have tested positive for human Metapneumovirus (hMPV)?",
+          "hint": "Include those who are currently in hospital or on visits out<br>If none, enter 0",
+          "schema": {
+            "min": 0,
+            "max": 999
+          }
+        }
+      ],
+      "next": [
+        {
+          "condition": "ARIInfectionType:Hmpv&OtherARIServiceOrStaff:Staff",
+          "path": "/staff-ari-hmpv"
+        },
+        {
+          "condition": "ARIInfectionType:Parainfluenza&OtherARIServiceOrStaff:ServiceUser",
+          "path": "/service-users-ari-parainfluenza"
+        },
+        {
+          "condition": "ARIInfectionType:Parainfluenza&OtherARIServiceOrStaff:Staff",
+          "path": "/staff-ari-parainfluenza"
+        },
+        {
+          "condition": "ARIInfectionType:RSV&OtherARIServiceOrStaff:ServiceUser",
+          "path": "/service-users-ari-rsv"
+        },
+        {
+          "condition": "ARIInfectionType:RSV&OtherARIServiceOrStaff:Staff",
+          "path": "/staff-ari-rsv"
+        },
+        {
+          "condition": "ARIInfectionType:Rhinovirus&OtherARIServiceOrStaff:ServiceUser",
+          "path": "/service-users-ari-rhinovirus"
+        },
+        {
+          "condition": "ARIInfectionType:Rhinovirus&OtherARIServiceOrStaff:Staff",
+          "path": "/staff-ari-rhinovirus"
+        },
+        {
+          "condition": "ARIInfectionType:Unknown&OtherARIServiceOrStaff:ServiceUser",
+          "path": "/service-users-ari-other"
         },
         {
           "condition": "ARIInfectionType:Unknown&OtherARIServiceOrStaff:Staff",
@@ -925,7 +710,6 @@
     {
       "path": "/staff-ari-hmpv",
       "title": "Staff: number of human Metapneumovirus (hMPV) cases",
-      "section": "InfectionsInYourSetting",
       "disableSingleComponentAsHeading": true,
       "components": [
         {
@@ -941,16 +725,82 @@
       ],
       "next": [
         {
+          "condition": "ARIInfectionType:Parainfluenza&OtherARIServiceOrStaff:ServiceUser",
+          "path": "/service-users-ari-parainfluenza"
+        },
+        {
           "condition": "ARIInfectionType:Parainfluenza&OtherARIServiceOrStaff:Staff",
           "path": "/staff-ari-parainfluenza"
+        },
+        {
+          "condition": "ARIInfectionType:RSV&OtherARIServiceOrStaff:ServiceUser",
+          "path": "/service-users-ari-rsv"
         },
         {
           "condition": "ARIInfectionType:RSV&OtherARIServiceOrStaff:Staff",
           "path": "/staff-ari-rsv"
         },
         {
+          "condition": "ARIInfectionType:Rhinovirus&OtherARIServiceOrStaff:ServiceUser",
+          "path": "/service-users-ari-rhinovirus"
+        },
+        {
           "condition": "ARIInfectionType:Rhinovirus&OtherARIServiceOrStaff:Staff",
           "path": "/staff-ari-rhinovirus"
+        },
+        {
+          "condition": "ARIInfectionType:Unknown&OtherARIServiceOrStaff:ServiceUser",
+          "path": "/service-users-ari-other"
+        },
+        {
+          "condition": "ARIInfectionType:Unknown&OtherARIServiceOrStaff:Staff",
+          "path": "/staff-ari-other"
+        },
+        {
+          "path": "/severity-of-illness"
+        }
+      ]
+    },
+    {
+      "path": "/service-users-ari-parainfluenza",
+      "title": "Service users: number of parainfluenza cases",
+      "disableSingleComponentAsHeading": true,
+      "components": [
+        {
+          "name": "ServiceUsersParainfluenza",
+          "type": "NumberField",
+          "title": "How many service users have tested positive for parainfluenza?",
+          "hint": "Include those who are currently in hospital or on visits out<br>If none, enter 0",
+          "schema": {
+            "min": 0,
+            "max": 999
+          }
+        }
+      ],
+      "next": [
+        {
+          "condition": "ARIInfectionType:Parainfluenza&OtherARIServiceOrStaff:Staff",
+          "path": "/staff-ari-parainfluenza"
+        },
+        {
+          "condition": "ARIInfectionType:RSV&OtherARIServiceOrStaff:ServiceUser",
+          "path": "/service-users-ari-rsv"
+        },
+        {
+          "condition": "ARIInfectionType:RSV&OtherARIServiceOrStaff:Staff",
+          "path": "/staff-ari-rsv"
+        },
+        {
+          "condition": "ARIInfectionType:Rhinovirus&OtherARIServiceOrStaff:ServiceUser",
+          "path": "/service-users-ari-rhinovirus"
+        },
+        {
+          "condition": "ARIInfectionType:Rhinovirus&OtherARIServiceOrStaff:Staff",
+          "path": "/staff-ari-rhinovirus"
+        },
+        {
+          "condition": "ARIInfectionType:Unknown&OtherARIServiceOrStaff:ServiceUser",
+          "path": "/service-users-ari-other"
         },
         {
           "condition": "ARIInfectionType:Unknown&OtherARIServiceOrStaff:Staff",
@@ -964,7 +814,6 @@
     {
       "path": "/staff-ari-parainfluenza",
       "title": "Staff: number of parainfluenza cases",
-      "section": "InfectionsInYourSetting",
       "disableSingleComponentAsHeading": true,
       "components": [
         {
@@ -980,12 +829,66 @@
       ],
       "next": [
         {
+          "condition": "ARIInfectionType:RSV&OtherARIServiceOrStaff:ServiceUser",
+          "path": "/service-users-ari-rsv"
+        },
+        {
           "condition": "ARIInfectionType:RSV&OtherARIServiceOrStaff:Staff",
           "path": "/staff-ari-rsv"
         },
         {
+          "condition": "ARIInfectionType:Rhinovirus&OtherARIServiceOrStaff:ServiceUser",
+          "path": "/service-users-ari-rhinovirus"
+        },
+        {
           "condition": "ARIInfectionType:Rhinovirus&OtherARIServiceOrStaff:Staff",
           "path": "/staff-ari-rhinovirus"
+        },
+        {
+          "condition": "ARIInfectionType:Unknown&OtherARIServiceOrStaff:ServiceUser",
+          "path": "/service-users-ari-other"
+        },
+        {
+          "condition": "ARIInfectionType:Unknown&OtherARIServiceOrStaff:Staff",
+          "path": "/staff-ari-other"
+        },
+        {
+          "path": "/severity-of-illness"
+        }
+      ]
+    },
+    {
+      "path": "/service-users-ari-rsv",
+      "title": "Service users: number of Respiratory Syncytial Virus (RSV) cases",
+      "disableSingleComponentAsHeading": true,
+      "components": [
+        {
+          "name": "ServiceUsersRSV",
+          "type": "NumberField",
+          "title": "How many service users have tested positive for Respiratory Syncytial Virus (RSV)?",
+          "hint": "Include those who are currently in hospital or on visits out<br>If none, enter 0",
+          "schema": {
+            "min": 0,
+            "max": 999
+          }
+        }
+      ],
+      "next": [
+        {
+          "condition": "ARIInfectionType:RSV&OtherARIServiceOrStaff:Staff",
+          "path": "/staff-ari-rsv"
+        },
+        {
+          "condition": "ARIInfectionType:Rhinovirus&OtherARIServiceOrStaff:ServiceUser",
+          "path": "/service-users-ari-rhinovirus"
+        },
+        {
+          "condition": "ARIInfectionType:Rhinovirus&OtherARIServiceOrStaff:Staff",
+          "path": "/staff-ari-rhinovirus"
+        },
+        {
+          "condition": "ARIInfectionType:Unknown&OtherARIServiceOrStaff:ServiceUser",
+          "path": "/service-users-ari-other"
         },
         {
           "condition": "ARIInfectionType:Unknown&OtherARIServiceOrStaff:Staff",
@@ -999,7 +902,6 @@
     {
       "path": "/staff-ari-rsv",
       "title": "Staff: number of Respiratory Syncytial Virus (RSV) cases",
-      "section": "InfectionsInYourSetting",
       "disableSingleComponentAsHeading": true,
       "components": [
         {
@@ -1015,8 +917,50 @@
       ],
       "next": [
         {
+          "condition": "ARIInfectionType:Rhinovirus&OtherARIServiceOrStaff:ServiceUser",
+          "path": "/service-users-ari-rhinovirus"
+        },
+        {
           "condition": "ARIInfectionType:Rhinovirus&OtherARIServiceOrStaff:Staff",
           "path": "/staff-ari-rhinovirus"
+        },
+        {
+          "condition": "ARIInfectionType:Unknown&OtherARIServiceOrStaff:ServiceUser",
+          "path": "/service-users-ari-other"
+        },
+        {
+          "condition": "ARIInfectionType:Unknown&OtherARIServiceOrStaff:Staff",
+          "path": "/staff-ari-other"
+        },
+        {
+          "path": "/severity-of-illness"
+        }
+      ]
+    },
+    {
+      "path": "/service-users-ari-rhinovirus",
+      "title": "Service users: number of rhinovirus cases",
+      "disableSingleComponentAsHeading": true,
+      "components": [
+        {
+          "name": "ServiceUsersRhinovirus",
+          "type": "NumberField",
+          "title": "How many service users have tested positive for rhinovirus?",
+          "hint": "Include those who are currently in hospital or on visits out<br>If none, enter 0",
+          "schema": {
+            "min": 0,
+            "max": 999
+          }
+        }
+      ],
+      "next": [
+        {
+          "condition": "ARIInfectionType:Rhinovirus&OtherARIServiceOrStaff:Staff",
+          "path": "/staff-ari-rhinovirus"
+        },
+        {
+          "condition": "ARIInfectionType:Unknown&OtherARIServiceOrStaff:ServiceUser",
+          "path": "/service-users-ari-other"
         },
         {
           "condition": "ARIInfectionType:Unknown&OtherARIServiceOrStaff:Staff",
@@ -1030,7 +974,6 @@
     {
       "path": "/staff-ari-rhinovirus",
       "title": "Staff: number of rhinovirus cases",
-      "section": "InfectionsInYourSetting",
       "disableSingleComponentAsHeading": true,
       "components": [
         {
@@ -1038,6 +981,36 @@
           "type": "NumberField",
           "title": "How many staff have tested positive for rhinovirus?",
           "hint": "Include those who are currently in hospital<br>If none, enter 0",
+          "schema": {
+            "min": 0,
+            "max": 999
+          }
+        }
+      ],
+      "next": [
+        {
+          "condition": "ARIInfectionType:Unknown&OtherARIServiceOrStaff:ServiceUser",
+          "path": "/service-users-ari-other"
+        },
+        {
+          "condition": "ARIInfectionType:Unknown&OtherARIServiceOrStaff:Staff",
+          "path": "/staff-ari-other"
+        },
+        {
+          "path": "/severity-of-illness"
+        }
+      ]
+    },
+    {
+      "path": "/service-users-ari-other",
+      "title": "Service users: number of other acute respiratory infection cases",
+      "disableSingleComponentAsHeading": true,
+      "components": [
+        {
+          "name": "ServiceUsersOtherARI",
+          "type": "NumberField",
+          "title": "How many service users have tested positive for an other acute respiratory infection?",
+          "hint": "Include those who are currently in hospital or on visits out<br>If none, enter 0",
           "schema": {
             "min": 0,
             "max": 999
@@ -1057,7 +1030,6 @@
     {
       "path": "/staff-ari-other",
       "title": "Staff: number of other acute respiratory infection cases",
-      "section": "InfectionsInYourSetting",
       "disableSingleComponentAsHeading": true,
       "components": [
         {
@@ -1080,7 +1052,6 @@
     {
       "path": "/service-users-ari-unknown",
       "title": "Service users: number of cases",
-      "section": "InfectionsInYourSetting",
       "disableSingleComponentAsHeading": true,
       "components": [
         {
@@ -1133,7 +1104,6 @@
     {
       "path": "/staff-ari-unknown",
       "title": "Staff: number of cases",
-      "section": "InfectionsInYourSetting",
       "disableSingleComponentAsHeading": true,
       "components": [
         {
@@ -1186,7 +1156,6 @@
     {
       "path": "/staff-ari-confirmed",
       "title": "Staff: number of cases",
-      "section": "InfectionsInYourSetting",
       "components": [
         {
           "name": "StaffSymptomsNotTested",
@@ -1282,7 +1251,6 @@
     {
       "path": "/cases-of-flu",
       "title": "How many cases are you reporting?",
-      "section": "InfectionsInYourSetting",
       "components": [
         {
           "name": "NumberOfCasesOfFlu",
@@ -1310,7 +1278,6 @@
     {
       "path": "/single-case-of-flu",
       "title": "Who has the case of flu?",
-      "section": "InfectionsInYourSetting",
       "components": [
         {
           "name": "SingleCaseOfFluServiceOrStaff",
@@ -1337,7 +1304,6 @@
     {
       "path": "/service-users-flu",
       "title": "Service users: number of cases",
-      "section": "InfectionsInYourSetting",
       "components": [
         {
           "name": "ServiceUsersFluSwabTest",
@@ -1405,7 +1371,6 @@
     {
       "path": "/staff-flu",
       "title": "Staff: number of cases",
-      "section": "InfectionsInYourSetting",
       "components": [
         {
           "type": "Para",
@@ -1462,7 +1427,6 @@
     {
       "path": "/symptom-onset-flu",
       "title": "Symptom onset for the case of flu",
-      "section": "FluInYourSetting",
       "components": [
         {
           "name": "intro",
@@ -1492,7 +1456,6 @@
     {
       "path": "/flu-severity",
       "title": "Severity of the case of flu",
-      "section": "FluInYourSetting",
       "components": [
         {
           "name": "SingleCaseOfFluSeverityCalledGP",
@@ -1537,7 +1500,6 @@
     {
       "path": "/vaccination",
       "title": "Vaccination among your service users and staff",
-      "section": "Vaccination",
       "components": [
         {
           "name": "ServiceUsersCovid19Vaccination",
@@ -1629,7 +1591,6 @@
     {
       "path": "/ari-unknown-cases-setting",
       "title": "Who has an acute respiratory infection?",
-      "section": "InfectionsInYourSetting",
       "components": [
         {
           "type": "Para",
@@ -1659,7 +1620,6 @@
     {
       "path": "/other-ari-confirmed-cases-setting",
       "title": "Who has an acute respiratory infection?",
-      "section": "InfectionsInYourSetting",
       "components": [
         {
           "type": "Para",
@@ -1689,7 +1649,6 @@
     {
       "path": "/ari-confirmed-cases-setting",
       "title": "Who has an acute respiratory infection?",
-      "section": "InfectionsInYourSetting",
       "components": [
         {
           "type": "Para",
@@ -1763,7 +1722,6 @@
     {
       "path": "/service-users-covid-ari",
       "title": "Service users: number of cases",
-      "section": "InfectionsInYourSetting",
       "components": [
         {
           "type": "NumberField",
@@ -1820,7 +1778,6 @@
     {
       "path": "/staff-covid-ari",
       "title": "Staff: number of cases",
-      "section": "InfectionsInYourSetting",
       "components": [
         {
           "type": "NumberField",
@@ -1873,7 +1830,6 @@
     {
       "path": "/staff-ari-cases",
       "title": "Staff: Number of cases",
-      "section": "Infections in your setting",
       "components": [
         {
           "type": "Para",
@@ -1952,7 +1908,6 @@
     {
       "path": "/service-users-master",
       "title": "Service users: number of cases",
-      "section": "InfectionsInYourSetting",
       "components": [
         {
           "type": "NumberField",
@@ -2051,7 +2006,6 @@
     {
       "path": "/staff-master",
       "title": "Staff: number of cases",
-      "section": "InfectionsInYourSetting",
       "components": [
         {
           "type": "NumberField",
@@ -2129,7 +2083,6 @@
     {
       "path": "/ipc",
       "title": "Infection prevention and control (IPC) and outbreak management in your setting",
-      "section": "InfectionPreventionAndControl",
       "components": [
         {
           "name": "IPCPractices",
@@ -2194,7 +2147,6 @@
     {
       "path": "/flu-severity-multiple-cases",
       "title": "Severity of illness in this outbreak",
-      "section": "SeverityOfIllness",
       "components": [
         {
           "type": "Para",
@@ -2267,7 +2219,6 @@
     {
       "path": "/service-users-covid",
       "title": "Service users: number of cases",
-      "section": "InfectionsInYourSetting",
       "components": [
         {
           "type": "NumberField",
@@ -2307,7 +2258,6 @@
     {
       "path": "/service-users-covid-flu",
       "title": "Service users: number of cases",
-      "section": "InfectionsInYourSetting",
       "components": [
         {
           "type": "NumberField",
@@ -2365,7 +2315,6 @@
     {
       "path": "/staff-covid",
       "title": "Staff: number of cases",
-      "section": "InfectionsInYourSetting",
       "components": [
         {
           "type": "Para",
@@ -2405,7 +2354,6 @@
     {
       "path": "/staff-covid-flu",
       "title": "Staff: number of cases",
-      "section": "InfectionsInYourSetting",
       "components": [
         {
           "type": "NumberField",
@@ -2459,7 +2407,6 @@
     {
       "path": "/service-users-flu-ari",
       "title": "Service users: number of cases",
-      "section": "InfectionsInYourSetting",
       "components": [
         {
           "type": "NumberField",
@@ -2523,7 +2470,6 @@
     {
       "path": "/staff-flu-ari",
       "title": "Staff: number of cases",
-      "section": "InfectionsInYourSetting",
       "components": [
         {
           "type": "NumberField",
@@ -2583,7 +2529,6 @@
     {
       "path": "/severity-of-illness",
       "title": "Severity of illness in this outbreak",
-      "section": "SeverityOfIllness",
       "components": [
         {
           "name": "severityIntro",
@@ -2628,7 +2573,6 @@
     {
       "path": "/symptom-onset",
       "title": "Symptom onset of cases in this outbreak",
-      "section": "SymptomStartDates",
       "components": [
         {
           "name": "introText1",
@@ -2672,7 +2616,6 @@
     {
       "path": "/agps",
       "title": "Do staff carrying out aerosol generating procedures (AGPs) wear fit-tested FFP3 masks?",
-      "section": "InfectionPreventionAndControl",
       "components": [
         {
           "name": "FFP3Masks",
@@ -2695,7 +2638,6 @@
     {
       "path": "/agency-staff",
       "title": "Do you use agency staff or share staff with other care settings?",
-      "section": "Staff",
       "components": [
         {
           "name": "AgencyStaff",
@@ -2722,7 +2664,6 @@
     {
       "path": "/additional-staff",
       "title": "How many additional agency staff or staff from other care settings have you used during this outbreak?",
-      "section": "Staff",
       "components": [
         {
           "name": "AdditionalStaff",
@@ -2745,7 +2686,6 @@
     {
       "path": "/setting-details",
       "title": "Setting details",
-      "section": "YourSetting",
       "components": [
         {
           "name": "SettingName",
@@ -2832,7 +2772,6 @@
     {
       "path": "/contact-details",
       "title": "Contact details",
-      "section": "YourSetting",
       "components": [
         {
           "name": "heading1",
@@ -2956,7 +2895,6 @@
     {
       "path": "/service-users",
       "title": "Service users and staff",
-      "section": "PeopleInYourSetting",
       "components": [
         {
           "name": "ServiceUsersTypes",
@@ -3453,60 +3391,8 @@
       "title": "Infection you are reporting"
     },
     {
-      "name": "InfectionsYouAreReporting",
-      "title": "Infections you are reporting"
-    },
-    {
       "name": "InfectionsInYourSetting",
       "title": "Infections in your setting"
-    },
-    {
-      "name": "SeverityOfIllness",
-      "title": "Severity of illness"
-    },
-    {
-      "name": "SymptomStartDates",
-      "title": "Symptom start dates"
-    },
-    {
-      "name": "Vaccination",
-      "title": "Vaccination"
-    },
-    {
-      "name": "Summary",
-      "title": "Summary"
-    },
-    {
-      "name": "SettingDetails",
-      "title": "Setting details"
-    },
-    {
-      "name": "PeopleInYourSetting",
-      "title": "People in your setting"
-    },
-    {
-      "name": "YourSetting",
-      "title": "Your setting"
-    },
-    {
-      "name": "FluAndChestInfectionInYourSetting",
-      "title": "Flu and chest infection in your setting"
-    },
-    {
-      "name": "InfectionPreventionAndControl",
-      "title": "Infection prevention and control"
-    },
-    {
-      "name": "Staff",
-      "title": "Staff"
-    },
-    {
-      "name": "ConfirmedOrUnknownARI",
-      "title": "Confirmed or unknown acute respiratory infection"
-    },
-    {
-      "name": "FluInYourSetting",
-      "title": "Flu in your setting"
     }
   ],
 
@@ -3519,7 +3405,7 @@
         "conditions": [
           {
             "field": {
-              "name": "InfectionsInYourSetting.OtherARIServiceOrStaff",
+              "name": "OtherARIServiceOrStaff",
               "type": "CheckboxesField",
               "display": "Who are you reporting cases or symptoms of an acute respiratory infection in?"
             },
@@ -3541,7 +3427,7 @@
         "conditions": [
           {
             "field": {
-              "name": "InfectionsInYourSetting.OtherARIServiceOrStaff",
+              "name": "OtherARIServiceOrStaff",
               "type": "CheckboxesField",
               "display": "Who are you reporting cases or symptoms of an acute respiratory infection in?"
             },
@@ -3563,7 +3449,7 @@
         "conditions": [
           {
             "field": {
-              "name": "InfectionYouAreReporting.ARIInfectionType",
+              "name": "ARIInfectionType",
               "type": "CheckboxesField",
               "display": "What infection are you reporting?"
             },
@@ -3577,7 +3463,7 @@
           {
             "coordinator": "and",
             "field": {
-              "name": "InfectionsInYourSetting.OtherARIServiceOrStaff",
+              "name": "OtherARIServiceOrStaff",
               "type": "CheckboxesField",
               "display": "Who are you reporting cases or symptoms of an acute respiratory infection in?"
             },
@@ -3599,7 +3485,7 @@
         "conditions": [
           {
             "field": {
-              "name": "InfectionYouAreReporting.ARIInfectionType",
+              "name": "ARIInfectionType",
               "type": "CheckboxesField",
               "display": "What infection are you reporting?"
             },
@@ -3613,7 +3499,7 @@
           {
             "coordinator": "and",
             "field": {
-              "name": "InfectionsInYourSetting.OtherARIServiceOrStaff",
+              "name": "OtherARIServiceOrStaff",
               "type": "CheckboxesField",
               "display": "Who are you reporting cases or symptoms of an acute respiratory infection in?"
             },
@@ -3635,7 +3521,7 @@
         "conditions": [
           {
             "field": {
-              "name": "InfectionYouAreReporting.ARIInfectionType",
+              "name": "ARIInfectionType",
               "type": "CheckboxesField",
               "display": "What infection are you reporting?"
             },
@@ -3649,7 +3535,7 @@
           {
             "coordinator": "and",
             "field": {
-              "name": "InfectionsInYourSetting.OtherARIServiceOrStaff",
+              "name": "OtherARIServiceOrStaff",
               "type": "CheckboxesField",
               "display": "Who are you reporting cases or symptoms of an acute respiratory infection in?"
             },
@@ -3671,7 +3557,7 @@
         "conditions": [
           {
             "field": {
-              "name": "InfectionYouAreReporting.ARIInfectionType",
+              "name": "ARIInfectionType",
               "type": "CheckboxesField",
               "display": "What infection are you reporting?"
             },
@@ -3685,7 +3571,7 @@
           {
             "coordinator": "and",
             "field": {
-              "name": "InfectionsInYourSetting.OtherARIServiceOrStaff",
+              "name": "OtherARIServiceOrStaff",
               "type": "CheckboxesField",
               "display": "Who are you reporting cases or symptoms of an acute respiratory infection in?"
             },
@@ -3707,7 +3593,7 @@
         "conditions": [
           {
             "field": {
-              "name": "InfectionYouAreReporting.ARIInfectionType",
+              "name": "ARIInfectionType",
               "type": "CheckboxesField",
               "display": "What infection are you reporting?"
             },
@@ -3721,7 +3607,7 @@
           {
             "coordinator": "and",
             "field": {
-              "name": "InfectionsInYourSetting.OtherARIServiceOrStaff",
+              "name": "OtherARIServiceOrStaff",
               "type": "CheckboxesField",
               "display": "Who are you reporting cases or symptoms of an acute respiratory infection in?"
             },
@@ -3743,7 +3629,7 @@
         "conditions": [
           {
             "field": {
-              "name": "InfectionYouAreReporting.ARIInfectionType",
+              "name": "ARIInfectionType",
               "type": "CheckboxesField",
               "display": "What infection are you reporting?"
             },
@@ -3757,7 +3643,7 @@
           {
             "coordinator": "and",
             "field": {
-              "name": "InfectionsInYourSetting.OtherARIServiceOrStaff",
+              "name": "OtherARIServiceOrStaff",
               "type": "CheckboxesField",
               "display": "Who are you reporting cases or symptoms of an acute respiratory infection in?"
             },
@@ -3779,7 +3665,7 @@
         "conditions": [
           {
             "field": {
-              "name": "InfectionYouAreReporting.ARIInfectionType",
+              "name": "ARIInfectionType",
               "type": "CheckboxesField",
               "display": "What infection are you reporting?"
             },
@@ -3793,7 +3679,7 @@
           {
             "coordinator": "and",
             "field": {
-              "name": "InfectionsInYourSetting.OtherARIServiceOrStaff",
+              "name": "OtherARIServiceOrStaff",
               "type": "CheckboxesField",
               "display": "Who are you reporting cases or symptoms of an acute respiratory infection in?"
             },
@@ -3815,7 +3701,7 @@
         "conditions": [
           {
             "field": {
-              "name": "InfectionYouAreReporting.ARIInfectionType",
+              "name": "ARIInfectionType",
               "type": "CheckboxesField",
               "display": "What infection are you reporting?"
             },
@@ -3829,7 +3715,7 @@
           {
             "coordinator": "and",
             "field": {
-              "name": "InfectionsInYourSetting.OtherARIServiceOrStaff",
+              "name": "OtherARIServiceOrStaff",
               "type": "CheckboxesField",
               "display": "Who are you reporting cases or symptoms of an acute respiratory infection in?"
             },
@@ -3851,7 +3737,7 @@
         "conditions": [
           {
             "field": {
-              "name": "InfectionYouAreReporting.ARIInfectionType",
+              "name": "ARIInfectionType",
               "type": "CheckboxesField",
               "display": "What infection are you reporting?"
             },
@@ -3865,7 +3751,7 @@
           {
             "coordinator": "and",
             "field": {
-              "name": "InfectionsInYourSetting.OtherARIServiceOrStaff",
+              "name": "OtherARIServiceOrStaff",
               "type": "CheckboxesField",
               "display": "Who are you reporting cases or symptoms of an acute respiratory infection in?"
             },
@@ -3887,7 +3773,7 @@
         "conditions": [
           {
             "field": {
-              "name": "InfectionYouAreReporting.ARIInfectionType",
+              "name": "ARIInfectionType",
               "type": "CheckboxesField",
               "display": "What infection are you reporting?"
             },
@@ -3901,7 +3787,7 @@
           {
             "coordinator": "and",
             "field": {
-              "name": "InfectionsInYourSetting.OtherARIServiceOrStaff",
+              "name": "OtherARIServiceOrStaff",
               "type": "CheckboxesField",
               "display": "Who are you reporting cases or symptoms of an acute respiratory infection in?"
             },
@@ -3923,7 +3809,7 @@
         "conditions": [
           {
             "field": {
-              "name": "InfectionYouAreReporting.ARIInfectionType",
+              "name": "ARIInfectionType",
               "type": "CheckboxesField",
               "display": "What infection are you reporting?"
             },
@@ -3937,7 +3823,7 @@
           {
             "coordinator": "and",
             "field": {
-              "name": "InfectionsInYourSetting.OtherARIServiceOrStaff",
+              "name": "OtherARIServiceOrStaff",
               "type": "CheckboxesField",
               "display": "Who are you reporting cases or symptoms of an acute respiratory infection in?"
             },
@@ -3959,7 +3845,7 @@
         "conditions": [
           {
             "field": {
-              "name": "InfectionYouAreReporting.ARIInfectionType",
+              "name": "ARIInfectionType",
               "type": "CheckboxesField",
               "display": "What infection are you reporting?"
             },
@@ -3973,7 +3859,7 @@
           {
             "coordinator": "and",
             "field": {
-              "name": "InfectionsInYourSetting.OtherARIServiceOrStaff",
+              "name": "OtherARIServiceOrStaff",
               "type": "CheckboxesField",
               "display": "Who are you reporting cases or symptoms of an acute respiratory infection in?"
             },
@@ -3995,7 +3881,7 @@
         "conditions": [
           {
             "field": {
-              "name": "InfectionsYouAreReporting.PositiveARI",
+              "name": "PositiveARI",
               "type": "RadiosField",
               "display": "Do you have any positive test results for an acute respiratory infection?"
             },
@@ -4017,7 +3903,7 @@
         "conditions": [
           {
             "field": {
-              "name": "InfectionYouAreReporting.TwoOrMoreARI",
+              "name": "TwoOrMoreARI",
               "type": "RadiosField",
               "display": "Are you reporting 2 or more cases of an acute respiratory infection?"
             },
@@ -4039,7 +3925,7 @@
         "conditions": [
           {
             "field": {
-              "name": "InfectionsYouAreReporting.TwoOrMoreCovid",
+              "name": "TwoOrMoreCovid",
               "type": "RadiosField",
               "display": "Are you reporting 2 or more cases?"
             },
@@ -4061,7 +3947,7 @@
         "conditions": [
           {
             "field": {
-              "name": "InfectionsYouAreReporting.WhichARI",
+              "name": "WhichARI",
               "type": "CheckboxesField",
               "display": "Which acute respiratory infections do you have a positive test result for?"
             },
@@ -4083,7 +3969,7 @@
         "conditions": [
           {
             "field": {
-              "name": "InfectionsYouAreReporting.WhichARI",
+              "name": "WhichARI",
               "type": "CheckboxesField",
               "display": "Which acute respiratory infections do you have a positive test result for?"
             },
@@ -4097,7 +3983,7 @@
           {
             "coordinator": "and",
             "field": {
-              "name": "InfectionsYouAreReporting.WhichARI",
+              "name": "WhichARI",
               "type": "CheckboxesField",
               "display": "Which acute respiratory infections do you have a positive test result for?"
             },
@@ -4111,7 +3997,7 @@
           {
             "coordinator": "and",
             "field": {
-              "name": "InfectionsYouAreReporting.WhichARI",
+              "name": "WhichARI",
               "type": "CheckboxesField",
               "display": "Which acute respiratory infections do you have a positive test result for?"
             },
@@ -4133,7 +4019,7 @@
         "conditions": [
           {
             "field": {
-              "name": "InfectionsYouAreReporting.WhichARI",
+              "name": "WhichARI",
               "type": "CheckboxesField",
               "display": "Which acute respiratory infections do you have a positive test result for?"
             },
@@ -4147,7 +4033,7 @@
           {
             "coordinator": "and",
             "field": {
-              "name": "InfectionsYouAreReporting.WhichARI",
+              "name": "WhichARI",
               "type": "CheckboxesField",
               "display": "Which acute respiratory infections do you have a positive test result for?"
             },
@@ -4169,7 +4055,7 @@
         "conditions": [
           {
             "field": {
-              "name": "InfectionsYouAreReporting.WhichARI",
+              "name": "WhichARI",
               "type": "CheckboxesField",
               "display": "Which acute respiratory infections do you have a positive test result for?"
             },
@@ -4183,7 +4069,7 @@
           {
             "coordinator": "and",
             "field": {
-              "name": "InfectionsYouAreReporting.WhichARI",
+              "name": "WhichARI",
               "type": "CheckboxesField",
               "display": "Which acute respiratory infections do you have a positive test result for?"
             },
@@ -4205,7 +4091,7 @@
         "conditions": [
           {
             "field": {
-              "name": "InfectionsYouAreReporting.WhichARI",
+              "name": "WhichARI",
               "type": "CheckboxesField",
               "display": "Which acute respiratory infections do you have a positive test result for?"
             },
@@ -4219,7 +4105,7 @@
           {
             "coordinator": "and",
             "field": {
-              "name": "InfectionsYouAreReporting.WhichARI",
+              "name": "WhichARI",
               "type": "CheckboxesField",
               "display": "Which acute respiratory infections do you have a positive test result for?"
             },
@@ -4233,7 +4119,7 @@
           {
             "coordinator": "and",
             "field": {
-              "name": "InfectionYouAreReporting.TwoOrMoreCasesNotCovidFlu",
+              "name": "TwoOrMoreCasesNotCovidFlu",
               "type": "RadiosField",
               "display": "Which acute respiratory infections do you have a positive test result for?"
             },
@@ -4247,7 +4133,7 @@
           {
             "coordinator": "and",
             "field": {
-              "name": "InfectionYouAreReporting.TwoOrMoreCasesNotCovidFlu",
+              "name": "TwoOrMoreCasesNotCovidFlu",
               "type": "RadiosField",
               "display": "Are you reporting 2 or more cases of an acute respiratory infection that is not COVID-19 or flu?"
             },
@@ -4269,7 +4155,7 @@
         "conditions": [
           {
             "field": {
-              "name": "InfectionsYouAreReporting.WhichARI",
+              "name": "WhichARI",
               "type": "CheckboxesField",
               "display": "Which acute respiratory infections do you have a positive test result for?"
             },
@@ -4283,7 +4169,7 @@
           {
             "coordinator": "and",
             "field": {
-              "name": "InfectionsYouAreReporting.WhichARI",
+              "name": "WhichARI",
               "type": "CheckboxesField",
               "display": "Which acute respiratory infections do you have a positive test result for?"
             },
@@ -4297,7 +4183,7 @@
           {
             "coordinator": "and",
             "field": {
-              "name": "InfectionsYouAreReporting.TwoOrMoreCovid",
+              "name": "TwoOrMoreCovid",
               "type": "RadiosField",
               "display": "Are you reporting 2 or more cases of COVID-19?"
             },
@@ -4311,7 +4197,7 @@
           {
             "coordinator": "and",
             "field": {
-              "name": "InfectionYouAreReporting.TwoOrMoreARI",
+              "name": "TwoOrMoreARI",
               "type": "RadiosField",
               "display": "Are you reporting 2 or more cases of an acute respiratory infection?"
             },
@@ -4333,7 +4219,7 @@
         "conditions": [
           {
             "field": {
-              "name": "InfectionsYouAreReporting.WhichARI",
+              "name": "WhichARI",
               "type": "CheckboxesField",
               "display": "Which acute respiratory infections do you have a positive test result for?"
             },
@@ -4347,7 +4233,7 @@
           {
             "coordinator": "and",
             "field": {
-              "name": "InfectionsYouAreReporting.WhichARI",
+              "name": "WhichARI",
               "type": "CheckboxesField",
               "display": "Which acute respiratory infections do you have a positive test result for?"
             },
@@ -4361,7 +4247,7 @@
           {
             "coordinator": "and",
             "field": {
-              "name": "InfectionsYouAreReporting.TwoOrMoreCovid",
+              "name": "TwoOrMoreCovid",
               "type": "RadiosField",
               "display": "Are you reporting 2 or more cases of COVID-19?"
             },
@@ -4375,7 +4261,7 @@
           {
             "coordinator": "and",
             "field": {
-              "name": "InfectionYouAreReporting.TwoOrMoreCasesNotCovidFlu",
+              "name": "TwoOrMoreCasesNotCovidFlu",
               "type": "RadiosField",
               "display": "Are you reporting 2 or more cases of an acute respiratory infection that is not COVID-19 or flu?"
             },
@@ -4397,7 +4283,7 @@
         "conditions": [
           {
             "field": {
-              "name": "InfectionsYouAreReporting.WhichARI",
+              "name": "WhichARI",
               "type": "CheckboxesField",
               "display": "Which acute respiratory infections do you have a positive test result for?"
             },
@@ -4411,7 +4297,7 @@
           {
             "coordinator": "and",
             "field": {
-              "name": "InfectionsYouAreReporting.WhichARI",
+              "name": "WhichARI",
               "type": "CheckboxesField",
               "display": "Which acute respiratory infections do you have a positive test result for?"
             },
@@ -4425,7 +4311,7 @@
           {
             "coordinator": "and",
             "field": {
-              "name": "InfectionsYouAreReporting.TwoOrMoreCovid5days",
+              "name": "TwoOrMoreCovid5days",
               "type": "RadiosField",
               "display": "Did symptoms in 2 or more cases of COVID-19 start within 5 days of each other?"
             },
@@ -4439,7 +4325,7 @@
           {
             "coordinator": "and",
             "field": {
-              "name": "InfectionsYouAreReporting.TwoOrMoreCovidSpread",
+              "name": "TwoOrMoreCovidSpread",
               "type": "RadiosField",
               "display": "Is it possible that at least 2 of the cases of COVID-19 are linked by spread in your setting?​"
             },
@@ -4453,7 +4339,7 @@
           {
             "coordinator": "and",
             "field": {
-              "name": "InfectionYouAreReporting.TwoOrMoreCasesNotCovidFlu",
+              "name": "TwoOrMoreCasesNotCovidFlu",
               "type": "RadiosField",
               "display": "Are you reporting 2 or more cases of an acute respiratory infection that is not COVID-19 or flu?"
             },
@@ -4476,7 +4362,7 @@
         "conditions": [
           {
             "field": {
-              "name": "InfectionsYouAreReporting.WhichARI",
+              "name": "WhichARI",
               "type": "CheckboxesField",
               "display": "Which acute respiratory infections do you have a positive test result for?"
             },
@@ -4498,7 +4384,7 @@
         "conditions": [
           {
             "field": {
-              "name": "InfectionsYouAreReporting.WhichARI",
+              "name": "WhichARI",
               "type": "CheckboxesField",
               "display": "Which acute respiratory infections do you have a positive test result for?"
             },
@@ -4520,7 +4406,7 @@
         "conditions": [
           {
             "field": {
-              "name": "InfectionsYouAreReporting.WhichARI",
+              "name": "WhichARI",
               "type": "CheckboxesField",
               "display": "Which acute respiratory infections do you have a positive test result for?"
             },
@@ -4534,7 +4420,7 @@
           {
             "coordinator": "and",
             "field": {
-              "name": "InfectionsYouAreReporting.WhichARI",
+              "name": "WhichARI",
               "type": "CheckboxesField",
               "display": "Which acute respiratory infections do you have a positive test result for?"
             },
@@ -4556,7 +4442,7 @@
         "conditions": [
           {
             "field": {
-              "name": "InfectionsYouAreReporting.WhichARI",
+              "name": "WhichARI",
               "type": "CheckboxesField",
               "display": "Which acute respiratory infections do you have a positive test result for?"
             },
@@ -4570,7 +4456,7 @@
           {
             "coordinator": "and",
             "field": {
-              "name": "InfectionsYouAreReporting.WhichARI",
+              "name": "WhichARI",
               "type": "CheckboxesField",
               "display": "Which acute respiratory infections do you have a positive test result for?"
             },
@@ -4592,7 +4478,7 @@
         "conditions": [
           {
             "field": {
-              "name": "InfectionsYouAreReporting.WhichARI",
+              "name": "WhichARI",
               "type": "CheckboxesField",
               "display": "Which acute respiratory infections do you have a positive test result for?"
             },
@@ -4606,7 +4492,7 @@
           {
             "coordinator": "and",
             "field": {
-              "name": "InfectionsYouAreReporting.WhichARI",
+              "name": "WhichARI",
               "type": "CheckboxesField",
               "display": "Which acute respiratory infections do you have a positive test result for?"
             },
@@ -4620,7 +4506,7 @@
           {
             "coordinator": "and",
             "field": {
-              "name": "InfectionsYouAreReporting.WhichARI",
+              "name": "WhichARI",
               "type": "CheckboxesField",
               "display": "Which acute respiratory infections do you have a positive test result for?"
             },
@@ -4642,7 +4528,7 @@
         "conditions": [
           {
             "field": {
-              "name": "InfectionsYouAreReporting.WhichARI",
+              "name": "WhichARI",
               "type": "CheckboxesField",
               "display": "Which acute respiratory infections do you have a positive test result for?"
             },
@@ -4656,7 +4542,7 @@
           {
             "coordinator": "and",
             "field": {
-              "name": "InfectionsYouAreReporting.WhichARI",
+              "name": "WhichARI",
               "type": "CheckboxesField",
               "display": "Which acute respiratory infections do you have a positive test result for?"
             },
@@ -4670,7 +4556,7 @@
           {
             "coordinator": "and",
             "field": {
-              "name": "InfectionsYouAreReporting.WhichARI",
+              "name": "WhichARI",
               "type": "CheckboxesField",
               "display": "Which acute respiratory infections do you have a positive test result for?"
             },
@@ -4684,7 +4570,7 @@
           {
             "coordinator": "and",
             "field": {
-              "name": "InfectionsInYourSetting.ARIServiceOrStaff",
+              "name": "ARIServiceOrStaff",
               "type": "CheckboxesField",
               "display": "Who are you reporting cases or symptoms of an acute respiratory infection in?"
             },
@@ -4706,7 +4592,7 @@
         "conditions": [
           {
             "field": {
-              "name": "InfectionsYouAreReporting.WhichARI",
+              "name": "WhichARI",
               "type": "CheckboxesField",
               "display": "Which acute respiratory infections do you have a positive test result for?"
             },
@@ -4720,7 +4606,7 @@
           {
             "coordinator": "and",
             "field": {
-              "name": "InfectionsYouAreReporting.WhichARI",
+              "name": "WhichARI",
               "type": "CheckboxesField",
               "display": "Which acute respiratory infections do you have a positive test result for?"
             },
@@ -4734,7 +4620,7 @@
           {
             "coordinator": "and",
             "field": {
-              "name": "InfectionsYouAreReporting.WhichARI",
+              "name": "WhichARI",
               "type": "CheckboxesField",
               "display": "Which acute respiratory infections do you have a positive test result for?"
             },
@@ -4748,7 +4634,7 @@
           {
             "coordinator": "and",
             "field": {
-              "name": "InfectionsInYourSetting.ARIServiceOrStaff",
+              "name": "ARIServiceOrStaff",
               "type": "CheckboxesField",
               "display": "Who are you reporting cases or symptoms of an acute respiratory infection in?"
             },
@@ -4770,7 +4656,7 @@
         "conditions": [
           {
             "field": {
-              "name": "InfectionsYouAreReporting.WhichARI",
+              "name": "WhichARI",
               "type": "CheckboxesField",
               "display": "Which acute respiratory infections do you have a positive test result for?"
             },
@@ -4784,7 +4670,7 @@
           {
             "coordinator": "and",
             "field": {
-              "name": "InfectionsYouAreReporting.WhichARI",
+              "name": "WhichARI",
               "type": "CheckboxesField",
               "display": "Which acute respiratory infections do you have a positive test result for?"
             },
@@ -4798,7 +4684,7 @@
           {
             "coordinator": "and",
             "field": {
-              "name": "InfectionsInYourSetting.ARIServiceOrStaff",
+              "name": "ARIServiceOrStaff",
               "type": "CheckboxesField",
               "display": "Who are you reporting cases or symptoms of an acute respiratory infection in?"
             },
@@ -4820,7 +4706,7 @@
         "conditions": [
           {
             "field": {
-              "name": "InfectionsYouAreReporting.WhichARI",
+              "name": "WhichARI",
               "type": "CheckboxesField",
               "display": "Which acute respiratory infections do you have a positive test result for?"
             },
@@ -4834,7 +4720,7 @@
           {
             "coordinator": "and",
             "field": {
-              "name": "InfectionsYouAreReporting.WhichARI",
+              "name": "WhichARI",
               "type": "CheckboxesField",
               "display": "Which acute respiratory infections do you have a positive test result for?"
             },
@@ -4848,7 +4734,7 @@
           {
             "coordinator": "and",
             "field": {
-              "name": "InfectionsInYourSetting.ARIServiceOrStaff",
+              "name": "ARIServiceOrStaff",
               "type": "CheckboxesField",
               "display": "Who are you reporting cases or symptoms of an acute respiratory infection in?"
             },
@@ -4870,7 +4756,7 @@
         "conditions": [
           {
             "field": {
-              "name": "InfectionsYouAreReporting.WhichARI",
+              "name": "WhichARI",
               "type": "CheckboxesField",
               "display": "Which acute respiratory infections do you have a positive test result for?"
             },
@@ -4884,7 +4770,7 @@
           {
             "coordinator": "and",
             "field": {
-              "name": "InfectionsYouAreReporting.WhichARI",
+              "name": "WhichARI",
               "type": "CheckboxesField",
               "display": "Which acute respiratory infections do you have a positive test result for?"
             },
@@ -4898,7 +4784,7 @@
           {
             "coordinator": "and",
             "field": {
-              "name": "InfectionsInYourSetting.ARIServiceOrStaff",
+              "name": "ARIServiceOrStaff",
               "type": "CheckboxesField",
               "display": "Who are you reporting cases or symptoms of an acute respiratory infection in?"
             },
@@ -4920,7 +4806,7 @@
         "conditions": [
           {
             "field": {
-              "name": "InfectionsYouAreReporting.WhichARI",
+              "name": "WhichARI",
               "type": "CheckboxesField",
               "display": "Which acute respiratory infections do you have a positive test result for?"
             },
@@ -4934,7 +4820,7 @@
           {
             "coordinator": "and",
             "field": {
-              "name": "InfectionsYouAreReporting.WhichARI",
+              "name": "WhichARI",
               "type": "CheckboxesField",
               "display": "Which acute respiratory infections do you have a positive test result for?"
             },
@@ -4948,7 +4834,7 @@
           {
             "coordinator": "and",
             "field": {
-              "name": "InfectionsInYourSetting.ARIServiceOrStaff",
+              "name": "ARIServiceOrStaff",
               "type": "CheckboxesField",
               "display": "Who are you reporting cases or symptoms of an acute respiratory infection in?"
             },
@@ -4970,7 +4856,7 @@
         "conditions": [
           {
             "field": {
-              "name": "InfectionsYouAreReporting.WhichARI",
+              "name": "WhichARI",
               "type": "CheckboxesField",
               "display": "Which acute respiratory infections do you have a positive test result for?"
             },
@@ -4984,7 +4870,7 @@
           {
             "coordinator": "and",
             "field": {
-              "name": "InfectionsInYourSetting.ARIServiceOrStaff",
+              "name": "ARIServiceOrStaff",
               "type": "CheckboxesField",
               "display": "Who are you reporting cases or symptoms of an acute respiratory infection in?"
             },
@@ -5006,7 +4892,7 @@
         "conditions": [
           {
             "field": {
-              "name": "InfectionsYouAreReporting.WhichARI",
+              "name": "WhichARI",
               "type": "CheckboxesField",
               "display": "Which acute respiratory infections do you have a positive test result for?"
             },
@@ -5020,7 +4906,7 @@
           {
             "coordinator": "and",
             "field": {
-              "name": "InfectionsInYourSetting.ARIServiceOrStaff",
+              "name": "ARIServiceOrStaff",
               "type": "CheckboxesField",
               "display": "Who are you reporting cases or symptoms of an acute respiratory infection in?"
             },
@@ -5042,7 +4928,7 @@
         "conditions": [
           {
             "field": {
-              "name": "InfectionsYouAreReporting.WhichARI",
+              "name": "WhichARI",
               "type": "CheckboxesField",
               "display": "Which acute respiratory infections do you have a positive test result for?"
             },
@@ -5056,7 +4942,7 @@
           {
             "coordinator": "and",
             "field": {
-              "name": "InfectionsYouAreReporting.WhichARI",
+              "name": "WhichARI",
               "type": "CheckboxesField",
               "display": "Which acute respiratory infections do you have a positive test result for?"
             },
@@ -5070,7 +4956,7 @@
           {
             "coordinator": "and",
             "field": {
-              "name": "InfectionsInYourSetting.ARIServiceOrStaff",
+              "name": "ARIServiceOrStaff",
               "type": "CheckboxesField",
               "display": "Who are you reporting cases or symptoms of an acute respiratory infection in?"
             },
@@ -5092,7 +4978,7 @@
         "conditions": [
           {
             "field": {
-              "name": "InfectionsYouAreReporting.WhichARI",
+              "name": "WhichARI",
               "type": "CheckboxesField",
               "display": "Which acute respiratory infections do you have a positive test result for?"
             },
@@ -5106,7 +4992,7 @@
           {
             "coordinator": "and",
             "field": {
-              "name": "InfectionsYouAreReporting.WhichARI",
+              "name": "WhichARI",
               "type": "CheckboxesField",
               "display": "Which acute respiratory infections do you have a positive test result for?"
             },
@@ -5120,7 +5006,7 @@
           {
             "coordinator": "and",
             "field": {
-              "name": "InfectionsInYourSetting.ARIServiceOrStaff",
+              "name": "ARIServiceOrStaff",
               "type": "CheckboxesField",
               "display": "Who are you reporting cases or symptoms of an acute respiratory infection in?"
             },
@@ -5142,7 +5028,7 @@
         "conditions": [
           {
             "field": {
-              "name": "InfectionsYouAreReporting.WhichARI",
+              "name": "WhichARI",
               "type": "CheckboxesField",
               "display": "Which acute respiratory infections do you have a positive test result for?"
             },
@@ -5156,7 +5042,7 @@
           {
             "coordinator": "and",
             "field": {
-              "name": "InfectionsInYourSetting.ARIServiceOrStaff",
+              "name": "ARIServiceOrStaff",
               "type": "CheckboxesField",
               "display": "Who are you reporting cases or symptoms of an acute respiratory infection in?"
             },
@@ -5178,7 +5064,7 @@
         "conditions": [
           {
             "field": {
-              "name": "InfectionsYouAreReporting.WhichARI",
+              "name": "WhichARI",
               "type": "CheckboxesField",
               "display": "Which acute respiratory infections do you have a positive test result for?"
             },
@@ -5192,7 +5078,7 @@
           {
             "coordinator": "and",
             "field": {
-              "name": "InfectionsInYourSetting.ARIServiceOrStaff",
+              "name": "ARIServiceOrStaff",
               "type": "CheckboxesField",
               "display": "Who are you reporting cases or symptoms of an acute respiratory infection in?"
             },
@@ -5214,7 +5100,7 @@
         "conditions": [
           {
             "field": {
-              "name": "InfectionsYouAreReporting.TwoOrMoreCovid5days",
+              "name": "TwoOrMoreCovid5days",
               "type": "RadiosField",
               "display": "Did symptoms in 2 or more cases of COVID-19 start within 5 days of each other?"
             },
@@ -5236,7 +5122,7 @@
         "conditions": [
           {
             "field": {
-              "name": "InfectionsYouAreReporting.TwoOrMoreCovid5days",
+              "name": "TwoOrMoreCovid5days",
               "type": "RadiosField",
               "display": "Did symptoms in 2 or more cases of COVID-19 start within 5 days of each other?"
             },
@@ -5250,7 +5136,7 @@
           {
             "coordinator": "or",
             "field": {
-              "name": "InfectionsYouAreReporting.TwoOrMoreCovidSpread",
+              "name": "TwoOrMoreCovidSpread",
               "type": "RadiosField",
               "display": "Is it possible that at least 2 of the cases of COVID-19 are linked by spread in your setting?​"
             },
@@ -5272,7 +5158,7 @@
         "conditions": [
           {
             "field": {
-              "name": "InfectionYouAreReporting.TwoOrMoreCasesNotCovidFlu",
+              "name": "TwoOrMoreCasesNotCovidFlu",
               "type": "RadiosField",
               "display": "Are you reporting 2 or more cases of an acute respiratory infection that is not COVID-19 or flu?"
             },
@@ -5294,7 +5180,7 @@
         "conditions": [
           {
             "field": {
-              "name": "InfectionsInYourSetting.SingleCaseOfFluServiceOrStaff",
+              "name": "SingleCaseOfFluServiceOrStaff",
               "type": "RadiosField",
               "display": "Who has the case of flu?"
             },
@@ -5316,7 +5202,7 @@
         "conditions": [
           {
             "field": {
-              "name": "InfectionsInYourSetting.NumberOfCasesOfFlu",
+              "name": "NumberOfCasesOfFlu",
               "type": "RadiosField",
               "display": "How many cases of flu are you reporting?"
             },
@@ -5338,7 +5224,7 @@
         "conditions": [
           {
             "field": {
-              "name": "InfectionsInYourSetting.CovidServiceOrStaff",
+              "name": "CovidServiceOrStaff",
               "type": "CheckboxesField",
               "display": "Who are you reporting cases or symptoms of COVID-19 in?"
             },
@@ -5360,7 +5246,7 @@
         "conditions": [
           {
             "field": {
-              "name": "InfectionsInYourSetting.CovidServiceOrStaff",
+              "name": "CovidServiceOrStaff",
               "type": "CheckboxesField",
               "display": "Who are you reporting cases or symptoms of COVID-19 in?"
             },
@@ -5382,7 +5268,7 @@
         "conditions": [
           {
             "field": {
-              "name": "InfectionsInYourSetting.CovidServiceOrStaff",
+              "name": "CovidServiceOrStaff",
               "type": "CheckboxesField",
               "display": "Who are you reporting cases or symptoms of COVID-19 in?"
             },
@@ -5396,7 +5282,7 @@
           {
             "coordinator": "and",
             "field": {
-              "name": "InfectionsInYourSetting.CovidServiceOrStaff",
+              "name": "CovidServiceOrStaff",
               "type": "CheckboxesField",
               "display": "Who are you reporting cases or symptoms of COVID-19 in?"
             },
@@ -5418,7 +5304,7 @@
         "conditions": [
           {
             "field": {
-              "name": "InfectionsInYourSetting.ARIServiceOrStaff",
+              "name": "ARIServiceOrStaff",
               "type": "CheckboxesField",
               "display": "Who are you reporting cases or symptoms of an acute respiratory infection in?"
             },
@@ -5440,7 +5326,7 @@
         "conditions": [
           {
             "field": {
-              "name": "InfectionsInYourSetting.ARIServiceOrStaff",
+              "name": "ARIServiceOrStaff",
               "type": "CheckboxesField",
               "display": "Who are you reporting cases or symptoms of an acute respiratory infection in?"
             },
@@ -5462,7 +5348,7 @@
         "conditions": [
           {
             "field": {
-              "name": "InfectionsInYourSetting.ARIServiceOrStaff",
+              "name": "ARIServiceOrStaff",
               "type": "CheckboxesField",
               "display": "Who are you reporting cases or symptoms of an acute respiratory infection in?"
             },
@@ -5476,7 +5362,7 @@
           {
             "coordinator": "and",
             "field": {
-              "name": "InfectionsInYourSetting.ARIServiceOrStaff",
+              "name": "ARIServiceOrStaff",
               "type": "CheckboxesField",
               "display": "Who are you reporting cases or symptoms of an acute respiratory infection in?"
             },
@@ -5498,7 +5384,7 @@
         "conditions": [
           {
             "field": {
-              "name": "InfectionPreventionAndControl.AGPs",
+              "name": "AGPs",
               "type": "RadiosField",
               "display": "Does your setting undertake aerosol generating procedures (AGPs)?"
             },
@@ -5520,7 +5406,7 @@
         "conditions": [
           {
             "field": {
-              "name": "Staff.AgencyStaff",
+              "name": "AgencyStaff",
               "type": "RadiosField",
               "display": "Do you use agency staff or share staff with other care settings?"
             },
