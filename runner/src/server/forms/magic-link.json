@@ -135,7 +135,9 @@
   },
   "lists": [],
   "sections": [],
-  "phaseBanner": {},
+  "phaseBanner": {
+    "phase": "beta"
+  },
   "metadata": {},
   "fees": [],
   "outputs": [
