@@ -123,7 +123,7 @@ export class MagicLinkController extends PageController {
         const token = Jwt.token.generate(
           { email: request.query.email },
           {
-            key: "nrglmrgong", // TODO: set secret
+            key: "secret_key", // TODO: set secret
             algorithm: config.initialisedSessionAlgorithm,
           },
           {
