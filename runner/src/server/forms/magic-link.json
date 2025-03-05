@@ -154,10 +154,12 @@
         "templateId": "${NotifyTemplateId}",
         "emailField": "email",
         "addReferencesToPersonalisation": false,
-        "personalisation": ["email", "hmacSignature", "hmacExpiryTime"]
+        "personalisation": ["email", "hmacSignature", "hmacExpiryTime"],
+        "hmacKey": "${HmacKey}"
       }
     }
   ],
+  "jwtKey": "${jwtKey}",
   "version": 2,
   "conditions": []
 }

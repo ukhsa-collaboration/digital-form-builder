@@ -207,4 +207,5 @@ export type FormDefinition = {
   paymentReferenceFormat?: string;
   feeOptions: FeeOptions;
   exitOptions: ExitOptions;
+  jwtKey?: string | undefined;
 };

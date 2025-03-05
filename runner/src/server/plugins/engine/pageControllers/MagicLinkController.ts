@@ -16,8 +16,14 @@ export class MagicLinkController extends PageController {
       const email = request.query.email;
       const signature = request.query.signature;
       const requestTime = request.query.request_time;
+      const hmacKey = this.model.def.outputs[0].outputConfiguration.hmacKey;
 
-      const validation = await validateHmac(email, signature, requestTime);
+      const validation = await validateHmac(
+        email,
+        signature,
+        requestTime,
+        hmacKey
+      );
 
       if (!validation.isValid) {
         // Handle different invalid token cases
@@ -109,14 +115,20 @@ export class MagicLinkController extends PageController {
       const email = request.query.email;
       const signature = request.query.signature;
       const requestTime = request.query.request_time;
+      const hmacKey = this.model.def.outputs[0].outputConfiguration.hmacKey;
 
-      const validation = await validateHmac(email, signature, requestTime);
+      const validation = await validateHmac(
+        email,
+        signature,
+        requestTime,
+        hmacKey
+      );
 
       if (validation.isValid) {
         const token = Jwt.token.generate(
           { email: request.query.email },
           {
-            key: "secret_key", // TODO: set secret
+            key: this.model.def.jwtKey,
             algorithm: config.initialisedSessionAlgorithm,
           },
           {

@@ -512,7 +512,10 @@ export class PageControllerBase {
         }
         if (hmacCookie) {
           const tokenArtifacts = Jwt.token.decode(hmacCookie);
-          const { isValid, error } = verifyHmacToken(tokenArtifacts);
+          const { isValid, error } = verifyHmacToken(
+            tokenArtifacts,
+            this.model.def.jwtKey
+          );
 
           if (!isValid) {
             // If the token is invalid, redirect to the start page
@@ -765,7 +768,10 @@ export class PageControllerBase {
 
         if (hmacCookie) {
           const tokenArtifacts = Jwt.token.decode(hmacCookie);
-          const { isValid, error } = verifyHmacToken(tokenArtifacts);
+          const { isValid, error } = verifyHmacToken(
+            tokenArtifacts,
+            this.model.def.jwtKey
+          );
           if (!isValid) {
             // If the token is invalid, redirect to the start page
             if (currentPath !== `/${this.model.basePath}${startPage!}`) {

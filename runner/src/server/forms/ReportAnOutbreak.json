@@ -5452,5 +5452,6 @@
         "referenceContent": "Use this number if you need to contact the UKHSA health protection team about your outbreak."
       }
     }
-  }
+  },
+  "jwtKey": "${jwtKey}"
 }

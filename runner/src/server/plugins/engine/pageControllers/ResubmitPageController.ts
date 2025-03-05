@@ -145,9 +145,12 @@ export class ResubmitPageController extends PageController {
       // Get user email from state or request
       const email = state["email"];
 
+      const hmacKey = this.model.def.outputs[0].outputConfiguration.hmacKey;
+
       if (email) {
         const [hmac, currentTimestamp, hmacExpiryTime] = await createHmac(
-          email
+          email,
+          hmacKey
         );
 
         const hmacUrlStart = "/magic-link/return?email=";
