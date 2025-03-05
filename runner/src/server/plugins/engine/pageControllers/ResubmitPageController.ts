@@ -150,9 +150,9 @@ export class ResubmitPageController extends PageController {
           email
         );
 
-        const hamcUrlStart = "/magic-link/return?email=";
+        const hmacUrlStart = "/magic-link/return?email=";
 
-        const hmacUrl = hamcUrlStart.concat(
+        const hmacUrl = hmacUrlStart.concat(
           email,
           "&request_time=",
           currentTimestamp.toString(),

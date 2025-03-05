@@ -36,7 +36,6 @@ export class MagicLinkController extends PageController {
       const { cacheService } = request.services([]);
       const model = this.model;
 
-      // @ts-ignore - ignoring so docs can be generated. Remove when properly typed
       if (this.model.def.skipSummary) {
         return this.makePostRouteHandler()(request, h);
       }
@@ -107,11 +106,6 @@ export class MagicLinkController extends PageController {
 
   makePostRouteHandler() {
     return async (request: HapiRequest, h: HapiResponseToolkit) => {
-      // Get StatusService
-      const { statusService } = request.services([]);
-
-      // Submit the form
-      await statusService.outputRequests(request);
       const email = request.query.email;
       const signature = request.query.signature;
       const requestTime = request.query.request_time;
@@ -119,7 +113,6 @@ export class MagicLinkController extends PageController {
       const validation = await validateHmac(email, signature, requestTime);
 
       if (validation.isValid) {
-        // Then inside your if (validation.isValid) block:
         const token = Jwt.token.generate(
           { email: request.query.email },
           {
