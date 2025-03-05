@@ -1,7 +1,6 @@
 import crypto from "crypto";
 
 // Configuration constants
-const SECRET_KEY = "your_secret_key"; // TODO - set up as secret in pipeline
 const TIME_THRESHOLD = 1200; // 5 minutes in seconds
 
 /**
@@ -21,13 +20,13 @@ function formatUnixTimestamp(timestamp: number): string {
 /**
  * Creates an HMAC signature for authentication
  */
-export async function createHmac(email: string) {
+export async function createHmac(email: string, hmacKey: string) {
   try {
     // Get current timestamp
     const currentTimestamp = Math.floor(Date.now() / 1000);
 
     // Prepare the data for HMAC calculation
-    const dataToHash = email + currentTimestamp + SECRET_KEY;
+    const dataToHash = email + currentTimestamp + hmacKey;
 
     // Calculate the HMAC hash
     const hmac = crypto.createHash("sha256").update(dataToHash).digest("hex");
@@ -49,7 +48,8 @@ export async function createHmac(email: string) {
 export async function validateHmac(
   email: string,
   signature: string,
-  requestTime: string
+  requestTime: string,
+  hmacKey: string
 ) {
   try {
     // Get the current UTC time
@@ -60,7 +60,7 @@ export async function validateHmac(
     }
 
     // Prepare the data for HMAC calculation
-    const dataToHash = email + requestTime + SECRET_KEY;
+    const dataToHash = email + requestTime + hmacKey;
 
     // Calculate the HMAC hash
     const xResponseHmac = crypto
