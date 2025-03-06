@@ -242,7 +242,6 @@ export class PageControllerBase {
       const otherRepeatPagesInSection = this.model.pages.filter(
         (page) => page.section === this.section && page.repeatField
       );
-      console.log("state", state);
       const sectionState = state[this.section.name] || {};
       if (
         Object.keys(sectionState[sectionState.length - 1]).length ===
