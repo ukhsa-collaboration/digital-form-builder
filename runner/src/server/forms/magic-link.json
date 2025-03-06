@@ -1,7 +1,7 @@
 {
   "startPage": "/start",
   "skipSummary": true,
-  "toggle": true,
+  "toggle": false,
   "pages": [
     {
       "path": "/start",
