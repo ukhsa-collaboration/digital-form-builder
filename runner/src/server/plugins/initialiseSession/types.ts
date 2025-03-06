@@ -17,7 +17,7 @@ export type InitialiseSessionOptions = {
     title: string;
     paymentSkipped?: false | string;
     nextSteps?: false | string;
-    useNormalHeading?: boolean;
+    hidePanel?: boolean;
   };
   components: ContentComponentsDef[];
 };

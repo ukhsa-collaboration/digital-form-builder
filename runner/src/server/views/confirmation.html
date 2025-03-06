@@ -17,22 +17,10 @@
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
       {% set tmpl = 'Your reference number<br><strong>' + reference + '</strong>' if reference else '' %}
-      
-      {% if customText.useNormalHeading %}
-        <!-- Normal heading version instead of panel -->
-        <h1 class="govuk-heading-l">
-          {% if not customText %}
-            Application complete
-          {% else %}
-            {{ customText.title }}
-          {% endif %}
-        </h1>
-        
         {% if reference %}
           <p class="govuk-body">Your reference number is: <strong>{{ reference }}</strong></p>
         {% endif %}
-      {% else %}
-        <!-- Original panel version -->
+      {% if not customText.hidePanel %}        <!-- Original panel version -->
         {% if not customText %}
           {{ govukPanel({
             titleText: "Application complete",
