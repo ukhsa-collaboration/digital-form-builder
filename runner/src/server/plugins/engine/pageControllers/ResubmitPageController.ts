@@ -1,14 +1,7 @@
 import { SummaryViewModel } from "../models";
 import { PageController } from "./PageController";
-import { feedbackReturnInfoKey, redirectTo, redirectUrl } from "../helpers";
+import { redirectTo, redirectUrl } from "../helpers";
 import { HapiRequest, HapiResponseToolkit } from "server/types";
-import {
-  decodeFeedbackContextInfo,
-  FeedbackContextInfo,
-  RelativeUrl,
-} from "../feedback";
-import config from "server/config";
-import { isMultipleApiKey } from "@xgovformbuilder/model";
 import { createHmac } from "src/server/utils/hmac";
 
 export class ResubmitPageController extends PageController {
@@ -221,52 +214,5 @@ export class ResubmitPageController extends PageController {
         },
       },
     };
-  }
-
-  get payApiKey(): string {
-    const modelDef = this.model.def;
-    const payApiKey = modelDef.feeOptions?.payApiKey ?? def.payApiKey;
-
-    if (isMultipleApiKey(payApiKey)) {
-      return payApiKey[config.apiEnv] ?? payApiKey.test ?? payApiKey.production;
-    }
-    return payApiKey;
-  }
-
-  setFeedbackDetails(viewModel: SummaryViewModel, request: HapiRequest) {
-    const feedbackContextInfo = this.getFeedbackContextInfo(request);
-
-    if (feedbackContextInfo) {
-      // set the form name to the source form name if this is a feedback form
-      viewModel.name = feedbackContextInfo.formTitle;
-    }
-
-    // setting the feedbackLink to undefined here for feedback forms prevents the feedback link from being shown
-    viewModel.feedbackLink = this.feedbackUrlFromRequest(request);
-  }
-
-  getFeedbackContextInfo(request: HapiRequest) {
-    if (this.model.def.feedback?.feedbackForm) {
-      if (request.url.searchParams.get(feedbackReturnInfoKey)) {
-        return decodeFeedbackContextInfo(
-          request.url.searchParams.get(feedbackReturnInfoKey)
-        );
-      }
-    }
-  }
-
-  feedbackUrlFromRequest(request: HapiRequest) {
-    if (this.model.def.feedback?.url) {
-      let feedbackLink = new RelativeUrl(this.model.def.feedback.url);
-      const returnInfo = new FeedbackContextInfo(
-        this.model.name,
-        "Summary",
-        `${request.url.pathname}${request.url.search}`
-      );
-      feedbackLink.setParam(feedbackReturnInfoKey, returnInfo.toString());
-      return feedbackLink.toString();
-    }
-
-    return undefined;
   }
 }
