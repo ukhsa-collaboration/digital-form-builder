@@ -14,6 +14,7 @@ import { MultiStartPageController } from "server/plugins/engine/pageControllers/
 import { CheckpointSummaryPageController } from "src/server/plugins/engine/pageControllers/CheckpointSummaryPageController";
 import { ResubmitPageController } from "./ResubmitPageController";
 import { MagicLinkController } from "./MagicLinkController";
+import { MagicLinkStartPageController } from "./MagicLinkStartPageController";
 
 const PageControllers = {
   DobPageController,
@@ -29,6 +30,7 @@ const PageControllers = {
   CheckpointSummaryPageController,
   ResubmitPageController,
   MagicLinkController,
+  MagicLinkStartPageController,
 };
 
 export const controllerNameFromPath = (filePath: string) => {

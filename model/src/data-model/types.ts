@@ -208,4 +208,5 @@ export type FormDefinition = {
   feeOptions: FeeOptions;
   exitOptions: ExitOptions;
   jwtKey?: string | undefined;
+  toggle?: boolean | undefined;
 };

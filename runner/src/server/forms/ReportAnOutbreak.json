@@ -1,6 +1,7 @@
 {
   "metadata": {},
   "authentication": true,
+  "toggle": true,
   "startPage": "/start",
   "pages": [
     {

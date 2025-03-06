@@ -1,11 +1,15 @@
 {
-  "startPage": "/magic-link",
+  "startPage": "/start",
   "skipSummary": true,
+  "toggle": true,
   "pages": [
     {
+      "path": "/start",
+      "controller": "MagicLinkStartPageController"
+    },
+    {
       "title": "What is your email address?",
-      "path": "/magic-link",
-      "controller": "MultiStartPageController",
+      "path": "/email",
       "continueButtonText": "Send secure link",
       "showContinueButton": true,
       "backLinkFallback": "/ReportAnOutbreak/start",
