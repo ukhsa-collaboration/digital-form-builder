@@ -25,9 +25,15 @@
           "type": "TextField",
           "title": "Email address",
           "name": "email",
-          "schema": {},
+          "schema": {
+            "regex": "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"
+          },
           "options": {
-            "exposeToContext": true
+            "exposeToContext": true,
+            "customValidationMessages": {
+              "string.empty": "Enter an email address",
+              "string.pattern.base": "Enter an email address in the correct format, like name@example.com"
+            }
           }
         }
       ],
