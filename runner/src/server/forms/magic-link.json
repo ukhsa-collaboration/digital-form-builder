@@ -22,7 +22,7 @@
           "schema": {}
         },
         {
-          "type": "TextField",
+          "type": "EmailAddressField",
           "title": "Email address",
           "name": "email",
           "schema": {
