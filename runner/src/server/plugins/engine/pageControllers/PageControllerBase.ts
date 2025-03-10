@@ -500,7 +500,7 @@ export class PageControllerBase {
           : redirectTo(request, h, `/${this.model.basePath}${startPage!}`);
       }
 
-      if (this.model.def.authentication && this.model.def.toggle) {
+      if (this.model.def.authentication && this.model.def.toggle === "true") {
         const hmacCookie = request.state.auth_token; // Check for the auth cookie
 
         if (!hmacCookie && !isStartPage && this.model.def.authentication) {
@@ -753,7 +753,7 @@ export class PageControllerBase {
       }
       const { cacheService } = request.services([]);
 
-      if (this.model.def.authentication && this.model.def.toggle) {
+      if (this.model.def.authentication && this.model.def.toggle === "true") {
         const startPage = this.model.def.startPage;
         const isStartPage = this.path === `${startPage}`;
         const currentPath = `/${this.model.basePath}${this.path}${request.url.search}`;
