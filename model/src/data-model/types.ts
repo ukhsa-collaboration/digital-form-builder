@@ -128,7 +128,7 @@ export type ConfirmationPage = {
     nextSteps: Toggleable<string>;
     referenceTitle: string;
     referenceContent: string;
-    hidePanel: boolean;
+    hidePanel?: boolean;
   };
   components: ComponentDef[];
 };
