@@ -154,7 +154,7 @@ const confirmationPageSchema = joi.object({
       ),
       referenceTitle: joi.string(),
       referenceContent: joi.string(),
-      hidePanel: joi.boolean(),
+      hidePanel: joi.boolean().optional(),
     })
     .default(),
   components: joi.array().items(componentSchema),
