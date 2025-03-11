@@ -139,7 +139,7 @@ export class MagicLinkController extends PageController {
         // Set the JWT in a cookie
         h.state("auth_token", token, {
           ttl: 20 * 60 * 1000,
-          isSecure: process.env.NODE_ENV === "production", // HTTPS only in production
+          isSecure: true,
           isHttpOnly: true,
           encoding: "none",
           clearInvalid: true,
