@@ -60,11 +60,11 @@ export async function validateHmac(
     }
 
     // Prepare the data for HMAC calculation
-    const dataToHash = email + requestTime + hmacKey;
+    const dataToHash = email + requestTime;
 
     // Calculate the HMAC hash
     const xResponseHmac = crypto
-      .createHash("sha256")
+      .createHmac("sha256", hmacKey)
       .update(dataToHash)
       .digest("hex");
 
