@@ -26,7 +26,7 @@ export async function createHmac(email: string, hmacKey: string) {
     const currentTimestamp = Math.floor(Date.now() / 1000);
 
     // Prepare the data for HMAC calculation
-    const dataToHash = email + currentTimestamp + hmacKey;
+    const dataToHash = email + currentTimestamp;
 
     // Calculate the HMAC hash
     const hmac = crypto
