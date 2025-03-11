@@ -501,16 +501,16 @@ export class PageControllerBase {
       }
 
       if (this.model.def.authentication && this.model.def.toggle === true) {
-        const hmacCookie = request.state.auth_token; // Check for the auth cookie
+        const authCookie = request.state.auth_token; // Check for the auth cookie
 
-        if (!hmacCookie && !isStartPage && this.model.def.authentication) {
+        if (!authCookie && !isStartPage && this.model.def.authentication) {
           // If the auth cookie is missing and it's not the start page, redirect
           if (currentPath !== `/${this.model.basePath}${startPage!}`) {
             return h.redirect(`/${this.model.basePath}${startPage!}`);
           }
         }
-        if (hmacCookie) {
-          const tokenArtifacts = Jwt.token.decode(hmacCookie);
+        if (authCookie) {
+          const tokenArtifacts = Jwt.token.decode(authCookie);
           const { isValid, error } = verifyHmacToken(
             tokenArtifacts,
             this.model.def.jwtKey
@@ -757,16 +757,16 @@ export class PageControllerBase {
         const startPage = this.model.def.startPage;
         const isStartPage = this.path === `${startPage}`;
         const currentPath = `/${this.model.basePath}${this.path}${request.url.search}`;
-        const hmacCookie = request.state.auth_token; // Check for the auth cookie
-        if (!hmacCookie && !isStartPage && this.model.def.authentication) {
+        const authCookie = request.state.auth_token; // Check for the auth cookie
+        if (!authCookie && !isStartPage && this.model.def.authentication) {
           // If the auth cookie is missing and it's not the start page, redirect
           if (currentPath !== `/${this.model.basePath}${startPage!}`) {
             return h.redirect(`/${this.model.basePath}${startPage!}`);
           }
         }
 
-        if (hmacCookie) {
-          const tokenArtifacts = Jwt.token.decode(hmacCookie);
+        if (authCookie) {
+          const tokenArtifacts = Jwt.token.decode(authCookie);
           const { isValid, error } = verifyHmacToken(
             tokenArtifacts,
             this.model.def.jwtKey
