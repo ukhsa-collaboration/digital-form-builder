@@ -29,7 +29,10 @@ export async function createHmac(email: string, hmacKey: string) {
     const dataToHash = email + currentTimestamp + hmacKey;
 
     // Calculate the HMAC hash
-    const hmac = crypto.createHash("sha256").update(dataToHash).digest("hex");
+    const hmac = crypto
+      .createHmac("sha256", hmacKey)
+      .update(dataToHash)
+      .digest("hex");
 
     const hmacExpiryTime = formatUnixTimestamp(
       currentTimestamp + TIME_THRESHOLD
