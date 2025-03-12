@@ -92,11 +92,6 @@ export function NotifyModel(
       return model.conditions[condition!]?.fn?.(state);
     })?.emailReplyToId ?? defaultReplyToId;
 
-  // temp
-  if (process.env.NODE_ENV === "development") {
-    templateId = "95bb579e-c3e6-4a8f-adfd-c94b621e025c";
-  }
-
   return {
     templateId: templateId,
     personalisation,
