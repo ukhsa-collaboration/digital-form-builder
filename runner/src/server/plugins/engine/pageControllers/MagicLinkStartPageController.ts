@@ -9,8 +9,8 @@ export class MagicLinkStartPageController extends PageController {
 
   makeGetRouteHandler() {
     return async (request: HapiRequest, h: HapiResponseToolkit) => {
-      if (this.model.values.toggle === "false") {
-        return redirectTo(request, h, `/ReportAnOutbreak/setting`);
+      if (this.model.values.toggle === false) {
+        return redirectTo(request, h, this.model.values.toggleRedirect);
       }
       return this.makePostRouteHandler()(request, h);
     };

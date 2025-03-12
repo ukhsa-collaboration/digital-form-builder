@@ -2,6 +2,7 @@
   "startPage": "/start",
   "skipSummary": true,
   "toggle": "${magicLinkToggle}",
+  "toggleRedirect": "/ReportAnOutbreak/setting",
   "pages": [
     {
       "path": "/start",

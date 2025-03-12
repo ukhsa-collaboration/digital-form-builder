@@ -339,6 +339,7 @@ export const Schema = joi
     exitOptions: exitSchema.optional(),
     showFilenamesOnSummaryPage: joi.boolean().optional(),
     toggle: joi.alternatives().try(joi.boolean(), joi.string()).optional(),
+    toggleRedirect: joi.string().optional(),
   });
 
 /**
