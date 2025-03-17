@@ -42,6 +42,7 @@
       "title": "What type of adult social care do you provide?",
       "sectionForExitJourneySummaryPages": "AcuteInfections",
       "sectionForMultiSummaryPages": "InfectionsInYourSetting",
+      "sectionForEndSummaryPages": "SettingDetails",
       "components": [
         {
           "name": "CareSettingType",
@@ -69,7 +70,7 @@
       ],
       "next": [
         {
-          "path": "/positive-ari"
+          "path": "/setting-details"
         }
       ]
     },
@@ -78,6 +79,7 @@
       "title": "Do you have any positive test results for an acute respiratory infection?",
       "sectionForExitJourneySummaryPages": "AcuteInfections",
       "sectionForMultiSummaryPages": "InfectionsInYourSetting",
+      "sectionForEndSummaryPages": "InfectionsInYourSetting",
       "components": [
         {
           "name": "PositiveARI",
@@ -110,6 +112,7 @@
       "title": "Which acute respiratory infections do you have a positive test result for?",
       "sectionForExitJourneySummaryPages": "AcuteInfections",
       "sectionForMultiSummaryPages": "InfectionsInYourSetting",
+      "sectionForEndSummaryPages": "InfectionsInYourSetting",
       "components": [
         {
           "name": "WhichARI",
@@ -145,6 +148,7 @@
       "title": "Are you reporting 2 or more cases?",
       "sectionForExitJourneySummaryPages": "AcuteInfections",
       "sectionForMultiSummaryPages": "Covid19InYourSetting",
+      "sectionForEndSummaryPages": "InfectionsInYourSetting",
       "components": [
         {
           "type": "Para",
@@ -156,7 +160,7 @@
           "list": "YesNo",
           "nameHasError": false,
           "options": {
-            "summaryTitle": "2 or more cases"
+            "summaryTitle": "COVID-19: 2 or more cases"
           },
           "title": " ",
           "values": {
@@ -178,6 +182,7 @@
       "path": "/2-or-more-covid-descriptive",
       "title": "Are you reporting 2 or more cases of COVID-19?",
       "sectionForMultiSummaryPages": "Covid19InYourSetting",
+      "sectionForEndSummaryPages": "InfectionsInYourSetting",
       "components": [
         {
           "type": "Para",
@@ -212,6 +217,7 @@
       "title": "Acute respiratory infections in your setting",
       "sectionForExitJourneySummaryPages": "AcuteInfections",
       "sectionForMultiSummaryPages": "Covid19InYourSetting",
+      "sectionForEndSummaryPages": "InfectionsInYourSetting",
       "components": [
         {
           "type": "Para",
@@ -220,7 +226,7 @@
         {
           "name": "TwoOrMoreCovid5days",
           "options": {
-            "summaryTitle": "Symptoms started within 5 days of each other"
+            "summaryTitle": "COVID-19: symptoms started within 5 days of each other"
           },
           "type": "RadiosField",
           "nameHasError": false,
@@ -233,7 +239,7 @@
         {
           "name": "TwoOrMoreCovidSpread",
           "options": {
-            "summaryTitle": "The cases are linked by spread"
+            "summaryTitle": "COVID-19: cases are linked by spread"
           },
           "type": "RadiosField",
           "nameHasError": false,
@@ -267,6 +273,7 @@
       "title": "Are you reporting 2 or more cases of an acute respiratory infection?",
       "sectionForExitJourneySummaryPages": "AcuteInfections",
       "sectionForMultiSummaryPages": "Covid19InYourSetting",
+      "sectionForEndSummaryPages": "InfectionsInYourSetting",
       "components": [
         {
           "name": "TwoOrMoreARI",
@@ -322,11 +329,12 @@
       "title": "Are you reporting 2 or more cases of an acute respiratory infection that is not COVID-19 or flu?",
       "sectionForExitJourneySummaryPages": "AcuteInfections",
       "sectionForMultiSummaryPages": "OtherInYourSetting",
+      "sectionForEndSummaryPages": "InfectionsInYourSetting",
       "components": [
         {
           "name": "TwoOrMoreCasesNotCovidFlu",
           "options": {
-            "summaryTitle": "2 or more cases"
+            "summaryTitle": "Other acute respiratory infection: 2 or more cases"
           },
           "type": "RadiosField",
           "list": "YesNo",
@@ -415,11 +423,12 @@
       "path": "/ari-infection-type",
       "title": "What infection are you reporting?",
       "sectionForMultiSummaryPages": "OtherInYourSetting",
+      "sectionForEndSummaryPages": "InfectionsInYourSetting",
       "components": [
         {
           "name": "ARIInfectionType",
           "options": {
-            "summaryTitle": "Infection type"
+            "summaryTitle": "Other acute respiratory infection: infection type"
           },
           "type": "CheckboxesField",
           "nameHasError": false,
@@ -452,6 +461,7 @@
     {
       "path": "/service-users-ari-confirmed",
       "title": "Service users: number of cases",
+      "sectionForEndSummaryPages": "InfectionsInYourSetting",
       "disableSingleComponentAsHeading": true,
       "components": [
         {
@@ -462,6 +472,9 @@
           "schema": {
             "min": 0,
             "max": 999
+          },
+          "options": {
+            "summaryTitle": "Service users: with symptoms, but not tested"
           }
         },
         {
@@ -474,6 +487,7 @@
             "max": 999
           },
           "options": {
+            "summaryTitle": "Service users: negative COVID-19 test results",
             "required": false
           }
         },
@@ -483,7 +497,8 @@
           "title": "How many service users have been tested for flu?",
           "hint": "If none, enter 0",
           "options": {
-            "required": false
+            "required": false,
+            "summaryTitle": "Service users: negative flu test results"
           },
           "schema": {
             "min": 0,
@@ -525,6 +540,7 @@
     {
       "path": "/service-users-ari-adenovirus",
       "title": "Service users: number of adenovirus cases",
+      "sectionForEndSummaryPages": "InfectionsInYourSetting",
       "disableSingleComponentAsHeading": true,
       "components": [
         {
@@ -535,6 +551,9 @@
           "schema": {
             "min": 0,
             "max": 999
+          },
+          "options": {
+            "summaryTitle": "Service users: confirmed positive adenovirus test results"
           }
         }
       ],
@@ -591,6 +610,7 @@
     {
       "path": "/staff-ari-adenovirus",
       "title": "Staff: number of adenovirus cases",
+      "sectionForEndSummaryPages": "InfectionsInYourSetting",
       "disableSingleComponentAsHeading": true,
       "components": [
         {
@@ -601,6 +621,9 @@
           "schema": {
             "min": 0,
             "max": 999
+          },
+          "options": {
+            "summaryTitle": "Staff: confirmed positive adenovirus test results"
           }
         }
       ],
@@ -653,6 +676,7 @@
     {
       "path": "/service-users-ari-hmpv",
       "title": "Service users: number of human Metapneumovirus (hMPV) cases",
+      "sectionForEndSummaryPages": "InfectionsInYourSetting",
       "disableSingleComponentAsHeading": true,
       "components": [
         {
@@ -663,6 +687,9 @@
           "schema": {
             "min": 0,
             "max": 999
+          },
+          "options": {
+            "summaryTitle": "Service users: confirmed positive human Metapneumovirus (hMPV) test results"
           }
         }
       ],
@@ -711,6 +738,7 @@
     {
       "path": "/staff-ari-hmpv",
       "title": "Staff: number of human Metapneumovirus (hMPV) cases",
+      "sectionForEndSummaryPages": "InfectionsInYourSetting",
       "disableSingleComponentAsHeading": true,
       "components": [
         {
@@ -721,6 +749,9 @@
           "schema": {
             "min": 0,
             "max": 999
+          },
+          "options": {
+            "summaryTitle": "Staff: confirmed positive human Metapneumovirus (hMPV) test results"
           }
         }
       ],
@@ -765,6 +796,7 @@
     {
       "path": "/service-users-ari-parainfluenza",
       "title": "Service users: number of parainfluenza cases",
+      "sectionForEndSummaryPages": "InfectionsInYourSetting",
       "disableSingleComponentAsHeading": true,
       "components": [
         {
@@ -775,6 +807,9 @@
           "schema": {
             "min": 0,
             "max": 999
+          },
+          "options": {
+            "summaryTitle": "Service users: confirmed positive parainfluenza test results"
           }
         }
       ],
@@ -815,6 +850,7 @@
     {
       "path": "/staff-ari-parainfluenza",
       "title": "Staff: number of parainfluenza cases",
+      "sectionForEndSummaryPages": "InfectionsInYourSetting",
       "disableSingleComponentAsHeading": true,
       "components": [
         {
@@ -825,6 +861,9 @@
           "schema": {
             "min": 0,
             "max": 999
+          },
+          "options": {
+            "summaryTitle": "Staff: confirmed positive parainfluenza test results"
           }
         }
       ],
@@ -861,6 +900,7 @@
     {
       "path": "/service-users-ari-rsv",
       "title": "Service users: number of Respiratory Syncytial Virus (RSV) cases",
+      "sectionForEndSummaryPages": "InfectionsInYourSetting",
       "disableSingleComponentAsHeading": true,
       "components": [
         {
@@ -871,6 +911,9 @@
           "schema": {
             "min": 0,
             "max": 999
+          },
+          "options": {
+            "summaryTitle": "Service users: confirmed positive Respiratory Syncytial Virus (RSV) test results"
           }
         }
       ],
@@ -903,6 +946,7 @@
     {
       "path": "/staff-ari-rsv",
       "title": "Staff: number of Respiratory Syncytial Virus (RSV) cases",
+      "sectionForEndSummaryPages": "InfectionsInYourSetting",
       "disableSingleComponentAsHeading": true,
       "components": [
         {
@@ -913,6 +957,9 @@
           "schema": {
             "min": 0,
             "max": 999
+          },
+          "options": {
+            "summaryTitle": "Staff: confirmed positive Respiratory Syncytial Virus (RSV) test results"
           }
         }
       ],
@@ -941,6 +988,7 @@
     {
       "path": "/service-users-ari-rhinovirus",
       "title": "Service users: number of rhinovirus cases",
+      "sectionForEndSummaryPages": "InfectionsInYourSetting",
       "disableSingleComponentAsHeading": true,
       "components": [
         {
@@ -951,6 +999,9 @@
           "schema": {
             "min": 0,
             "max": 999
+          },
+          "options": {
+            "summaryTitle": "Service users: confirmed positive rhinovirus test results"
           }
         }
       ],
@@ -975,6 +1026,7 @@
     {
       "path": "/staff-ari-rhinovirus",
       "title": "Staff: number of rhinovirus cases",
+      "sectionForEndSummaryPages": "InfectionsInYourSetting",
       "disableSingleComponentAsHeading": true,
       "components": [
         {
@@ -985,6 +1037,9 @@
           "schema": {
             "min": 0,
             "max": 999
+          },
+          "options": {
+            "summaryTitle": "Staff: confirmed positive rhinovirus test results"
           }
         }
       ],
@@ -1005,6 +1060,7 @@
     {
       "path": "/service-users-ari-other",
       "title": "Service users: number of other acute respiratory infection cases",
+      "sectionForEndSummaryPages": "InfectionsInYourSetting",
       "disableSingleComponentAsHeading": true,
       "components": [
         {
@@ -1015,6 +1071,9 @@
           "schema": {
             "min": 0,
             "max": 999
+          },
+          "options": {
+            "summaryTitle": "Service users: confirmed positive other acute respiratory infection test results"
           }
         }
       ],
@@ -1031,6 +1090,7 @@
     {
       "path": "/staff-ari-other",
       "title": "Staff: number of other acute respiratory infection cases",
+      "sectionForEndSummaryPages": "InfectionsInYourSetting",
       "disableSingleComponentAsHeading": true,
       "components": [
         {
@@ -1041,6 +1101,9 @@
           "schema": {
             "min": 0,
             "max": 999
+          },
+          "options": {
+            "summaryTitle": "Staff: confirmed positive other acute respiratory infection test results"
           }
         }
       ],
@@ -1053,6 +1116,7 @@
     {
       "path": "/service-users-ari-unknown",
       "title": "Service users: number of cases",
+      "sectionForEndSummaryPages": "InfectionsInYourSetting",
       "disableSingleComponentAsHeading": true,
       "components": [
         {
@@ -1063,6 +1127,9 @@
           "schema": {
             "min": 0,
             "max": 999
+          },
+          "options": {
+            "summaryTitle": "Service users: with symptoms, but not tested"
           }
         },
         {
@@ -1075,7 +1142,8 @@
             "max": 999
           },
           "options": {
-            "required": false
+            "required": false,
+            "summaryTitle": "Service users: negative COVID-19 test results"
           }
         },
         {
@@ -1084,7 +1152,8 @@
           "title": "How many service users have been tested for flu?",
           "hint": "If none, enter 0",
           "options": {
-            "required": false
+            "required": false,
+            "summaryTitle": "Service users: negative flu test results"
           },
           "schema": {
             "min": 0,
@@ -1105,6 +1174,7 @@
     {
       "path": "/staff-ari-unknown",
       "title": "Staff: number of cases",
+      "sectionForEndSummaryPages": "InfectionsInYourSetting",
       "disableSingleComponentAsHeading": true,
       "components": [
         {
@@ -1119,6 +1189,9 @@
           "schema": {
             "min": 0,
             "max": 999
+          },
+          "options": {
+            "summaryTitle": "Staff: confirmed positive flu test results"
           }
         },
         {
@@ -1131,6 +1204,7 @@
             "max": 999
           },
           "options": {
+            "summaryTitle": "Staff: negative COVID-19 test results",
             "required": false
           }
         },
@@ -1140,7 +1214,8 @@
           "title": "How many staff have been tested for flu?",
           "hint": "If none, enter 0",
           "options": {
-            "required": false
+            "required": false,
+            "summaryTitle": "Staff: negative flu test results"
           },
           "schema": {
             "min": 0,
@@ -1157,6 +1232,7 @@
     {
       "path": "/staff-ari-confirmed",
       "title": "Staff: number of cases",
+      "sectionForEndSummaryPages": "InfectionsInYourSetting",
       "components": [
         {
           "name": "StaffSymptomsNotTested",
@@ -1166,6 +1242,9 @@
           "schema": {
             "min": 0,
             "max": 999
+          },
+          "options": {
+            "summaryTitle": "Staff: with symptoms, but not tested"
           }
         },
         {
@@ -1178,7 +1257,8 @@
             "max": 999
           },
           "options": {
-            "required": false
+            "required": false,
+            "summaryTitle": "Staff: negative COVID-19 test results"
           }
         },
         {
@@ -1187,7 +1267,8 @@
           "title": "How many staff have been tested for flu?",
           "hint": "If none, enter 0",
           "options": {
-            "required": false
+            "required": false,
+            "summaryTitle": "Staff: negative flu test results"
           },
           "schema": {
             "min": 0,
@@ -1252,10 +1333,13 @@
     {
       "path": "/cases-of-flu",
       "title": "How many cases are you reporting?",
+      "sectionForEndSummaryPages": "InfectionsInYourSetting",
       "components": [
         {
           "name": "NumberOfCasesOfFlu",
-          "options": {},
+          "options": {
+            "summaryTitle": "Flu: number of cases"
+          },
           "type": "RadiosField",
           "nameHasError": false,
           "title": "How many cases are you reporting?",
@@ -1279,10 +1363,13 @@
     {
       "path": "/single-case-of-flu",
       "title": "Who has the case of flu?",
+      "sectionForEndSummaryPages": "InfectionsInYourSetting",
       "components": [
         {
           "name": "SingleCaseOfFluServiceOrStaff",
-          "options": {},
+          "options": {
+            "summaryTitle": "Who has the flu?"
+          },
           "type": "RadiosField",
           "nameHasError": false,
           "title": "Who has the case of flu?",
@@ -1298,17 +1385,20 @@
           "condition": "SingleCaseOfFluServiceOrStaff:ServiceUser"
         },
         {
-          "path": "/vaccination"
+          "path": "/contact-details"
         }
       ]
     },
     {
       "path": "/service-users-flu",
       "title": "Service users: number of cases",
+      "sectionForEndSummaryPages": "InfectionsInYourSetting",
       "components": [
         {
           "name": "ServiceUsersFluSwabTest",
-          "options": {},
+          "options": {
+            "summaryTitle": "Service users: confirmed positive flu test results"
+          },
           "type": "NumberField",
           "schema": {
             "min": 0,
@@ -1321,7 +1411,8 @@
         {
           "name": "ServiceUsersChestInfection",
           "options": {
-            "required": false
+            "required": false,
+            "summaryTitle": "Service users: diagnosed with a chest infection by a GP"
           },
           "type": "NumberField",
           "schema": {
@@ -1334,7 +1425,9 @@
         },
         {
           "name": "ServiceUsersSymptomsNotTested",
-          "options": {},
+          "options": {
+            "summaryTitle": "Service users: with symptoms, but not tested"
+          },
           "type": "NumberField",
           "schema": {
             "min": 0,
@@ -1347,7 +1440,8 @@
         {
           "name": "ServiceUsersChestInfectionCovid19",
           "options": {
-            "required": false
+            "required": false,
+            "summaryTitle": "Service users: negative COVID-19 test results"
           },
           "type": "NumberField",
           "schema": {
@@ -1372,6 +1466,7 @@
     {
       "path": "/staff-flu",
       "title": "Staff: number of cases",
+      "sectionForEndSummaryPages": "InfectionsInYourSetting",
       "components": [
         {
           "type": "Para",
@@ -1380,7 +1475,9 @@
 
         {
           "name": "StaffFluSwabTest",
-          "options": {},
+          "options": {
+            "summaryTitle": "Staff: confirmed positive flu test results"
+          },
           "type": "NumberField",
           "schema": {
             "min": 0,
@@ -1393,7 +1490,8 @@
         {
           "name": "StaffSymptomsNotTested",
           "options": {
-            "required": false
+            "required": false,
+            "summaryTitle": "Staff: with symptoms, but not tested"
           },
           "type": "NumberField",
           "schema": {
@@ -1407,7 +1505,8 @@
         {
           "name": "StaffChestInfectionCovid19",
           "options": {
-            "required": false
+            "required": false,
+            "summaryTitle": "Staff: negative COVID-19 test results"
           },
           "type": "NumberField",
           "schema": {
@@ -1428,6 +1527,7 @@
     {
       "path": "/symptom-onset-flu",
       "title": "Symptom onset for the case of flu",
+      "sectionForEndSummaryPages": "SymptomOnset",
       "components": [
         {
           "name": "intro",
@@ -1437,7 +1537,8 @@
         {
           "name": "FluSymptomOnsetDate",
           "options": {
-            "maxDaysInFuture": "0"
+            "maxDaysInFuture": "0",
+            "summaryTitle": "Symptoms started"
           },
           "type": "DatePartsField",
           "nameHasError": false,
@@ -1450,17 +1551,20 @@
       ],
       "next": [
         {
-          "path": "/vaccination"
+          "path": "/contact-details"
         }
       ]
     },
     {
       "path": "/flu-severity",
       "title": "Severity of the case of flu",
+      "sectionForEndSummaryPages": "InfectionsInYourSetting",
       "components": [
         {
           "name": "SingleCaseOfFluSeverityCalledGP",
-          "options": {},
+          "options": {
+            "summaryTitle": "Have called the GP about"
+          },
           "type": "RadiosField",
           "list": "YesNo",
           "nameHasError": false,
@@ -1471,7 +1575,9 @@
         },
         {
           "name": "SingleCaseOfFluSeverityHospitalised",
-          "options": {},
+          "options": {
+            "summaryTitle": "Has been hospitalised"
+          },
           "type": "RadiosField",
           "list": "YesNo",
           "nameHasError": false,
@@ -1482,7 +1588,9 @@
         },
         {
           "name": "SingleCaseOfFluSeverityDeath",
-          "options": {},
+          "options": {
+            "summaryTitle": "Has died"
+          },
           "type": "RadiosField",
           "list": "YesNo",
           "nameHasError": false,
@@ -1501,11 +1609,13 @@
     {
       "path": "/vaccination",
       "title": "Vaccination among your service users and staff",
+      "sectionForEndSummaryPages": "Vaccinations",
       "components": [
         {
           "name": "ServiceUsersCovid19Vaccination",
           "options": {
-            "required": false
+            "required": false,
+            "summaryTitle": "Service users: up to date with COVID-19 vaccinations"
           },
           "type": "NumberField",
           "nameHasError": false,
@@ -1521,7 +1631,8 @@
         {
           "name": "ServiceUsersFluVaccination",
           "options": {
-            "required": false
+            "required": false,
+            "summaryTitle": "Service users: had the current seasonal flu vaccine "
           },
           "type": "NumberField",
           "nameHasError": false,
@@ -1537,7 +1648,8 @@
         {
           "name": "ServiceUsersRSVVaccination",
           "options": {
-            "required": false
+            "required": false,
+            "summaryTitle": "Service users: had the respiratory syncytial virus (RSV) vaccine"
           },
           "type": "NumberField",
           "nameHasError": false,
@@ -1553,7 +1665,8 @@
         {
           "name": "StaffCovid19Vaccination",
           "options": {
-            "required": false
+            "required": false,
+            "summaryTitle": "Staff: up to date with COVID-19 vaccinations"
           },
           "type": "NumberField",
           "nameHasError": false,
@@ -1569,7 +1682,8 @@
         {
           "name": "StaffFluVaccination",
           "options": {
-            "required": false
+            "required": false,
+            "summaryTitle": "Staff: had the current seasonal flu vaccine"
           },
           "type": "NumberField",
           "nameHasError": false,
@@ -1592,6 +1706,7 @@
     {
       "path": "/other-ari-confirmed-cases-setting",
       "title": "Who has an acute respiratory infection?",
+      "sectionForEndSummaryPages": "InfectionsInYourSetting",
       "components": [
         {
           "type": "Para",
@@ -1604,6 +1719,7 @@
           "hint": "You can select more than one option",
           "list": "ServiceOrStaffMultiple",
           "options": {
+            "summaryTitle": "Who has the infection",
             "required": true
           }
         }
@@ -1621,6 +1737,7 @@
     {
       "path": "/ari-confirmed-cases-setting",
       "title": "Who has an acute respiratory infection?",
+      "sectionForEndSummaryPages": "InfectionsInYourSetting",
       "components": [
         {
           "type": "Para",
@@ -1633,6 +1750,7 @@
           "hint": "You can select more than one option",
           "list": "ServiceOrStaffMultiple",
           "options": {
+            "summaryTitle": "Who has the infection",
             "required": true
           }
         }
@@ -2060,10 +2178,13 @@
     {
       "path": "/ipc",
       "title": "Infection prevention and control (IPC) and outbreak management in your setting",
+      "sectionForEndSummaryPages": "IPC",
       "components": [
         {
           "name": "IPCPractices",
-          "options": {},
+          "options": {
+            "summaryTitle": "How often you monitor staff IPC practices"
+          },
           "type": "RadiosField",
           "nameHasError": false,
           "title": "How often do you monitor staff infection prevention and control practices?",
@@ -2075,7 +2196,9 @@
         },
         {
           "name": "Issues",
-          "options": {},
+          "options": {
+            "summaryTitle": "Issues you need support with"
+          },
           "type": "CheckboxesField",
           "nameHasError": false,
           "title": "What issues do you currently need support with?",
@@ -2087,7 +2210,9 @@
         },
         {
           "name": "AGPs",
-          "options": {},
+          "options": {
+            "summaryTitle": "Your setting undertakes aerosol generating procedures"
+          },
           "type": "RadiosField",
           "list": "YesNo",
           "nameHasError": false,
@@ -2100,6 +2225,7 @@
         {
           "name": "MediaInterest",
           "options": {
+            "summaryTitle": "Media interest",
             "required": false
           },
           "type": "RadiosField",
@@ -2124,6 +2250,7 @@
     {
       "path": "/flu-severity-multiple-cases",
       "title": "Severity of illness in this outbreak",
+      "sectionForEndSummaryPages": "InfectionsInYourSetting",
       "components": [
         {
           "type": "Para",
@@ -2131,7 +2258,9 @@
         },
         {
           "name": "FluSeverityCalledGPMultipleCases",
-          "options": {},
+          "options": {
+            "summaryTitle": "People you have called the GP about"
+          },
           "type": "RadiosField",
           "nameHasError": false,
           "title": "How many service users have you called the GP about because of the severity of illness in this outbreak?",
@@ -2145,6 +2274,7 @@
           "title": "How many service users or staff have been given antibiotics for their respiratory symptoms?",
           "type": "NumberField",
           "options": {
+            "summaryTitle": "People who have been given antibiotics",
             "required": false,
             "customValidationMessages": {
               "number.min": "The number of service users or staff that have been given antibiotics for their respiratory symptoms must be 999 or fewer",
@@ -2158,7 +2288,9 @@
         },
         {
           "name": "FluSeverityHospitalisedMultipleCases",
-          "options": {},
+          "options": {
+            "summaryTitle": "People who have been hospitalised"
+          },
           "type": "RadiosField",
           "nameHasError": false,
           "title": "How many service users or staff have been hospitalised because of an acute respiratory infection in this outbreak?",
@@ -2169,7 +2301,9 @@
         },
         {
           "name": "FluSeverityDeathMultipleCases",
-          "options": {},
+          "options": {
+            "summaryTitle": "People who have died"
+          },
           "type": "RadiosField",
           "nameHasError": false,
           "title": "How many service users or staff have died because of an acute respiratory infection in this outbreak?",
@@ -2184,7 +2318,9 @@
           "type": "RadiosField",
           "nameHasError": false,
           "list": "FluSeveritySpecificArea",
-          "options": {},
+          "options": {
+            "summaryTitle": "Cases linked to specific area"
+          },
           "schema": {},
           "values": {
             "type": "listRef"
@@ -2204,6 +2340,7 @@
     {
       "path": "/service-users-covid",
       "title": "Service users: number of cases",
+      "sectionForEndSummaryPages": "InfectionsInYourSetting",
       "components": [
         {
           "type": "NumberField",
@@ -2211,7 +2348,8 @@
           "title": "How many service users have COVID-19 confirmed by a positive test?",
           "hint": "Include those who are currently in hospital or on visits out<br>If none, enter 0",
           "options": {
-            "required": true
+            "required": true,
+            "summaryTitle": "Service users: confirmed positive COVID-19 test results"
           },
           "schema": {
             "min": 0
@@ -2223,7 +2361,8 @@
           "title": "How many service users have symptoms of an acute respiratory infection, but have not been tested for any infection?",
           "hint": "Include those who are currently in hospital or on visits out<br>If none, enter 0",
           "options": {
-            "required": true
+            "required": true,
+            "summaryTitle": "Service users: with symptoms, but not tested"
           },
           "schema": {
             "min": 0
@@ -2300,6 +2439,7 @@
     {
       "path": "/staff-covid",
       "title": "Staff: number of cases",
+      "sectionForEndSummaryPages": "InfectionsInYourSetting",
       "components": [
         {
           "type": "Para",
@@ -2311,7 +2451,8 @@
           "title": "How many staff have COVID-19 confirmed by a positive test?",
           "hint": "Include those who are currently in hospital<br>If none, enter 0",
           "options": {
-            "required": true
+            "required": true,
+            "summaryTitle": "Staff: confirmed positive COVID-19 test results"
           },
           "schema": {
             "min": 0
@@ -2323,7 +2464,8 @@
           "title": "How many staff have symptoms of an acute respiratory infection, but have not been tested for any infection?",
           "hint": "Include those who are currently in hospital<br>If none, enter 0",
           "options": {
-            "required": true
+            "required": true,
+            "summaryTitle": "Staff: with symptoms, but not tested"
           },
           "schema": {
             "min": 0
@@ -2514,6 +2656,7 @@
     {
       "path": "/severity-of-illness",
       "title": "Severity of illness in this outbreak",
+      "sectionForEndSummaryPages": "InfectionsInYourSetting",
       "components": [
         {
           "name": "severityIntro",
@@ -2527,7 +2670,8 @@
           "title": "How many service users have you called the GP about because of the severity of illness in this outbreak?",
           "list": "CaseNumbers",
           "options": {
-            "required": true
+            "required": true,
+            "summaryTitle": "People you have called the GP about"
           }
         },
         {
@@ -2536,7 +2680,8 @@
           "title": "How many service users or staff have been hospitalised because of an acute respiratory infection in this outbreak?",
           "list": "CaseNumbers",
           "options": {
-            "required": true
+            "required": true,
+            "summaryTitle": "People who have been hospitalised"
           }
         },
         {
@@ -2545,7 +2690,8 @@
           "title": "How many service users or staff have died because of an acute respiratory infection in this outbreak?",
           "list": "CaseNumbers",
           "options": {
-            "required": true
+            "required": true,
+            "summaryTitle": "People who have died"
           }
         }
       ],
@@ -2558,6 +2704,7 @@
     {
       "path": "/severity-of-illness-unknown",
       "title": "Severity of illness in this outbreak",
+      "sectionForEndSummaryPages": "InfectionsInYourSetting",
       "components": [
         {
           "name": "SeverityGPCalls",
@@ -2565,7 +2712,8 @@
           "title": "How many service users have you called the GP about because of the severity of illness in this outbreak?",
           "list": "CaseNumbers",
           "options": {
-            "required": true
+            "required": true,
+            "summaryTitle": "People you have called the GP about"
           }
         },
         {
@@ -2573,6 +2721,7 @@
           "title": "How many service users or staff have been given antibiotics for their respiratory symptoms?",
           "type": "NumberField",
           "options": {
+            "summaryTitle": "People who have been given antibiotics",
             "required": false,
             "customValidationMessages": {
               "number.min": "The number of service users or staff that have been given antibiotics for their respiratory symptoms must be 999 or fewer",
@@ -2590,6 +2739,7 @@
           "title": "How many service users or staff have been hospitalised because of an acute respiratory infection in this outbreak?",
           "list": "CaseNumbers",
           "options": {
+            "summaryTitle": "People who have been hospitalised",
             "required": true
           }
         },
@@ -2599,6 +2749,7 @@
           "title": "How many service users or staff have died because of an acute respiratory infection in this outbreak?",
           "list": "CaseNumbers",
           "options": {
+            "summaryTitle": "People who have died",
             "required": true
           }
         },
@@ -2608,7 +2759,9 @@
           "type": "RadiosField",
           "nameHasError": false,
           "list": "FluSeveritySpecificArea",
-          "options": {},
+          "options": {
+            "summaryTitle": "Cases linked to specific area"
+          },
           "schema": {},
           "values": {
             "type": "listRef"
@@ -2624,6 +2777,7 @@
     {
       "path": "/symptom-onset",
       "title": "Symptom onset of cases in this outbreak",
+      "sectionForEndSummaryPages": "SymptomOnset",
       "components": [
         {
           "name": "introText1",
@@ -2643,6 +2797,7 @@
           "title": "When did symptoms start in the first case in this outbreak?",
           "hint": "For example, 31 3 2024",
           "options": {
+            "summaryTitle": "First case: symptoms started",
             "required": true,
             "maxDaysInFuture": "0"
           }
@@ -2653,6 +2808,7 @@
           "title": "When did symptoms start in the most recent case in this outbreak?",
           "hint": "For example, 31 3 2024",
           "options": {
+            "summaryTitle": "Most recent case: symptoms started",
             "required": true,
             "maxDaysInFuture": "0"
           }
@@ -2667,10 +2823,13 @@
     {
       "path": "/agps",
       "title": "Do staff carrying out aerosol generating procedures (AGPs) wear fit-tested FFP3 masks?",
+      "sectionForEndSummaryPages": "IPC",
       "components": [
         {
           "name": "FFP3Masks",
-          "options": {},
+          "options": {
+            "summaryTitle": "Staff wear fit-tested FFP3 masks"
+          },
           "type": "RadiosField",
           "nameHasError": false,
           "title": "Do staff carrying out aerosol generating procedures (AGPs) wear fit-tested FFP3 masks?",
@@ -2689,10 +2848,13 @@
     {
       "path": "/agency-staff",
       "title": "Do you use agency staff or share staff with other care settings?",
+      "sectionForEndSummaryPages": "Staffing",
       "components": [
         {
           "name": "AgencyStaff",
-          "options": {},
+          "options": {
+            "summaryTitle": "You use agency staff or share staff with other settings"
+          },
           "type": "RadiosField",
           "list": "YesNo",
           "nameHasError": false,
@@ -2704,7 +2866,7 @@
       ],
       "next": [
         {
-          "path": "/setting-details",
+          "path": "/contact-details",
           "condition": "AgencyStaff:No"
         },
         {
@@ -2715,10 +2877,13 @@
     {
       "path": "/additional-staff",
       "title": "How many additional agency staff or staff from other care settings have you used during this outbreak?",
+      "sectionForEndSummaryPages": "Staffing",
       "components": [
         {
           "name": "AdditionalStaff",
-          "options": {},
+          "options": {
+            "summaryTitle": "Agency staff or staff from other settings"
+          },
           "type": "RadiosField",
           "nameHasError": false,
           "title": "How many additional agency staff or staff from other care settings have you used during this outbreak?",
@@ -2730,17 +2895,19 @@
       ],
       "next": [
         {
-          "path": "/setting-details"
+          "path": "/contact-details"
         }
       ]
     },
     {
       "path": "/setting-details",
       "title": "Setting details",
+      "sectionForEndSummaryPages": "SettingDetails",
       "components": [
         {
           "name": "SettingName",
           "options": {
+            "summaryTitle": "Setting name",
             "customValidationMessages": {
               "string.empty": "Enter your setting name",
               "string.base": "Enter your setting name"
@@ -2749,6 +2916,7 @@
           "type": "TextField",
           "nameHasError": false,
           "title": "Your setting name",
+
           "hint": "The name of the setting where the cases are located, not the management company",
           "values": {
             "type": "listRef"
@@ -2757,6 +2925,7 @@
         {
           "name": "SettingPostcode",
           "options": {
+            "summaryTitle": "Setting postcode",
             "customValidationMessages": {
               "string.empty": "Enter postcode",
               "string.pattern.base": "Enter a full UK postcode"
@@ -2773,6 +2942,7 @@
         {
           "name": "HPT",
           "options": {
+            "summaryTitle": "Local UKHSA health protection team",
             "required": true,
             "customValidationMessages": {
               "string.empty": "Select your local UKHSA health protection team",
@@ -2798,6 +2968,7 @@
         {
           "name": "CQCRegistered",
           "options": {
+            "summaryTitle": "Registered with the Care Quality Commission (CQC)",
             "customValidationMessages": {
               "any.required": "Select yes if your setting is registered with the Care Quality Commission (CQC)"
             },
@@ -2806,7 +2977,9 @@
                 "type": "TextField",
                 "name": "CQCLocationID",
                 "title": "Enter your CQC location ID, for example, 1-123456789",
+                "sectionForEndSummaryPages": "SettingDetails",
                 "options": {
+                  "summaryTitle": "CQC location ID",
                   "customValidationMessages": {
                     "string.empty": "CQC location ID cannot be blank",
                     "string.pattern.base": "Enter a CQC location ID in the correct format"
@@ -2836,13 +3009,14 @@
       ],
       "next": [
         {
-          "path": "/contact-details"
+          "path": "/positive-ari"
         }
       ]
     },
     {
       "path": "/contact-details",
       "title": "Contact details",
+      "sectionForEndSummaryPages": "ContactDetails",
       "components": [
         {
           "name": "heading1",
@@ -2855,7 +3029,9 @@
         },
         {
           "name": "MainContactName",
-          "options": {},
+          "options": {
+            "summaryTitle": "Main contact"
+          },
           "type": "TextField",
           "nameHasError": false,
           "title": "Full name",
@@ -2866,7 +3042,8 @@
         {
           "name": "MainContactJobTitle",
           "options": {
-            "required": false
+            "required": false,
+            "summaryTitle": "Job title"
           },
           "type": "TextField",
           "nameHasError": false,
@@ -2878,7 +3055,9 @@
         },
         {
           "name": "MainContactPhoneNumber",
-          "options": {},
+          "options": {
+            "summaryTitle": "Phone number"
+          },
           "type": "TextField",
           "nameHasError": false,
           "title": "Phone number",
@@ -2889,7 +3068,8 @@
         {
           "name": "MainContactEmailAddress",
           "options": {
-            "exposeToContext": true
+            "exposeToContext": true,
+            "summaryTitle": "Email address"
           },
           "type": "TextField",
           "nameHasError": false,
@@ -2910,7 +3090,8 @@
         {
           "name": "AltContactName",
           "options": {
-            "required": false
+            "required": false,
+            "summaryTitle": "Additional contact"
           },
           "type": "TextField",
           "nameHasError": false,
@@ -2922,7 +3103,8 @@
         {
           "name": "AltContactJobTitle",
           "options": {
-            "required": false
+            "required": false,
+            "summaryTitle": "Additional contact’s job title"
           },
           "type": "TextField",
           "nameHasError": false,
@@ -2935,7 +3117,8 @@
         {
           "name": "AltContactPhoneNumber",
           "options": {
-            "required": false
+            "required": false,
+            "summaryTitle": "Additional phone number"
           },
           "type": "TextField",
           "nameHasError": false,
@@ -2947,7 +3130,8 @@
         {
           "name": "AltContactEmailAddress",
           "options": {
-            "required": false
+            "required": false,
+            "summaryTitle": "Additional email address"
           },
           "type": "TextField",
           "nameHasError": false,
@@ -2966,10 +3150,13 @@
     {
       "path": "/service-users",
       "title": "Service users and staff",
+      "sectionForEndSummaryPages": "ServiceUsersAndStaff",
       "components": [
         {
           "name": "ServiceUsersTypes",
-          "options": {},
+          "options": {
+            "summaryTitle": "The majority of your service users"
+          },
           "type": "CheckboxesField",
           "nameHasError": false,
           "title": "Select the options that best describe the majority of your service users",
@@ -2981,7 +3168,9 @@
         },
         {
           "name": "ServiceUsersCurrentlyLive",
-          "options": {},
+          "options": {
+            "summaryTitle": "People that live in your setting or use your service"
+          },
           "type": "NumberField",
           "nameHasError": false,
           "schema": {
@@ -2994,7 +3183,9 @@
         },
         {
           "name": "StaffNumber",
-          "options": {},
+          "options": {
+            "summaryTitle": "Staff that work in your care setting or service"
+          },
           "type": "NumberField",
           "schema": {
             "min": 0,
@@ -3005,7 +3196,7 @@
         },
         {
           "name": "EmptyBeds",
-          "options": { "required": false },
+          "options": { "required": false, "summaryTitle": "Empty beds" },
           "type": "NumberField",
           "schema": {
             "min": 0,
@@ -3024,17 +3215,14 @@
     },
     {
       "path": "/summary",
-      "controller": "./pages/summary.js",
+      "controller": "CustomSummaryPageController",
       "title": "Check your answers before sending your report",
-      "components": [
-        {
-          "name": "nMOTrx",
-          "options": {},
-          "type": "Para",
-          "content": "<style>.container{font-family:system-ui,-apple-system,sans-serif;max-width:800px;margin:20px}.section{margin-bottom:30px}.section-title{font-weight:bold;margin:20px 0 15px;font-size:16px}.form-table{width:100%;border-collapse:collapse;border:1px solid #ddd;margin-bottom:20px}.form-table td{padding:12px 15px;border-bottom:1px solid #ddd}.label{font-weight:500;width:300px;vertical-align:top;line-height:1.4}.value{color:#333}.change-link{text-align:right;width:80px}.change-link a{color:#0066cc;text-decoration:none}.change-link a:hover{text-decoration:underline}.footer{background-color:#f9f9f9;padding:20px;border:1px solid #ddd;margin-top:30px;font-size:14px;line-height:1.5}</style><div class=\"container\"><div class=\"section\"><h3 class=\"section-title\">Setting details</h3><table class=\"form-table\"><tr><td class=\"label\">Your setting name</td><td class=\"value\">Belmont Care Home</td><td class=\"change-link\"><a href=\"#\">Change</a></td></tr><tr><td class=\"label\">Your setting postcode</td><td class=\"value\">TQ5 0AH</td><td class=\"change-link\"><a href=\"#\">Change</a></td></tr><tr><td class=\"label\">Your local UKHSA health protection team</td><td class=\"value\">South West Health Protection Team</td><td class=\"change-link\"><a href=\"#\">Change</a></td></tr><tr><td class=\"label\">Your Care Quality Commission (CQC) location ID</td><td class=\"value\">000001888</td><td class=\"change-link\"><a href=\"#\">Change</a></td></tr><tr><td class=\"label\">Type of adult social care you provide</td><td class=\"value\">Residential care home</td><td class=\"change-link\"><a href=\"#\">Change</a></td></tr></table></div><div class=\"section\"><h3 class=\"section-title\">Contact details</h3><table class=\"form-table\"><tr><td class=\"label\">Full name of contact person</td><td class=\"value\">Pat Deerfield</td><td class=\"change-link\"><a href=\"#\">Change</a></td></tr><tr><td class=\"label\">Job title of contact person</td><td class=\"value\">Manager</td><td class=\"change-link\"><a href=\"#\">Change</a></td></tr><tr><td class=\"label\">Telephone number</td><td class=\"value\">07451300300</td><td class=\"change-link\"><a href=\"#\">Change</a></td></tr><tr><td class=\"label\">Email address</td><td class=\"value\">Pat@cov.com</td><td class=\"change-link\"><a href=\"#\">Change</a></td></tr></table></div><div class=\"section\"><h3 class=\"section-title\">Infections you are reporting</h3><table class=\"form-table\"><tr><td class=\"label\">Acute respiratory infections you are reporting</td><td class=\"value\">Flu</td><td class=\"change-link\"><a href=\"#\">Change</a></td></tr><tr><td class=\"label\">Number of cases of Flu you are reporting</td><td class=\"value\">2 or more</td><td class=\"change-link\"><a href=\"#\">Change</a></td></tr><tr><td class=\"label\">Symptoms in 2 or more cases of Flu started within 5 days of each other</td><td class=\"value\">Yes</td><td class=\"change-link\"><a href=\"#\">Change</a></td></tr><tr><td class=\"label\">You think the cases of Flu could be linked by spread in your setting</td><td class=\"value\">Yes</td><td class=\"change-link\"><a href=\"#\">Change</a></td></tr><tr><td class=\"label\">At least one case of Flu has been confirmed by a positive test</td><td class=\"value\">Yes</td><td class=\"change-link\"><a href=\"#\">Change</a></td></tr></table></div><div class=\"section\"><h3 class=\"section-title\">Service users and staff</h3><table class=\"form-table\"><tr><td class=\"label\">How would you describe the majority of your service users</td><td class=\"value\">Service users, staff</td><td class=\"change-link\"><a href=\"#\">Change</a></td></tr><tr><td class=\"label\">Number of people that currently live in your setting or use your service</td><td class=\"value\">27</td><td class=\"change-link\"><a href=\"#\">Change</a></td></tr><tr><td class=\"label\">Number of staff that work in your care setting or service</td><td class=\"value\">7</td><td class=\"change-link\"><a href=\"#\">Change</a></td></tr><tr><td class=\"label\">Number of empty beds (optional)</td><td class=\"value\">3</td><td class=\"change-link\"><a href=\"#\">Change</a></td></tr></table></div><div class=\"section\"><h3 class=\"section-title\">Flu in your setting</h3><table class=\"form-table\"><tr><td class=\"label\">You are reporting cases or symptoms of Flu in service users or staff</td><td class=\"value\">2</td><td class=\"change-link\"><a href=\"#\">Change</a></td></tr><tr><td class=\"label\">Number of service users who have Flu confirmed by a test</td><td class=\"value\">5</td><td class=\"change-link\"><a href=\"#\">Change</a></td></tr><tr><td class=\"label\">Number of service users who have symptoms of an acute respiratory infection, but have not been tested for Flu</td><td class=\"value\">5</td><td class=\"change-link\"><a href=\"#\">Change</a></td></tr><tr><td class=\"label\">Number of staff members who have Flu confirmed by a test</td><td class=\"value\">1</td><td class=\"change-link\"><a href=\"#\">Change</a></td></tr><tr><td class=\"label\">Number of staff who have symptoms of an acute respiratory infection, but have not been tested for Flu</td><td class=\"value\">2</td><td class=\"change-link\"><a href=\"#\">Change</a></td></tr><tr><td class=\"label\">Date symptoms started in the first case of Flu</td><td class=\"value\">02 August 2024</td><td class=\"change-link\"><a href=\"#\">Change</a></td></tr><tr><td class=\"label\">Date symptoms started in the second case of Flu (optional)</td><td class=\"value\">N/A</td><td class=\"change-link\"><a href=\"#\">Change</a></td></tr><tr><td class=\"label\">Date symptoms started in the most recent case of Flu</td><td class=\"value\">10 August 2024</td><td class=\"change-link\"><a href=\"#\">Change</a></td></tr></table></div><div class=\"section\"><h3 class=\"section-title\">Vaccination among your staff and service users</h3><table class=\"form-table\"><tr><td class=\"label\">Number of service users who have had the flu vaccine for this current winter season (optional)</td><td class=\"value\">20</td><td class=\"change-link\"><a href=\"#\">Change</a></td></tr><tr><td class=\"label\">Number of staff who have had the flu vaccine for this current winter season (optional)</td><td class=\"value\">6</td><td class=\"change-link\"><a href=\"#\">Change</a></td></tr></table></div><div class=\"section\"><h3 class=\"section-title\">Infection prevention and control (IPC) and outbreak management in your setting</h3><table class=\"form-table\"><tr><td class=\"label\">How often are you monitoring staff IPC practices</td><td class=\"value\">Within the last month</td><td class=\"change-link\"><a href=\"#\">Change</a></td></tr><tr><td class=\"label\">Issues you are currently experiencing and need support with</td><td class=\"value\">Test kit supply</td><td class=\"change-link\"><a href=\"#\">Change</a></td></tr><tr><td class=\"label\">Your setting undertakes aerosol generating procedures (AGPs)</td><td class=\"value\">Yes</td><td class=\"change-link\"><a href=\"#\">Change</a></td></tr><tr><td class=\"label\">Staff carrying out aerosol generating procedures, wear fit-tested and FFP3 masks</td><td class=\"value\">All</td><td class=\"change-link\"><a href=\"#\">Change</a></td></tr></table></div><div class=\"section\"><h3 class=\"section-title\">Staffing</h3><table class=\"form-table\"><tr><td class=\"label\">You use agency staff or share staff with other care settings</td><td class=\"value\">Yes</td><td class=\"change-link\"><a href=\"#\">Change</a></td></tr><tr><td class=\"label\">Number of additional agency staff or staff shared with settings you have used during this outbreak</td><td class=\"value\">Fewer than 5</td><td class=\"change-link\"><a href=\"#\">Change</a></td></tr></table></div><h3>Now send your report</h3><p>Your responses may be shared with your local UKHSA health protection team, your local authority community infection control team, and the NHS. They will use your information to help you to manage your situation.</p><p>By submitting this report you confirm that the details you are providing are correct to the best of your knowledge. You confirm that you have not included any personally identifiable information, for example names or dates of birth.</p></div>",
-          "schema": {}
+      "options": {
+        "customText": {
+          "insetText": "You will only see answers to questions that are relevant to your report.",
+          "endContent": "<h2 class='govuk-heading-m'>Now send your report</h2><p class='govuk-body'>Your responses will be shared with your local health protection teams. They will use your information to help you manage your situation. <br><br>By submitting this report you confirm that the details are correct to the best of your knowledge. You confirm that you have not included any personally identifiable information for service users or staff, for example names or dates of birth. </p>"
         }
-      ],
+      },
       "next": []
     }
   ],
@@ -3446,6 +3634,34 @@
     }
   ],
   "sections": [
+    {
+      "name": "Staffing",
+      "title": "Staffing"
+    },
+    {
+      "name": "IPC",
+      "title": "Infection prevention and control (IPC) and outbreak management in your setting"
+    },
+    {
+      "name": "ServiceUsersAndStaff",
+      "title": "Service users and staff"
+    },
+    {
+      "name": "Vaccinations",
+      "title": "Vaccinations"
+    },
+    {
+      "name": "SymptomOnset",
+      "title": "Symptom onset"
+    },
+    {
+      "name": "ContactDetails",
+      "title": "Contact details"
+    },
+    {
+      "name": "SettingDetails",
+      "title": "Setting details"
+    },
     {
       "name": "AcuteInfections",
       "title": "Acute respiratory infections in your setting"
@@ -5563,7 +5779,6 @@
   ],
   "version": 2,
   "skipSummary": false,
-  "declaration": "<br class=\"govuk-prose-scope\">\n  <p class=\"govuk-body\">Your responses may be shared with your local UKHSA health protection team, your local authority community infection control team, and the NHS. They will use your information to help you to manage your situation.</br>\n  <p class=\"govuk-body\">By submitting this report you confirm that the details you are providing are correct to the best of your knowledge. You confirm that you have not included any personally identifiable information, for example names or dates of birth</p>\n</div>\n",
   "name": "Report an outbreak",
   "feedback": {
     "feedbackForm": true,
