@@ -119,7 +119,6 @@ export class CustomSummaryPageController extends PageController {
     return async (request: HapiRequest, h: HapiResponseToolkit) => {
       const { payService, cacheService } = request.services([]);
       const model = this.model;
-      console.log("model", model);
       const state = await cacheService.getState(request);
       const summaryViewModel = new SummaryViewModel(
         this.title,
