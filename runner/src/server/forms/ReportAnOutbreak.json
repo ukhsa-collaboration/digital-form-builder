@@ -120,7 +120,6 @@
           "nameHasError": false,
           "title": "Which acute respiratory infections do you have a positive test result for? ",
           "list": "InfectionTypes",
-          "hint": "You can select more than one option",
           "values": {
             "type": "listRef"
           }
