@@ -177,7 +177,10 @@
     }
   ],
   "jwtKey": "${jwtKey}",
-
+  "feedback": {
+    "feedbackForm": true,
+    "url": "/feedback"
+  },
   "version": 2,
   "conditions": []
 }
