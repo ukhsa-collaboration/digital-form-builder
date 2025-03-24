@@ -407,7 +407,6 @@
           },
           "options": {
             "summaryTitle": "Service users: negative COVID-19 test results",
-            "summaryTitle": "Service users: negative COVID-19 test results",
             "required": false,
             "customValidationMessages": {
               "number.max": "The number of service users that have been tested for COVID-19 and had a negative test result must be between 0 and 999",
@@ -422,7 +421,6 @@
           "hint": "If none, enter 0",
           "options": {
             "required": false,
-            "summaryTitle": "Service users: negative flu test results",
             "summaryTitle": "Service users: negative flu test results",
             "customValidationMessages": {
               "number.max": "The number of service users that have been tested for flu and had a negative test result must be between 0 and 999",
@@ -469,7 +467,6 @@
     {
       "path": "/service-users-ari-adenovirus",
       "title": "Service users: number of adenovirus cases",
-      "sectionForEndSummaryPages": "InfectionsInYourSetting",
       "sectionForEndSummaryPages": "InfectionsInYourSetting",
       "disableSingleComponentAsHeading": true,
       "components": [
@@ -546,7 +543,6 @@
       "path": "/staff-ari-adenovirus",
       "title": "Staff: number of adenovirus cases",
       "sectionForEndSummaryPages": "InfectionsInYourSetting",
-      "sectionForEndSummaryPages": "InfectionsInYourSetting",
       "disableSingleComponentAsHeading": true,
       "components": [
         {
@@ -618,7 +614,6 @@
       "path": "/service-users-ari-hmpv",
       "title": "Service users: number of human Metapneumovirus (hMPV) cases",
       "sectionForEndSummaryPages": "InfectionsInYourSetting",
-      "sectionForEndSummaryPages": "InfectionsInYourSetting",
       "disableSingleComponentAsHeading": true,
       "components": [
         {
@@ -686,7 +681,6 @@
       "path": "/staff-ari-hmpv",
       "title": "Staff: number of human Metapneumovirus (hMPV) cases",
       "sectionForEndSummaryPages": "InfectionsInYourSetting",
-      "sectionForEndSummaryPages": "InfectionsInYourSetting",
       "disableSingleComponentAsHeading": true,
       "components": [
         {
@@ -750,7 +744,6 @@
       "path": "/service-users-ari-parainfluenza",
       "title": "Service users: number of parainfluenza cases",
       "sectionForEndSummaryPages": "InfectionsInYourSetting",
-      "sectionForEndSummaryPages": "InfectionsInYourSetting",
       "disableSingleComponentAsHeading": true,
       "components": [
         {
@@ -810,7 +803,6 @@
       "path": "/staff-ari-parainfluenza",
       "title": "Staff: number of parainfluenza cases",
       "sectionForEndSummaryPages": "InfectionsInYourSetting",
-      "sectionForEndSummaryPages": "InfectionsInYourSetting",
       "disableSingleComponentAsHeading": true,
       "components": [
         {
@@ -866,7 +858,6 @@
       "path": "/service-users-ari-rsv",
       "title": "Service users: number of Respiratory Syncytial Virus (RSV) cases",
       "sectionForEndSummaryPages": "InfectionsInYourSetting",
-      "sectionForEndSummaryPages": "InfectionsInYourSetting",
       "disableSingleComponentAsHeading": true,
       "components": [
         {
@@ -879,7 +870,7 @@
             "max": 999
           },
           "options": {
-          "summaryTitle": "Service users: confirmed positive Respiratory Syncytial Virus (RSV) test results",
+            "summaryTitle": "Service users: confirmed positive Respiratory Syncytial Virus (RSV) test results",
             "customValidationMessages": {
               "number.base": "Enter the number of service users that have tested positive for Respiratory Syncytial Virus (RSV)",
               "number.max": "The number of service users that have tested positive for Respiratory Syncytial Virus (RSV) must be between 0 and 999",
@@ -965,7 +956,6 @@
       "path": "/service-users-ari-rhinovirus",
       "title": "Service users: number of rhinovirus cases",
       "sectionForEndSummaryPages": "InfectionsInYourSetting",
-      "sectionForEndSummaryPages": "InfectionsInYourSetting",
       "disableSingleComponentAsHeading": true,
       "components": [
         {
@@ -978,7 +968,7 @@
             "max": 999
           },
           "options": {
-          "summaryTitle": "Service users: confirmed positive rhinovirus test results",
+            "summaryTitle": "Service users: confirmed positive rhinovirus test results",
             "customValidationMessages": {
               "number.base": "Enter the number of service users that have tested positive for rhinovirus",
               "number.max": "The number of service users that have tested positive for rhinovirus must be between 0 and 999",
@@ -1048,7 +1038,6 @@
       "path": "/service-users-ari-other",
       "title": "Service users: number of other acute respiratory infection cases",
       "sectionForEndSummaryPages": "InfectionsInYourSetting",
-      "sectionForEndSummaryPages": "InfectionsInYourSetting",
       "disableSingleComponentAsHeading": true,
       "components": [
         {
@@ -1061,7 +1050,7 @@
             "max": 999
           },
           "options": {
-          "summaryTitle": "Service users: confirmed positive other acute respiratory infection test results",
+            "summaryTitle": "Service users: confirmed positive other acute respiratory infection test results",
             "customValidationMessages": {
               "number.base": "Enter the number of service users that have tested positive for an other acute respiratory infection",
               "number.max": "The number of service users that have tested positive for an other acute respiratory infection must be between 0 and 999",
@@ -1083,7 +1072,6 @@
     {
       "path": "/staff-ari-other",
       "title": "Staff: number of other acute respiratory infection cases",
-      "sectionForEndSummaryPages": "InfectionsInYourSetting",
       "sectionForEndSummaryPages": "InfectionsInYourSetting",
       "disableSingleComponentAsHeading": true,
       "components": [
@@ -1115,7 +1103,6 @@
     {
       "path": "/service-users-ari-unknown",
       "title": "Service users: number of cases",
-      "sectionForEndSummaryPages": "InfectionsInYourSetting",
       "sectionForEndSummaryPages": "InfectionsInYourSetting",
       "disableSingleComponentAsHeading": true,
       "components": [
@@ -1149,7 +1136,6 @@
           "options": {
             "required": false,
             "summaryTitle": "Service users: negative COVID-19 test results",
-            "summaryTitle": "Service users: negative COVID-19 test results",
             "customValidationMessages": {
               "number.max": "The number of service users that have been tested for COVID-19 and had a negative test result must be between 0 and 999",
               "number.min": "The number of service users that have been tested for COVID-19 and had a negative test result must be between 0 and 999"
@@ -1163,7 +1149,6 @@
           "hint": "If none, enter 0",
           "options": {
             "required": false,
-            "summaryTitle": "Service users: negative flu test results",
             "summaryTitle": "Service users: negative flu test results",
             "customValidationMessages": {
               "number.max": "The number of service users that have been tested for flu and had a negative test result must be between 0 and 999",
@@ -1190,7 +1175,6 @@
       "path": "/staff-ari-unknown",
       "title": "Staff: number of cases",
       "sectionForEndSummaryPages": "InfectionsInYourSetting",
-      "sectionForEndSummaryPages": "InfectionsInYourSetting",
       "disableSingleComponentAsHeading": true,
       "components": [
         {
@@ -1207,7 +1191,7 @@
             "max": 999
           },
           "options": {
-          "summaryTitle": "Staff: confirmed positive flu test results",
+            "summaryTitle": "Staff: confirmed positive flu test results",
             "customValidationMessages": {
               "number.base": "Enter the number of staff that have symptoms of an acute respiratory infection, but have not been tested for any infection",
               "number.max": "The number of staff that have symptoms of an acute respiratory infection, but have not been tested for any infection must be between 0 and 999",
@@ -1226,7 +1210,6 @@
           },
           "options": {
             "summaryTitle": "Staff: negative COVID-19 test results",
-            "summaryTitle": "Staff: negative COVID-19 test results",
             "required": false,
             "customValidationMessages": {
               "number.max": "The number of staff that have been tested for COVID-19 and had a negative test result must be between 0 and 999",
@@ -1241,7 +1224,6 @@
           "hint": "If none, enter 0",
           "options": {
             "required": false,
-            "summaryTitle": "Staff: negative flu test results",
             "summaryTitle": "Staff: negative flu test results",
             "customValidationMessages": {
               "number.max": "The number of staff that have been tested for flu and had a negative test result must be between 0 and 999",
@@ -1263,7 +1245,6 @@
     {
       "path": "/staff-ari-confirmed",
       "title": "Staff: number of other cases",
-      "sectionForEndSummaryPages": "InfectionsInYourSetting",
       "sectionForEndSummaryPages": "InfectionsInYourSetting",
       "components": [
         {
@@ -1296,7 +1277,6 @@
           "options": {
             "required": false,
             "summaryTitle": "Staff: negative COVID-19 test results",
-            "summaryTitle": "Staff: negative COVID-19 test results",
             "customValidationMessages": {
               "number.max": "The number of staff that have been tested for COVID-19 and had a negative test result must be between 0 and 999",
               "number.min": "The number of staff that have been tested for COVID-19 and had a negative test result must be between 0 and 999"
@@ -1310,7 +1290,6 @@
           "hint": "If none, enter 0",
           "options": {
             "required": false,
-            "summaryTitle": "Staff: negative flu test results",
             "summaryTitle": "Staff: negative flu test results",
             "customValidationMessages": {
               "number.max": "The number of staff that have been tested for flu and had a negative test result must be between 0 and 999",
@@ -1381,13 +1360,9 @@
       "path": "/cases-of-flu",
       "title": "How many cases are you reporting?",
       "sectionForEndSummaryPages": "InfectionsInYourSetting",
-      "sectionForEndSummaryPages": "InfectionsInYourSetting",
       "components": [
         {
           "name": "NumberOfCasesOfFlu",
-          "options": {
-            "summaryTitle": "Flu: number of cases"
-          },
           "options": {
             "summaryTitle": "Flu: number of cases"
           },
@@ -1415,13 +1390,9 @@
       "path": "/single-case-of-flu",
       "title": "Who has the case of flu?",
       "sectionForEndSummaryPages": "InfectionsInYourSetting",
-      "sectionForEndSummaryPages": "InfectionsInYourSetting",
       "components": [
         {
           "name": "SingleCaseOfFluServiceOrStaff",
-          "options": {
-            "summaryTitle": "Who has the flu?"
-          },
           "options": {
             "summaryTitle": "Who has the flu?"
           },
@@ -1441,7 +1412,6 @@
         },
         {
           "path": "/contact-details"
-          "path": "/contact-details"
         }
       ]
     },
@@ -1449,12 +1419,10 @@
       "path": "/service-users-flu",
       "title": "Service users: number of cases",
       "sectionForEndSummaryPages": "InfectionsInYourSetting",
-      "sectionForEndSummaryPages": "InfectionsInYourSetting",
       "components": [
         {
           "name": "ServiceUsersFluSwabTest",
           "options": {
-            "summaryTitle": "Service users: confirmed positive flu test results",
             "summaryTitle": "Service users: confirmed positive flu test results",
             "customValidationMessages": {
               "number.base": "Enter the number of service users that have flu confirmed by a positive swab test",
@@ -1476,7 +1444,6 @@
           "options": {
             "required": false,
             "summaryTitle": "Service users: diagnosed with a chest infection by a GP",
-            "summaryTitle": "Service users: diagnosed with a chest infection by a GP",
             "customValidationMessages": {
               "number.max": "The number of service users that have been diagnosed with a chest infection by a GP must be between 0 and 999",
               "number.min": "The number of service users that have been diagnosed with a chest infection by a GP must be between 0 and 999"
@@ -1494,7 +1461,6 @@
         {
           "name": "ServiceUsersSymptomsNotTested",
           "options": {
-            "summaryTitle": "Service users: with symptoms, but not tested",
             "summaryTitle": "Service users: with symptoms, but not tested",
             "customValidationMessages": {
               "number.base": "Enter the number of service users that have symptoms of an acute respiratory infection, but have not been tested for any infection",
@@ -1515,7 +1481,6 @@
           "name": "ServiceUsersChestInfectionCovid19",
           "options": {
             "required": false,
-            "summaryTitle": "Service users: negative COVID-19 test results",
             "summaryTitle": "Service users: negative COVID-19 test results",
             "customValidationMessages": {
               "number.max": "The number of service users that have been tested for COVID-19 and had a negative test result must be between 0 and 999",
@@ -1546,7 +1511,6 @@
       "path": "/staff-flu",
       "title": "Staff: number of cases",
       "sectionForEndSummaryPages": "InfectionsInYourSetting",
-      "sectionForEndSummaryPages": "InfectionsInYourSetting",
       "components": [
         {
           "type": "Para",
@@ -1556,7 +1520,6 @@
         {
           "name": "StaffFluSwabTest",
           "options": {
-            "summaryTitle": "Staff: confirmed positive flu test results",
             "summaryTitle": "Staff: confirmed positive flu test results",
             "customValidationMessages": {
               "number.base": "Enter the number of staff that have flu confirmed by a positive swab test",
@@ -1578,7 +1541,6 @@
           "options": {
             "required": false,
             "summaryTitle": "Staff: with symptoms, but not tested",
-            "summaryTitle": "Staff: with symptoms, but not tested",
             "customValidationMessages": {
               "number.max": "The number of staff that have symptoms of an acute respiratory infection, but have not been tested for any infection must be between 0 and 999",
               "number.min": "The number of staff that have symptoms of an acute respiratory infection, but have not been tested for any infection must be between 0 and 999"
@@ -1597,7 +1559,6 @@
           "name": "StaffChestInfectionCovid19",
           "options": {
             "required": false,
-            "summaryTitle": "Staff: negative COVID-19 test results",
             "summaryTitle": "Staff: negative COVID-19 test results",
             "customValidationMessages": {
               "number.max": "The number of staff that have been tested for COVID-19 and had a negative test result must be between 0 and 999",
@@ -1624,7 +1585,6 @@
       "path": "/symptom-onset-flu",
       "title": "Symptom onset for the case of flu",
       "sectionForEndSummaryPages": "SymptomOnset",
-      "sectionForEndSummaryPages": "SymptomOnset",
       "components": [
         {
           "name": "intro",
@@ -1634,8 +1594,6 @@
         {
           "name": "FluSymptomOnsetDate",
           "options": {
-            "maxDaysInFuture": "0",
-            "summaryTitle": "Symptoms started"
             "maxDaysInFuture": "0",
             "summaryTitle": "Symptoms started"
           },
@@ -1651,7 +1609,6 @@
       "next": [
         {
           "path": "/contact-details"
-          "path": "/contact-details"
         }
       ]
     },
@@ -1659,12 +1616,10 @@
       "path": "/flu-severity",
       "title": "Severity of the case of flu",
       "sectionForEndSummaryPages": "InfectionsInYourSetting",
-      "sectionForEndSummaryPages": "InfectionsInYourSetting",
       "components": [
         {
           "name": "SingleCaseOfFluSeverityCalledGP",
           "options": {
-            "summaryTitle": "Have called the GP about",
             "summaryTitle": "Have called the GP about",
             "customValidationMessages": {
               "any.required": "Select yes if you have called the GP because of the severity of illness"
@@ -1682,7 +1637,6 @@
           "name": "SingleCaseOfFluSeverityHospitalised",
           "options": {
             "summaryTitle": "Has been hospitalised",
-            "summaryTitle": "Has been hospitalised",
             "customValidationMessages": {
               "any.required": "Select yes if the person has been hospitalised with the flu"
             }
@@ -1698,7 +1652,6 @@
         {
           "name": "SingleCaseOfFluSeverityDeath",
           "options": {
-            "summaryTitle": "Has died",
             "summaryTitle": "Has died",
             "customValidationMessages": {
               "any.required": "Select yes if the person has died with flu"
@@ -1723,13 +1676,11 @@
       "path": "/vaccination",
       "title": "Vaccination among your service users and staff",
       "sectionForEndSummaryPages": "Vaccinations",
-      "sectionForEndSummaryPages": "Vaccinations",
       "components": [
         {
           "name": "ServiceUsersCovid19Vaccination",
           "options": {
             "required": false,
-            "summaryTitle": "Service users: up to date with COVID-19 vaccinations",
             "summaryTitle": "Service users: up to date with COVID-19 vaccinations",
             "customValidationMessages": {
               "number.max": "The number of service users vaccinated for COVID-19 must be between 0 and 999",
@@ -1752,7 +1703,6 @@
           "options": {
             "required": false,
             "summaryTitle": "Service users: had the current seasonal flu vaccine ",
-            "summaryTitle": "Service users: had the current seasonal flu vaccine ",
             "customValidationMessages": {
               "number.max": "The number of service users vaccinated for flu must be between 0 and 999",
               "number.min": "The number of service users vaccinated for flu must be between 0 and 999"
@@ -1773,7 +1723,6 @@
           "name": "ServiceUsersRSVVaccination",
           "options": {
             "required": false,
-            "summaryTitle": "Service users: had the respiratory syncytial virus (RSV) vaccine",
             "summaryTitle": "Service users: had the respiratory syncytial virus (RSV) vaccine",
             "customValidationMessages": {
               "number.max": "The number of service users vaccinated for RSV must be between 0 and 999",
@@ -1796,7 +1745,6 @@
           "options": {
             "required": false,
             "summaryTitle": "Staff: up to date with COVID-19 vaccinations",
-            "summaryTitle": "Staff: up to date with COVID-19 vaccinations",
             "customValidationMessages": {
               "number.max": "The number of staff vaccinated for COVID-19 must be between 0 and 999",
               "number.min": "The number of staff vaccinated for COVID-19 must be between 0 and 999"
@@ -1817,7 +1765,6 @@
           "name": "StaffFluVaccination",
           "options": {
             "required": false,
-            "summaryTitle": "Staff: had the current seasonal flu vaccine",
             "summaryTitle": "Staff: had the current seasonal flu vaccine",
             "customValidationMessages": {
               "number.max": "The number of staff vaccinated for flu must be between 0 and 999",
@@ -1846,7 +1793,6 @@
       "path": "/other-ari-confirmed-cases-setting",
       "title": "Who has an acute respiratory infection?",
       "sectionForEndSummaryPages": "InfectionsInYourSetting",
-      "sectionForEndSummaryPages": "InfectionsInYourSetting",
       "components": [
         {
           "type": "Para",
@@ -1859,7 +1805,6 @@
           "hint": "You can select more than one option",
           "list": "ServiceOrStaffMultiple",
           "options": {
-            "summaryTitle": "Who has the infection",
             "summaryTitle": "Who has the infection",
             "required": true
           }
@@ -1879,7 +1824,6 @@
       "path": "/ari-confirmed-cases-setting",
       "title": "Who has an acute respiratory infection?",
       "sectionForEndSummaryPages": "InfectionsInYourSetting",
-      "sectionForEndSummaryPages": "InfectionsInYourSetting",
       "components": [
         {
           "type": "Para",
@@ -1892,7 +1836,6 @@
           "hint": "You can select more than one option",
           "list": "ServiceOrStaffMultiple",
           "options": {
-            "summaryTitle": "Who has the infection",
             "summaryTitle": "Who has the infection",
             "required": true,
             "customValidationMessages": {
@@ -2014,13 +1957,9 @@
       "path": "/ipc",
       "title": "Infection prevention and control (IPC) and outbreak management in your setting",
       "sectionForEndSummaryPages": "IPC",
-      "sectionForEndSummaryPages": "IPC",
       "components": [
         {
           "name": "IPCPractices",
-          "options": {
-            "summaryTitle": "How often you monitor staff IPC practices"
-          },
           "options": {
             "summaryTitle": "How often you monitor staff IPC practices"
           },
@@ -2038,9 +1977,6 @@
           "options": {
             "summaryTitle": "Issues you need support with"
           },
-          "options": {
-            "summaryTitle": "Issues you need support with"
-          },
           "type": "CheckboxesField",
           "nameHasError": false,
           "title": "What issues do you currently need support with?",
@@ -2052,9 +1988,6 @@
         },
         {
           "name": "AGPs",
-          "options": {
-            "summaryTitle": "Your setting undertakes aerosol generating procedures"
-          },
           "options": {
             "summaryTitle": "Your setting undertakes aerosol generating procedures"
           },
@@ -2070,7 +2003,6 @@
         {
           "name": "MediaInterest",
           "options": {
-            "summaryTitle": "Media interest",
             "summaryTitle": "Media interest",
             "required": false
           },
@@ -2097,7 +2029,6 @@
       "path": "/flu-severity-multiple-cases",
       "title": "Severity of illness",
       "sectionForEndSummaryPages": "InfectionsInYourSetting",
-      "sectionForEndSummaryPages": "InfectionsInYourSetting",
       "components": [
         {
           "type": "Para",
@@ -2106,7 +2037,6 @@
         {
           "name": "FluSeverityCalledGPMultipleCases",
           "options": {
-            "summaryTitle": "People you have called the GP about",
             "summaryTitle": "People you have called the GP about",
             "customValidationMessages": {
               "any.required": "Select the number of service users you have called the GP about because of the severity of illness"
@@ -2126,7 +2056,6 @@
           "type": "NumberField",
           "options": {
             "summaryTitle": "People who have been given antibiotics",
-            "summaryTitle": "People who have been given antibiotics",
             "required": false,
             "customValidationMessages": {
               "number.min": "The number of service users or staff that have been given antibiotics for their respiratory symptoms must be between 0 and 999",
@@ -2141,7 +2070,6 @@
         {
           "name": "FluSeverityHospitalisedMultipleCases",
           "options": {
-            "summaryTitle": "People who have been hospitalised",
             "summaryTitle": "People who have been hospitalised",
             "customValidationMessages": {
               "any.required": "Select the number of service users or staff that have been hospitalised because of an acute respiratory infection"
@@ -2158,7 +2086,6 @@
         {
           "name": "FluSeverityDeathMultipleCases",
           "options": {
-            "summaryTitle": "People who have died",
             "summaryTitle": "People who have died",
             "customValidationMessages": {
               "any.required": "Select the number of service users or staff that have died because of an acute respiratory infection"
@@ -2179,7 +2106,6 @@
           "nameHasError": false,
           "list": "FluSeveritySpecificArea",
           "options": {
-            "summaryTitle": "Cases linked to specific area",
             "summaryTitle": "Cases linked to specific area",
             "customValidationMessages": {
               "any.required": "Select if the cases are linked to a specific area of the setting"
@@ -2205,7 +2131,6 @@
       "path": "/service-users-covid",
       "title": "Service users: number of cases",
       "sectionForEndSummaryPages": "InfectionsInYourSetting",
-      "sectionForEndSummaryPages": "InfectionsInYourSetting",
       "components": [
         {
           "type": "NumberField",
@@ -2214,7 +2139,6 @@
           "hint": "Include those who are currently in hospital or on visits out<br>If none, enter 0",
           "options": {
             "required": true,
-            "summaryTitle": "Service users: confirmed positive COVID-19 test results",
             "summaryTitle": "Service users: confirmed positive COVID-19 test results",
             "customValidationMessages": {
               "number.base": "Enter the number of service users that have COVID-19 confirmed by a positive test",
@@ -2234,7 +2158,6 @@
           "hint": "Include those who are currently in hospital or on visits out<br>If none, enter 0",
           "options": {
             "required": true,
-            "summaryTitle": "Service users: with symptoms, but not tested",
             "summaryTitle": "Service users: with symptoms, but not tested",
             "customValidationMessages": {
               "number.base": "Enter the number of service users that have symptoms of an acute respiratory infection, but have not been tested for any infection",
@@ -2262,7 +2185,6 @@
       "path": "/staff-covid",
       "title": "Staff: number of cases",
       "sectionForEndSummaryPages": "InfectionsInYourSetting",
-      "sectionForEndSummaryPages": "InfectionsInYourSetting",
       "components": [
         {
           "type": "Para",
@@ -2275,7 +2197,6 @@
           "hint": "Include those who are currently in hospital<br>If none, enter 0",
           "options": {
             "required": true,
-            "summaryTitle": "Staff: confirmed positive COVID-19 test results",
             "summaryTitle": "Staff: confirmed positive COVID-19 test results",
             "customValidationMessages": {
               "number.base": "Enter the number of staff that have COVID-19 confirmed by a positive test",
@@ -2295,7 +2216,6 @@
           "hint": "Include those who are currently in hospital<br>If none, enter 0",
           "options": {
             "required": true,
-            "summaryTitle": "Staff: with symptoms, but not tested",
             "summaryTitle": "Staff: with symptoms, but not tested",
             "customValidationMessages": {
               "number.base": "Enter the number of staff that have symptoms of an acute respiratory infection, but have not been tested for any infection",
@@ -2319,7 +2239,6 @@
       "path": "/severity-of-illness",
       "title": "Severity of illness in this outbreak",
       "sectionForEndSummaryPages": "InfectionsInYourSetting",
-      "sectionForEndSummaryPages": "InfectionsInYourSetting",
       "components": [
         {
           "name": "severityIntro",
@@ -2335,7 +2254,6 @@
           "options": {
             "required": true,
             "summaryTitle": "People you have called the GP about",
-            "summaryTitle": "People you have called the GP about",
             "customValidationMessages": {
               "any.required": "Select the number of service users you have called the GP about because of the severity of illness"
             }
@@ -2349,7 +2267,6 @@
           "options": {
             "required": true,
             "summaryTitle": "People who have been hospitalised",
-            "summaryTitle": "People who have been hospitalised",
             "customValidationMessages": {
               "any.required": "Select the number of service users or staff that have been hospitalised because of an acute respiratory infection"
             }
@@ -2362,7 +2279,6 @@
           "list": "CaseNumbers",
           "options": {
             "required": true,
-            "summaryTitle": "People who have died",
             "summaryTitle": "People who have died",
             "customValidationMessages": {
               "any.required": "Select the number of service users or staff that have been died because of an acute respiratory infection"
@@ -2380,7 +2296,6 @@
       "path": "/severity-of-illness-unknown",
       "title": "Severity of illness in this outbreak",
       "sectionForEndSummaryPages": "InfectionsInYourSetting",
-      "sectionForEndSummaryPages": "InfectionsInYourSetting",
       "components": [
         {
           "name": "SeverityGPCalls",
@@ -2390,8 +2305,6 @@
           "options": {
             "required": true,
             "summaryTitle": "People you have called the GP about"
-            "required": true,
-            "summaryTitle": "People you have called the GP about"
           }
         },
         {
@@ -2399,7 +2312,6 @@
           "title": "How many service users or staff have been given antibiotics for their respiratory symptoms?",
           "type": "NumberField",
           "options": {
-            "summaryTitle": "People who have been given antibiotics",
             "summaryTitle": "People who have been given antibiotics",
             "required": false,
             "customValidationMessages": {
@@ -2419,7 +2331,6 @@
           "list": "CaseNumbers",
           "options": {
             "summaryTitle": "People who have been hospitalised",
-            "summaryTitle": "People who have been hospitalised",
             "required": true
           }
         },
@@ -2430,7 +2341,6 @@
           "list": "CaseNumbers",
           "options": {
             "summaryTitle": "People who have died",
-            "summaryTitle": "People who have died",
             "required": true
           }
         },
@@ -2440,9 +2350,6 @@
           "type": "RadiosField",
           "nameHasError": false,
           "list": "FluSeveritySpecificArea",
-          "options": {
-            "summaryTitle": "Cases linked to specific area"
-          },
           "options": {
             "summaryTitle": "Cases linked to specific area"
           },
@@ -2461,7 +2368,6 @@
     {
       "path": "/symptom-onset",
       "title": "Symptom onset of cases in this outbreak",
-      "sectionForEndSummaryPages": "SymptomOnset",
       "sectionForEndSummaryPages": "SymptomOnset",
       "components": [
         {
@@ -2483,7 +2389,6 @@
           "hint": "For example, 31 3 2024",
           "options": {
             "summaryTitle": "First case: symptoms started",
-            "summaryTitle": "First case: symptoms started",
             "required": true,
             "maxDaysInFuture": "0"
           }
@@ -2494,7 +2399,6 @@
           "title": "When did symptoms start in the most recent case in this outbreak?",
           "hint": "For example, 31 3 2024",
           "options": {
-            "summaryTitle": "Most recent case: symptoms started",
             "summaryTitle": "Most recent case: symptoms started",
             "required": true,
             "maxDaysInFuture": "0"
@@ -2511,13 +2415,10 @@
       "path": "/agps",
       "title": "Do staff carrying out aerosol generating procedures (AGPs) wear fit-tested FFP3 masks?",
       "sectionForEndSummaryPages": "IPC",
-      "sectionForEndSummaryPages": "IPC",
       "components": [
         {
           "name": "FFP3Masks",
-          "options": {
-            "summaryTitle": "Staff wear fit-tested FFP3 masks"
-          },
+
           "options": {
             "summaryTitle": "Staff wear fit-tested FFP3 masks"
           },
@@ -2540,13 +2441,9 @@
       "path": "/agency-staff",
       "title": "Do you use agency staff or share staff with other care settings?",
       "sectionForEndSummaryPages": "Staffing",
-      "sectionForEndSummaryPages": "Staffing",
       "components": [
         {
           "name": "AgencyStaff",
-          "options": {
-            "summaryTitle": "You use agency staff or share staff with other settings"
-          },
           "options": {
             "summaryTitle": "You use agency staff or share staff with other settings"
           },
@@ -2562,7 +2459,6 @@
       "next": [
         {
           "path": "/contact-details",
-          "path": "/contact-details",
           "condition": "AgencyStaff:No"
         },
         {
@@ -2574,13 +2470,9 @@
       "path": "/additional-staff",
       "title": "How many additional agency staff or staff from other care settings have you used during this outbreak?",
       "sectionForEndSummaryPages": "Staffing",
-      "sectionForEndSummaryPages": "Staffing",
       "components": [
         {
           "name": "AdditionalStaff",
-          "options": {
-            "summaryTitle": "Agency staff or staff from other settings"
-          },
           "options": {
             "summaryTitle": "Agency staff or staff from other settings"
           },
@@ -2596,7 +2488,6 @@
       "next": [
         {
           "path": "/contact-details"
-          "path": "/contact-details"
         }
       ]
     },
@@ -2604,12 +2495,10 @@
       "path": "/setting-details",
       "title": "Setting details",
       "sectionForEndSummaryPages": "SettingDetails",
-      "sectionForEndSummaryPages": "SettingDetails",
       "components": [
         {
           "name": "SettingName",
           "options": {
-            "summaryTitle": "Setting name",
             "summaryTitle": "Setting name",
             "customValidationMessages": {
               "string.empty": "Enter your setting name",
@@ -2619,7 +2508,6 @@
           "type": "TextField",
           "nameHasError": false,
           "title": "Your setting name",
-
 
           "hint": "The name of the setting where the cases are located, not the management company",
           "values": {
