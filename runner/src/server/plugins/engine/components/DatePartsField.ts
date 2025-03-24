@@ -20,8 +20,11 @@ export class DatePartsField extends FormComponent {
 
   constructor(def: InputFieldsComponentsDef, model: FormModel) {
     super(def, model);
+    console.log("Constructor options:", this.name);
+    console.log("Constructor options:", this.options);
 
     const { name, options } = this;
+
     const isRequired =
       "required" in options && options.required === false ? false : true;
     const optionalText = "optionalText" in options && options.optionalText;
@@ -39,7 +42,7 @@ export class DatePartsField extends FormComponent {
             customValidationMessages: {
               "number.min": "{{#label}} must be between 1 and 31",
               "number.max": "{{#label}} must be between 1 and 31",
-              "number.base": `${def.title} must include a day`,
+              "number.base": `${def.errorLabel} must include a day`,
             },
           },
           hint: "",
@@ -56,7 +59,7 @@ export class DatePartsField extends FormComponent {
             customValidationMessages: {
               "number.min": "{{#label}} must be between 1 and 12",
               "number.max": "{{#label}} must be between 1 and 12",
-              "number.base": `${def.title} must include a month`,
+              "number.base": `${def.errorLabel} must include a month`,
             },
           },
           hint: "",
@@ -71,7 +74,7 @@ export class DatePartsField extends FormComponent {
             optionalText: optionalText,
             classes: "govuk-input--width-4",
             customValidationMessages: {
-              "number.base": `${def.title} must include a year`,
+              "number.base": `${def.errorLabel} must include a year`,
             },
           },
           hint: "",
@@ -92,15 +95,28 @@ export class DatePartsField extends FormComponent {
     const { maxDaysInPast, maxDaysInFuture } = options as any;
     let schema: any = this.stateSchema;
 
-    schema = schema.custom(
-      helpers.getCustomDateValidator(maxDaysInPast, maxDaysInFuture)
-    );
+    console.log("options", options);
+    console.log("maxDaysInFuture", maxDaysInFuture);
+
+    // Only apply the custom validator if at least one of the parameters is defined
+    if (maxDaysInPast !== undefined || maxDaysInFuture !== undefined) {
+      console.log("Applying date validator:", maxDaysInFuture, maxDaysInPast);
+
+      // Make sure to provide a name for the custom validation
+      schema = schema.custom(
+        helpers.getCustomDateValidator(maxDaysInPast, maxDaysInFuture),
+        "date range validation" // Add this descriptive name
+      );
+    }
+
+    // Apply custom validation messages if available
     if (options.customValidationMessages) {
       schema = schema.messages(options.customValidationMessages);
     }
 
-    this.schema = schema;
+    console.log("schema", schema.describe());
 
+    this.schema = schema;
     return { [this.name]: schema };
   }
 

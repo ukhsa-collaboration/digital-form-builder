@@ -2401,6 +2401,12 @@
       "path": "/symptom-onset",
       "title": "Symptom onset of cases in this outbreak",
       "sectionForEndSummaryPages": "SymptomOnset",
+      "controller": "DateComparisonPageController",
+      "options": {
+        "customValidationMessages": {
+          "date.min": "The date symptoms started in the most recent case of this outbreak must be the same as or after the first case"
+        }
+      },
       "components": [
         {
           "name": "introText1",
@@ -2418,22 +2424,24 @@
           "name": "FirstCaseOnset",
           "type": "DatePartsField",
           "title": "When did symptoms start in the first case in this outbreak?",
+          "errorLabel": "The date that symptoms started in the first case of this outbreak",
           "hint": "For example, 31 3 2024",
           "options": {
             "summaryTitle": "First case: symptoms started",
             "required": true,
-            "maxDaysInFuture": "0"
+            "maxDaysInFuture": 0
           }
         },
         {
           "name": "MostRecentCaseOnset",
           "type": "DatePartsField",
+          "errorLabel": "The date symptoms started in the most recent case of this outbreak",
           "title": "When did symptoms start in the most recent case in this outbreak?",
           "hint": "For example, 31 3 2024",
           "options": {
             "summaryTitle": "Most recent case: symptoms started",
             "required": true,
-            "maxDaysInFuture": "0"
+            "maxDaysInFuture": 0
           }
         }
       ],
