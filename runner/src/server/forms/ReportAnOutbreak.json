@@ -2622,7 +2622,14 @@
         {
           "name": "MainContactName",
           "options": {
-            "summaryTitle": "Main contact"
+            "summaryTitle": "Main contact",
+            "customValidationMessages": {
+              "string.empty": "Enter a main contact's full name",
+              "string.max": "Main contact's name must be 99 characters or less"
+            }
+          },
+          "schema": {
+            "max": 99
           },
           "type": "TextField",
           "nameHasError": false,
@@ -2635,7 +2642,13 @@
           "name": "MainContactJobTitle",
           "options": {
             "required": false,
-            "summaryTitle": "Job title"
+            "summaryTitle": "Job title",
+            "customValidationMessages": {
+              "string.max": "Main contact's job title must be 99 characters or less"
+            }
+          },
+          "schema": {
+            "max": 99
           },
           "type": "TextField",
           "nameHasError": false,
@@ -2648,9 +2661,13 @@
         {
           "name": "MainContactPhoneNumber",
           "options": {
-            "summaryTitle": "Phone number"
+            "summaryTitle": "Phone number",
+            "customValidationMessages": {
+              "string.empty": "Enter a main contact's phone number",
+              "string.pattern.base": "Enter a main contact's phone number, like 01632 960 001 or 07700 900 982"
+            }
           },
-          "type": "TextField",
+          "type": "TelephoneNumberField",
           "nameHasError": false,
           "title": "Phone number",
           "values": {
@@ -2661,9 +2678,13 @@
           "name": "MainContactEmailAddress",
           "options": {
             "exposeToContext": true,
-            "summaryTitle": "Email address"
+            "summaryTitle": "Email address",
+            "customValidationMessages": {
+              "string.empty": "Enter a main contact's email address",
+              "string.pattern.base": "Enter a main contact's email address in the correct format, like name@example.com"
+            }
           },
-          "type": "TextField",
+          "type": "EmailAddressField",
           "nameHasError": false,
           "title": "Email address",
           "values": {
@@ -2683,7 +2704,13 @@
           "name": "AltContactName",
           "options": {
             "required": false,
-            "summaryTitle": "Additional contact"
+            "summaryTitle": "Additional contact",
+            "customValidationMessages": {
+              "string.max": "Additional contact's name must be 99 characters or less"
+            }
+          },
+          "schema": {
+            "max": 99
           },
           "type": "TextField",
           "nameHasError": false,
@@ -2696,7 +2723,13 @@
           "name": "AltContactJobTitle",
           "options": {
             "required": false,
-            "summaryTitle": "Additional contact’s job title"
+            "summaryTitle": "Additional contact’s job title",
+            "customValidationMessages": {
+              "string.pattern.base": "Additional contact's job title must be 99 characters or less"
+            }
+          },
+          "schema": {
+            "max": 99
           },
           "type": "TextField",
           "nameHasError": false,
@@ -2710,9 +2743,12 @@
           "name": "AltContactPhoneNumber",
           "options": {
             "required": false,
-            "summaryTitle": "Additional phone number"
+            "summaryTitle": "Additional phone number",
+            "customValidationMessages": {
+              "string.pattern.base": "Enter an additional contact's phone number, like 01632 960 001 or 07700 900 982"
+            }
           },
-          "type": "TextField",
+          "type": "TelephoneNumberField",
           "nameHasError": false,
           "title": "Phone number",
           "values": {
@@ -2723,9 +2759,12 @@
           "name": "AltContactEmailAddress",
           "options": {
             "required": false,
-            "summaryTitle": "Additional email address"
+            "summaryTitle": "Additional email address",
+            "customValidationMessages": {
+              "string.pattern.base": "Enter an additional contact's email address in the correct format, like name@example.com"
+            }
           },
-          "type": "TextField",
+          "type": "EmailAddressField",
           "nameHasError": false,
           "title": "Email address",
           "values": {
