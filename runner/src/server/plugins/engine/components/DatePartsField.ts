@@ -20,10 +20,8 @@ export class DatePartsField extends FormComponent {
 
   constructor(def: InputFieldsComponentsDef, model: FormModel) {
     super(def, model);
-    console.log("Constructor options:", this.options);
 
     const { name, options } = this;
-
     const isRequired =
       "required" in options && options.required === false ? false : true;
     const optionalText = "optionalText" in options && options.optionalText;
@@ -97,9 +95,6 @@ export class DatePartsField extends FormComponent {
     const { maxDaysInPast, maxDaysInFuture } = options as any;
     let schema: any = this.stateSchema;
 
-    console.log("options", options);
-    console.log("maxDaysInFuture", maxDaysInFuture);
-
     // Custom validator to check if all fields are empty
     schema = schema.custom((value, helpers) => {
       // If the value is null or undefined, it means no date was entered
@@ -123,8 +118,6 @@ export class DatePartsField extends FormComponent {
 
       // Existing date range validation
       if (maxDaysInPast !== undefined || maxDaysInFuture !== undefined) {
-        console.log("Applying date validator:", maxDaysInFuture, maxDaysInPast);
-
         schema = schema.custom(
           helpers.getCustomDateValidator(maxDaysInPast, maxDaysInFuture),
           "date range validation"
@@ -139,8 +132,6 @@ export class DatePartsField extends FormComponent {
       schema = schema.messages(options.customValidationMessages);
     }
 
-    const schemaDescribe = schema.describe();
-    console.log("schema", JSON.stringify(schemaDescribe, null, 2));
     this.schema = schema;
     return { [this.name]: schema };
   }
@@ -213,6 +204,7 @@ export class DatePartsField extends FormComponent {
     return value ? format(parseISO(value), "d MMMM yyyy") : "";
   }
 
+  // @ts-ignore - eslint does not report this as an error, only tsc
   getViewModel(formData: FormData, errors: FormSubmissionErrors) {
     const viewModel = super.getViewModel(formData, errors);
 

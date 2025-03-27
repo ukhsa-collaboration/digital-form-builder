@@ -110,7 +110,6 @@ export function getCustomDateValidator(
     }
     if (maxDaysInFuture) {
       const maxDate = add(startOfToday(), { days: maxDaysInFuture });
-
       if (value > maxDate) {
         return helpers.error("date.max", {
           label: helpers.state.key,
