@@ -1585,6 +1585,10 @@
       "path": "/symptom-onset-flu",
       "title": "Symptom onset for the case of flu",
       "sectionForEndSummaryPages": "SymptomOnset",
+      "controller": "DateComparisonPageController",
+      "options": {
+        "firstDateComponent": "FluSymptomOnsetDate"
+      },
       "components": [
         {
           "name": "intro",
@@ -1593,9 +1597,16 @@
         },
         {
           "name": "FluSymptomOnsetDate",
+          "errorLabel": "The date symptoms started",
           "options": {
             "maxDaysInFuture": "0",
-            "summaryTitle": "Symptoms started"
+            "summaryTitle": "Symptoms started",
+            "customValidationMessages": {
+              "dayMonthYear": "Enter the date symptoms started",
+              "nonNumeric": "The date symptoms started must be a real date",
+              "date.max": "The date symptoms started must be in the past",
+              "date.base": "The date symptoms started must be a real date"
+            }
           },
           "type": "DatePartsField",
           "nameHasError": false,
@@ -2370,6 +2381,10 @@
       "title": "Symptom onset of cases in this outbreak",
       "sectionForEndSummaryPages": "SymptomOnset",
       "controller": "DateComparisonPageController",
+      "options": {
+        "firstDateComponent": "FirstCaseOnset",
+        "secondDateComponent": "MostRecentCaseOnset"
+      },
       "components": [
         {
           "name": "introText1",

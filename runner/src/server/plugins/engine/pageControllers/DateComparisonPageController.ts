@@ -10,38 +10,49 @@ import { FormSubmissionErrors } from "../types";
  */
 
 export class DateComparisonPageController extends PageController {
-  firstCaseOnsetComponent: any;
-  mostRecentCaseOnsetComponent: any;
+  firstDateComponent: any;
+  secondDateComponent: any;
+  firstDateName: string;
+  secondDateName: string;
 
   constructor(model: any = {}, pageDef: any = {}) {
     super(model, pageDef);
 
-    this.firstCaseOnsetComponent = pageDef.components.find(
-      (component) => component.name === "FirstCaseOnset"
-    );
+    this.firstDateName = pageDef?.options?.firstDateComponent || "";
+    this.secondDateName = pageDef?.options?.secondDateComponent || "";
 
-    this.mostRecentCaseOnsetComponent = pageDef.components.find(
-      (component) => component.name === "MostRecentCaseOnset"
-    );
+    this.firstDateComponent =
+      pageDef?.components?.find(
+        (component) => component.name === this.firstDateName
+      ) || null;
+
+    this.secondDateComponent =
+      pageDef?.components?.find(
+        (component) => component.name === this.secondDateName
+      ) || null;
 
     this.stateSchema = this.stateSchema.append({
-      FirstCaseOnset: joi
+      [this.firstDateName]: joi
         .date()
         .required()
         .max("now") // Prevents dates in the future
         .messages({
-          ...this.firstCaseOnsetComponent.options.customValidationMessages,
-        }),
-
-      MostRecentCaseOnset: joi
-        .date()
-        .required()
-        .min(joi.ref("FirstCaseOnset")) // Ensures most recent date is not before first date
-        .max("now") // Prevents dates in the future
-        .messages({
-          ...this.mostRecentCaseOnsetComponent.options.customValidationMessages,
+          ...this.firstDateComponent?.options?.customValidationMessages,
         }),
     });
+
+    if (this.secondDateComponent) {
+      this.stateSchema = this.stateSchema.append({
+        [this.secondDateName]: joi
+          .date()
+          .required()
+          .min(joi.ref(this.firstDateName)) // Ensures most recent date is not before first date
+          .max("now") // Prevents dates in the future
+          .messages({
+            ...this.secondDateComponent?.options?.customValidationMessages,
+          }),
+      });
+    }
   }
 
   getErrors(validationResult): FormSubmissionErrors | undefined {
@@ -81,6 +92,8 @@ export class DateComparisonPageController extends PageController {
       };
     });
 
+    console.log("errorList", errorList);
+
     const addCustomErrors = (errorList) => {
       const errorMap = {};
 
@@ -112,11 +125,11 @@ export class DateComparisonPageController extends PageController {
       Object.values(errorMap).forEach((e: any) => {
         if (e.day && e.year && e.month) {
           e.errors.forEach((err) => {
-            if (e.name.includes("FirstCaseOnset")) {
-              err.text = this.firstCaseOnsetComponent.options.customValidationMessages.dayMonthYear;
+            if (e.name.includes(this.firstDateName)) {
+              err.text = this.firstDateComponent?.options?.customValidationMessages?.dayMonthYear;
             }
-            if (e.name.includes("MostRecentCaseOnset")) {
-              err.text = this.mostRecentCaseOnsetComponent.options.customValidationMessages.dayMonthYear;
+            if (e.name.includes(this.secondDateName)) {
+              err.text = this.secondDateComponent?.options?.customValidationMessages?.dayMonthYear;
             }
           });
         }
@@ -129,19 +142,23 @@ export class DateComparisonPageController extends PageController {
             err.value !== ""
         );
 
+        console.log("numberBaseErrors", numberBaseErrors);
+
         if (numberBaseErrors.length > 0) {
           numberBaseErrors.forEach((err) => {
-            if (e.name.includes("FirstCaseOnset")) {
-              err.text = this.firstCaseOnsetComponent.options.customValidationMessages.nonNumeric;
+            if (e.name.includes(this.firstDateName)) {
+              console.log("this", this);
+              err.text = this.firstDateComponent.options.customValidationMessages.nonNumeric;
             }
-            if (e.name.includes("MostRecentCaseOnset")) {
-              err.text = this.mostRecentCaseOnsetComponent.options.customValidationMessages.nonNumeric;
+            if (e.name.includes(this.secondDateName)) {
+              err.text = this.secondDateComponent.options.customValidationMessages.nonNumeric;
             }
             err.type = "custom.numberBase";
           });
         }
 
         finalErrors.push(...e.errors);
+        console.log("finalErrors", finalErrors);
       });
 
       return finalErrors;
