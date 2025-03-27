@@ -94,8 +94,7 @@ export class DatePartsField extends FormComponent {
   }
 
   getStateSchemaKeys() {
-    const { options, name } = this;
-    const { maxDaysInPast, maxDaysInFuture } = options as any;
+    const { options } = this;
     let schema: any = this.stateSchema;
 
     if (options.customValidationMessages) {
@@ -103,6 +102,7 @@ export class DatePartsField extends FormComponent {
     }
 
     this.schema = schema;
+
     return { [this.name]: schema };
   }
 
@@ -142,7 +142,13 @@ export class DatePartsField extends FormComponent {
       return null; // Invalid date
     }
 
-    return date; // Valid date
+    return payload[`${name}__year`]
+      ? new Date(
+          payload[`${name}__year`],
+          payload[`${name}__month`] - 1,
+          payload[`${name}__day`]
+        )
+      : null;
   }
 
   getDisplayStringFromState(state: FormSubmissionState) {

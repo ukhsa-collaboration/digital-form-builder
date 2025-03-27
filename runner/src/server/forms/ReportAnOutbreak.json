@@ -2397,8 +2397,7 @@
               "nonNumeric": "The date symptoms started in the first case of this outbreak must be a real date",
               "dayMonthYear": "Enter the date symptoms started in the first case of this outbreak",
               "date.max": "The date symptoms started in the first case of this outbreak must be in the past",
-              "date.base": "The date symptoms started in the first case of this outbreak must be a real date",
-              "day.number.base": "The date symptoms started in the first case of this outbreak must be a real date"
+              "date.base": "The date symptoms started in the first case of this outbreak must be a real date"
             }
           }
         },
