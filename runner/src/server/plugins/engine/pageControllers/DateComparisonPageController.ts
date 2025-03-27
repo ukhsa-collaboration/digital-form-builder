@@ -92,8 +92,6 @@ export class DateComparisonPageController extends PageController {
       };
     });
 
-    console.log("errorList", errorList);
-
     const addCustomErrors = (errorList) => {
       const errorMap = {};
 
@@ -157,7 +155,6 @@ export class DateComparisonPageController extends PageController {
         }
 
         finalErrors.push(...e.errors);
-        console.log("finalErrors", finalErrors);
       });
 
       return finalErrors;
