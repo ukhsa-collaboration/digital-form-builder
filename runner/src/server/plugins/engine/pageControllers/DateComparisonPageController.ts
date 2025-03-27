@@ -16,16 +16,7 @@ export class DateComparisonPageController extends PageController {
 
   constructor(model: any = {}, pageDef: any = {}) {
     super(model, pageDef);
-    this.customErrors = pageDef.options.customErrors;
-
-    // Custom messages for future date validation
-    const customMessages = {
-      ...pageDef.options?.customValidationMessages,
-      "FirstCaseOnset.max":
-        "The date symptoms started in the first case of this outbreak must be in the past",
-      "MostRecentCaseOnset.max":
-        "The date symptoms started in the most recent case of this outbreak must be in the past",
-    };
+    this.customErrors = pageDef.options?.customErrors ?? {};
 
     this.firstCaseOnsetComponent = pageDef.components.find(
       (component) => component.name === "FirstCaseOnset"
@@ -120,6 +111,8 @@ export class DateComparisonPageController extends PageController {
         errorMap[baseName].errors.push(err);
       });
 
+      console.log("errorList", errorList);
+
       // Process the errorMap to set text based on combinations and add to finalErrors
       const finalErrors: any = [];
       Object.values(errorMap).forEach((e: any) => {
@@ -138,11 +131,11 @@ export class DateComparisonPageController extends PageController {
         // } else
         if (e.day && e.year && e.month) {
           e.errors.forEach((err) => {
-            if (e.name === "FirstCaseOnset") {
+            if (e.name.includes("FirstCaseOnset")) {
               err.text = this.firstCaseOnsetComponent.options.customValidationMessages.dayMonthYear;
             }
-            if (e.name === "MostRecentCaseOnset") {
-              err.text = this.mostRecentCaseOnsetComponent.options.customValidationMessages.dayYearMonth;
+            if (e.name.includes("MostRecentCaseOnset")) {
+              err.text = this.mostRecentCaseOnsetComponent.options.customValidationMessages.dayMonthYear;
             }
             // err.text = this.customErrors[e.baseName].dayMonthYear;
           });
@@ -158,10 +151,10 @@ export class DateComparisonPageController extends PageController {
 
         if (numberBaseErrors.length > 0) {
           numberBaseErrors.forEach((err) => {
-            if (e.name === "FirstCaseOnset") {
+            if (e.name.includes("FirstCaseOnset")) {
               err.text = this.firstCaseOnsetComponent.options.customValidationMessages.nonNumeric;
             }
-            if (e.name === "MostRecentCaseOnset") {
+            if (e.name.includes("MostRecentCaseOnset")) {
               err.text = this.mostRecentCaseOnsetComponent.options.customValidationMessages.nonNumeric;
             }
             // err.text = this.customErrors[e.baseName].nonNumeric;
@@ -170,6 +163,7 @@ export class DateComparisonPageController extends PageController {
         }
 
         finalErrors.push(...e.errors);
+        console.log("finalErrors", finalErrors);
       });
 
       return finalErrors;
