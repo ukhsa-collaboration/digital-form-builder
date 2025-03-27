@@ -2370,11 +2370,7 @@
       "title": "Symptom onset of cases in this outbreak",
       "sectionForEndSummaryPages": "SymptomOnset",
       "controller": "DateComparisonPageController",
-      "options": {
-        "customValidationMessages": {
-          "date.min": "The date symptoms started in the most recent case of this outbreak must be the same as or after the first case"
-        }
-      },
+      "options": {},
       "components": [
         {
           "name": "introText1",
@@ -2397,7 +2393,14 @@
           "options": {
             "summaryTitle": "First case: symptoms started",
             "required": true,
-            "maxDaysInFuture": 0
+            "maxDaysInFuture": 0,
+            "customValidationMessages": {
+              "nonNumeric": "The date symptoms started in the first case of this outbreak must be a real date",
+              "dayMonthYear": "Enter the date symptoms started in the first case of this outbreak",
+              "date.max": "The date symptoms started in the first case of this outbreak must be in the past",
+              "date.base": "The date symptoms started in the first case of this outbreak must be a real date",
+              "day.number.base": "The date symptoms started in the first case of this outbreak must be a real date"
+            }
           }
         },
         {
@@ -2409,7 +2412,14 @@
           "options": {
             "summaryTitle": "Most recent case: symptoms started",
             "required": true,
-            "maxDaysInFuture": 0
+            "maxDaysInFuture": 0,
+            "customValidationMessages": {
+              "dayMonthYear": "Enter the date symptoms started in the most recent case of this outbreak",
+              "nonNumeric": "The date symptoms started in the most recent case of this outbreak must be a real date",
+              "date.max": "The date symptoms started in the most recent case of this outbreak must be in the past",
+              "date.base": "The date symptoms started in the most recent case of this outbreak must be a real date",
+              "date.min": "The date symptoms started in the most recent case of this outbreak must be the same as or after the first case"
+            }
           }
         }
       ],

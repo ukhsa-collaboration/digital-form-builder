@@ -1,4 +1,4 @@
-import { add, sub, parseISO, format } from "date-fns";
+import { parseISO, format } from "date-fns";
 import { InputFieldsComponentsDef } from "@xgovformbuilder/model";
 
 import { FormComponent } from "./FormComponent";
@@ -20,7 +20,6 @@ export class DatePartsField extends FormComponent {
 
   constructor(def: InputFieldsComponentsDef, model: FormModel) {
     super(def, model);
-    console.log("Constructor options:", this.name);
     console.log("Constructor options:", this.options);
 
     const { name, options } = this;
@@ -42,7 +41,8 @@ export class DatePartsField extends FormComponent {
             customValidationMessages: {
               "number.min": "{{#label}} must be between 1 and 31",
               "number.max": "{{#label}} must be between 1 and 31",
-              "number.base": `${def.errorLabel} must include a day`,
+              "number.required": `${def.errorLabel} must include a day`,
+              "number.base": `${def.errorLabel} must be a real date`,
             },
           },
           hint: "",
@@ -59,7 +59,8 @@ export class DatePartsField extends FormComponent {
             customValidationMessages: {
               "number.min": "{{#label}} must be between 1 and 12",
               "number.max": "{{#label}} must be between 1 and 12",
-              "number.base": `${def.errorLabel} must include a month`,
+              "number.required": `${def.errorLabel} must include a year`,
+              "number.base": `${def.errorLabel} must be a real date`,
             },
           },
           hint: "",
@@ -74,7 +75,8 @@ export class DatePartsField extends FormComponent {
             optionalText: optionalText,
             classes: "govuk-input--width-4",
             customValidationMessages: {
-              "number.base": `${def.errorLabel} must include a year`,
+              "number.required": `${def.errorLabel} must include a year`,
+              "number.base": `${def.errorLabel} must be a real date`,
             },
           },
           hint: "",
@@ -91,31 +93,54 @@ export class DatePartsField extends FormComponent {
   }
 
   getStateSchemaKeys() {
-    const { options } = this;
+    const { options, name } = this;
     const { maxDaysInPast, maxDaysInFuture } = options as any;
     let schema: any = this.stateSchema;
 
     console.log("options", options);
     console.log("maxDaysInFuture", maxDaysInFuture);
 
-    // Only apply the custom validator if at least one of the parameters is defined
-    if (maxDaysInPast !== undefined || maxDaysInFuture !== undefined) {
-      console.log("Applying date validator:", maxDaysInFuture, maxDaysInPast);
+    // Custom validator to check if all fields are empty
+    schema = schema.custom((value, helpers) => {
+      // If the value is null or undefined, it means no date was entered
+      if (value === null || value === undefined) {
+        // Check the individual field values
+        const day = helpers.state[`${name}__day`];
+        const month = helpers.state[`${name}__month`];
+        const year = helpers.state[`${name}__year`];
 
-      // Make sure to provide a name for the custom validation
-      schema = schema.custom(
-        helpers.getCustomDateValidator(maxDaysInPast, maxDaysInFuture),
-        "date range validation" // Add this descriptive name
-      );
-    }
+        // If all fields are empty (null, undefined, or empty string)
+        if (!day && !month && !year) {
+          // Return an error if the field is required
+          if (options.required !== false) {
+            return helpers.error(`${name}.dayMonthYear`, {
+              label: `${options.errorLabel || name}`,
+              message: `Please enter a date`,
+            });
+          }
+        }
+      }
+
+      // Existing date range validation
+      if (maxDaysInPast !== undefined || maxDaysInFuture !== undefined) {
+        console.log("Applying date validator:", maxDaysInFuture, maxDaysInPast);
+
+        schema = schema.custom(
+          helpers.getCustomDateValidator(maxDaysInPast, maxDaysInFuture),
+          "date range validation"
+        );
+      }
+
+      return value;
+    }, "all fields empty validation");
 
     // Apply custom validation messages if available
     if (options.customValidationMessages) {
       schema = schema.messages(options.customValidationMessages);
     }
 
-    console.log("schema", schema.describe());
-
+    const schemaDescribe = schema.describe();
+    console.log("schema", JSON.stringify(schemaDescribe, null, 2));
     this.schema = schema;
     return { [this.name]: schema };
   }
@@ -134,14 +159,52 @@ export class DatePartsField extends FormComponent {
 
   getStateValueFromValidForm(payload: FormPayload) {
     const name = this.name;
+    const day = payload[`${name}__day`];
+    const month = payload[`${name}__month`];
+    const year = payload[`${name}__year`];
 
-    return payload[`${name}__year`]
-      ? new Date(
-          payload[`${name}__year`],
-          payload[`${name}__month`] - 1,
-          payload[`${name}__day`]
-        )
-      : null;
+    // If any of the date parts are missing, return null
+    if (!day || !month || !year) {
+      return null;
+    }
+
+    // Helper function to check if a value contains non-numeric characters
+    const hasNonNumericChars = (val: any) => {
+      return (
+        val !== null &&
+        val !== undefined &&
+        typeof val === "string" &&
+        /[^0-9]/.test(val.trim())
+      );
+    };
+
+    // If fields have non-numeric characters
+    if (
+      hasNonNumericChars(day) ||
+      hasNonNumericChars(month) ||
+      hasNonNumericChars(year)
+    ) {
+      // Return an error if non-numeric characters are found
+      return helpers.error(`number.base`, {
+        label: `non-numeric characters`,
+        message: `Please enter only numeric values for the date`,
+      });
+    }
+
+    // Convert to Date object (month is 0-indexed)
+    const date = new Date(year, month - 1, day);
+
+    // Check if the reconstructed date matches the input
+    if (
+      date.getFullYear() !== year ||
+      date.getMonth() !== month - 1 || // Convert back to 1-indexed
+      date.getDate() !== day
+    ) {
+      console.error("Invalid date detected:", { day, month, year });
+      return null; // Invalid date
+    }
+
+    return date; // Valid date
   }
 
   getDisplayStringFromState(state: FormSubmissionState) {
@@ -150,7 +213,6 @@ export class DatePartsField extends FormComponent {
     return value ? format(parseISO(value), "d MMMM yyyy") : "";
   }
 
-  // @ts-ignore - eslint does not report this as an error, only tsc
   getViewModel(formData: FormData, errors: FormSubmissionErrors) {
     const viewModel = super.getViewModel(formData, errors);
 

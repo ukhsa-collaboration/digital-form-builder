@@ -101,7 +101,6 @@ export function getCustomDateValidator(
   return (value: Date, helpers: joi.CustomHelpers) => {
     if (maxDaysInPast) {
       const minDate = sub(startOfToday(), { days: maxDaysInPast });
-      console.log("here", value, minDate);
       if (value < minDate) {
         return helpers.error("date.min", {
           label: helpers.state.key,
@@ -111,7 +110,6 @@ export function getCustomDateValidator(
     }
     if (maxDaysInFuture) {
       const maxDate = add(startOfToday(), { days: maxDaysInFuture });
-      console.log("here", value, maxDate);
 
       if (value > maxDate) {
         return helpers.error("date.max", {
