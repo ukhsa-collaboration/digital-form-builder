@@ -10,13 +10,11 @@ import { FormSubmissionErrors } from "../types";
  */
 
 export class DateComparisonPageController extends PageController {
-  customErrors: any;
   firstCaseOnsetComponent: any;
   mostRecentCaseOnsetComponent: any;
 
   constructor(model: any = {}, pageDef: any = {}) {
     super(model, pageDef);
-    this.customErrors = pageDef.options?.customErrors ?? {};
 
     this.firstCaseOnsetComponent = pageDef.components.find(
       (component) => component.name === "FirstCaseOnset"
@@ -109,8 +107,6 @@ export class DateComparisonPageController extends PageController {
         errorMap[baseName].errors.push(err);
       });
 
-      console.log("errorList", errorList);
-
       // Process the errorMap to set text based on combinations and add to finalErrors
       const finalErrors: any = [];
       Object.values(errorMap).forEach((e: any) => {
@@ -146,15 +142,12 @@ export class DateComparisonPageController extends PageController {
         }
 
         finalErrors.push(...e.errors);
-        console.log("finalErrors", finalErrors);
       });
 
       return finalErrors;
     };
 
-    const processedErrorList = this.customErrors
-      ? addCustomErrors(errorList)
-      : errorList;
+    const processedErrorList = addCustomErrors(errorList);
 
     return {
       titleText: this.errorSummaryTitle,
