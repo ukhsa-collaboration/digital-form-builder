@@ -128,8 +128,10 @@ export class DateComparisonPageController extends PageController {
             if (e.name.includes(this.firstDateName)) {
               err.text = this.firstDateComponent?.options?.customValidationMessages?.dayMonthYear;
             }
-            if (e.name.includes(this.secondDateName)) {
-              err.text = this.secondDateComponent?.options?.customValidationMessages?.dayMonthYear;
+            if (this.secondDateComponent) {
+              if (e.name.includes(this.secondDateName)) {
+                err.text = this.secondDateComponent?.options?.customValidationMessages?.dayMonthYear;
+              }
             }
           });
         }
@@ -142,16 +144,13 @@ export class DateComparisonPageController extends PageController {
             err.value !== ""
         );
 
-        console.log("numberBaseErrors", numberBaseErrors);
-
         if (numberBaseErrors.length > 0) {
           numberBaseErrors.forEach((err) => {
             if (e.name.includes(this.firstDateName)) {
-              console.log("this", this);
-              err.text = this.firstDateComponent.options.customValidationMessages.nonNumeric;
+              err.text = this.firstDateComponent?.options?.customValidationMessages?.nonNumeric;
             }
             if (e.name.includes(this.secondDateName)) {
-              err.text = this.secondDateComponent.options.customValidationMessages.nonNumeric;
+              err.text = this.secondDateComponent?.options?.customValidationMessages?.nonNumeric;
             }
             err.type = "custom.numberBase";
           });
