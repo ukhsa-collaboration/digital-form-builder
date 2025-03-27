@@ -95,7 +95,12 @@ export class DatePartsField extends FormComponent {
 
   getStateSchemaKeys() {
     const { options } = this;
+    const { maxDaysInPast, maxDaysInFuture } = options as any;
     let schema: any = this.stateSchema;
+
+    schema = schema.custom(
+      helpers.getCustomDateValidator(maxDaysInPast, maxDaysInFuture)
+    );
 
     if (options.customValidationMessages) {
       schema = schema.messages(options.customValidationMessages);
