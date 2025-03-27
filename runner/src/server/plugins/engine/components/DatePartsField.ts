@@ -40,6 +40,7 @@ export class DatePartsField extends FormComponent {
               "number.min": "{{#label}} must be between 1 and 31",
               "number.max": "{{#label}} must be between 1 and 31",
               "number.base": `${def.errorLabel} must include a day`,
+              // "number.base": `${def.errorLabel} must be a real date`,
             },
           },
           hint: "",
@@ -56,7 +57,8 @@ export class DatePartsField extends FormComponent {
             customValidationMessages: {
               "number.min": "{{#label}} must be between 1 and 12",
               "number.max": "{{#label}} must be between 1 and 12",
-              "number.required": `${def.errorLabel} must include a year`,
+              "number.base": `${def.errorLabel} must include a month`,
+              // "number.base": `${def.errorLabel} must be a real date`,
             },
           },
           hint: "",
@@ -71,7 +73,8 @@ export class DatePartsField extends FormComponent {
             optionalText: optionalText,
             classes: "govuk-input--width-4",
             customValidationMessages: {
-              "number.required": `${def.errorLabel} must include a year`,
+              "number.base": `${def.errorLabel} must include a year`,
+              // "number.base": `${def.errorLabel} must be a real date`,
             },
           },
           hint: "",

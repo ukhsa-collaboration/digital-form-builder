@@ -1,4 +1,4 @@
-import joi, { custom } from "joi";
+import joi from "joi";
 import { PageController } from "./PageController";
 import { format, parseISO } from "date-fns";
 import { FormSubmissionErrors } from "../types";
@@ -30,7 +30,6 @@ export class DateComparisonPageController extends PageController {
       FirstCaseOnset: joi
         .date()
         .required()
-        // .custom(validateRealDate) // Add custom validation
         .max("now") // Prevents dates in the future
         .messages({
           ...this.firstCaseOnsetComponent.options.customValidationMessages,
@@ -39,7 +38,6 @@ export class DateComparisonPageController extends PageController {
       MostRecentCaseOnset: joi
         .date()
         .required()
-        // .custom(validateRealDate) // Add custom validation
         .min(joi.ref("FirstCaseOnset")) // Ensures most recent date is not before first date
         .max("now") // Prevents dates in the future
         .messages({
@@ -116,19 +114,6 @@ export class DateComparisonPageController extends PageController {
       // Process the errorMap to set text based on combinations and add to finalErrors
       const finalErrors: any = [];
       Object.values(errorMap).forEach((e: any) => {
-        // if (e.day && e.month && !e.year) {
-        //   e.errors.forEach((err) => {
-        //     err.text = this.customErrors.dayMonth;
-        //   });
-        // } else if (e.day && e.year && !e.month) {
-        //   e.errors.forEach((err) => {
-        //     err.text = this.customErrors.dayYear;
-        //   });
-        // } else if (!e.day && e.year && e.month) {
-        //   e.errors.forEach((err) => {
-        //     err.text = this.customErrors.yearMonth;
-        //   });
-        // } else
         if (e.day && e.year && e.month) {
           e.errors.forEach((err) => {
             if (e.name.includes("FirstCaseOnset")) {
@@ -137,7 +122,6 @@ export class DateComparisonPageController extends PageController {
             if (e.name.includes("MostRecentCaseOnset")) {
               err.text = this.mostRecentCaseOnsetComponent.options.customValidationMessages.dayMonthYear;
             }
-            // err.text = this.customErrors[e.baseName].dayMonthYear;
           });
         }
 
@@ -157,7 +141,6 @@ export class DateComparisonPageController extends PageController {
             if (e.name.includes("MostRecentCaseOnset")) {
               err.text = this.mostRecentCaseOnsetComponent.options.customValidationMessages.nonNumeric;
             }
-            // err.text = this.customErrors[e.baseName].nonNumeric;
             err.type = "custom.numberBase";
           });
         }
