@@ -2370,7 +2370,6 @@
       "title": "Symptom onset of cases in this outbreak",
       "sectionForEndSummaryPages": "SymptomOnset",
       "controller": "DateComparisonPageController",
-      "options": {},
       "components": [
         {
           "name": "introText1",

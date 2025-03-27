@@ -78,7 +78,6 @@ export class DateComparisonPageController extends PageController {
     };
     const isoRegex = /\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z)/;
 
-    console.log("errors", errors);
     const errorList = errors.map((err) => {
       let name = err.path.join("__");
       let title = findTitle(name.split("__")[0]);
@@ -97,8 +96,6 @@ export class DateComparisonPageController extends PageController {
 
     const addCustomErrors = (errorList) => {
       const errorMap = {};
-
-      console.log("errorList", errorList);
 
       // Populate the errorMap with the base name and suffix
       errorList.forEach((err) => {
