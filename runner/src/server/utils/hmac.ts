@@ -3,13 +3,43 @@ import crypto from "crypto";
 // Configuration constants
 const TIME_THRESHOLD = 1200; // 5 minutes in seconds
 
+function isBritishSummerTime(date) {
+  const checkDate = date instanceof Date ? date : new Date(date);
+  const year = checkDate.getFullYear();
+
+  // Last Sunday of March (start of BST)
+  const marchLastSunday = new Date(year, 2, 31);
+  marchLastSunday.setDate(marchLastSunday.getDate() - marchLastSunday.getDay());
+
+  // Last Sunday of October (end of BST)
+  const octoberLastSunday = new Date(year, 9, 31);
+  octoberLastSunday.setDate(
+    octoberLastSunday.getDate() - octoberLastSunday.getDay()
+  );
+
+  // Check if date is between these two dates (inclusive of start, exclusive of end)
+  return checkDate >= marchLastSunday && checkDate < octoberLastSunday;
+}
+
+function adjustTimestampForBST(timestamp) {
+  const date = new Date(timestamp * 1000);
+
+  if (isBritishSummerTime(date)) {
+    // During BST, add 1 hour (3600 seconds)
+    return timestamp + 3600;
+  } else {
+    // During GMT, no adjustment needed
+    return timestamp;
+  }
+}
+
 /**
  * Formats a Unix timestamp to a human-readable time string
  */
 function formatUnixTimestamp(timestamp: number): string {
   const date = new Date(timestamp * 1000); // Convert seconds to milliseconds
-  let hours = date.getHours();
-  const minutes = date.getMinutes();
+  let hours = date.getUTCHours();
+  const minutes = date.getUTCMinutes();
   const ampm = hours >= 12 ? "pm" : "am";
 
   hours = hours % 12 || 12; // Convert 0 to 12 for 12-hour format
@@ -34,9 +64,10 @@ export async function createHmac(email: string, hmacKey: string) {
       .update(dataToHash)
       .digest("hex");
 
-    const hmacExpiryTime = formatUnixTimestamp(
-      currentTimestamp + TIME_THRESHOLD
-    );
+    const expiryTimestamp = currentTimestamp + TIME_THRESHOLD;
+    const adjustedExpiryForDisplay = adjustTimestampForBST(expiryTimestamp);
+
+    const hmacExpiryTime = formatUnixTimestamp(adjustedExpiryForDisplay);
 
     return [hmac, currentTimestamp, hmacExpiryTime];
   } catch (error) {
