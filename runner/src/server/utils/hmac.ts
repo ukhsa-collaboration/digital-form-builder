@@ -5,9 +5,7 @@ const TIME_THRESHOLD = 1200; // 5 minutes in seconds
 
 function lastSunday(month, year) {
   var d = new Date();
-  var lastDayOfMonth = new Date(
-    Date.UTC(year || d.getFullYear(), month + 1, 0)
-  );
+  var lastDayOfMonth = new Date(Date.UTC(year || d.getFullYear(), month, 0));
   var day = lastDayOfMonth.getDay();
   return new Date(
     Date.UTC(
@@ -20,14 +18,14 @@ function lastSunday(month, year) {
 
 function isBST(date) {
   var d = date || new Date();
-  var starts = lastSunday(2, d.getFullYear());
+  var starts = lastSunday(3, d.getFullYear());
   starts.setHours(1);
-  var ends = lastSunday(9, d.getFullYear());
+  var ends = lastSunday(10, d.getFullYear());
   ends.setHours(1);
   return d.getTime() >= starts.getTime() && d.getTime() < ends.getTime();
 }
 
-function adjustTimestampForBST(timestamp) {
+function applyBSTIfRequired(timestamp) {
   const date = new Date(timestamp * 1000);
 
   if (isBST(date)) {
@@ -71,7 +69,7 @@ export async function createHmac(email: string, hmacKey: string) {
       .digest("hex");
 
     const expiryTimestamp = currentTimestamp + TIME_THRESHOLD;
-    const adjustedExpiryForDisplay = adjustTimestampForBST(expiryTimestamp);
+    const adjustedExpiryForDisplay = applyBSTIfRequired(expiryTimestamp);
 
     const hmacExpiryTime = formatUnixTimestamp(adjustedExpiryForDisplay);
 
