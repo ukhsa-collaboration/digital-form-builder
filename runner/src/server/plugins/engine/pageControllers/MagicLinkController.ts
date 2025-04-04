@@ -25,7 +25,17 @@ export class MagicLinkController extends PageController {
         hmacKey
       );
 
+      const { cacheService } = request.services([]);
+
+      const state = await cacheService.getState(request);
+
       if (!validation.isValid) {
+        console.log("Magic link validation failed:", {
+          reason: validation.reason,
+          email,
+          requestTime,
+          state: await cacheService.getState(request),
+        });
         // Handle different invalid token cases
         switch (validation.reason) {
           case "expired":
@@ -39,13 +49,12 @@ export class MagicLinkController extends PageController {
 
       this.langFromRequest(request);
 
-      const { cacheService } = request.services([]);
       const model = this.model;
 
       if (this.model.def.skipSummary) {
         return this.makePostRouteHandler()(request, h);
       }
-      const state = await cacheService.getState(request);
+
       const viewModel = new SummaryViewModel(this.title, model, state, request);
 
       if (viewModel.endPage) {
@@ -146,6 +155,15 @@ export class MagicLinkController extends PageController {
           path: "/",
           isSameSite: "Lax",
         });
+      }
+
+      /// What's in current state
+      const { cacheService } = request.services([]);
+
+      const state = await cacheService.getState(request);
+
+      if (state) {
+        console.log("State contents:", JSON.stringify(state, null, 2));
       }
 
       // Redirect to custom page instead of status

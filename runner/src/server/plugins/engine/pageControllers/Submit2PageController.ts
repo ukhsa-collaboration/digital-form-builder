@@ -4,7 +4,7 @@ import { redirectTo, redirectUrl } from "../helpers";
 import { HapiRequest, HapiResponseToolkit } from "server/types";
 import { createHmac } from "src/server/utils/hmac";
 
-export class ResubmitPageController extends PageController {
+export class Submit2PageController extends PageController {
   constructor(model, pageDef) {
     super(model, pageDef);
   }
@@ -27,7 +27,10 @@ export class ResubmitPageController extends PageController {
       const timestamp = state["timestamp"];
 
       if (timestamp) {
+        console.log("timestamp", timestamp);
+
         const fiveMinutesAgo = Math.floor((Date.now() - 5 * 60 * 1000) / 1000);
+        console.log("fiveMinutesAgo", fiveMinutesAgo);
 
         if (timestamp > fiveMinutesAgo) {
           return redirectTo(request, h, "/magic-link/time-remaining");
@@ -37,6 +40,8 @@ export class ResubmitPageController extends PageController {
       console.log("Magic link getRouteHandler state", {
         state: await cacheService.getState(request),
       });
+
+      // const email = state["email"];
 
       const viewModel = new SummaryViewModel(this.title, model, state, request);
 
@@ -153,13 +158,6 @@ export class ResubmitPageController extends PageController {
       // Get user email from state or request
       const email = state["email"];
 
-      // Check the hapi server for a record with that email
-      const found = await cacheService.searchCache(
-        request,
-        "emily.j.evans@ukhsa.gov.uk"
-      );
-      console.log(found ? "Value found!" : "Value not found.");
-
       const hmacKey = this.model.def.outputs[0].outputConfiguration.hmacKey;
 
       if (email) {
@@ -195,20 +193,20 @@ export class ResubmitPageController extends PageController {
           userCompletedSummary: true,
         });
 
-        // const timestamp = updatedState["timestamp"];
+        const timestamp = updatedState["timestamp"];
 
-        // if (timestamp) {
-        //   console.log("timestamp", timestamp);
+        if (timestamp) {
+          console.log("timestamp", timestamp);
 
-        //   const fiveMinutesAgo = Math.floor(
-        //     (Date.now() - 5 * 60 * 1000) / 1000
-        //   );
-        //   console.log("fiveMinutesAgo", fiveMinutesAgo);
+          const fiveMinutesAgo = Math.floor(
+            (Date.now() - 5 * 60 * 1000) / 1000
+          );
+          console.log("fiveMinutesAgo", fiveMinutesAgo);
 
-        //   if (timestamp > fiveMinutesAgo) {
-        //     return redirectTo(request, h, "/magic-link/time-remaining");
-        //   }
-        // }
+          if (timestamp > fiveMinutesAgo) {
+            return redirectTo(request, h, "/magic-link/time-remaining");
+          }
+        }
 
         // The webhookData will be stored separately, without modification
         await cacheService.mergeState(request, {
@@ -241,8 +239,7 @@ export class ResubmitPageController extends PageController {
         state: await cacheService.getState(request),
       });
 
-      // Redirect to custom page instead of status
-      return redirectTo(request, h, `/${request.params.id}/check-your-email`);
+      //   return h.view("summary", viewModel);
     };
   }
 

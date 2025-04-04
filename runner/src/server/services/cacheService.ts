@@ -127,6 +127,19 @@ export class CacheService {
     }
   }
 
+  async searchCache(request: HapiRequest, searchValue: any): Promise<boolean> {
+    const key = this.Key(request);
+    const state = await this.cache.get(key);
+
+    if (!state) return false;
+
+    const containsValue = JSON.stringify(state).includes(
+      JSON.stringify(searchValue)
+    );
+
+    return containsValue;
+  }
+
   /**
    * The key used to store user session data against.
    * If there are multiple forms on the same runner instance, for example `form-a` and `form-a-feedback` this will prevent CacheService from clearing data from `form-a` if a user gave feedback before they finished `form-a`
