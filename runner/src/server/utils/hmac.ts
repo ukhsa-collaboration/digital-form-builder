@@ -3,28 +3,34 @@ import crypto from "crypto";
 // Configuration constants
 const TIME_THRESHOLD = 1200; // 5 minutes in seconds
 
-function isBritishSummerTime(date) {
-  const checkDate = date instanceof Date ? date : new Date(date);
-  const year = checkDate.getFullYear();
-
-  // Last Sunday of March (start of BST)
-  const marchLastSunday = new Date(year, 2, 31);
-  marchLastSunday.setDate(marchLastSunday.getDate() - marchLastSunday.getDay());
-
-  // Last Sunday of October (end of BST)
-  const octoberLastSunday = new Date(year, 9, 31);
-  octoberLastSunday.setDate(
-    octoberLastSunday.getDate() - octoberLastSunday.getDay()
+function lastSunday(month, year) {
+  var d = new Date();
+  var lastDayOfMonth = new Date(
+    Date.UTC(year || d.getFullYear(), month + 1, 0)
   );
+  var day = lastDayOfMonth.getDay();
+  return new Date(
+    Date.UTC(
+      lastDayOfMonth.getFullYear(),
+      lastDayOfMonth.getMonth(),
+      lastDayOfMonth.getDate() - day
+    )
+  );
+}
 
-  // Check if date is between these two dates (inclusive of start, exclusive of end)
-  return checkDate >= marchLastSunday && checkDate < octoberLastSunday;
+function isBST(date) {
+  var d = date || new Date();
+  var starts = lastSunday(2, d.getFullYear());
+  starts.setHours(1);
+  var ends = lastSunday(9, d.getFullYear());
+  ends.setHours(1);
+  return d.getTime() >= starts.getTime() && d.getTime() < ends.getTime();
 }
 
 function adjustTimestampForBST(timestamp) {
   const date = new Date(timestamp * 1000);
 
-  if (isBritishSummerTime(date)) {
+  if (isBST(date)) {
     // During BST, add 1 hour (3600 seconds)
     return timestamp + 3600;
   } else {
