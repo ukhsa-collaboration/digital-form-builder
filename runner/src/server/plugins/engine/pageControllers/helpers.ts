@@ -12,12 +12,12 @@ import { Page } from "@xgovformbuilder/model";
 import { UploadPageController } from "server/plugins/engine/pageControllers/UploadPageController";
 import { MultiStartPageController } from "server/plugins/engine/pageControllers/MultiStartPageController";
 import { CheckpointSummaryPageController } from "src/server/plugins/engine/pageControllers/CheckpointSummaryPageController";
-import { ResubmitPageController } from "./ResubmitPageController";
+import { FirstSubmitPageController } from "./FirstSubmitPageController";
 import { MagicLinkController } from "./MagicLinkController";
 import { MagicLinkStartPageController } from "./MagicLinkStartPageController";
 import { CustomSummaryPageController } from "./CustomSummaryPageController";
 import { DateComparisonPageController } from "./DateComparisonPageController";
-import { Submit2PageController } from "./Submit2PageController";
+import { ResubmitPageController } from "./ResubmitPageController";
 
 const PageControllers = {
   DobPageController,
@@ -31,12 +31,12 @@ const PageControllers = {
   UploadPageController,
   MultiStartPageController,
   CheckpointSummaryPageController,
-  ResubmitPageController,
+  FirstSubmitPageController,
   MagicLinkController,
   MagicLinkStartPageController,
   CustomSummaryPageController,
   DateComparisonPageController,
-  Submit2PageController,
+  ResubmitPageController,
 };
 
 export const controllerNameFromPath = (filePath: string) => {
