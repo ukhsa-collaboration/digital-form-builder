@@ -37,7 +37,7 @@ export class DateComparisonPageController extends PageController {
         .date()
         .required()
         .max("now") // Prevents dates in the future
-        .min(subMonths(new Date(), 2)) // Prevents dates more than 60 days in the past
+        .min(subMonths(new Date(), 2)) // Prevents dates more than 2 months in the past
         .messages({
           ...this.firstDateComponent?.options?.customValidationMessages,
         }),
