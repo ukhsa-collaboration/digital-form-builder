@@ -303,7 +303,9 @@ export class SummaryPageController extends PageController {
     return payApiKey;
   }
 
-  convertDetailsForCloseContact(details) {
+  convertDetailsForCloseContact(
+    details: Array<{ name: string; title: string; items: Array<any> }>
+  ) {
     const detailItem = ({ name, url, value }) => {
       return {
         name: name === "Full name" ? "FullName" : name.split(" ")[0] + "Details",
@@ -320,23 +322,23 @@ export class SummaryPageController extends PageController {
       };
     };
   
-    const fullName = (sectionName) => {
+    const fullName = (sectionName: string) => {
       return details
-        .find((item) => item.name === sectionName)
+        .find((item) => item.name === sectionName)!
         .items.filter((item) => item.label.includes("name"))
         .map((item) => item.value)
         .join(" ");
     };
   
-    const contactDetails = (sectionName) => {
+    const contactDetails = (sectionName: string) => {
       return details
-        .find((item) => item.name === sectionName)
+        .find((item) => item.name === sectionName)!
         .items.filter((item) => !/close contact|name/g.test(item.label) && item.value)
         .map((item) => item.value)
         .join("\n");
     };
   
-    const closeContactItem = (itemName) => JSON.parse(
+    const closeContactItem = (itemName: string) => JSON.parse(
       JSON.stringify(details[0].items.find((item) => item.name === itemName))
         .replace(/'Yes' if they've/g, "Have they")
         .replace(/'Yes' if you've/g, "Have you")
@@ -349,6 +351,7 @@ export class SummaryPageController extends PageController {
       {
         name: "PersonalDetails",
         title: "Personal details",
+        card: false,
         items: [
           detailItem({
             name: "Your details",
@@ -361,15 +364,20 @@ export class SummaryPageController extends PageController {
       {
         name: "CloseContacts",
         title: "Close contacts",
+        card: false,
         items: [closeContactItem(isFormForSomeoneElse ? "FFRnNF" : "GFRnNF")],
       },
     ];
 
     if (isFormForSomeoneElse) {
+      const value = fullName("mKkWra") === " "
+        ? "Not supplied"
+        : `${fullName("mKkWra")}\n${contactDetails("mKkWra")}`;
+      
       arrayToReturn[0].items.push(
         detailItem({
           name: "Their details",
-          value: `${fullName("mKkWra")}\n${contactDetails("mKkWra")}`,
+          value: value,
           url: "/other-persons-details",
         }),
         details[0].items.find((item) => item.name === "RdSrff"),
@@ -380,6 +388,7 @@ export class SummaryPageController extends PageController {
       arrayToReturn.push({
         name: section.name,
         title: section.title,
+        card: true,
         items: [
           detailItem({
             name: "Full name",
