@@ -91,6 +91,48 @@ export class CacheService {
     );
   }
 
+  async createMagicLinkRecord(email: string, hmac: string) {
+    const key = email.concat("+", hmac);
+    const value = {
+      hmac,
+      active: true,
+    };
+    console.log("Setting cache for:", key, value);
+    return this.cache.set(key, value, config.sessionTimeout); // optionally add TTL as third arg
+  }
+
+  async searchForMagicLinkRecord(email: string, hmac: string) {
+    const key = email.concat("+", hmac);
+
+    console.log("Getting cache for:", key);
+
+    const emailCached = await this.cache.get(key);
+    console.log("emailCached", emailCached);
+    return emailCached ?? null;
+  }
+
+  async isMagicLinkRecordActive(email: string, hmac: string) {
+    const key = email.concat("+", hmac);
+
+    const emailCached = await this.cache.get(key);
+    console.log("emailCached here", emailCached);
+    return emailCached.active;
+  }
+
+  async deactivateMagicLink(email: string, hmac: string) {
+    const key = email.concat("+", hmac);
+
+    const record = await this.cache.get(key);
+    if (!record) return null;
+
+    const updated = {
+      ...record,
+      active: false,
+    };
+
+    return this.cache.set(key, updated, config.initialisedSessionTimeout);
+  }
+
   async activateSession(jwt, request) {
     const { decoded } = Jwt.token.decode(jwt);
     const { payload }: { payload: DecodedSessionToken } = decoded;
@@ -125,19 +167,6 @@ export class CacheService {
     if (request.yar?.id) {
       this.cache.drop(this.Key(request));
     }
-  }
-
-  async searchCache(request: HapiRequest, searchValue: any): Promise<boolean> {
-    const key = this.Key(request);
-    const state = await this.cache.get(key);
-
-    if (!state) return false;
-
-    const containsValue = JSON.stringify(state).includes(
-      JSON.stringify(searchValue)
-    );
-
-    return containsValue;
   }
 
   /**

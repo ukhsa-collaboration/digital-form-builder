@@ -153,13 +153,6 @@ export class FirstSubmitPageController extends PageController {
       // Get user email from state or request
       const email = state["email"];
 
-      // Check the hapi server for a record with that email
-      const found = await cacheService.searchCache(
-        request,
-        "emily.j.evans@ukhsa.gov.uk"
-      );
-      console.log(found ? "Value found!" : "Value not found.");
-
       const hmacKey = this.model.def.outputs[0].outputConfiguration.hmacKey;
 
       if (email) {
@@ -167,6 +160,18 @@ export class FirstSubmitPageController extends PageController {
           email,
           hmacKey
         );
+
+        // Check the hapi server for a record with that email
+        const found = await cacheService.searchForMagicLinkRecord(email, hmac);
+        console.log(found ? "Value found!" : "Value not found.");
+
+        if (!found) {
+          console.log("creating hmac record...");
+          await cacheService.createMagicLinkRecord(email, hmac);
+        }
+
+        const found2 = await cacheService.searchForMagicLinkRecord(email, hmac);
+        console.log(found2 ? "Value found!" : "Value not found.");
 
         const hmacUrlStart = "/magic-link/return?email=";
 
@@ -194,21 +199,6 @@ export class FirstSubmitPageController extends PageController {
           outputs: summaryViewModel.outputs,
           userCompletedSummary: true,
         });
-
-        // const timestamp = updatedState["timestamp"];
-
-        // if (timestamp) {
-        //   console.log("timestamp", timestamp);
-
-        //   const fiveMinutesAgo = Math.floor(
-        //     (Date.now() - 5 * 60 * 1000) / 1000
-        //   );
-        //   console.log("fiveMinutesAgo", fiveMinutesAgo);
-
-        //   if (timestamp > fiveMinutesAgo) {
-        //     return redirectTo(request, h, "/magic-link/time-remaining");
-        //   }
-        // }
 
         // The webhookData will be stored separately, without modification
         await cacheService.mergeState(request, {
