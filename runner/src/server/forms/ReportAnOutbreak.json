@@ -2583,7 +2583,7 @@
           "options": {
             "summaryTitle": "Most recent case: symptoms started",
             "required": true,
-            "maxDaysInFuture": "0",
+            "maxDaysInFuture": 0,
             "customValidationMessages": {
               "dayMonthYear": "Enter the date symptoms started in the most recent case of this outbreak",
               "nonNumeric": "The date symptoms started in the most recent case of this outbreak must be a real date",
