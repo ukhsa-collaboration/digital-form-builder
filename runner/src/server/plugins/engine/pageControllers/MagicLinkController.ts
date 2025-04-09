@@ -29,9 +29,7 @@ export class MagicLinkController extends PageController {
 
       const state = await cacheService.getState(request);
 
-      console.log("emailToFind", email);
-
-      const isMagicLinkRecordActive = await cacheService.isMagicLinkRecordActive(
+      const isMagicLinkRecordActive = await cacheService.searchForMagicLinkRecord(
         email,
         signature
       );
@@ -40,16 +38,7 @@ export class MagicLinkController extends PageController {
         return h.redirect("/magic-link/expired").code(302);
       }
 
-      await cacheService.deactivateMagicLink(email, signature);
-
-      const matchingRecords = await cacheService.searchForMagicLinkRecord(
-        email,
-        signature
-      );
-
-      console.log(
-        `DeactivatedLink ${matchingRecords} records with email ${email}`
-      );
+      await cacheService.deleteMagicLinkRecord(email, signature);
 
       if (!validation.isValid) {
         console.log("Magic link validation failed:", {
@@ -178,25 +167,6 @@ export class MagicLinkController extends PageController {
           isSameSite: "Lax",
         });
       }
-
-      /// What's in current state
-      const { cacheService } = request.services([]);
-
-      // Example usage
-      const emailToFind = "emily.j.evans@ukhsa.gov.uk";
-      const matchingRecords = await cacheService.searchForMagicLinkRecord(
-        email,
-        signature
-      );
-
-      console.log(`Found ${matchingRecords} records with email ${emailToFind}`);
-
-      const state = await cacheService.getState(request);
-
-      if (state) {
-        console.log("State contents:", JSON.stringify(state, null, 2));
-      }
-
       // Redirect to custom page instead of status
       return redirectTo(request, h, `/${request.params.id}/email-confirmed`);
     };

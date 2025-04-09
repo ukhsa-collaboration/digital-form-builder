@@ -92,45 +92,22 @@ export class CacheService {
   }
 
   async createMagicLinkRecord(email: string, hmac: string) {
-    const key = email.concat("+", hmac);
+    const key = this.MagicLinkKey(email, hmac);
     const value = {
-      hmac,
       active: true,
     };
-    console.log("Setting cache for:", key, value);
-    return this.cache.set(key, value, config.sessionTimeout); // optionally add TTL as third arg
+    return this.cache.set(key, value, config.sessionTimeout);
   }
 
   async searchForMagicLinkRecord(email: string, hmac: string) {
-    const key = email.concat("+", hmac);
-
-    console.log("Getting cache for:", key);
-
+    const key = this.MagicLinkKey(email, hmac);
     const emailCached = await this.cache.get(key);
-    console.log("emailCached", emailCached);
     return emailCached ?? null;
   }
 
-  async isMagicLinkRecordActive(email: string, hmac: string) {
-    const key = email.concat("+", hmac);
-
-    const emailCached = await this.cache.get(key);
-    console.log("emailCached here", emailCached);
-    return emailCached.active;
-  }
-
-  async deactivateMagicLink(email: string, hmac: string) {
-    const key = email.concat("+", hmac);
-
-    const record = await this.cache.get(key);
-    if (!record) return null;
-
-    const updated = {
-      ...record,
-      active: false,
-    };
-
-    return this.cache.set(key, updated, config.initialisedSessionTimeout);
+  async deleteMagicLinkRecord(email: string, hmac: string) {
+    const key = this.MagicLinkKey(email, hmac);
+    return await this.cache.drop(key);
   }
 
   async activateSession(jwt, request) {
@@ -191,6 +168,10 @@ export class CacheService {
       segment: partition,
       id: jwt,
     };
+  }
+
+  MagicLinkKey(email, hmac) {
+    return `${email}+${hmac}`;
   }
 }
 
