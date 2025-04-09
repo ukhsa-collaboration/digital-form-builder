@@ -349,6 +349,7 @@ export class SummaryPageController extends PageController {
       {
         name: "PersonalDetails",
         title: "Personal details",
+        card: false,
         items: [
           detailItem({
             name: "Your details",
@@ -361,15 +362,20 @@ export class SummaryPageController extends PageController {
       {
         name: "CloseContacts",
         title: "Close contacts",
+        card: false,
         items: [closeContactItem(isFormForSomeoneElse ? "FFRnNF" : "GFRnNF")],
       },
     ];
 
     if (isFormForSomeoneElse) {
+      const value = fullName("mKkWra") === " "
+        ? "Not supplied"
+        : `${fullName("mKkWra")}\n${contactDetails("mKkWra")}`;
+      
       arrayToReturn[0].items.push(
         detailItem({
           name: "Their details",
-          value: `${fullName("mKkWra")}\n${contactDetails("mKkWra")}`,
+          value: value,
           url: "/other-persons-details",
         }),
         details[0].items.find((item) => item.name === "RdSrff"),
@@ -380,6 +386,7 @@ export class SummaryPageController extends PageController {
       arrayToReturn.push({
         name: section.name,
         title: section.title,
+        card: true,
         items: [
           detailItem({
             name: "Full name",
