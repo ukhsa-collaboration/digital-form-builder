@@ -1,4 +1,5 @@
 {% from "partials/summary-detail.html" import summaryDetail %}
+{% from "partials/summary-card.html" import summaryCard %}
 {% from "components/checkboxes/macro.njk" import govukCheckboxes %}
 {% extends 'layout.html' %}
 
@@ -25,7 +26,11 @@
         {% endif %}
 
         {% for detail in details %}
-          {{ summaryDetail(detail) }}
+          {% if detail.card %}
+            {{ summaryCard(detail) }}
+          {% else %}
+            {{ summaryDetail(detail) }}
+          {% endif %}
         {% endfor %}
 
         {% if fees and fees.details|length %}
