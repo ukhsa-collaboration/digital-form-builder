@@ -1692,7 +1692,8 @@
               "dayMonthYear": "Enter the date symptoms started",
               "nonNumeric": "The date symptoms started must be a real date",
               "date.max": "The date symptoms started must be in the past",
-              "date.base": "The date symptoms started must be a real date"
+              "date.base": "The date symptoms started must be a real date",
+              "date.min": "The date symptoms started must be in the past two months"
             }
           },
           "type": "DatePartsField",
@@ -2558,7 +2559,7 @@
           "name": "FirstCaseOnset",
           "type": "DatePartsField",
           "title": "When did symptoms start in the first case in this outbreak?",
-          "errorLabel": "The date that symptoms started in the first case of this outbreak",
+          "errorLabel": "The date symptoms started in the first case of this outbreak",
           "hint": "For example, 31 3 2024",
           "options": {
             "summaryTitle": "First case: symptoms started",
@@ -2568,7 +2569,8 @@
               "nonNumeric": "The date symptoms started in the first case of this outbreak must be a real date",
               "dayMonthYear": "Enter the date symptoms started in the first case of this outbreak",
               "date.max": "The date symptoms started in the first case of this outbreak must be in the past",
-              "date.base": "The date symptoms started in the first case of this outbreak must be a real date"
+              "date.base": "The date symptoms started in the first case of this outbreak must be a real date",
+              "date.min": "The date symptoms started in the first case of this outbreak must be in the past two months"
             }
           }
         },
@@ -2774,7 +2776,7 @@
                   }
                 },
                 "schema": {
-                  "regex": "^1-\\d{9}$"
+                  "regex": "^(?:1-\\d{9,11}|[A-Z][A-Z0-9]{4,6})$"
                 }
               }
             }
@@ -2791,7 +2793,7 @@
           "name": "nMOTdlmry",
           "options": {},
           "type": "Para",
-          "content": "<a href=\"https://www.cqc.org.uk/about-us/transparency/using-cqc-data\" target=”_blank”>\n Find your CQC location ID in the care directory on the CQC website (opens in a new tab)</a>. The CQC location ID is listed on the ‘Registration details’ page for your care setting.",
+          "content": "<a href=\"https://www.cqc.org.uk/search/all?filters%5B%5D=services%3Acare-home&radius=all\" target=”_blank”>\n Find your CQC location ID in the care directory on the CQC website (opens in a new tab)</a>. The CQC location ID is listed on the ‘Registration details’ page for your care setting.",
           "schema": {}
         }
       ],
@@ -4122,8 +4124,8 @@
             "operator": "contains",
             "value": {
               "type": "Value",
-              "value": "Any other acute respiratory infection",
-              "display": "Any other acute respiratory infection"
+              "value": "Other acute respiratory infection",
+              "display": "Other acute respiratory infection"
             }
           },
           {

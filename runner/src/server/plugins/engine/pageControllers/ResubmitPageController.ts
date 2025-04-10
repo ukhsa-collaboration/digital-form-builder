@@ -182,6 +182,46 @@ export class ResubmitPageController extends PageController {
             return redirectTo(request, h, "/magic-link/time-remaining");
           }
         }
+        const [hmac, currentTimestamp, hmacExpiryTime] = await createHmac(
+          email,
+          hmacKey
+        );
+
+        // Check the hapi server for a record with that email
+        const foundHmac = await cacheService.searchForMagicLinkRecord(
+          email,
+          hmac
+        );
+
+        if (!foundHmac) {
+          await cacheService.createMagicLinkRecord(email, hmac);
+        }
+
+        const hmacUrlStart = "/magic-link/return?email=";
+
+        const hmacUrl = hmacUrlStart.concat(
+          email,
+          "&request_time=",
+          currentTimestamp.toString(),
+          "&signature=",
+          hmac.toString()
+        );
+
+        // Store HMAC signature in state
+        await cacheService.mergeState(request, {
+          hmacSignature: hmacUrl,
+          hmacExpiryTime: hmacExpiryTime,
+        });
+
+        const updatedState = await cacheService.getState(request);
+
+        // Continue with the normal flow...
+        await cacheService.mergeState(request, {
+          hmacSignature: updatedState.hmacSignature,
+          hmacExpiryTime: updatedState.hmacExpiryTime,
+          outputs: summaryViewModel.outputs,
+          userCompletedSummary: true,
+        });
 
         // The webhookData will be stored separately, without modification
         await cacheService.mergeState(request, {

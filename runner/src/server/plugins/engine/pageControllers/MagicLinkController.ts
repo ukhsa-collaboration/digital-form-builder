@@ -14,16 +14,11 @@ export class MagicLinkController extends PageController {
   makeGetRouteHandler() {
     return async (request: HapiRequest, h: HapiResponseToolkit) => {
       const email = request.query.email;
-      const signature = request.query.signature;
+      const hmac = request.query.signature;
       const requestTime = request.query.request_time;
       const hmacKey = this.model.def.outputs[0].outputConfiguration.hmacKey;
 
-      const validation = await validateHmac(
-        email,
-        signature,
-        requestTime,
-        hmacKey
-      );
+      const validation = await validateHmac(email, hmac, requestTime, hmacKey);
 
       const { cacheService } = request.services([]);
 
@@ -31,14 +26,14 @@ export class MagicLinkController extends PageController {
 
       const isMagicLinkRecordActive = await cacheService.searchForMagicLinkRecord(
         email,
-        signature
+        hmac
       );
 
       if (!isMagicLinkRecordActive) {
         return h.redirect("/magic-link/expired").code(302);
       }
 
-      await cacheService.deleteMagicLinkRecord(email, signature);
+      await cacheService.deleteMagicLinkRecord(email, hmac);
 
       if (!validation.isValid) {
         console.log("Magic link validation failed:", {
@@ -133,16 +128,11 @@ export class MagicLinkController extends PageController {
   makePostRouteHandler() {
     return async (request: HapiRequest, h: HapiResponseToolkit) => {
       const email = request.query.email;
-      const signature = request.query.signature;
+      const hmac = request.query.signature;
       const requestTime = request.query.request_time;
       const hmacKey = this.model.def.outputs[0].outputConfiguration.hmacKey;
 
-      const validation = await validateHmac(
-        email,
-        signature,
-        requestTime,
-        hmacKey
-      );
+      const validation = await validateHmac(email, hmac, requestTime, hmacKey);
 
       if (validation.isValid) {
         const token = Jwt.token.generate(
