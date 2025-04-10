@@ -2,6 +2,7 @@ import { SummaryViewModel } from "../models";
 import { PageController } from "./PageController";
 import { redirectTo, redirectUrl } from "../helpers";
 import { HapiRequest, HapiResponseToolkit } from "server/types";
+import { createHmac } from "src/server/utils/hmac";
 
 export class ResubmitPageController extends PageController {
   constructor(model, pageDef) {
@@ -182,6 +183,9 @@ export class ResubmitPageController extends PageController {
             return redirectTo(request, h, "/magic-link/time-remaining");
           }
         }
+
+        const hmacKey = this.model.def.outputs[0].outputConfiguration.hmacKey;
+
         const [hmac, currentTimestamp, hmacExpiryTime] = await createHmac(
           email,
           hmacKey

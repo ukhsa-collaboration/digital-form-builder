@@ -50,7 +50,7 @@
     },
     {
       "path": "/submit1",
-      "controller": "ResubmitPageController"
+      "controller": "FirstSubmitPageController"
     },
     {
       "path": "/check-your-email",
@@ -92,7 +92,7 @@
     {
       "title": "summary",
       "path": "/summary",
-      "controller": "./pages/summary.js",
+      "controller": "ResubmitPageController",
       "components": []
     },
     {
@@ -108,6 +108,18 @@
         }
       ]
     },
+    {
+      "path": "/time-remaining",
+      "title": "Time remaining",
+      "components": [
+        {
+          "name": "TimeRemaining",
+          "type": "Para",
+          "content": "Time remaining"
+        }
+      ]
+    },
+
     {
       "title": "return",
       "path": "/return",
@@ -164,8 +176,9 @@
       "title": "CareOBRA MagicLink",
       "type": "notify",
       "outputConfiguration": {
-        "apiKey": "${notifyApiKey}",
-        "templateId": "${NotifyTemplateId}",
+        "apiKey": "local_guest_list-db3df15e-136e-484b-8035-2ebe1f382799-e71ae908-dbd4-479f-97cf-3e3079b977c7",
+        "templateId": "95bb579e-c3e6-4a8f-adfd-c94b621e025c",
+
         "emailField": "email",
         "addReferencesToPersonalisation": false,
         "personalisation": ["email", "hmacSignature", "hmacExpiryTime"],
