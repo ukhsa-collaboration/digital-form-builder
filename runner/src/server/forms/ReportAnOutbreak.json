@@ -40,6 +40,7 @@
     {
       "path": "/hpt-region",
       "title": "Where is your adult social care setting?",
+      "sectionForEndSummaryPages": "SettingDetails",
       "unauthenticated": true,
       "components": [
         {
@@ -50,7 +51,7 @@
         {
           "name": "HPT",
           "options": {
-            "summaryTitle": "Infection",
+            "summaryTitle": "Local UKHSA health protection team",
             "exposeToContext": true,
             "customValidationMessages": {
               "any.required": "Select which acute respiratory infections you have a positive test result for"
@@ -82,7 +83,12 @@
     {
       "path": "/magic-link-redirect",
       "unauthenticated": true,
-      "controller": "MagicLinkRedirectController"
+      "controller": "MagicLinkRedirectController",
+      "next": [
+        {
+          "path": "/setting"
+        }
+      ]
     },
     {
       "path": "/service-not-available",
