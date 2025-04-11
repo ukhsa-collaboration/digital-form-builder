@@ -33,7 +33,7 @@
       "showContinueButton": false,
       "next": [
         {
-          "path": "/setting"
+          "path": "/hpt-region"
         }
       ]
     },
@@ -51,6 +51,7 @@
           "name": "HPT",
           "options": {
             "summaryTitle": "Infection",
+            "exposeToContext": true,
             "customValidationMessages": {
               "any.required": "Select which acute respiratory infections you have a positive test result for"
             }
@@ -72,8 +73,9 @@
         }
       ],
       "next": [
+        { "path": "/magic-link-redirect", "condition": "HPTRegionActive" },
         {
-          "path": "/magic-link-redirect"
+          "path": "/service-not-available"
         }
       ]
     },
@@ -3493,7 +3495,7 @@
         },
         {
           "text": "West Midlands",
-          "value": "West Midlands"
+          "value": "West Midlands HPT"
         },
         {
           "text": "East of England",
@@ -3625,8 +3627,36 @@
             "operator": "is",
             "value": {
               "type": "Value",
-              "value": "West Midlands",
+              "value": "West Midlands HPT",
               "display": "West Midlands"
+            }
+          },
+          {
+            "coordinator": "or",
+            "field": {
+              "name": "HPT",
+              "type": "RadiosField",
+              "display": "region"
+            },
+            "operator": "is",
+            "value": {
+              "type": "Value",
+              "value": "East of England HPT",
+              "display": "East of England"
+            }
+          },
+          {
+            "coordinator": "or",
+            "field": {
+              "name": "HPT",
+              "type": "RadiosField",
+              "display": "region"
+            },
+            "operator": "is",
+            "value": {
+              "type": "Value",
+              "value": "South West HPT",
+              "display": "South West"
             }
           }
         ]
