@@ -265,7 +265,6 @@ export class PageControllerBase {
     let defaultLink;
     const nextLink = this.next.find((link) => {
       const { condition } = link;
-      console.log("condition", condition);
       if (!condition) {
         defaultLink = link;
       }
@@ -502,10 +501,6 @@ export class PageControllerBase {
           ? redirectTo(request, h, startPage!)
           : redirectTo(request, h, `/${this.model.basePath}${startPage!}`);
       }
-
-      console.log("this.pageDef.unauthenticated", this.pageDef.title);
-
-      console.log("this.pageDef.unauthenticated", this.pageDef.unauthenticated);
 
       if (
         this.model.def.authentication &&

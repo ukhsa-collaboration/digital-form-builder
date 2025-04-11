@@ -103,8 +103,6 @@ export class ComponentCollection {
       Object.assign(state, item.getStateFromValidForm(payload));
     });
 
-    console.log("state", state);
-
     return state;
   }
 

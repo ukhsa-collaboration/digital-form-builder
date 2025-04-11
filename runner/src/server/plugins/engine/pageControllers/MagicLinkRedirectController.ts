@@ -7,10 +7,4 @@ export class MagicLinkRedirectController extends PageController {
       return h.redirect("/magic-link/start").code(302);
     };
   }
-
-  // makePostRouteHandler() {
-  //   return async (request: HapiRequest, h: HapiResponseToolkit) => {
-  //     return h.redirect("/magic-link/start").code(302);
-  //   };
-  // }
 }
