@@ -15,7 +15,7 @@
       "unauthenticated": true,
       "continueButtonText": "Continue",
       "showContinueButton": true,
-      "backLinkFallback": "/ReportAnOutbreak/start",
+      "backLinkFallback": "/ReportAnOutbreak/hpt-region",
       "components": [
         {
           "name": "EmailIntro",
