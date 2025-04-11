@@ -3591,28 +3591,6 @@
   ],
   "conditions": [
     {
-      "displayName": "HPTACTIVE",
-      "name": "HPTACTIVE",
-      "value": {
-        "name": "HPTACTIVE",
-        "conditions": [
-          {
-            "field": {
-              "name": "HPT",
-              "type": "RadiosField",
-              "display": "Which acute respiratory infection do you have a positive test result for?"
-            },
-            "operator": "is",
-            "value": {
-              "type": "Value",
-              "value": "West Midlands",
-              "display": "West Midlands"
-            }
-          }
-        ]
-      }
-    },
-    {
       "displayName": "HPTRegionActive",
       "name": "HPTRegionActive",
       "value": {
