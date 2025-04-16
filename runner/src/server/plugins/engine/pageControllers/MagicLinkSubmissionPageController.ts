@@ -4,9 +4,6 @@ import { redirectTo } from "../helpers";
 import { HapiRequest, HapiResponseToolkit } from "server/types";
 import { createHmac } from "src/server/utils/hmac";
 
-// Constants for time calculations
-const RETRY_TIMEOUT_SECONDS = 5 * 60; // 5 minutes in seconds
-
 // Shared options for cookie settings
 const getCookieOptions = (timeRemaining) => ({
   ttl: timeRemaining * 1000, // Convert remaining seconds to milliseconds
@@ -20,8 +17,11 @@ const getCookieOptions = (timeRemaining) => ({
 
 // Base controller class containing shared functionality
 export class MagicLinkSubmissionPageController extends PageController {
+  RETRY_TIMEOUT_SECONDS: number;
+
   constructor(model, pageDef) {
     super(model, pageDef);
+    this.RETRY_TIMEOUT_SECONDS = this.model.def.retryTimeoutSeconds ?? 300;
   }
 
   // Template-specific configurations that can be overridden by child classes
@@ -70,6 +70,7 @@ export class MagicLinkSubmissionPageController extends PageController {
             email,
             minutesRemaining,
             timeRemaining,
+            retryTimeoutSeconds: this.RETRY_TIMEOUT_SECONDS,
           });
         } catch (error) {
           request.logger.error(["Cookie parsing error", error.message]);
@@ -142,14 +143,14 @@ export class MagicLinkSubmissionPageController extends PageController {
         const hmacTimestamp = foundHmac.active;
         const timeDifference = currentTime - hmacTimestamp;
 
-        if (timeDifference < RETRY_TIMEOUT_SECONDS) {
+        if (timeDifference < this.RETRY_TIMEOUT_SECONDS) {
           // User must wait before requesting another link
-          const timeRemaining = RETRY_TIMEOUT_SECONDS - timeDifference;
+          const timeRemaining = this.RETRY_TIMEOUT_SECONDS - timeDifference;
           const minutesRemaining = Math.ceil(timeRemaining / 60);
 
           // Set consistent cookie for retry timeout
           const cookieValue = {
-            retryAfter: hmacTimestamp + RETRY_TIMEOUT_SECONDS,
+            retryAfter: hmacTimestamp + this.RETRY_TIMEOUT_SECONDS,
           };
 
           const cookieOptions = getCookieOptions(timeRemaining);
@@ -198,11 +199,11 @@ export class MagicLinkSubmissionPageController extends PageController {
       });
 
       // Set cookie for retry timeout (using consistent constant)
-      const cookieOptions = getCookieOptions(RETRY_TIMEOUT_SECONDS);
+      const cookieOptions = getCookieOptions(this.RETRY_TIMEOUT_SECONDS);
       h.state(
         "magicLinkRetry",
         {
-          retryAfter: currentTimestamp + RETRY_TIMEOUT_SECONDS,
+          retryAfter: currentTimestamp + this.RETRY_TIMEOUT_SECONDS,
         },
         cookieOptions
       );
