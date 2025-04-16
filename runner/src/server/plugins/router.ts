@@ -29,22 +29,24 @@ export default {
       server.route([
         {
           method: "get",
-          path: "/help/privacy",
+          path: "/{url}/privacy",
           handler: async (_request: HapiRequest, h: HapiResponseToolkit) => {
-            if (config.privacyPolicyUrl) {
-              return h.redirect(config.privacyPolicyUrl);
-            }
-            return h.view("help/privacy");
+            const { url } = _request.params; // Extract the dynamic page parameter
+            // if (config.privacyPolicyUrl) {
+            //   return h.redirect(config.privacyPolicyUrl);
+            // }
+            return h.view(`${url}/privacy`);
           },
         },
         {
           method: "get",
-          path: "/help/cookies",
+          path: "/{url}/cookies",
           handler: async (request: HapiRequest, h: HapiResponseToolkit) => {
+            const { url } = request.params; // Extract the dynamic page parameter
             const cookiesPolicy = request.state.cookies_policy;
             let analytics =
               cookiesPolicy?.analytics === "on" ? "accept" : "reject";
-            return h.view("help/cookies", {
+            return h.view(`${url}/cookies`, {
               analytics,
             });
           },
@@ -72,13 +74,15 @@ export default {
               }).required(),
             },
           },
-          path: "/help/cookies",
+          path: "/{url}/cookies",
           handler: async (request: HapiRequest, h: HapiResponseToolkit) => {
+            const { url } = request.params; // Extract the dynamic page parameter
+
             const { cookies } = request.payload as CookiePayload;
             const accept = cookies === "accept";
 
             const { referrer } = getRequestInfo(request);
-            let redirectPath = "/help/cookies";
+            let redirectPath = `/${url}/cookies`;
 
             if (referrer) {
               redirectPath = new URL(referrer).pathname;
@@ -104,17 +108,19 @@ export default {
 
       server.route({
         method: "get",
-        path: "/help/terms-and-conditions",
+        path: "/{url}/terms-and-conditions",
         handler: async (_request: HapiRequest, h: HapiResponseToolkit) => {
-          return h.view("help/terms-and-conditions");
+          const { url } = _request.params; // Extract the dynamic page parameter
+          return h.view(`${url}/terms-and-conditions`);
         },
       });
 
       server.route({
         method: "get",
-        path: "/help/accessibility-statement",
+        path: "/{url}/accessibility-statement",
         handler: async (_request: HapiRequest, h: HapiResponseToolkit) => {
-          return h.view("help/accessibility-statement");
+          const { url } = _request.params; // Extract the dynamic page parameter
+          return h.view(`${url}/accessibility-statement`);
         },
       });
 
