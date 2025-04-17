@@ -32,10 +32,14 @@ export default {
           path: "/{url}/privacy",
           handler: async (_request: HapiRequest, h: HapiResponseToolkit) => {
             const { url } = _request.params; // Extract the dynamic page parameter
+            // Note: Retaining the below configuration incase of organisation wide necessity to update all configured forms to present the same privacy policy.
             // if (config.privacyPolicyUrl) {
             //   return h.redirect(config.privacyPolicyUrl);
             // }
-            return h.view(`${url}/privacy`);
+            const form = server.app.forms[url];
+
+            console.log(form);
+            return h.view(`${url}/privacy`, { name: form.name });
           },
         },
         {
@@ -46,8 +50,12 @@ export default {
             const cookiesPolicy = request.state.cookies_policy;
             let analytics =
               cookiesPolicy?.analytics === "on" ? "accept" : "reject";
+
+            const form = server.app.forms[url];
+
             return h.view(`${url}/cookies`, {
               analytics,
+              name: form.name,
             });
           },
         },
@@ -82,6 +90,8 @@ export default {
             const accept = cookies === "accept";
 
             const { referrer } = getRequestInfo(request);
+            const form = server.app.forms[url]; // Implement service name on generic cookies page
+
             let redirectPath = `/${url}/cookies`;
 
             if (referrer) {
@@ -96,6 +106,7 @@ export default {
                 essential: true,
                 analytics: accept ? "on" : "off",
                 usage: accept,
+                name: form.name,
               },
               {
                 isHttpOnly: false,
@@ -120,7 +131,10 @@ export default {
         path: "/{url}/accessibility-statement",
         handler: async (_request: HapiRequest, h: HapiResponseToolkit) => {
           const { url } = _request.params; // Extract the dynamic page parameter
-          return h.view(`${url}/accessibility-statement`);
+
+          const form = server.app.forms[url];
+
+          return h.view(`${url}/accessibility-statement`, { name: form.name });
         },
       });
 

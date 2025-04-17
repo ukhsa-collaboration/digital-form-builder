@@ -5026,7 +5026,7 @@
   ],
   "version": 2,
   "skipSummary": false,
-  "name": "Report an outbreak",
+  "name": "Report an Outbreak",
   "feedback": {
     "feedbackForm": true,
     "url": "/feedback"
