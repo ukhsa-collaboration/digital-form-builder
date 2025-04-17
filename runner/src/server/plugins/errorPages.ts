@@ -30,28 +30,25 @@ export default {
               message: response.message,
             });
 
+            try {
+              const url = request.url;
+              var urlPath = url.pathname.split("/");
+              var form = server.app.forms[urlPath[1]];
+            } catch (e) {
+              return h.view("500").code(500);
+            }
+
             // In the event of 403 (CSRF protection)
             if (statusCode === 403) {
-              const url = request.url;
-              const formname = url.pathname.split("/");
-
-              try {
-                const form = server.app.forms[formname[1]];
-                return h
-                  .view("csrf-protection", { url: url, name: form.name })
-                  .code(statusCode);
-              } catch (e) {
-                return h
-                  .view("csrf-protection", {
-                    url: url,
-                    name: config.serviceName,
-                  })
-                  .code(statusCode);
-              }
+              return h
+                .view("csrf-protection", { url: urlPath, name: form.name })
+                .code(statusCode);
             }
 
             // The return the `500` view
-            return h.view("500").code(statusCode);
+            return h
+              .view("500", { name: form.name || config.serviceName })
+              .code(statusCode);
           }
           return h.continue;
         }
