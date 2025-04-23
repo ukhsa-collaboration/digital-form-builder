@@ -22,7 +22,7 @@
           "name": "EmailIntro",
           "options": {},
           "type": "Para",
-          "content": "We need to email you a secure link to the service.<br><br>The link expires after 20 minutes.<br>",
+          "content": "We need to email you a secure link to the service.<br><br>The link expires after 20 minutes.<br><br>If you're returning to a report that you started in the last 3 days, use the same email address.<br>",
           "schema": {}
         },
         {
@@ -36,6 +36,236 @@
               "string.pattern.base": "Enter an email address in the correct format, like name@example.com"
             }
           }
+        },
+        {
+          "name": "PrivacyNotice",
+          "options": {},
+          "type": "Para",
+          "content": "By continuing, you agree to our <a href='https://www.gov.uk/government/publications/ukhsa-privacy-notice' target='_blank'>privacy notice</a>.",
+          "schema": {}
+        }
+      ],
+      "next": [
+        {
+          "path": "/submit1"
+        }
+      ]
+    },
+    {
+      "title": "What is your email address?",
+      "path": "/email-time-remaining-5",
+      "unauthenticated": true,
+      "continueButtonText": "Continue",
+      "showContinueButton": true,
+      "backLinkFallback": "/ReportAnOutbreak/hpt-region",
+      "components": [
+        {
+          "name": "EmailIntro",
+          "options": {},
+          "type": "Para",
+          "content": "We need to email you a secure link to the service.<br><br>The link expires after 20 minutes.<br><br>If you're returning to a report that you started in the last 3 days, use the same email address.<br>",
+          "schema": {}
+        },
+        {
+          "type": "EmailAddressField",
+          "title": "Email address",
+          "name": "email",
+          "options": {
+            "exposeToContext": true,
+            "customValidationMessages": {
+              "string.empty": "Enter an email address",
+              "string.pattern.base": "Enter an email address in the correct format, like name@example.com"
+            }
+          }
+        },
+        {
+          "name": "alert",
+          "type": "Para",
+          "content": "<div class='alert'><div class='govuk-warning-text'><span class='govuk-warning-text__icon' aria-hidden='true'>!</span><strong class='govuk-warning-text__text'><span class='govuk-visually-hidden'>Warning</span>You must wait 5 minutes before resubmitting the email</strong></div></div>"
+        },
+        {
+          "name": "PrivacyNotice",
+          "options": {},
+          "type": "Para",
+          "content": "By continuing, you agree to our <a href='https://www.gov.uk/government/publications/ukhsa-privacy-notice' target='_blank'>privacy notice</a>.",
+          "schema": {}
+        }
+      ],
+      "next": [
+        {
+          "path": "/submit1"
+        }
+      ]
+    },
+    {
+      "title": "What is your email address?",
+      "path": "/email-time-remaining-4",
+      "unauthenticated": true,
+      "continueButtonText": "Continue",
+      "showContinueButton": true,
+      "backLinkFallback": "/ReportAnOutbreak/hpt-region",
+      "components": [
+        {
+          "name": "EmailIntro",
+          "options": {},
+          "type": "Para",
+          "content": "We need to email you a secure link to the service.<br><br>The link expires after 20 minutes.<br><br>If you're returning to a report that you started in the last 3 days, use the same email address.<br>",
+          "schema": {}
+        },
+        {
+          "type": "EmailAddressField",
+          "title": "Email address",
+          "name": "email",
+          "options": {
+            "exposeToContext": true,
+            "customValidationMessages": {
+              "string.empty": "Enter an email address",
+              "string.pattern.base": "Enter an email address in the correct format, like name@example.com"
+            }
+          }
+        },
+        {
+          "name": "alert",
+          "type": "Para",
+          "content": "<div class='alert'><div class='govuk-warning-text'><span class='govuk-warning-text__icon' aria-hidden='true'>!</span><strong class='govuk-warning-text__text'><span class='govuk-visually-hidden'>Warning</span>You must wait 4 minutes before resubmitting the email</strong></div></div>"
+        },
+        {
+          "name": "PrivacyNotice",
+          "options": {},
+          "type": "Para",
+          "content": "By continuing, you agree to our <a href='https://www.gov.uk/government/publications/ukhsa-privacy-notice' target='_blank'>privacy notice</a>.",
+          "schema": {}
+        }
+      ],
+      "next": [
+        {
+          "path": "/submit1"
+        }
+      ]
+    },
+    {
+      "title": "What is your email address?",
+      "path": "/email-time-remaining-3",
+      "unauthenticated": true,
+      "continueButtonText": "Continue",
+      "showContinueButton": true,
+      "backLinkFallback": "/ReportAnOutbreak/hpt-region",
+      "components": [
+        {
+          "name": "EmailIntro",
+          "options": {},
+          "type": "Para",
+          "content": "We need to email you a secure link to the service.<br><br>The link expires after 20 minutes.<br><br>If you're returning to a report that you started in the last 3 days, use the same email address.<br>",
+          "schema": {}
+        },
+        {
+          "type": "EmailAddressField",
+          "title": "Email address",
+          "name": "email",
+          "options": {
+            "exposeToContext": true,
+            "customValidationMessages": {
+              "string.empty": "Enter an email address",
+              "string.pattern.base": "Enter an email address in the correct format, like name@example.com"
+            }
+          }
+        },
+        {
+          "name": "alert",
+          "type": "Para",
+          "content": "<div class='alert'><div class='govuk-warning-text'><span class='govuk-warning-text__icon' aria-hidden='true'>!</span><strong class='govuk-warning-text__text'><span class='govuk-visually-hidden'>Warning</span>You must wait 3 minutes before resubmitting the email</strong></div></div>"
+        },
+        {
+          "name": "PrivacyNotice",
+          "options": {},
+          "type": "Para",
+          "content": "By continuing, you agree to our <a href='https://www.gov.uk/government/publications/ukhsa-privacy-notice' target='_blank'>privacy notice</a>.",
+          "schema": {}
+        }
+      ],
+      "next": [
+        {
+          "path": "/submit1"
+        }
+      ]
+    },
+    {
+      "title": "What is your email address?",
+      "path": "/email-time-remaining-2",
+      "unauthenticated": true,
+      "continueButtonText": "Continue",
+      "showContinueButton": true,
+      "backLinkFallback": "/ReportAnOutbreak/hpt-region",
+      "components": [
+        {
+          "name": "EmailIntro",
+          "options": {},
+          "type": "Para",
+          "content": "We need to email you a secure link to the service.<br><br>The link expires after 20 minutes.<br><br>If you're returning to a report that you started in the last 3 days, use the same email address.<br>",
+          "schema": {}
+        },
+        {
+          "type": "EmailAddressField",
+          "title": "Email address",
+          "name": "email",
+          "options": {
+            "exposeToContext": true,
+            "customValidationMessages": {
+              "string.empty": "Enter an email address",
+              "string.pattern.base": "Enter an email address in the correct format, like name@example.com"
+            }
+          }
+        },
+        {
+          "name": "alert",
+          "type": "Para",
+          "content": "<div class='alert'><div class='govuk-warning-text'><span class='govuk-warning-text__icon' aria-hidden='true'>!</span><strong class='govuk-warning-text__text'><span class='govuk-visually-hidden'>Warning</span>You must wait 2 minutes before resubmitting the email</strong></div></div>"
+        },
+        {
+          "name": "PrivacyNotice",
+          "options": {},
+          "type": "Para",
+          "content": "By continuing, you agree to our <a href='https://www.gov.uk/government/publications/ukhsa-privacy-notice' target='_blank'>privacy notice</a>.",
+          "schema": {}
+        }
+      ],
+      "next": [
+        {
+          "path": "/submit1"
+        }
+      ]
+    },
+    {
+      "title": "What is your email address?",
+      "path": "/email-time-remaining-1",
+      "unauthenticated": true,
+      "continueButtonText": "Continue",
+      "showContinueButton": true,
+      "backLinkFallback": "/ReportAnOutbreak/hpt-region",
+      "components": [
+        {
+          "name": "EmailIntro",
+          "options": {},
+          "type": "Para",
+          "content": "We need to email you a secure link to the service.<br><br>The link expires after 20 minutes.<br><br>If you're returning to a report that you started in the last 3 days, use the same email address.<br>",
+          "schema": {}
+        },
+        {
+          "type": "EmailAddressField",
+          "title": "Email address",
+          "name": "email",
+          "options": {
+            "exposeToContext": true,
+            "customValidationMessages": {
+              "string.empty": "Enter an email address",
+              "string.pattern.base": "Enter an email address in the correct format, like name@example.com"
+            }
+          }
+        },
+        {
+          "name": "alert",
+          "type": "Para",
+          "content": "<div class='alert'><div class='govuk-warning-text'><span class='govuk-warning-text__icon' aria-hidden='true'>!</span><strong class='govuk-warning-text__text'><span class='govuk-visually-hidden'>Warning</span>You must wait 1 minute before resubmitting the email</strong></div></div>"
         },
         {
           "name": "PrivacyNotice",

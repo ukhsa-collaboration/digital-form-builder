@@ -26,11 +26,34 @@ export class MagicLinkSubmissionPageController extends PageController {
 
   // Template-specific configurations that can be overridden by child classes
   get timeRemainingTemplate() {
-    return "email-time-remaining";
+    return null;
   }
 
   get redirectAfterSubmission() {
     return `/${this.request.params.id}/check-your-email`;
+  }
+
+  handleRetryWaitPage(
+    email: string,
+    minutesRemaining: number,
+    request: HapiRequest,
+    h: HapiResponseToolkit
+  ) {
+    if (this.timeRemainingTemplate) {
+      return h.view(this.timeRemainingTemplate, {
+        email,
+        minutesRemaining,
+        retryTimeoutSeconds: this.RETRY_TIMEOUT_SECONDS,
+        basePath: this.model.basePath,
+      });
+    }
+
+    const path = minutesRemaining <= 1 ? "1" : minutesRemaining.toString();
+    return redirectTo(
+      request,
+      h,
+      `/${this.model.basePath}/email-time-remaining-${path}`
+    );
   }
 
   makeGetRouteHandler() {
@@ -66,12 +89,7 @@ export class MagicLinkSubmissionPageController extends PageController {
 
           // Otherwise show the time remaining page with consistent calculation
           const minutesRemaining = Math.ceil(timeRemaining / 60);
-          return h.view(this.timeRemainingTemplate, {
-            email,
-            minutesRemaining,
-            timeRemaining,
-            retryTimeoutSeconds: this.RETRY_TIMEOUT_SECONDS,
-          });
+          return this.handleRetryWaitPage(email, minutesRemaining, request, h);
         } catch (error) {
           request.logger.error(["Cookie parsing error", error.message]);
           return redirectTo(request, h, `/${this.model.basePath}/start`);
@@ -156,12 +174,7 @@ export class MagicLinkSubmissionPageController extends PageController {
           const cookieOptions = getCookieOptions(timeRemaining);
           h.state("magicLinkRetry", cookieValue, cookieOptions);
 
-          // Show the time remaining page
-          return h.view(this.timeRemainingTemplate, {
-            email,
-            minutesRemaining,
-            timeRemaining,
-          });
+          return this.handleRetryWaitPage(email, minutesRemaining, request, h);
         }
       }
 
@@ -193,6 +206,7 @@ export class MagicLinkSubmissionPageController extends PageController {
       await cacheService.mergeState(request, {
         hmacSignature: hmacUrl,
         hmacExpiryTime: hmacExpiryTime,
+        email: email,
         outputs: summaryViewModel.outputs,
         userCompletedSummary: true,
         webhookData: summaryViewModel.validatedWebhookData,

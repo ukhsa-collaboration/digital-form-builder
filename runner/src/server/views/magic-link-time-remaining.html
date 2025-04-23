@@ -16,7 +16,7 @@
             
             <p class="govuk-body">Check your spam or junk folder.</p>
             
-            <p class="govuk-body">If you've not received the email in {{ retryTimeoutSeconds/60 }} minutes, you can resubmit the email.</p>
+            <p class="govuk-body">If you've not received the email, you can resubmit the email after {{ retryTimeoutSeconds/60 }} minutes.</p>
             
             {% if minutesRemaining %}
             <div class="alert">
