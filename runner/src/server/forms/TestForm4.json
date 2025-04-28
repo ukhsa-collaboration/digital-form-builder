@@ -11,13 +11,13 @@
           "path": "/summary"
         }
       ]
-    }
+    },
     {
       "title": "Summary",
       "path": "/summary",
       "controller": "./pages/summary.js",
       "components": []
-    },
+    }
   ],
   "lists": [],
   "sections": [],
