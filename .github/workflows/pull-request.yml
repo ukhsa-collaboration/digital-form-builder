@@ -47,7 +47,7 @@ jobs:
           with:
             push: false
             tags: user/app:latest
-            context: ./builder
+            context: builder
             file: runner/Dockerfile
             platforms: linux/amd64
 
