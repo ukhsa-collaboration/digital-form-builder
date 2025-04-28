@@ -15,6 +15,11 @@ jobs:
           with:
             path: builder
 
+        - name: List files in tree structure
+          run: |
+            sudo apt-get update && sudo apt-get install -y tree
+            tree builder
+      
         - name: Configure AWS Credentials
           id: aws-creds
           uses: aws-actions/configure-aws-credentials@v4
@@ -37,11 +42,6 @@ jobs:
           with:
             call: check
         
-        - name: List files in tree structure
-          run: |
-            sudo apt-get update && sudo apt-get install -y tree
-            tree builder
-    
         - name: Build and push
           uses: docker/build-push-action@v6
           with:
