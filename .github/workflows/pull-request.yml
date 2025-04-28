@@ -10,16 +10,6 @@ jobs:
         runs-on: ubuntu-latest
 
         steps:
-        - name: Checkout code
-          uses: actions/checkout@v4
-          with:
-            path: builder
-
-        - name: List files in tree structure
-          run: |
-            sudo apt-get update && sudo apt-get install -y tree
-            tree builder
-      
         - name: Configure AWS Credentials
           id: aws-creds
           uses: aws-actions/configure-aws-credentials@v4
@@ -47,7 +37,6 @@ jobs:
           with:
             push: false
             tags: user/app:latest
-            context: builder
             file: runner/Dockerfile
             platforms: linux/amd64
 
