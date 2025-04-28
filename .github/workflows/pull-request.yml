@@ -15,11 +15,6 @@ jobs:
           with:
             path: builder
 
-        - name: List files in tree structure
-          run: |
-            sudo apt-get update && sudo apt-get install -y tree
-            tree builder
-      
         - name: Configure AWS Credentials
           id: aws-creds
           uses: aws-actions/configure-aws-credentials@v4
@@ -41,15 +36,8 @@ jobs:
           uses: docker/build-push-action@v6
           with:
             call: check
-        
-        - name: Build and push
-          uses: docker/build-push-action@v4
-          with:
-            push: false
-            tags: user/app:latest
             context: ./builder
-            file: runner/Dockerfile
-            platforms: linux/amd64
+            file: ./builder/runner/Dockerfile
 
         - name: Verify Docker image build
           run: docker run --rm test-runner-image echo "Docker image built successfully"
