@@ -38,6 +38,15 @@ jobs:
             call: check
             context: ./builder
             file: ./builder/runner/Dockerfile
+        
+        - name: Build and push
+          uses: docker/build-push-action@v4
+          with:
+            push: false
+            tags: user/app:latest
+            context: ./builder
+            file: ./builder/runner/Dockerfile
+            platforms: linux/amd64
 
-        - name: Verify Docker image build
-          run: docker run --rm test-runner-image echo "Docker image built successfully"
+        # - name: Verify Docker image build
+        #   run: docker run --rm test-runner-image echo "Docker image built successfully"
