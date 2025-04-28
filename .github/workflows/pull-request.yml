@@ -12,6 +12,9 @@ jobs:
         steps:
         - name: Checkout code
           uses: actions/checkout@v4
+          with:
+            fetch-depth: 0
+            path: builder
 
         - name: Configure AWS Credentials
           id: aws-creds
@@ -38,8 +41,11 @@ jobs:
         - name: Build and push
           uses: docker/build-push-action@v6
           with:
-            push: true
+            push: false
             tags: user/app:latest
+            context: ./builder
+            file: builder/runner/Dockerfile
+            platforms: linux/amd64
 
         - name: Verify Docker image build
           run: docker run --rm test-runner-image echo "Docker image built successfully"
