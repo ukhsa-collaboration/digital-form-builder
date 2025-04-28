@@ -48,7 +48,7 @@ jobs:
             push: false
             tags: user/app:latest
             context: ./builder
-            file: ./builder/runner/Dockerfile
+            file: runner/Dockerfile
             platforms: linux/amd64
 
         - name: Verify Docker image build
