@@ -147,6 +147,10 @@ export class MagicLinkSubmissionPageController extends PageController {
           const timeRemaining = this.RETRY_TIMEOUT_SECONDS - timeDifference;
           const minutesRemaining = Math.ceil(timeRemaining / 60);
 
+          await cacheService.mergeState(request, {
+            minutesRemaining: minutesRemaining,
+          });
+
           // Set consistent cookie for retry timeout
           const cookieValue = {
             retryAfter: hmacTimestamp + this.RETRY_TIMEOUT_SECONDS,
@@ -156,11 +160,7 @@ export class MagicLinkSubmissionPageController extends PageController {
           h.state("magicLinkRetry", cookieValue, cookieOptions);
 
           // Show the time remaining page
-          return h.view(this.timeRemainingRedirect, {
-            email,
-            minutesRemaining,
-            timeRemaining,
-          });
+          return redirectTo(request, h, this.timeRemainingRedirect);
         }
       }
 
