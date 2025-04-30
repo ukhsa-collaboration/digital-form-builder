@@ -188,14 +188,26 @@ export class MagicLinkSubmissionPageController extends PageController {
         hmac.toString()
       );
 
-      // Store data in state with a single merge operation
-      await cacheService.mergeState(request, {
+      // First, let's get the current state to see what's in it
+      const currentState = await cacheService.getState(request);
+
+      // Create new state object with all the values we want to set
+      const newStateValues = {
         hmacSignature: hmacUrl,
         hmacExpiryTime: hmacExpiryTime,
         outputs: summaryViewModel.outputs,
         userCompletedSummary: true,
         webhookData: summaryViewModel.validatedWebhookData,
-      });
+      };
+
+      // If minutesRemaining exists in the current state, explicitly remove it
+      if ("minutesRemaining" in currentState) {
+        // Use undefined instead of null to truly remove the property
+        newStateValues.minutesRemaining = undefined;
+      }
+
+      // Store data in state with a single merge operation
+      await cacheService.mergeState(request, newStateValues);
 
       // Set cookie for retry timeout (using consistent constant)
       const cookieOptions = getCookieOptions(this.RETRY_TIMEOUT_SECONDS);
