@@ -21,6 +21,7 @@ const counter = new client.Counter({
   name: "metric_name",
   help: "metric_help",
 });
+//test
 
 configure([
   // Configure Nunjucks to allow rendering of content that is revealed conditionally.
