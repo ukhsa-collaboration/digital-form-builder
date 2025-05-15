@@ -16,6 +16,11 @@ import {
   handleUpload,
   validateContentTypes,
 } from "./pluginHandlers/files/prehandlers";
+const client = require("prom-client");
+const counter = new client.Counter({
+  name: "metric_name",
+  help: "metric_help",
+});
 
 configure([
   // Configure Nunjucks to allow rendering of content that is revealed conditionally.
@@ -261,6 +266,9 @@ export const plugin = {
       },
       handler: (request: HapiRequest, h: HapiResponseToolkit) => {
         const { path, id } = request.params;
+        console.log(`Incoming GET request on path: ${path}`);
+        counter.inc(); // Inc with 1
+        counter.inc(10); // Inc with 10
         const model = forms[id];
         const page = model?.pages.find(
           (page) => normalisePath(page.path) === normalisePath(path)
@@ -292,6 +300,9 @@ export const plugin = {
     ) => {
       const { path, id } = request.params;
       const model = forms[id];
+      console.log(`Incoming POST request on path: ${path}`);
+      counter.inc(); // Inc with 1
+      counter.inc(10); // Inc with 10
 
       if (model) {
         const page = model.pages.find(
