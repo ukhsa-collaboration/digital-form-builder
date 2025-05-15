@@ -3,7 +3,7 @@ import { configure } from "nunjucks";
 import { getValidStateFromQueryParameters, redirectTo } from "./helpers";
 import { FormConfiguration } from "@xgovformbuilder/model";
 import { HapiRequest, HapiResponseToolkit, HapiServer } from "server/types";
-
+import client from "prom-client";
 import { FormModel } from "./models";
 import Boom from "boom";
 import { PluginSpecificConfiguration } from "@hapi/hapi";
@@ -16,7 +16,7 @@ import {
   handleUpload,
   validateContentTypes,
 } from "./pluginHandlers/files/prehandlers";
-const client = require("prom-client");
+
 const counter = new client.Counter({
   name: "metric_name",
   help: "metric_help",
