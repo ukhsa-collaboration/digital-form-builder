@@ -5,10 +5,17 @@ export function isAllowedDomain(
   if (!allowedDomains || allowedDomains.length === 0) {
     return true;
   }
-  const domain = email.split("@")[1]?.toLowerCase();
-  if (!domain) {
+
+  const trimmedEmail = email.trim();
+  const basicEmailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  if (!basicEmailRegex.test(trimmedEmail)) {
     return false;
   }
 
-  return allowedDomains.map((d) => d.toLowerCase()).includes(domain);
+  const domain = trimmedEmail.split("@")[1].toLowerCase();
+  return allowedDomains.some((allowed) => {
+    const allowedLower = allowed.toLowerCase();
+    return domain === allowedLower || domain.endsWith("." + allowedLower);
+  });
 }
