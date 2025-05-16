@@ -271,7 +271,7 @@ export const plugin = {
       },
       handler: (request: HapiRequest, h: HapiResponseToolkit) => {
         const { path, id } = request.params;
-        console.log(`Incoming GET request on path: ${path}`);
+        console.error(`Incoming GET request on path: ${path}`);
         getCounter.inc(); // Inc with 1
         const model = forms[id];
         const page = model?.pages.find(
@@ -304,7 +304,7 @@ export const plugin = {
     ) => {
       const { path, id } = request.params;
       const model = forms[id];
-      console.log(`Incoming POST request on path: ${path}`);
+      console.error(`Incoming POST request on path: ${path}`);
       postCounter.inc(); // Inc with 1
       if (model) {
         const page = model.pages.find(
