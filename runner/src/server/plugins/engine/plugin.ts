@@ -17,9 +17,13 @@ import {
   validateContentTypes,
 } from "./pluginHandlers/files/prehandlers";
 
-const counter = new client.Counter({
-  name: "metric_name",
-  help: "metric_help",
+const getCounter = new client.Counter({
+  name: "metric_name_get",
+  help: "metric_help_get",
+});
+const postCounter = new client.Counter({
+  name: "metric_name_post",
+  help: "metric_help_post",
 });
 
 configure([
@@ -267,8 +271,7 @@ export const plugin = {
       handler: (request: HapiRequest, h: HapiResponseToolkit) => {
         const { path, id } = request.params;
         console.log(`Incoming GET request on path: ${path}`);
-        counter.inc(); // Inc with 1
-        counter.inc(10); // Inc with 10
+        getCounter.inc(); // Inc with 1
         const model = forms[id];
         const page = model?.pages.find(
           (page) => normalisePath(page.path) === normalisePath(path)
@@ -301,9 +304,7 @@ export const plugin = {
       const { path, id } = request.params;
       const model = forms[id];
       console.log(`Incoming POST request on path: ${path}`);
-      counter.inc(); // Inc with 1
-      counter.inc(10); // Inc with 10
-
+      postCounter.inc(); // Inc with 1
       if (model) {
         const page = model.pages.find(
           (page) => page.path.replace(/^\//, "") === path
