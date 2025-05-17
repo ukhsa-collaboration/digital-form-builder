@@ -188,6 +188,13 @@ export type ExitOptions = {
   format?: "STATE" | "WEBHOOK";
 };
 
+export type Analytics = {
+  gtmId1: string;
+  gtmId2: string;
+  matomoId: string;
+  matomoUrl: string;
+};
+
 /**
  * `FormDefinition` is a typescript representation of `Schema`
  */
@@ -214,4 +221,5 @@ export type FormDefinition = {
   jwtKey?: string | undefined;
   toggle?: boolean | string | undefined;
   retryTimeoutSeconds?: number | undefined;
+  analytics?: Analytics;
 };
