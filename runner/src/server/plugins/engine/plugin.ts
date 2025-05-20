@@ -26,6 +26,8 @@ const postCounter = new client.Counter({
   help: "metric_help_post",
 });
 
+//test
+
 configure([
   // Configure Nunjucks to allow rendering of content that is revealed conditionally.
   path.resolve(__dirname, "/views"),
