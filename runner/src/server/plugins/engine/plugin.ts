@@ -204,6 +204,22 @@ export const plugin = {
       },
     });
 
+    server.route({
+      method: "get",
+      path: "/metrics",
+      handler: async (_request: HapiRequest, h: HapiResponseToolkit) => {
+        try {
+          const metrics = await client.register.metrics();
+          return h
+            .response(metrics)
+            .type(client.register.contentType)
+            .code(200);
+        } catch (err) {
+          return h.response("Error collecting metrics").code(500);
+        }
+      },
+    });
+
     const queryParamPreHandler = async (
       request: HapiRequest,
       h: HapiResponseToolkit
