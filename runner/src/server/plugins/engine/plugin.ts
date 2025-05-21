@@ -4,6 +4,7 @@ import { getValidStateFromQueryParameters, redirectTo } from "./helpers";
 import { FormConfiguration } from "@xgovformbuilder/model";
 import { HapiRequest, HapiResponseToolkit, HapiServer } from "server/types";
 import client from "prom-client";
+import { initMetrics } from "pm2-prom-module-client";
 import { FormModel } from "./models";
 import Boom from "boom";
 import { PluginSpecificConfiguration } from "@hapi/hapi";
@@ -16,6 +17,9 @@ import {
   handleUpload,
   validateContentTypes,
 } from "./pluginHandlers/files/prehandlers";
+
+const registry = new client.Registry();
+initMetrics(registry);
 
 const getCounter = new client.Counter({
   name: "metric_name_get",
