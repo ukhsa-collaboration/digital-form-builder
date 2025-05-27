@@ -4,7 +4,6 @@ import { getValidStateFromQueryParameters, redirectTo } from "./helpers";
 import { FormConfiguration } from "@xgovformbuilder/model";
 import { HapiRequest, HapiResponseToolkit, HapiServer } from "server/types";
 const client = require("prom-client");
-import { initMetrics } from "pm2-prom-module-client";
 import { FormModel } from "./models";
 import Boom from "boom";
 import { PluginSpecificConfiguration } from "@hapi/hapi";
@@ -32,8 +31,6 @@ const postCounter = new client.Counter({
 
 registry.register(getCounter);
 registry.register(postCounter);
-
-//test
 
 configure([
   // Configure Nunjucks to allow rendering of content that is revealed conditionally.
