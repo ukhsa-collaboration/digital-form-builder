@@ -1,7 +1,7 @@
 import path from "path";
 import { configure } from "nunjucks";
 import { getValidStateFromQueryParameters, redirectTo } from "./helpers";
-import { FormConfiguration, Logger } from "@xgovformbuilder/model";
+import { FormConfiguration } from "@xgovformbuilder/model";
 import { HapiRequest, HapiResponseToolkit, HapiServer } from "server/types";
 const client = require("prom-client");
 import { initMetrics } from "pm2-prom-module-client";
@@ -12,9 +12,7 @@ import { FormPayload } from "./types";
 import { shouldLogin } from "server/plugins/auth";
 import config from "../../config";
 import * as exit from "./pluginHandlers/exit";
-import logger from "pino";
 
-const pluginLogger = logger();
 import {
   getFiles,
   handleUpload,
@@ -22,7 +20,6 @@ import {
 } from "./pluginHandlers/files/prehandlers";
 
 const registry = new client.Registry();
-initMetrics(registry);
 
 const getCounter = new client.Counter({
   name: "metric_name_get",
@@ -32,6 +29,9 @@ const postCounter = new client.Counter({
   name: "metric_name_post",
   help: "metric_help_post",
 });
+
+registry.register(getCounter);
+registry.register(postCounter);
 
 //test
 
@@ -296,7 +296,7 @@ export const plugin = {
       handler: (request: HapiRequest, h: HapiResponseToolkit) => {
         const { path, id } = request.params;
         // console.log(`Incoming GET request on path: ${path}`);
-        pluginLogger.info(`Incoming GET request on path: ${path}`);
+        request.logger.info(`Incoming GET request on path: ${path}`);
         getCounter.inc(); // Inc with 1
         const model = forms[id];
         const page = model?.pages.find(
@@ -330,7 +330,7 @@ export const plugin = {
       const { path, id } = request.params;
       const model = forms[id];
       // console.log(`Incoming POST request on path: ${path}`);
-      pluginLogger.info(`Incoming POST request on path: ${path}`);
+      request.logger.info(`Incoming POST request on path: ${path}`);
       postCounter.inc(); // Inc with 1
       if (model) {
         const page = model.pages.find(
