@@ -3,7 +3,7 @@ import { configure } from "nunjucks";
 import { getValidStateFromQueryParameters, redirectTo } from "./helpers";
 import { FormConfiguration } from "@xgovformbuilder/model";
 import { HapiRequest, HapiResponseToolkit, HapiServer } from "server/types";
-import client from "prom-client";
+const client = require("prom-client");
 import { initMetrics } from "pm2-prom-module-client";
 import { FormModel } from "./models";
 import Boom from "boom";
