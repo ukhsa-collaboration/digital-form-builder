@@ -214,4 +214,5 @@ export type FormDefinition = {
   jwtKey?: string | undefined;
   toggle?: boolean | string | undefined;
   retryTimeoutSeconds?: number | undefined;
+  magicLinkConfig?: string | undefined;
 };

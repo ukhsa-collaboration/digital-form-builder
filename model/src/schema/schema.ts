@@ -346,6 +346,7 @@ export const Schema = joi
     toggle: joi.alternatives().try(joi.boolean(), joi.string()).optional(),
     toggleRedirect: joi.string().optional(),
     retryTimeoutSeconds: joi.number().optional(),
+    magicLinkConfig: joi.string().optional(),
   });
 
 /**
