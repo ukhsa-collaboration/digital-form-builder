@@ -215,4 +215,6 @@ export type FormDefinition = {
   toggle?: boolean | string | undefined;
   retryTimeoutSeconds?: number | undefined;
   webhookHmacSharedKey?: string | undefined;
+  fullStartPage?: string | undefined;
+  serviceName?: string | undefined;
 };
