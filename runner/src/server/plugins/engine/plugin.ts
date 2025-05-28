@@ -18,19 +18,22 @@ import {
   validateContentTypes,
 } from "./pluginHandlers/files/prehandlers";
 
-const registry = new client.Registry();
+const getRegistry = new client.Registry();
+const postRegistry = new client.Registry();
 
 const getCounter = new client.Counter({
   name: "metric_name_get",
   help: "metric_help_get",
+  registers: [getRegistry],
 });
 const postCounter = new client.Counter({
   name: "metric_name_post",
   help: "metric_help_post",
+  registers: [postRegistry],
 });
 
-registry.register(getCounter);
-registry.register(postCounter);
+getRegistry.registerMetric(getCounter);
+postRegistry.registerMetric(postCounter);
 
 configure([
   // Configure Nunjucks to allow rendering of content that is revealed conditionally.
