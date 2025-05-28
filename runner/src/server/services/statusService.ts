@@ -148,7 +148,6 @@ export class StatusService {
         hmacKey
       );
       customSecurityHeaders = {
-        ...customSecurityHeaders,
         "X-Request-ID": request.yar.id.toString(),
         "X-HMAC-Signature": hmacSignature.toString(),
         "X-HMAC-Time": requestTime.toString(),
