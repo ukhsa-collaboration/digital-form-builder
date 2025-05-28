@@ -25,6 +25,8 @@ COPY --chown=appuser:appuser .yarn ./.yarn/
 COPY --chown=appuser:appuser package.json yarn.lock .yarnrc.yml tsconfig.json  ./
 USER 1001
 RUN --mount=type=cache,target=./.yarn/cache,id=base,uid=1001,mode=0755 yarn
+RUN yarn install --check-cache
+
 
 
 # ----------------------------
