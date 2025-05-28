@@ -188,6 +188,13 @@ export type ExitOptions = {
   format?: "STATE" | "WEBHOOK";
 };
 
+export type Analytics = {
+  gtmId1: string;
+  gtmId2: string;
+  matomoId: string;
+  matomoUrl: string;
+};
+
 /**
  * `FormDefinition` is a typescript representation of `Schema`
  */
@@ -215,4 +222,10 @@ export type FormDefinition = {
   toggle?: boolean | string | undefined;
   retryTimeoutSeconds?: number | undefined;
   magicLinkConfig?: string | undefined;
+  allowedDomains?: string[] | undefined;
+  invalidDomainRedirect?: string | undefined;
+  analytics?: Analytics;
+  webhookHmacSharedKey?: string | undefined;
+  fullStartPage?: string | undefined;
+  serviceName?: string | undefined;
 };
