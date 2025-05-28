@@ -354,6 +354,9 @@ export const Schema = joi
     toggleRedirect: joi.string().optional(),
     retryTimeoutSeconds: joi.number().optional(),
     analytics: analyticsSchema.optional(),
+    webhookHmacSharedKey: joi.string().optional(),
+    fullStartPage: joi.string().optional(),
+    serviceName: joi.string().optional(),
   });
 
 /**
