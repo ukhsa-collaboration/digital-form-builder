@@ -3,7 +3,7 @@ import { configure } from "nunjucks";
 import { getValidStateFromQueryParameters, redirectTo } from "./helpers";
 import { FormConfiguration } from "@xgovformbuilder/model";
 import { HapiRequest, HapiResponseToolkit, HapiServer } from "server/types";
-const client = require("prom-client");
+import * as client from "prom-client";
 import { FormModel } from "./models";
 import Boom from "boom";
 import { PluginSpecificConfiguration } from "@hapi/hapi";
@@ -18,22 +18,21 @@ import {
   validateContentTypes,
 } from "./pluginHandlers/files/prehandlers";
 
-const getRegistry = new client.Registry();
-const postRegistry = new client.Registry();
+const register = new client.Registry();
 
 const getCounter = new client.Counter({
   name: "metric_name_get",
   help: "metric_help_get",
-  registers: [getRegistry],
 });
 const postCounter = new client.Counter({
   name: "metric_name_post",
   help: "metric_help_post",
-  registers: [postRegistry],
 });
 
-getRegistry.registerMetric(getCounter);
-postRegistry.registerMetric(postCounter);
+register.registerMetric(getCounter);
+register.registerMetric(postCounter);
+
+client.collectDefaultMetrics({ register });
 
 configure([
   // Configure Nunjucks to allow rendering of content that is revealed conditionally.
