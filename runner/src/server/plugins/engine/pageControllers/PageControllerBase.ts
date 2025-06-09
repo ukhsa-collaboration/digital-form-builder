@@ -64,6 +64,7 @@ export class PageControllerBase {
   hasFormComponents: boolean;
   hasConditionalFormComponents: boolean;
   backLinkFallback?: string;
+  details?: any;
 
   // TODO: pageDef type
   constructor(model: FormModel, pageDef: { [prop: string]: any } = {}) {
@@ -151,6 +152,7 @@ export class PageControllerBase {
     startPage?: HapiResponseObject;
     backLink?: string;
     phaseTag?: string | undefined;
+    details?: any;
   } {
     let showTitle = true;
     let pageTitle = this.title;
@@ -197,6 +199,7 @@ export class PageControllerBase {
       components,
       errors,
       isStartPage: false,
+      details: this.details,
     };
   }
 
