@@ -1,5 +1,6 @@
 import { SummaryViewModel } from "../models";
 import { PageController } from "./PageController";
+import { convertDetailsForCloseContact } from "./convertDetailsForCloseContact";
 import { feedbackReturnInfoKey, redirectTo, redirectUrl } from "../helpers";
 import { HapiRequest, HapiResponseToolkit } from "server/types";
 import {
@@ -90,6 +91,11 @@ export class SummaryPageController extends PageController {
       const declarationError = request.yar.flash("declarationError");
       if (declarationError.length) {
         viewModel.declarationError = declarationError[0];
+      }
+
+      if (model.basePath.startsWith("close-contact-form")) {
+        viewModel.details = convertDetailsForCloseContact(viewModel.details);
+        return h.view("close-contact-summary", viewModel);
       }
       return h.view("summary", viewModel);
     };
