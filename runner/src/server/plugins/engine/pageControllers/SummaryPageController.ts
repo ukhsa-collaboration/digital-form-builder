@@ -95,7 +95,6 @@ export class SummaryPageController extends PageController {
 
       if (model.basePath.startsWith("close-contact-form")) {
         viewModel.details = convertDetailsForCloseContact(viewModel.details);
-        return h.view("close-contact-summary", viewModel);
       }
       return h.view("summary", viewModel);
     };
