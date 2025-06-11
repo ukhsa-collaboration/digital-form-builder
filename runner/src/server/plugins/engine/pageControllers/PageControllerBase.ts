@@ -199,7 +199,7 @@ export class PageControllerBase {
       components,
       errors,
       isStartPage: false,
-      details: this.details,
+      details: this.details || undefined,
     };
   }
 
