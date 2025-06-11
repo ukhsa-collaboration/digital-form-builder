@@ -1,4 +1,4 @@
-{% from "./summary-row.html" import summaryRow %} {% macro summaryCard(data)
+{% from "./summary-row.html" import summaryRow %} {% macro summaryCard(data, hideRemove)
 %} {% set isRepeatableSection = (data.items[0] | isArray) %}
 
 <div class="govuk-summary-card">
@@ -13,11 +13,13 @@
             </a>
           </li>
         {% endif %}
-        <li class="govuk-summary-card__action">
-          <a class="govuk-link" href="?remove={{ data.name }}">
-            Remove<span class="govuk-visually-hidden"> {{data.title}}</span>
-          </a>
-        </li>
+        {% if not hideRemove %}
+          <li class="govuk-summary-card__action">
+            <a class="govuk-link" href="?remove={{ data.name }}">
+              Remove<span class="govuk-visually-hidden"> {{data.title}}</span>
+            </a>
+          </li>
+        {% endif %}
       </ul>
     </div>
   {% endif %}
