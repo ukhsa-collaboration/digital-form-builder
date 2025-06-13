@@ -141,3 +141,7 @@
   overflow-wrap: break-word;
   letter-spacing: 0;
 }
+
+.govuk-summary-card .govuk-summary-list__actions {
+  display: none;
+}
