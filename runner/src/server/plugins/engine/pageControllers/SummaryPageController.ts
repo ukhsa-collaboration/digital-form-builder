@@ -91,7 +91,6 @@ export class SummaryPageController extends PageController {
       if (declarationError.length) {
         viewModel.declarationError = declarationError[0];
       }
-
       return h.view("summary", viewModel);
     };
   }
