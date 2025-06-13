@@ -10,7 +10,7 @@ import { FeesModel } from "server/plugins/engine/models/submission";
 import { HapiRequest } from "src/server/types";
 import { InitialiseSessionOptions } from "server/plugins/initialiseSession/types";
 import { Outputs } from "server/plugins/engine/models/submission/Outputs";
-import { ConvertDetailsForCloseContact } from "./convertDetailsForCloseContact";
+import { customiseDetails } from "./CustomiseDetails";
 
 /**
  * TODO - extract submission behaviour dependencies from the viewmodel
@@ -106,9 +106,7 @@ export class SummaryViewModel {
     }
 
     this.result = result;
-    this.details = model.basePath.startsWith("close-contact-form")
-      ? ConvertDetailsForCloseContact(details)
-      : details;
+    this.details = customiseDetails(details, model.basePath);
     this.state = state;
     this.value = result.value;
     this.callback = state.callback;
