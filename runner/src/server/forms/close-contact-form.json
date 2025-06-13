@@ -165,7 +165,7 @@
         }
       ],
       "next": [{ "path": "/completing-form-for" }],
-      "section": "PersonalDetails"
+      "section": "YourDetails"
     },
     {
       "title": "Who are you completing this form for?",
@@ -183,7 +183,8 @@
       "next": [
         { "path": "/other-persons-details", "condition": "lGzwuI" },
         { "path": "/close-contact-you", "condition": "SypzMi" }
-      ]
+      ],
+      "section": "PersonalDetails"
     },
     {
       "path": "/other-persons-details",
@@ -239,7 +240,7 @@
         }
       ],
       "next": [{ "path": "/who-should-we-contact" }],
-      "section": "OtherPersonDetails"
+      "section": "TheirDetails"
     },
     {
       "path": "/who-should-we-contact",
@@ -262,7 +263,8 @@
           "schema": {}
         }
       ],
-      "next": [{ "path": "/close-contact" }]
+      "next": [{ "path": "/close-contact" }],
+      "section": "PersonalDetails"
     },
     {
       "path": "/close-contact",
@@ -297,7 +299,8 @@
       "next": [
         { "path": "/close-contact-1", "condition": "IfContactsYes" },
         { "path": "/summary", "condition": "IfContactsNo" }
-      ]
+      ],
+      "section": "BeenInContact"
     },
     {
       "path": "/close-contact-you",
@@ -332,7 +335,8 @@
       "next": [
         { "path": "/close-contact-1", "condition": "IfContactsYes" },
         { "path": "/summary", "condition": "IfContactsNo" }
-      ]
+      ],
+      "section": "BeenInContact"
     },
     {
       "path": "/close-contact-1",
@@ -2409,13 +2413,28 @@
   "sections": [
     {
       "name": "PersonalDetails",
+      "title": "Personal details",
+      "hideTitle": true
+    },
+    {
+      "name": "YourDetails",
       "title": "Enter your details",
       "hideTitle": false
     },
     {
-      "name": "OtherPersonDetails",
+      "name": "TheirDetails",
       "title": "Enter the details for the person who is being contact traced",
       "hideTitle": false
+    },
+    {
+      "name": "CaseID",
+      "title": "Case ID",
+      "hideTitle": true
+    },
+    {
+      "name": "BeenInContact",
+      "title": "Close contacts",
+      "hideTitle": true
     },
     { "name": "CloseContact1", "title": "Close contact 1", "hideTitle": false },
     { "name": "CloseContact2", "title": "Close contact 2", "hideTitle": false },
@@ -2491,7 +2510,7 @@
         "conditions": [
           {
             "field": {
-              "name": "completing_form_for",
+              "name": "PersonalDetails.completing_form_for",
               "type": "RadiosField",
               "display": "Who this form is for"
             },
@@ -2513,7 +2532,7 @@
         "conditions": [
           {
             "field": {
-              "name": "completing_form_for",
+              "name": "PersonalDetails.completing_form_for",
               "type": "RadiosField",
               "display": "Who this form is for"
             },
@@ -2531,7 +2550,7 @@
         "conditions": [
           {
             "field": {
-              "name": "been_in_contact",
+              "name": "BeenInContact.been_in_contact",
               "type": "RadiosField",
               "display": "Close contacts option"
             },
@@ -2549,7 +2568,7 @@
         "conditions": [
           {
             "field": {
-              "name": "been_in_contact",
+              "name": "BeenInContact.been_in_contact",
               "type": "RadiosField",
               "display": "Close contacts option"
             },
