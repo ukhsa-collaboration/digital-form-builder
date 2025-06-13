@@ -7,6 +7,10 @@ export function customiseDetails(
       return convertDetailsForCloseContact(details);
     case "close-contact-form":
       return convertDetailsForCloseContact(details);
+    case "close-contact-form-hpt-uat":
+      return convertDetailsForCloseContact(details);
+    case "close-contact-form-uat":
+      return convertDetailsForCloseContact(details);
     default:
       return details;
   }
