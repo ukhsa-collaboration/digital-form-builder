@@ -18,7 +18,9 @@ export class RepeatingSectionSummaryPageController extends PageController {
       const summary = new SummaryViewModel(title, model, state, request);
       const summaryFiltered = summary.details.filter(
         (detail) =>
-          detail.title && detail.title.includes(title) && detail.items[0].value
+          detail.title &&
+          detail.title.match(new RegExp(`${title} \\d`)) &&
+          detail.items[0].value
       );
 
       if (remove && state[remove] && summaryFiltered.length !== 1) {
@@ -41,16 +43,7 @@ export class RepeatingSectionSummaryPageController extends PageController {
         return h.redirect(`/${this.model.basePath}${this.path}`);
       }
 
-      this.details = summaryFiltered.map((detail) => {
-        const items = detail.items.map((item) => {
-          return { ...item, immutable: true };
-        });
-        const url = items[0].url.replace(
-          items[0].url.split("%2F").pop(), this.path.replace("/", "")
-        );
-        return { ...detail, items, url };
-      });
-
+      this.details = summaryFiltered;
       return super.makeGetRouteHandler()(request, h);
     };
   }
