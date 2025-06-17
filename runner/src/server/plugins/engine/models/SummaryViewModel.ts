@@ -11,6 +11,7 @@ import { HapiRequest } from "src/server/types";
 import { InitialiseSessionOptions } from "server/plugins/initialiseSession/types";
 import { Outputs } from "server/plugins/engine/models/submission/Outputs";
 import { customiseDetails } from "./CustomiseDetails";
+import { FormTransformationMap } from "./FormTransformationMap";
 
 /**
  * TODO - extract submission behaviour dependencies from the viewmodel
@@ -105,8 +106,12 @@ export class SummaryViewModel {
       }
     }
 
+    this.details = details;
+    for (const [key, value] of Object.entries(FormTransformationMap)) {
+      if (model.basePath.startsWith(key)) this.details = value(details);
+    }
+    
     this.result = result;
-    this.details = customiseDetails(details, model.basePath);
     this.state = state;
     this.value = result.value;
     this.callback = state.callback;
