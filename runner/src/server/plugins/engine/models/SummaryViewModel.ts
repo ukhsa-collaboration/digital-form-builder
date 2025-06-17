@@ -10,7 +10,6 @@ import { FeesModel } from "server/plugins/engine/models/submission";
 import { HapiRequest } from "src/server/types";
 import { InitialiseSessionOptions } from "server/plugins/initialiseSession/types";
 import { Outputs } from "server/plugins/engine/models/submission/Outputs";
-import { customiseDetails } from "./CustomiseDetails";
 import { FormTransformationMap } from "./FormTransformationMap";
 
 /**
