@@ -65,6 +65,7 @@ export class PageControllerBase {
   hasConditionalFormComponents: boolean;
   backLinkFallback?: string;
   details?: any;
+  disableBackLink?: boolean;
 
   // TODO: pageDef type
   constructor(model: FormModel, pageDef: { [prop: string]: any } = {}) {
@@ -81,6 +82,7 @@ export class PageControllerBase {
     this.condition = pageDef.condition;
     this.repeatField = pageDef.repeatField;
     this.backLinkFallback = pageDef.backLinkFallback;
+    this.disableBackLink = pageDef.disableBackLink;
     this.disableSingleComponentAsHeading =
       pageDef.disableSingleComponentAsHeading;
 
@@ -612,10 +614,14 @@ export class PageControllerBase {
 
       await cacheService.mergeState(request, { progress });
 
-      viewModel.backLink =
-        progress[progress.length - 2] ?? this.backLinkFallback;
+      if (this.disableBackLink) {
+        viewModel.backLink = undefined; 
+      } else {
+        viewModel.backLink = progress[progress.length - 2] ?? this.backLinkFallback;
+      }
 
       viewModel.allowExit = this.model.allowExit;
+
       return h.view(this.viewName, viewModel);
     };
   }
@@ -960,7 +966,12 @@ export class PageControllerBase {
   private renderWithErrors(request, h, payload, num, progress, errors) {
     const viewModel = this.getViewModel(payload, num, errors);
 
-    viewModel.backLink = progress[progress.length - 2] ?? this.backLinkFallback;
+      if (this.disableBackLink) {
+      viewModel.backLink = undefined;
+    } else {
+      viewModel.backLink = progress[progress.length - 2] ?? this.backLinkFallback;
+    }
+
     this.setPhaseTag(viewModel);
     this.setFeedbackDetails(viewModel, request);
     viewModel.allowExit = this.model.allowExit;
