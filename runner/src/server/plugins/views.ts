@@ -56,8 +56,8 @@ export default {
        */
       `${path.join(__dirname, "..", "views")}`,
       `${path.join(__dirname, "engine", "views")}`,
-      `${path.dirname(resolve.sync("govuk-frontend", { basedir }))}`,
-      `${path.dirname(resolve.sync("govuk-frontend", { basedir }))}/components`,
+      `${path.dirname(resolve.sync("govuk-frontend"))}`,
+      `${path.dirname(resolve.sync("govuk-frontend"))}/components`,
       `${path.dirname(resolve.sync("hmpo-components"))}/components`,
     ],
     isCached: !config.isDev,
@@ -83,7 +83,7 @@ export default {
         BROWSER_REFRESH_URL: config.browserRefreshUrl,
         sessionTimeout: config.sessionTimeout,
         skipTimeoutWarning: false,
-        serviceStartPage: request.server?.app?.forms?.[request.params?.id]?.def?.fullStartPage || config.serviceName || "#",
+        serviceStartPage: request.server?.app?.forms?.[request.params?.id]?.def?.fullStartPage || config.serviceStartPage,
         privacyPolicyUrl: config.privacyPolicyUrl || "/help/privacy",
         phaseTag: config.phaseTag,
         navigation: request?.auth.isAuthenticated

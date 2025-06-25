@@ -64,6 +64,7 @@ export class PageControllerBase {
   hasFormComponents: boolean;
   hasConditionalFormComponents: boolean;
   backLinkFallback?: string;
+  details?: any;
   disableBackLink?: boolean;
 
   // TODO: pageDef type
@@ -153,6 +154,7 @@ export class PageControllerBase {
     startPage?: HapiResponseObject;
     backLink?: string;
     phaseTag?: string | undefined;
+    details?: any;
   } {
     let showTitle = true;
     let pageTitle = this.title;
@@ -183,11 +185,15 @@ export class PageControllerBase {
           label.text = pageTitle;
         }
 
-        label.isPageHeading = true;
-        label.classes = "govuk-label--l";
-        pageTitle = pageTitle || label.text;
-        showTitle = false;
+      label.isPageHeading = true;
+      label.classes = "govuk-fieldset__legend--l";
+
+      if (singleFormComponent.model?.fieldset) {
+        singleFormComponent.model.fieldset.legend = label;
       }
+
+      pageTitle = pageTitle || label.text;
+      showTitle = false;
     }
 
     return {
@@ -199,6 +205,7 @@ export class PageControllerBase {
       components,
       errors,
       isStartPage: false,
+      details: this.details || undefined,
     };
   }
 
