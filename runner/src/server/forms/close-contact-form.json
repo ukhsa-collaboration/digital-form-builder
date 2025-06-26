@@ -86,7 +86,7 @@
           "schema": {}
         },
         {
-          "name": "disease",
+          "name": "disease_name",
           "options": {
             "allowPrePopulation": true,
             "allowPrePopulationOverwrite": true,
