@@ -2364,7 +2364,7 @@
       "title": "test-output",
       "type": "webhook",
       "outputConfiguration": {
-        "url": "https://testenv.api.kls.ukhsa.gov.uk/",
+        "url": "${KLSwebhook}",
         "allowRetry": true
       }
     }
