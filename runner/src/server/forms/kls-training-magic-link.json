@@ -4,6 +4,9 @@
     "skipSummary": true,
     "authentication": true,
     "toggle": true,
+    "externalFeedback": true,
+    "serviceName": "KLS Training Requests",
+    "name": "KLS Training Requests",
     "toggleRedirect": "/kls-training/training-request-part-1",
     "magicLinkConfig": "kls-training-magic-link",
     "allowedDomains": [
@@ -14,7 +17,6 @@
         "gov.uk"
     ],
     "invalidDomainRedirect": "/kls-training-magic-link/your-email-is-not-on-our-approved-list",
-    "serviceName": "Knowledge and Library Services",
     "fullStartPage": "/kls-training/start",
     "pages": [
         {
@@ -239,7 +241,7 @@
     ],
     "feedback": {
         "feedbackForm": true,
-        "url": "/feedback"
+        "url": "https://submit.forms.service.gov.uk/form/7932/give-feedback-on-knowledge-and-library-services-kls/30055"
     },
     "version": 2,
     "feeOptions": {

@@ -4,7 +4,7 @@
   "authentication": true,
   "toggle": true,
   "toggleRedirect": "/kls-path-1/which-organisation-do-you-work-for-DUPE",
-
+  "externalFeedback": true,
   "retryTimeoutSeconds": 300,
     "analytics": {
     "matomoId": "11",
@@ -14,6 +14,7 @@
   "allowedDomains": ["ukhsa.gov.uk", "dhsc.gov.uk", "nhs.net", "nhs.uk", "gov.uk", "nccpentest.com", "nccgroup.com"],
   "invalidDomainRedirect": "/kls-magic-link/your-email-is-not-on-our-approved-list",
   "serviceName": "Knowledge and Library Services",
+  "name": "Knowledge and Library Services",
   "fullStartPage": "/kls-path-1/start",
   "pages": [
     {
@@ -239,7 +240,7 @@
   "jwtKey": "${KLSJwtKey}",
   "feedback": {
     "feedbackForm": true,
-    "url": "/feedback"
+    "url": "https://submit.forms.service.gov.uk/form/7932/give-feedback-on-knowledge-and-library-services-kls/30055"
   },
   "version": 2,
   "conditions": []
