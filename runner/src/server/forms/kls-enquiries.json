@@ -541,7 +541,7 @@
             }
           },
           "type": "SelectField",
-          "title": "Where do you intend to publish your review",
+          "title": "Where do you intend to publish your review?",
           "list": "Zappeq",
           "values": {
             "type": "listRef"
