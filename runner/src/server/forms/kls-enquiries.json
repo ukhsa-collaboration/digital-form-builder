@@ -4,7 +4,7 @@
   "fullStartPage": "/kls-enquiries/start",
   "authentication": true,
   "toggle": true,
-  "serviceName": "Knowledge and Library Services",
+  "serviceName": "UKHSA Knowledge and Library Services (KLS)",
   "analytics": {
     "matomoUrl": "https://ukhsakls.matomo.cloud",
     "matomoId": "11"
@@ -12,7 +12,7 @@
   "webhookHmacSharedKey": "${KLSkey}",
   "fileUploadHmacSharedKey": "${KLSFileUploadKey}",
   "magicLinkConfig": "kls-magic-link",
-  "name": "Knowledge and Library Services",
+  "name": "UKHSA Knowledge and Library Services (KLS)",
   "pages": [
     {
       "title": "Contact the Knowledge and Library Services team",

@@ -4,8 +4,8 @@
     "skipSummary": true,
     "authentication": true,
     "toggle": true,
-    "serviceName": "KLS Training Request",
-    "name": "KLS Training Request",
+    "serviceName": "UKHSA Knowledge and Library Services (KLS)",
+    "name": "UKHSA Knowledge and Library Services (KLS)",
     "toggleRedirect": "/kls-training-request/training-request-part-1",
     "magicLinkConfig": "kls-training-magic-link",
     "allowedDomains": [

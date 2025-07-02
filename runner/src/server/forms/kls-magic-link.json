@@ -12,8 +12,8 @@
   "magicLinkConfig": "kls-magic-link",
   "allowedDomains": ["ukhsa.gov.uk", "dhsc.gov.uk", "nhs.net", "nhs.uk", "gov.uk", "nccpentest.com", "nccgroup.com"],
   "invalidDomainRedirect": "/kls-magic-link/your-email-is-not-on-our-approved-list",
-  "serviceName": "Knowledge and Library Services",
-  "name": "Knowledge and Library Services",
+  "serviceName": "UKHSA Knowledge and Library Services (KLS)",
+  "name": "UKHSA Knowledge and Library Services (KLS)",
   "fullStartPage": "/kls-enquiries/start",
   "pages": [
     {
