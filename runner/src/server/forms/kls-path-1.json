@@ -12,7 +12,6 @@
   "webhookHmacSharedKey": "${KLSkey}",
   "fileUploadHmacSharedKey": "${KLSFileUploadKey}",
   "magicLinkConfig": "kls-magic-link",
-  "externalFeedback": true,
   "name": "Knowledge and Library Services",
   "pages": [
     {

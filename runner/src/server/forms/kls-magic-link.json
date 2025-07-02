@@ -4,7 +4,6 @@
   "authentication": true,
   "toggle": true,
   "toggleRedirect": "/kls-path-1/which-organisation-do-you-work-for-DUPE",
-  "externalFeedback": true,
   "retryTimeoutSeconds": 300,
     "analytics": {
     "matomoId": "11",

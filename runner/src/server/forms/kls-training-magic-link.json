@@ -4,7 +4,6 @@
     "skipSummary": true,
     "authentication": true,
     "toggle": true,
-    "externalFeedback": true,
     "serviceName": "KLS Training Requests",
     "name": "KLS Training Requests",
     "toggleRedirect": "/kls-training/training-request-part-1",
