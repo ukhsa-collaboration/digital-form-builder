@@ -1,12 +1,12 @@
 {
     "metadata": {},
     "startPage": "/start",
-    "fullStartPage": "/kls-training/start",
+    "fullStartPage": "/kls-training-request/start",
     "authentication": true,
     "toggle": true,
-    "serviceName": "KLS Training Requests",
-    "name": "KLS Training Requests",
-    "magicLinkConfig": "kls-training-magic-link",
+    "serviceName": "KLS Training Request",
+    "name": "KLS Training Request",
+    "magicLinkConfig": "kls-training-request-magic-link",
     "webhookHmacSharedKey": "${KLSTrainingKey}",
     "pages": [
         {
