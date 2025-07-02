@@ -6,27 +6,25 @@ export function contactDetailsToSingleRows(
   return details.map((detail) => {
     const findItem = (name: string) =>
       detail.items.find((item) => item.name === name);
-    const valuesToString = (arrayOfKeys: Array<string>, joiner: string) =>
-      arrayOfKeys.map((name) => findItem(name).value).join(joiner);
 
-    if (findItem("first_name")) {
+    const detailItem = (name: string, array: Array<string>, joiner: string) => {
+      return {
+        ...detail.items[0],
+        name: name.toLowerCase().replace(" ", "_"),
+        label: name,
+        title: name,
+        rawValue: name,
+        value:
+          array.map((name) => findItem(name).value).join(joiner) === joiner
+            ? "Not supplied"
+            : array.map((name) => findItem(name).value).join(joiner),
+      };
+    };
+
+    if (findItem(nameFields[0])) {
       const items = [
-        {
-          ...detail.items[0],
-          name: "full_name",
-          label: "Full name",
-          title: "Full name",
-          rawValue: "Name fields",
-          value: `${valuesToString(nameFields, " ")}`,
-        },
-        {
-          ...detail.items[0],
-          name: "contact_details",
-          label: "Contact details",
-          title: "Contact details",
-          rawValue: "Contact detail fields",
-          value: `${valuesToString(contactFields, "\n")}`,
-        },
+        detailItem("Full name", nameFields, " "),
+        detailItem("Contact details", contactFields, "\n"),
       ];
       return { ...detail, items };
     }
