@@ -7,7 +7,7 @@
     "serviceName": "KLS Training Request",
     "name": "KLS Training Request",
     "toggleRedirect": "/kls-training-request/training-request-part-1",
-    "magicLinkConfig": "kls-training-request-magic-link",
+    "magicLinkConfig": "kls-training-magic-link",
     "allowedDomains": [
         "ukhsa.gov.uk",
         "dhsc.gov.uk",
@@ -15,7 +15,7 @@
         "nhs.uk",
         "gov.uk"
     ],
-    "invalidDomainRedirect": "/kls-training-request-magic-link/your-email-is-not-on-our-approved-list",
+    "invalidDomainRedirect": "/kls-training-magic-link/your-email-is-not-on-our-approved-list",
     "fullStartPage": "/kls-training-request/start",
     "pages": [
         {
@@ -110,13 +110,13 @@
                     "name": "SentAnotherEmailButton",
                     "options": {},
                     "type": "Para",
-                    "content": "<a href='/kls-training-request-magic-link/submit2' role='button' draggable='false' class='govuk-button' data-module='govuk-button' data-prevent-double-click='true'>Send a new email</button></a>",
+                    "content": "<a href='/kls-training-magic-link/submit2' role='button' draggable='false' class='govuk-button' data-module='govuk-button' data-prevent-double-click='true'>Send a new email</button></a>",
                     "schema": {}
                 }
             ]
         },
         {
-            "backLinkFallback": "/kls-training-request-magic-link",
+            "backLinkFallback": "/kls-training-magic-link",
             "path": "/your-email-is-not-on-our-approved-list",
             "title": "Your email is not on our approved list",
             "unauthenticated": true,
@@ -148,7 +148,7 @@
                     "options": {},
                     "type": "Para",
                     "title": "If you've not received an email",
-                    "content": "<h3 class=\"govuk-heading-m\">If you've not received an email</h3><p class=\"govuk-body\">Check your spam or junk folder.<br><br>If you’ve still not received the email in 5 minutes, you need to request a new link.</p><a href='/kls-training-request-magic-link' role='button' draggable='false' class='govuk-button' data-module='govuk-button' data-prevent-double-click='true'>Request a new link</button></a>",
+                    "content": "<h3 class=\"govuk-heading-m\">If you've not received an email</h3><p class=\"govuk-body\">Check your spam or junk folder.<br><br>If you’ve still not received the email in 5 minutes, you need to request a new link.</p><a href='/kls-training-magic-link' role='button' draggable='false' class='govuk-button' data-module='govuk-button' data-prevent-double-click='true'>Request a new link</button></a>",
                     "schema": {}
                 }
             ],
@@ -188,7 +188,7 @@
                     "name": "IncorrectEmail",
                     "options": {},
                     "type": "Para",
-                    "content": "The email you used does not match the email associated with this link.<br><br><a href='/kls-training-request-magic-link' role='button' draggable='false' class='govuk-button' data-module='govuk-button' data-prevent-double-click='true'>Request a new link</button></a>",
+                    "content": "The email you used does not match the email associated with this link.<br><br><a href='/kls-training-magic-link' role='button' draggable='false' class='govuk-button' data-module='govuk-button' data-prevent-double-click='true'>Request a new link</button></a>",
                     "schema": {}
                 }
             ]
@@ -212,7 +212,7 @@
         "confirmationPage": {
             "customText": {
                 "hidePanel": true,
-                "nextSteps": "<a href='/kls-training-request-magic-link/check-your-email' class='govuk-back-link'>Back</a><h1 class='govuk-heading-l'>We've sent you another email</h1><p class=\"govuk-body\">We’ve sent another email to {{ email }}. <br><br> Click the link in the email to continue to access the Knowledge and Library Services. </p><h3 class=\"govuk-heading-m\">If you've not received an email</h3><p class=\"govuk-body\">Check your spam or junk folder.<br><br>If you’ve still not received the email in 5 minutes, you need to request a new link.</p><a href='/kls-training-request-magic-link' role='button' draggable='false' class='govuk-button' data-module='govuk-button' data-prevent-double-click='true'>Request a new link</button></a>"
+                "nextSteps": "<a href='/kls-training-magic-link/check-your-email' class='govuk-back-link'>Back</a><h1 class='govuk-heading-l'>We've sent you another email</h1><p class=\"govuk-body\">We’ve sent another email to {{ email }}. <br><br> Click the link in the email to continue to access the Knowledge and Library Services. </p><h3 class=\"govuk-heading-m\">If you've not received an email</h3><p class=\"govuk-body\">Check your spam or junk folder.<br><br>If you’ve still not received the email in 5 minutes, you need to request a new link.</p><a href='/kls-training-magic-link' role='button' draggable='false' class='govuk-button' data-module='govuk-button' data-prevent-double-click='true'>Request a new link</button></a>"
             }
         }
     },

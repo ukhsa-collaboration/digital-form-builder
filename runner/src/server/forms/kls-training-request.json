@@ -6,7 +6,7 @@
     "toggle": true,
     "serviceName": "KLS Training Request",
     "name": "KLS Training Request",
-    "magicLinkConfig": "kls-training-request-magic-link",
+    "magicLinkConfig": "kls-training-magic-link",
     "webhookHmacSharedKey": "${KLSTrainingKey}",
     "pages": [
         {
