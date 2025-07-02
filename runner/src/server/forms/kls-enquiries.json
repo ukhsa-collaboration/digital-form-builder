@@ -480,9 +480,9 @@
           "name": "lIUPMw",
           "options": {
             "customValidationMessages": {
-              "any.required": "Enter what type of review are you doing?",
-              "any.only": "Enter what type of review are you doing?",
-              "string.empty": "Enter what type of review are you doing?"
+              "any.required": "Enter what type of review you are doing",
+              "any.only": "Enter what type of review you are doing",
+              "string.empty": "Enter what type of review you are doing"
             }
           },
           "type": "SelectField",
@@ -508,9 +508,9 @@
           "options": {
             "required": true,
             "customValidationMessages": {
-              "any.required": "Enter what is the reason for conducting this review?",
-              "any.only": "Enter what is the reason for conducting this review?",
-              "string.empty": "Enter what is the reason for conducting this review?"
+              "any.required": "Enter the reason for conducting this review",
+              "any.only": "Enter the reason for conducting this review",
+              "string.empty": "Enter the reason for conducting this review"
             }
           },
           "type": "SelectField",
@@ -535,13 +535,13 @@
           "options": {
             "required": true,
             "customValidationMessages": {
-              "any.required": "Enter where do you intend to publish your review?",
-              "any.only": "Enter where do you intend to publish your review?",
-              "string.empty": "Enter where do you intend to publish your review?"
+              "any.required": "Enter where you intend to publish your review",
+              "any.only": "Enter where you intend to publish your review",
+              "string.empty": "Enter where you intend to publish your review"
             }
           },
           "type": "SelectField",
-          "title": "Where do you intend to publish your review?",
+          "title": "Where do you intend to publish your review",
           "list": "Zappeq",
           "values": {
             "type": "listRef"
@@ -569,9 +569,9 @@
           "options": {
             "required": true,
             "customValidationMessages": {
-              "any.required": "Select have you written a protocol?",
-              "any.only": "Select have you written a protocol?",
-              "string.empty": "Select have you written a protocol?"
+              "any.required": "Select have you written a protocol",
+              "any.only": "Select have you written a protocol",
+              "string.empty": "Select have you written a protocol"
             }
           },
           "type": "YesNoField",
