@@ -1,6 +1,6 @@
 "use strict";
 
-import { runMultipleTransformations } from "./runMultipleTransformations";
+import { contactDetailsToSingleRowsAndFilterSections } from "./contactDetailsToSingleRowsAndFilterSections";
 
 import { SummaryDetailsTransformationMap } from "server/transforms/summaryDetails/types";
 export { SummaryDetailsTransformationMap };
@@ -9,12 +9,12 @@ export { SummaryDetailsTransformationMap };
  * [View the docs for summary-details-transformations an explanation of how this feature works](docs/runner/summary-details-transforms.md)
  */
 const summaryDetailsTransformations: SummaryDetailsTransformationMap = {
-  "close-contact-form": runMultipleTransformations,
-  "close-contact-form-uat": runMultipleTransformations,
-  "close-contact-form-nl5": runMultipleTransformations,
-  "close-contact-form-hpt": runMultipleTransformations,
-  "close-contact-form-hpt-uat": runMultipleTransformations,
-  "close-contact-form-hpt-nl5": runMultipleTransformations,
+  "close-contact-form": contactDetailsToSingleRowsAndFilterSections,
+  "close-contact-form-uat": contactDetailsToSingleRowsAndFilterSections,
+  "close-contact-form-nl5": contactDetailsToSingleRowsAndFilterSections,
+  "close-contact-form-hpt": contactDetailsToSingleRowsAndFilterSections,
+  "close-contact-form-hpt-uat": contactDetailsToSingleRowsAndFilterSections,
+  "close-contact-form-hpt-nl5": contactDetailsToSingleRowsAndFilterSections,
 };
 
 module.exports = summaryDetailsTransformations;
