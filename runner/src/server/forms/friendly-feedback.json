@@ -1,0 +1,96 @@
+{
+  "metadata": {},
+  "startPage": "/start",
+  "name": "Feedback",
+  "skipSummary": true,
+  "pages": [
+    {
+      "path": "/start",
+      "title": "How did this go?",
+      "components": [
+        {
+          "name": "Feedback",
+          "options": {
+            "customValidationMessages": {
+              "any.required": "Please state your truth"
+            }
+          },
+          "type": "CheckboxesField",
+          "title": "How would you say this presentation went today?",
+          "hint": "Select all that apply",
+          "list": "FeedbackOptions"
+        },
+        {
+          "name": "Minutes",
+          "options": {
+            "customValidationMessages": {
+              "number.base": "Just have a guess, it doesn't have to be exact"
+            }
+          },
+          "type": "NumberField",
+          "title": "After how many minutes did you stop listening?",
+          "hint": "If unsure, just guess"
+        }
+      ],
+      "next": [
+        {
+          "path": "/summary"
+        }
+      ]
+    },
+    {
+      "path": "/summary",
+      "controller": "./pages/summary.js"
+    }
+  ],
+  "lists": [
+    {
+      "title": "feedback-options",
+      "name": "FeedbackOptions",
+      "type": "string",
+      "items": [
+        {
+          "text": "I acknowledge a presentation took place today.",
+          "value": "I acknowledge a presentation took place today."
+        },
+        {
+          "text": "I came in with questions and left a new person.",
+          "value": "I came in with questions and left a new person. "
+        },
+        {
+          "text": "This presentation is my origin story now.",
+          "value": "This presentation is my origin story now."
+        }
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "name": "FeedbackForm",
+      "title": "CareOBRA FeedbackForm",
+      "type": "email",
+      "outputConfiguration": {
+        "apiKey": "${notifyApiKey}",
+        "emailAddress": "${feedbackEmail}",
+        "notifyTemplateId": "83d1c036-dfeb-4d5b-b4e3-e8125810c663"
+      }
+    }
+  ],
+  "sections": [],
+  "conditions": [],
+  "phaseBanner": {
+    "phase": "beta"
+  },
+  "feedback": {
+    "feedbackForm": true,
+    "url": "/feedback"
+  },
+  "specialPages": {
+    "confirmationPage": {
+      "customText": {
+        "nextSteps": "<h1 class='govuk-heading-l'>Thank you for completing this survey</h1><p class='govuk-body'>You can now close this page.</p>",
+        "hidePanel": true
+      }
+    }
+  }
+}
