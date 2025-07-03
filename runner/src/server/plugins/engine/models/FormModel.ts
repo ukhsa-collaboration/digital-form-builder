@@ -103,7 +103,7 @@ export class FormModel {
     this.options = options;
     this.name = def.name;
     this.serviceName = def.serviceName;
-    this.serviceStartPage = def.fullStartPage || config.serviceStartPage || "#";
+    this.serviceStartPage = def.fullStartPage || config.serviceStartPage || config.serviceName || "#";
     this.feedbackUrl = def.feedback?.url;
     this.values = result.value;
 
