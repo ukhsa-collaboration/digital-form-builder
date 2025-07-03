@@ -34,7 +34,6 @@ jobs:
 
       - name: Modify config for build
         run: |
-          ls
           cd ./builder/runner
           # Create backup of original config
           cp config/default.js config/default.js.backup
