@@ -471,8 +471,12 @@
   "payApiKey": "",
   "outputs": [
     {
-      "name": 44444,
-      "title": "Test webhook"
+      "name": "LwQeVI",
+      "title": "Test webhook",
+      "type": "webhook",
+      "outputConfiguration": {
+        "url": "https://61bca17e-fe74-40e0-9c15-a901ad120eca.mock.pstmn.io"
+      }
     }
   ],
   "declaration": "<p class=\"govuk-body\">All the answers you have provided are true to the best of your knowledge.</p>",
