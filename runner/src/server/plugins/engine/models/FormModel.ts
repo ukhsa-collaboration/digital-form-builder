@@ -22,6 +22,7 @@ import { ExecutableCondition } from "server/plugins/engine/models/types";
 import { DEFAULT_FEE_OPTIONS } from "server/plugins/engine/models/FormModel.feeOptions";
 import { ContextComponentCollection } from "server/plugins/engine/components/ContextComponentCollection";
 import { ExitOptions } from "server/plugins/engine/models/FormModel.exitOptions";
+import config from "../../../config";
 
 class EvaluationContext {
   constructor(conditions, value) {
@@ -102,7 +103,7 @@ export class FormModel {
     this.options = options;
     this.name = def.name;
     this.serviceName = def.serviceName;
-    this.serviceStartPage = def.fullStartPage;
+    this.serviceStartPage = def.fullStartPage || config.serviceStartPage || "#";
     this.feedbackUrl = def.feedback?.url;
     this.values = result.value;
 
