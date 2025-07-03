@@ -32,6 +32,16 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
+      - name: Modify config for build
+        run: |
+          cd builder
+          # Comment out specific Redis configuration lines
+          sed -i 's/^  sessionCookiePassword:/  \/\/ sessionCookiePassword:/' config/default.js
+          sed -i 's/^  redisHost:/  \/\/ redisHost:/' config/default.js
+          sed -i 's/^  redisPort:/  \/\/ redisPort:/' config/default.js
+          sed -i 's/^  redisPassword:/  \/\/ redisPassword:/' config/default.js
+          sed -i 's/^  redisTls:/  \/\/ redisTls:/' config/default.js
+
       - name: Validate build configuration
         uses: docker/build-push-action@v6
         with:
