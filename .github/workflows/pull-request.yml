@@ -36,8 +36,7 @@ jobs:
         run: |
           cd builder
           # Comment out specific Redis configuration lines
-          ls
-          cd ./builder/runner
+          cd ./runner
 
           sed -i 's/^  sessionCookiePassword:/  \/\/ sessionCookiePassword:/' config/default.js
           sed -i 's/^  redisHost:/  \/\/ redisHost:/' config/default.js
