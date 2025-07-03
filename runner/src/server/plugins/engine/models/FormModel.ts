@@ -49,6 +49,9 @@ export class FormModel {
   sections: FormDefinition["sections"] = [];
   options: any;
   name: any;
+  serviceName: any;
+  serviceStartPage: any;
+  feedbackUrl: any;
   values: any;
   DefaultPageController: any = PageController;
   /** the id of the form used for the first url parameter eg localhost:3009/test */
@@ -98,6 +101,9 @@ export class FormModel {
     this.sections = def.sections;
     this.options = options;
     this.name = def.name;
+    this.serviceName = def.serviceName;
+    this.serviceStartPage = def.fullStartPage;
+    this.feedbackUrl = def.feedback?.url;
     this.values = result.value;
 
     if (options.defaultPageController) {
