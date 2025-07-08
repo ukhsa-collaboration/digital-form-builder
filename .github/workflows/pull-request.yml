@@ -34,8 +34,9 @@ jobs:
 
       - name: Modify config for build
         run: |
-          cd builder
-          # Comment out specific Redis configuration lines
+          cd ./builder/runner
+          # Comment out specific Redis + sessionCookiePassword configuration lines
+          sed -i 's/^  sessionCookiePassword:/  \/\/ sessionCookiePassword:/' config/default.js
           sed -i 's/^  redisHost:/  \/\/ redisHost:/' config/default.js
           sed -i 's/^  redisPort:/  \/\/ redisPort:/' config/default.js
           sed -i 's/^  redisPassword:/  \/\/ redisPassword:/' config/default.js
