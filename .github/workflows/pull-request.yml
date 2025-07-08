@@ -54,7 +54,7 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-      - name: Check for container runtime errors
+      - name: Run container
         run: |
           echo "Starting container..."
 
