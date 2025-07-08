@@ -1,81 +1,145 @@
-name: Pull Request Validation
+# Replace your "Quick runtime test" step with this:
+- name: Runtime validation test
+  run: |
+    set -e  # Exit immediately on any error
 
-on:
-  pull_request:
-    branches:
-      - "**"
+    echo "🔍 Starting container runtime test..."
 
-jobs:
-  build-docker:
-    runs-on: ubuntu-latest
+    # Try to start the container and capture the container ID
+    echo "Starting container..."
+    CONTAINER_ID=$(docker run --rm -d --name quick-test -p 8080:8080 user/app:test 2>&1)
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          path: builder
+    if [ $? -ne 0 ]; then
+      echo "❌ Failed to start container"
+      echo "Error output: $CONTAINER_ID"
+      exit 1
+    fi
 
-      - name: Configure AWS Credentials
-        id: aws-creds
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          aws-region: eu-west-2
-          aws-access-key-id: ${{secrets.ACCESS_KEY_ID}}
-          aws-secret-access-key: ${{secrets.SECRET_ACCESS_KEY}}
+    echo "✅ Container started with ID: $CONTAINER_ID"
 
-      - name: Login to ECR
-        uses: docker/login-action@v2
-        with:
-          registry: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{secrets.AWS_REGION}}.amazonaws.com
-          ecr: true
+    # Function to cleanup on exit
+    cleanup() {
+      echo "🧹 Cleaning up..."
+      if docker ps -q -f name=quick-test | grep -q .; then
+        docker stop quick-test >/dev/null 2>&1 || true
+      fi
+    }
+    trap cleanup EXIT
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+    # Wait for container to initialize
+    echo "⏳ Waiting for container to initialize..."
+    sleep 10
 
-      - name: Modify config for build
-        run: |
-          cd ./builder/runner
-          # Comment out specific Redis + sessionCookiePassword configuration lines
-          sed -i 's/^  sessionCookiePassword:/  \/\/ sessionCookiePassword:/' config/default.js
-          sed -i 's/^  redisHost:/  \/\/ redisHost:/' config/default.js
-          sed -i 's/^  redisPort:/  \/\/ redisPort:/' config/default.js
-          sed -i 's/^  redisPassword:/  \/\/ redisPassword:/' config/default.js
-          sed -i 's/^  redisTls:/  \/\/ redisTls:/' config/default.js
+    # Check if container is still running
+    if ! docker ps -f name=quick-test | grep -q quick-test; then
+      echo "❌ Container exited unexpectedly"
+      echo "📋 Container logs:"
+      docker logs quick-test 2>&1 || echo "No logs available"
+      
+      # Check exit code
+      EXIT_CODE=$(docker inspect quick-test --format='{{.State.ExitCode}}' 2>/dev/null || echo "unknown")
+      echo "Exit code: $EXIT_CODE"
+      exit 1
+    fi
 
-      - name: Build and cache
-        uses: docker/build-push-action@v6
-        with:
-          push: false
-          load: true
-          tags: user/app:test
-          context: ./builder
-          file: ./builder/runner/Dockerfile
-          platforms: linux/amd64
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+    echo "✅ Container is running"
 
-      - name: Quick runtime test
-        run: |
-          # Start container with timeout
-          timeout 60s docker run --rm -d --name quick-test -p 8080:8080 user/app:test || true
+    # Get and analyze logs
+    echo "📋 Checking container logs..."
+    LOGS=$(docker logs quick-test 2>&1)
 
-          # Quick checks
-          sleep 10
+    # Check for critical errors
+    if echo "$LOGS" | grep -iE "(fatal|panic|error.*exit|segmentation fault|out of memory|uncaught exception|npm err)"; then
+      echo "❌ Critical errors found in logs:"
+      echo "$LOGS"
+      exit 1
+    fi
 
-          if docker ps | grep quick-test; then
-            echo "✅ Container started successfully"
-            
-            # Check for critical errors only
-            if docker logs quick-test 2>&1 | grep -i "fatal\|panic"; then
-              echo "❌ Critical errors found"
-              docker logs quick-test 2>&1
-              docker stop quick-test
-              exit 1
-            fi
-            
-            docker stop quick-test
-          else
-            echo "❌ Container failed to start or exited"
-            docker logs quick-test 2>&1 || true
-            exit 1
-          fi
+    # Check for warnings that might indicate problems
+    if echo "$LOGS" | grep -iE "(warn|warning)" | head -5; then
+      echo "⚠️  Warnings found (not failing build):"
+      echo "$LOGS" | grep -iE "(warn|warning)" | head -5
+    fi
+
+    echo "✅ No critical errors found in logs"
+
+    # Optional: Test service endpoint
+    echo "🌐 Testing service availability..."
+    for i in {1..5}; do
+      if curl -f -s http://localhost:8080/health >/dev/null 2>&1; then
+        echo "✅ Service is responding"
+        break
+      elif curl -f -s http://localhost:8080/ >/dev/null 2>&1; then
+        echo "✅ Service is responding (root endpoint)"
+        break
+      else
+        echo "⏳ Attempt $i/5: Service not responding yet..."
+        sleep 5
+      fi
+      
+      if [ $i -eq 5 ]; then
+        echo "⚠️  Service not responding to HTTP requests (may be expected)"
+        # Don't fail the build for this - service might not have HTTP endpoints
+      fi
+    done
+
+    echo "✅ Runtime test completed successfully"
+
+# Alternative simpler version if you just want to catch startup failures:
+- name: Simple runtime test
+  run: |
+    echo "Starting container..."
+
+    # Start container and immediately check if it's running
+    docker run --rm -d --name quick-test -p 8080:8080 user/app:test
+
+    # Wait a moment
+    sleep 5
+
+    # Check if still running
+    if docker ps | grep -q quick-test; then
+      echo "✅ Container started successfully"
+      docker logs quick-test
+      docker stop quick-test
+    else
+      echo "❌ Container failed to start or exited"
+      docker logs quick-test 2>&1 || echo "No logs available"
+      exit 1
+    fi
+
+# Debug version to see what's happening:
+- name: Debug container startup
+  run: |
+    echo "🔍 Debug: Starting container with verbose output..."
+
+    # Start container with more verbose output
+    docker run --rm -d --name quick-test -p 8080:8080 user/app:test || {
+      echo "❌ Failed to start container"
+      echo "📋 Recent Docker events:"
+      docker events --since=1m --until=now
+      exit 1
+    }
+
+    # Show immediate logs
+    echo "📋 Initial logs:"
+    docker logs quick-test
+
+    # Show container status
+    echo "📊 Container status:"
+    docker ps -a -f name=quick-test
+
+    # Wait and check again
+    sleep 10
+
+    echo "📋 Logs after 10 seconds:"
+    docker logs quick-test 2>&1 || echo "No logs available"
+
+    # Final status check
+    if docker ps -f name=quick-test | grep -q quick-test; then
+      echo "✅ Container is running"
+      docker stop quick-test
+    else
+      echo "❌ Container is not running"
+      docker ps -a -f name=quick-test
+      exit 1
+    fi
