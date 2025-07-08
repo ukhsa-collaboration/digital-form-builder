@@ -3,10 +3,6 @@ import { redirectTo } from "../helpers";
 import { HapiRequest, HapiResponseToolkit } from "server/types";
 
 export class MagicLinkStartPageController extends PageController {
-  constructor(model, pageDef) {
-    super(model, pageDef);
-  }
-
   makeGetRouteHandler() {
     return async (request: HapiRequest, h: HapiResponseToolkit) => {
       if (this.model.values.toggle === false) {
