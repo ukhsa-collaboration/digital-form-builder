@@ -34,27 +34,15 @@ jobs:
 
       - name: Modify config for build
         run: |
-          cd ./builder/runner
-          # Create backup of original config
-          cp config/default.js config/default.js.backup
+          cd builder
+          # Comment out specific Redis configuration lines
+          sed -i 's/^  redisHost:/  \/\/ redisHost:/' config/default.js
+          sed -i 's/^  redisPort:/  \/\/ redisPort:/' config/default.js
+          sed -i 's/^  redisPassword:/  \/\/ redisPassword:/' config/default.js
+          sed -i 's/^  redisTls:/  \/\/ redisTls:/' config/default.js
 
-          # Comment out lines 71-76 (Redis configuration)
-          sed -i '71,76s/^/\/\/ /' config/default.js
-
-          # Verify the changes
-          echo "Modified config (lines 71-76):"
-          sed -n '71,76p' config/default.js
-
-      - name: Validate build configuration
-        uses: docker/build-push-action@v6
-        with:
-          call: check
-          context: ./builder
-          file: ./builder/runner/Dockerfile
-
-      # Cache the image layers for faster rebuilds
       - name: Build and cache
-        uses: docker/build-push-action@v4
+        uses: docker/build-push-action@v6
         with:
           push: false
           load: true
