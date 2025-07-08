@@ -54,7 +54,6 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-      # Quick runtime test in same job
       - name: Quick runtime test
         run: |
           # Start container with timeout
