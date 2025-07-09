@@ -19,15 +19,9 @@ export class TelephoneNumberField extends FormComponent {
     if (options.required === false) {
       componentSchema = componentSchema.allow("").allow(null);
     }
-
     componentSchema = componentSchema
       .pattern(pattern)
-      .label(def.title.toLowerCase())
-      .messages({
-        "string.pattern.base":
-          def.options?.customValidationMessage ?? DEFAULT_MESSAGE,
-        ...(options.customValidationMessages || {}),
-      });
+      .label(def.title.toLowerCase());
 
     if (schema.max) {
       componentSchema = componentSchema.max(schema.max);
@@ -45,10 +39,15 @@ export class TelephoneNumberField extends FormComponent {
       componentSchema = componentSchema.messages(
         options.customValidationMessages
       );
+    } else {
+      componentSchema = componentSchema.messages({
+        "string.pattern.base":
+          def.options?.customValidationMessage ?? DEFAULT_MESSAGE,
+      });
     }
     this.schema = componentSchema;
 
-    addClassOptionIfNone(this.options, "govuk-input--width-20");
+    addClassOptionIfNone(this.options, "govuk-input--width-10");
   }
 
   getFormSchemaKeys() {
