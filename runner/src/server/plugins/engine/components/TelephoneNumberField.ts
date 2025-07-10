@@ -41,7 +41,8 @@ export class TelephoneNumberField extends FormComponent {
       );
     } else {
       componentSchema = componentSchema.messages({
-        "string.pattern.base": DEFAULT_MESSAGE,
+        "string.pattern.base":
+          def.options?.customValidationMessage ?? DEFAULT_MESSAGE,
       });
     }
     this.schema = componentSchema;
