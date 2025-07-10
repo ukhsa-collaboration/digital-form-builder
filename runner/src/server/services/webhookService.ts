@@ -60,7 +60,8 @@ export class WebhookService {
         return Name;
       }
 
-      this.logger.info(`Request status code: ${res.statusCode}`);
+      // this.logger.info(`Request status code: ${res.statusCode}`);
+      console.log(`Request status code: ${res.statusCode}`);
 
       const { reference } = JSON.parse(payload);
 
