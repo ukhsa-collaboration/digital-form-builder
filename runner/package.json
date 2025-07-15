@@ -7,7 +7,7 @@
   "scripts": {
     "check-forms": "yarn node bin/run/check",
     "watch": "babel --watch --extensions '.ts' src -d dist --copy-files -s inline",
-    "start": "node dist/index.js",
+    "start": "node --inspect=0.0.0.0:9229 dist/index.js",
     "start:local": "NODE_ENV=development nodemon dist/index.js",
     "dev": "concurrently 'yarn watch' 'yarn start:local'",
     "build": "yarn build:css && yarn babel-build && yarn run check-forms",
