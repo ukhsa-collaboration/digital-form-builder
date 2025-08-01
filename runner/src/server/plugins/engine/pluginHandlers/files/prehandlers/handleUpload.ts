@@ -44,16 +44,23 @@ export async function handleUpload(
     }
 
     let response;
-
+  
     try {
       response = await uploadService.uploadDocuments(streams,request);
+      //debugger;
     } catch (err) {
       if (err.data?.res) {
+        debugger;
         const { error } = uploadService.parsedDocumentUploadResponse(err.data);
-        request.pre.errors = [
-          ...request.pre.errors,
-          parsedError(fieldName, error),
-        ];
+        //request.pre.errors = [
+        //  ...request.pre.errors,
+        // parsedError(fieldName, error),
+        //];
+        response = {
+          location: undefined,
+          warning: undefined,
+          error: error
+        }
       } else if (err.code === "EPIPE") {
         // ignore this error, it happens when the request is responded to by the doc upload service before the
         // body has finished being sent. A valid response is still received.
@@ -69,10 +76,11 @@ export async function handleUpload(
         ];
       }
     }
-
+    //debugger;
     const { location, warning, error } = response;
-
+    //debugger;
     if (location) {
+      //debugger;
       const originalFilename = streams
         .map((stream) => stream.hapi?.filename)
         .join(", ");
@@ -96,6 +104,7 @@ export async function handleUpload(
     }
 
     if (warning) {
+      debugger;
       request.pre.warning = warning;
       logger.warn(
         loggerIdentifier,
@@ -104,13 +113,14 @@ export async function handleUpload(
     }
 
     if (error) {
+      debugger;
       logger.error(
         loggerIdentifier,
         `Document upload API responded with an error ${error}`
       );
       request.pre.errors = [
         ...(request.pre.errors || []),
-        parsedError(fieldName, error),
+       parsedError(fieldName, error),
       ];
     }
   }
