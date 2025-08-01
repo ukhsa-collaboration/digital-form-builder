@@ -18,7 +18,11 @@
       {% include "partials/heading.html" %}
 
       {% for detail in details %}
-        {{ summaryCard(detail) }}
+        {% if details.length === 1 %}
+          {{ summaryCard(detail, true) }}
+        {% else %}
+          {{ summaryCard(detail) }}
+        {% endif %}
       {% endfor %}
 
       {% include "partials/form.html" %}
