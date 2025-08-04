@@ -1,0 +1,47 @@
+name: Webforms Deployment
+run-name: Webforms Deployment | ${{ inputs.environment }} Environment
+
+on:
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: "Web forms (digital form builder) branch to deploy"
+        type: string
+        required: true
+        default: "v2"
+      environment:
+        description: "Environment to deploy the solution"
+        type: choice
+        required: true
+        options:
+          - dev
+
+jobs:
+  Form-Check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          repository: UKHSA-Internal/hpod-ukhsa-generate-webform-url-citizen
+          path: check
+          ref: ${{inputs.digital-forms-builder-ref}}
+
+      - name: Check Infrastructure Available for Environment
+        run: |
+          cd terraform/config/${{inputs.environment}}/
+          infra_array=(*)
+          echo "Available forms for ${{env.environment}} are: $infra_array"
+
+  Docker-Images-Build-Runner:
+    uses: UKHSA-Internal/hpod-ukhsa-generate-webform-url-citizen/.github/workflows/docker-build-push.yml@main
+    needs: [Form-Check]
+    with:
+      environment: ${{inputs.environment}}
+      digital-forms-builder-ref: ${{inputs.branch}}
+      tf-output-file: plan-tf-output-h1n2.json
+      repository-name: runner
+      dockerfile: runner/Dockerfile
+      tag: v1.0
+      increase-minor-version: true
+      replace-major-version: true
+    secrets: inherit
