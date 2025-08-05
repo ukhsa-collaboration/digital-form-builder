@@ -24,20 +24,20 @@ jobs:
         with:
           repository: UKHSA-Internal/hpod-ukhsa-generate-webform-url-citizen
           path: check
-          ref: ${{inputs.digital-forms-builder-ref}}
+          ref: ${{ inputs.branch }}
 
       - name: Check Infrastructure Available for Environment
         run: |
           cd terraform/config/${{inputs.environment}}/
           infra_array=(*)
-          echo "Available forms for ${{env.environment}} are: $infra_array"
+          echo "Available forms for ${{ inputs.environment }} are: $infra_array"
 
   Docker-Images-Build-Runner:
     uses: UKHSA-Internal/hpod-ukhsa-generate-webform-url-citizen/.github/workflows/docker-build-push.yml@main
     needs: [Form-Check]
     with:
       environment: ${{inputs.environment}}
-      digital-forms-builder-ref: ${{inputs.branch}}
+      digital-forms-builder-ref: ${{ inputs.branch }}
       tf-output-file: plan-tf-output-h1n2.json
       repository-name: runner
       dockerfile: runner/Dockerfile
