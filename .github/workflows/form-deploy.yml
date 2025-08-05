@@ -2,6 +2,7 @@ name: Webforms Deployment
 run-name: Webforms Deployment | ${{ inputs.environment }} Environment
 
 on:
+  pull_request:
   workflow_dispatch:
     inputs:
       branch:
