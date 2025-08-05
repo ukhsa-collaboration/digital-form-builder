@@ -34,7 +34,7 @@ jobs:
           echo "Available forms for ${{ inputs.environment }} are: $infra_array"
 
   Docker-Images-Build-Runner:
-    uses: ukhsa-internal/hpod-ukhsa-generate-webform-url-citizen/.github/workflows/docker-build-push.yml
+    uses: ukhsa-internal/hpod-ukhsa-generate-webform-url-citizen/.github/workflows/docker-build-push.yml@trunk
     needs: [Form-Check]
     with:
       environment: ${{inputs.environment}}
