@@ -29,6 +29,7 @@ const parsedError = (key: string, error?: string) => {
 const ERRORS = {
   fileSizeError: 'The selected file for "%s" is too large',
   fileTypeError: "Invalid file type. Upload a PNG, JPG or PDF",
+  fileCountError: "The number of files exceeds the limit",
   virusError: 'The selected file for "%s" contained a virus',
   default: "There was an error uploading your file",
 };
@@ -140,29 +141,40 @@ export class UploadService {
 
   const requestData = { headers, payload: form };
   const responseData = await post(`${config.documentUploadApiUrl}/v1/files`, requestData);
-
+  debugger;
   return this.parsedDocumentUploadResponse(responseData);
 }
 
   parsedDocumentUploadResponse({ res, payload }) {
+    //debugger;
     const warning = payload?.toString?.();
+
     let error: string | undefined;
     let location: string | undefined;
     switch (res.statusCode) {
       case 201:
+        debugger;
         location = res.headers.location;
         break;
       case 400:
-        error = ERRORS.fileTypeError;
+        const pattern = /Maximum \d+ files allowed per upload/;
+        if(pattern.test(warning)) {
+          error = ERRORS.fileCountError;
+        }
+        else {
+          error = ERRORS.fileTypeError;
+        }
         break;
       case 413:
         error = ERRORS.fileSizeError;
         break;
       case 422:
+        debugger;
         error = ERRORS.virusError;
         break;
       default:
         error = ERRORS.default;
+        
         break;
     }
     return {
