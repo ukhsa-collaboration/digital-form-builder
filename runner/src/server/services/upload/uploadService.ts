@@ -170,13 +170,7 @@ export class UploadService {
         location = res.headers.location;
         break;
       case 400:
-        const pattern = /Maximum \d+ files allowed per upload/;
-        if(pattern.test(warning)) {
-          error = ERRORS.fileCountError;
-        }
-        else {
-          error = ERRORS.fileTypeError;
-        }
+        error = ERRORS.fileTypeError;
         break;
       case 413:
         if(errorCode === "TOO_MANY_FILES") {
