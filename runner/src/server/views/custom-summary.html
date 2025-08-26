@@ -1,5 +1,4 @@
 {% from "components/checkboxes/macro.njk" import govukCheckboxes %}
-{% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "summary-list/macro.njk" import govukSummaryList %}
 {% extends 'layout.html' %}
 
@@ -118,17 +117,13 @@
                   </div>
                 {% endif %}
 
-                {% if fees and fees.details|length %}
-                  {{ govukButton({
-                    text: "Submit and pay",
-                    preventDoubleClick: true
-                  }) }}
-                {% else %}
-                  {{ govukButton({
-                    text: "Confirm and send",
-                    preventDoubleClick: true
-                  }) }}
-                {% endif %}
+                <button type="submit" data-prevent-double-click="true" class="govuk-button" data-module="govuk-button">
+                    {% if fees and fees.details|length %}
+                        Submit and pay
+                    {% else %}
+                        Confirm and send
+                    {% endif %}
+                </button>
 
                 {% if showPaymentSkippedWarningPage %}
                 <div class="govuk-body">
@@ -143,4 +138,16 @@
       </div>
     </div>
   </div>
+
+  <script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', function () {
+      const button = document.querySelector('button[data-prevent-double-click="true"]');
+      if (button) {
+        button.addEventListener('click', function () {
+          // Disable immediately to prevent multiple clicks
+          button.disabled = true;
+        });
+      }
+    });
+  </script>
 {% endblock %}
