@@ -1,4 +1,5 @@
 {% from "components/checkboxes/macro.njk" import govukCheckboxes %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "summary-list/macro.njk" import govukSummaryList %}
 {% extends 'layout.html' %}
 
@@ -117,13 +118,17 @@
                   </div>
                 {% endif %}
 
-                <button type="submit" data-prevent-double-click="true" class="govuk-button" data-module="govuk-button">
-                    {% if fees and fees.details|length %}
-                        Submit and pay
-                    {% else %}
-                        Confirm and send
-                    {% endif %}
-                </button>
+                {% if fees and fees.details|length %}
+                  {{ govukButton({
+                    text: "Submit and pay",
+                    preventDoubleClick: true
+                  }) }}
+                {% else %}
+                  {{ govukButton({
+                    text: "Confirm and send",
+                    preventDoubleClick: true
+                  }) }}
+                {% endif %}
 
                 {% if showPaymentSkippedWarningPage %}
                 <div class="govuk-body">
