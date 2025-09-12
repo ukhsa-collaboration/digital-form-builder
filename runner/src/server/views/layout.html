@@ -180,6 +180,14 @@
         GOVUKFrontend.modalDialog.init()
       {% endif %}
     });
+
+    document.addEventListener('DOMContentLoaded', function (event) {
+      const navType = performance.getEntriesByType('navigation')[0].type;
+      if ((navType === 'navigate' || navType === 'back_forward') &&
+          !document.querySelector('.govuk-error-summary')) {
+        history.replaceState(null, "", window.location.pathname);
+      }
+    }, true)
   </script>
 
   {% if BROWSER_REFRESH_URL %}
