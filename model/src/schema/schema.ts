@@ -362,6 +362,7 @@ export const Schema = joi
     fileUploadHmacSharedKey: joi.string().optional(),
     fullStartPage: joi.string().optional(),
     serviceName: joi.string().optional(),
+    confirmationTimeout: joi.number().greater(0).optional()
   });
 
 /**
