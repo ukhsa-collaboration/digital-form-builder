@@ -184,7 +184,8 @@
     document.addEventListener('DOMContentLoaded', function (event) {
       const navType = performance.getEntriesByType('navigation')[0].type;
       if ((navType === 'navigate' || navType === 'back_forward') &&
-          !document.querySelector('.govuk-error-summary')) {
+           !document.querySelector('.govuk-error-summary') &&
+           window.location.hash === "#main-content") {
         history.replaceState(null, "", window.location.pathname);
       }
     }, true)
