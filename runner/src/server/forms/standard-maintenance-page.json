@@ -1,0 +1,34 @@
+{
+  "metadata": {},
+  "startPage": "/<product-start-url>",
+  "pages": [
+    {
+      "title": "Sorry, the service is unavailable",
+      "path": "/<product-start-url>",
+      "components": [
+        {
+          "name": "MTSMBl",
+          "options": {},
+          "type": "Para",
+          "content": "You will be able to use the service from <time (e.g. 2pm) on <date (e.g. Thursday 5th June 2025)>."
+        },
+        {
+          "name": "mkZWtL",
+          "options": {},
+          "type": "Para",
+          "content": "<Content Requested by Business>."
+        }
+      ],
+      "next": []
+    }
+  ],
+  "lists": [],
+  "sections": [],
+  "conditions": [],
+  "fees": [],
+  "outputs": [],
+  "version": 2,
+  "skipSummary": false,
+  "feeOptions": {},
+  "name": "<Product Name>"
+}
