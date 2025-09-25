@@ -19,10 +19,10 @@
       "unauthenticated": true,
       "components": [
         {
-            "name": "mainContent",
-            "options": {},
-            "type": "Para",
-            "content": "<p class=\"govuk-body-m\">If you have recently submitted an enquiry using this form, please ensure you clear your cookies before starting a new enquiry.</p>"
+          "name": "mainContent",
+          "options": {},
+          "type": "Para",
+          "content": "<p class=\"govuk-body-m\">If you have recently submitted an enquiry using this form, please ensure you clear your cookies before starting a new enquiry.</p>"
         }
       ],
       "next": [
@@ -105,7 +105,7 @@
         {
           "name": "WWpyux",
           "options": {
-            "autocomplete":"name"
+            "autocomplete": "name"
           },
           "type": "TextField",
           "title": "Full name",
@@ -168,13 +168,13 @@
           "options": {},
           "type": "Details",
           "title": "Click here to learn about the types of enquiry that the KLS team support",
-          "content": "<dl><dt><strong>Literature search:</strong> a detailed, comprehensive and systematic search of the literature from a variety of quality sources. Literature searches take between 1 and 2 weeks to complete.</dt><br><dt><strong>Systematic review:</strong> the provision of complex literature searches to help in the production of a systematic review, with associated guidance on the stages of conducting a review. The time taken to deliver the search and advice will be dependent on the type of review.</dt><br><dt><strong>Evidence briefing:</strong> outlines the main messages taken from evidence that has been identified and selected using systematic methods and strict inclusion criteria. It usually takes at least 3 weeks to produce an Evidence Briefing and they are subject to certain eligibility criteria</dt><br><dt><strong>Current awareness alerts:</strong> support to access a range of current awareness products to be kept regularly up to date with the latest research in your field of work.</dt><br><dt><strong>General enquiry:</strong> select this option for support with any other queries.</dt></dl>",
+          "content": "<dl class=\"govuk-summary-list\"><div class=\"govuk-summary-list__row\"><dt class=\"govuk-summary-list__key\">Literature search</dt><dd class=\"govuk-summary-list__value\">A detailed, comprehensive and systematic search of the literature from a variety of quality sources. Literature searches take between 1 and 2 weeks to complete.</dd></div><div class=\"govuk-summary-list__row\"><dt class=\"govuk-summary-list__key\">Systematic review</dt><dd class=\"govuk-summary-list__value\">The provision of complex literature searches to help in the production of a systematic review, with associated guidance on the stages of conducting a review. The time taken to deliver the search and advice will be dependent on the type of review.</dd></div><div class=\"govuk-summary-list__row\"><dt class=\"govuk-summary-list__key\">Evidence briefing</dt><dd class=\"govuk-summary-list__value\">Outlines the main messages taken from evidence that has been identified and selected using systematic methods and strict inclusion criteria. It usually takes at least 3 weeks to produce an Evidence Briefing and they are subject to certain eligibility criteria.</dd></div><div class=\"govuk-summary-list__row\"><dt class=\"govuk-summary-list__key\">Current awareness alerts</dt><dd class=\"govuk-summary-list__value\">Support to access a range of current awareness products to be kept regularly up to date with the latest research in your field of work.</dd></div><div class=\"govuk-summary-list__row\"><dt class=\"govuk-summary-list__key\">General enquiry</dt><dd class=\"govuk-summary-list__value\">Select this option for support with any other queries.</dd></div></dl>",
           "schema": {}
         },
         {
           "name": "tUKBgj",
           "options": {
-            "customValidationMessages":{
+            "customValidationMessages": {
               "any.required": "Select the option that best matches your enquiry",
               "any.only": "Select the option that best matches your enquiry",
               "string.empty": "Select the option that best matches your enquiry"
@@ -231,18 +231,16 @@
           "schema": {}
         },
         {
-               "name":"bYWcrH",
-               "options":{
-                  "multiple": true,
-                  "required": false,
-                  "accept": "image/png,image/jpeg,image/gif,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel.sheet.macroEnabled.12,text/csv,application/xml,text/xml,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/rtf,text/rtf,application/msword,application/x-research-info-systems,text/plain,application/vnd.ms-outlook,application/vnd.openxmlformats-officedocument.presentationml.presentation,.ris,application/vnd.ms-excel,.msg"
-                    },
-               "type":"FileUploadField",
-               "title":"If you need to upload a file to help us deal with your enquiry, do so here.",
-               "hint": "You can upload up to 10 files but the combined size must not exceed 4.95 megabytes. To remove uploaded files, click 'Choose Files' again, select nothing and close the window."
-            }
-            
-
+          "name": "bYWcrH",
+          "options": {
+            "multiple": true,
+            "required": false,
+            "accept": "image/png,image/jpeg,image/gif,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel.sheet.macroEnabled.12,text/csv,application/xml,text/xml,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/rtf,text/rtf,application/msword,application/x-research-info-systems,text/plain,application/vnd.ms-outlook,application/vnd.openxmlformats-officedocument.presentationml.presentation,.ris,application/vnd.ms-excel,.msg"
+          },
+          "type": "FileUploadField",
+          "title": "If you need to upload a file to help us deal with your enquiry, do so here.",
+          "hint": "You can upload up to 10 files but the combined size must not exceed 4.95 megabytes. To remove uploaded files, click 'Choose Files' again, select nothing and close the window."
+        }
       ],
       "next": [
         {
@@ -319,7 +317,7 @@
         {
           "name": "LuoKqU",
           "options": {
-              "customValidationMessages": {
+            "customValidationMessages": {
               "any.required": "Provide your focussed question",
               "any.only": "Provide your focussed question",
               "string.empty": "Provide your focussed question"
@@ -638,7 +636,7 @@
           "schema": {},
           "hint": "A protocol describes the planned methods for your review. It should be written before your review begins and followed when you conduct the review. Guidance on writing a protocol is available in <a href=\"https://www.prisma-statement.org/protocols\"> PRISMA for systematic review protocols</a> or contact us for help."
         },
-                {
+        {
           "name": "hQXIgL",
           "options": {
             "required": true,
@@ -806,18 +804,18 @@
           "title": "Enquiry title",
           "schema": {}
         },
-{
-  "name": "FIvjTg",
-  "type": "FileUploadField",
-  "title": "If you need to upload a file to help us deal with your enquiry, do so here.",
-  "hint": "You can upload up to 10 files but the combined size must not exceed 4.95 megabytes. To remove uploaded files, click 'Choose Files' again, select nothing and close the window.",
-  "schema": {},
-  "options": {
-    "multiple": true,
-    "required": false,
-    "accept": "image/png,image/jpeg,image/gif,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel.sheet.macroEnabled.12,text/csv,application/xml,text/xml,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/rtf,text/rtf,application/msword,application/x-research-info-systems,text/plain,application/vnd.ms-outlook,application/vnd.openxmlformats-officedocument.presentationml.presentation,.ris,application/vnd.ms-excel,.msg"
-  }
-}
+        {
+          "name": "FIvjTg",
+          "type": "FileUploadField",
+          "title": "If you need to upload a file to help us deal with your enquiry, do so here.",
+          "hint": "You can upload up to 10 files but the combined size must not exceed 4.95 megabytes. To remove uploaded files, click 'Choose Files' again, select nothing and close the window.",
+          "schema": {},
+          "options": {
+            "multiple": true,
+            "required": false,
+            "accept": "image/png,image/jpeg,image/gif,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel.sheet.macroEnabled.12,text/csv,application/xml,text/xml,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/rtf,text/rtf,application/msword,application/x-research-info-systems,text/plain,application/vnd.ms-outlook,application/vnd.openxmlformats-officedocument.presentationml.presentation,.ris,application/vnd.ms-excel,.msg"
+          }
+        }
       ],
       "next": [
         {
@@ -841,7 +839,7 @@
         {
           "name": "wyvXTj",
           "options": {
-              "customValidationMessages": {
+            "customValidationMessages": {
               "any.required": "Select the organisation you work for",
               "any.only": "Select the organisation you work for",
               "string.empty": "Select the organisation you work for"
@@ -880,13 +878,13 @@
           "options": {},
           "type": "Details",
           "title": "Click here to learn about the types of enquiry that the KLS team support",
-          "content": "<dl><dt><strong>Literature search:</strong> a detailed, comprehensive and systematic search of the literature from a variety of quality sources. Literature searches take between 1 and 2 weeks to complete.</dt><br><dt><strong>Current awareness alerts:</strong> support to access a range of current awareness products to be kept regularly up to date with the latest research in your field of work.</dt><br><dt><strong>General enquiry:</strong> select this option for support with any other queries.</dt></dl>",
+          "content": "<dl class=\"govuk-summary-list\"><div class=\"govuk-summary-list__row\"><dt class=\"govuk-summary-list__key\">Literature search</dt><dd class=\"govuk-summary-list__value\">A detailed, comprehensive and systematic search of the literature from a variety of quality sources. Literature searches take between 1 and 2 weeks to complete.</dd></div><div class=\"govuk-summary-list__row\"><dt class=\"govuk-summary-list__key\">Current awareness alerts</dt><dd class=\"govuk-summary-list__value\">Support to access a range of current awareness products to be kept regularly up to date with the latest research in your field of work.</dd></div><div class=\"govuk-summary-list__row\"><dt class=\"govuk-summary-list__key\">General enquiry</dt><dd class=\"govuk-summary-list__value\">Select this option for support with any other queries.</dd></div></dl>",
           "schema": {}
         },
         {
           "name": "VeQCVM",
           "options": {
-            "customValidationMessages":{
+            "customValidationMessages": {
               "any.required": "Select the option that best matches your enquiry",
               "any.only": "Select the option that best matches your enquiry",
               "string.empty": "Select the option that best matches your enquiry"
@@ -2034,7 +2032,7 @@
       ]
     },
     {
-      "title":"Geographic scope",
+      "title": "Geographic scope",
       "name": "zDtSLo",
       "type": "string",
       "items": [
