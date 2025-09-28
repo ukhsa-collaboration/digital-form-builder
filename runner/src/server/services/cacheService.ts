@@ -73,9 +73,9 @@ export class CacheService {
     return await this.cache.get(key);
   }
 
-async setConfirmationState(request: HapiRequest, viewModel, ttl?: number) {
+  async setConfirmationState(request: HapiRequest, viewModel, ttl?: number) {
     const key = this.Key(request, ADDITIONAL_IDENTIFIER.Confirmation);
-    const timeout = ttl ?? confirmationSessionTimeout; 
+    const timeout = ttl ?? confirmationSessionTimeout;
     return this.cache.set(key, viewModel, timeout);
   }
 
@@ -189,7 +189,7 @@ export const catboxProvider = () => {
           {
             dnsLookup: (address, callback) => callback(null, address, 4),
             redisOptions,
-          }
+          },
         );
     provider.options = { client, partition };
   } else {

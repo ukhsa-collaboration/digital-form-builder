@@ -72,11 +72,9 @@ const index = {
               newReference
             );
 
-            const formTimeout =  request.server?.app?.forms?.[request.params?.id]?.def?.confirmationTimeout
-            ?? config.confirmationSessionTimeout;
-            
-            await cacheService.setConfirmationState(request, { confirmation: viewModel }, formTimeout);
-
+            const confirmationTimeout = form.def.confirmationTimeout ?? config.confirmationSessionTimeout;    
+            await cacheService.setConfirmationState(request, { confirmation: viewModel }, confirmationTimeout);
+            await cacheService.clearState(request);
 
             return h.view("confirmation", viewModel);
           },
