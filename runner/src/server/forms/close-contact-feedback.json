@@ -1,7 +1,6 @@
 {
   "metadata": {},
   "startPage": "/feedback",
-  "fullStartPage": "/close-contact-feedback",
   "pages": [
     {
       "title": "Give feedback on Surge Response Service",
@@ -41,8 +40,8 @@
         {
           "name": "nXASKT",
           "options": {},
-          "type": "Html",
-          "content": "<p class='govuk-hint'>If you'd like us to get back to you, please leave your details below.</p>",
+          "type": "Para",
+          "content": "If you'd like us to get back to you, please leave your details below.\n",
           "schema": {}
         },
         {
@@ -116,7 +115,7 @@
     "maxAttempts": 3,
     "showPaymentSkippedWarningPage": false
   },
-  "name": "Surge Response Service feedback",
+  "name": "Give feedback on Surge Response Service",
   "feedback": { "feedbackForm": true, "url": "" },
   "phaseBanner": {},
   "specialPages": {
