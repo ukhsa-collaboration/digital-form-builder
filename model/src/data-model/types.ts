@@ -230,4 +230,6 @@ export type FormDefinition = {
   fileUploadHmacSharedKey?: string | undefined;
   fullStartPage?: string | undefined;
   serviceName?: string | undefined;
+  confirmationTimeout: number | undefined;
+  
 };

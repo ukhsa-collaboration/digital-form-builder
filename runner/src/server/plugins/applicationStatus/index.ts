@@ -3,6 +3,7 @@ import { HapiRequest, HapiResponseToolkit } from "../../types";
 import { retryPay } from "./retryPay";
 import { handleUserWithConfirmationViewModel } from "./handleUserWithConfirmationViewModel";
 import { checkUserCompletedSummary } from "./checkUserCompletedSummary";
+import config from "../../config";
 
 import Joi from "joi";
 import {
@@ -73,9 +74,10 @@ const index = {
             viewModel.name = form.name;
             viewModel.feedbackLink = form.def.feedback.url;
 
-            await cacheService.setConfirmationState(request, {
-              confirmation: viewModel,
-            });
+            const formTimeout =  request.server?.app?.forms?.[request.params?.id]?.def?.confirmationTimeout
+            ?? config.confirmationSessionTimeout;
+            
+            await cacheService.setConfirmationState(request, { confirmation: viewModel }, formTimeout);
             await cacheService.clearState(request);
 
             h.unstate("magicLinkRetry", {
