@@ -1,7 +1,7 @@
 {
   "startPage": "/start",
   "skipSummary": true,
-  "toggle": "${magicLinkToggle}",
+  "toggle": false,
   "toggleRedirect": "/ReportAnOutbreak/setting",
   "retryTimeoutSeconds": 300,
   "pages": [
