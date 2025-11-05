@@ -83,6 +83,7 @@ export default {
         sessionTimeout: config.sessionTimeout,
         skipTimeoutWarning: false,
         serviceStartPage: request.server?.app?.forms?.[request.params?.id]?.def?.fullStartPage || config.serviceStartPage || config.serviceName || "#",
+        returnTo: request.server?.app?.forms?.[request.params?.id]?.def?.returnTo || false,
         privacyPolicyUrl: config.privacyPolicyUrl || "/help/privacy",
         phaseTag: config.phaseTag,
         navigation: request?.auth.isAuthenticated

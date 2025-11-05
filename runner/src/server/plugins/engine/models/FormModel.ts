@@ -51,6 +51,7 @@ export class FormModel {
   options: any;
   name: any;
   serviceStartPage: any;
+  returnTo: any;
   values: any;
   DefaultPageController: any = PageController;
   /** the id of the form used for the first url parameter eg localhost:3009/test */
@@ -101,6 +102,7 @@ export class FormModel {
     this.options = options;
     this.name = def.name;
     this.serviceStartPage = def.fullStartPage || config.serviceStartPage || config.serviceName || "#";
+    this.returnTo = def.returnTo || false;
     this.values = result.value;
 
     if (options.defaultPageController) {
