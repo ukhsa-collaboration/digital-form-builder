@@ -84,6 +84,16 @@ const index = {
               confirmationTimeout
             );
 
+            const confirmationTimeout =
+              form.def.confirmationSessionTimeout ??
+              config.confirmationSessionTimeout;
+
+            await cacheService.setConfirmationState(
+              request,
+              { confirmation: viewModel },
+              confirmationTimeout
+            );
+
             await cacheService.clearState(request);
 
             h.unstate("magicLinkRetry", {
