@@ -70,13 +70,9 @@ export default {
         appVersion: pkg.version,
         assetPath: "/assets",
         cookiesPolicy: request?.state?.cookies_policy,
-        serviceName:
-          request.server?.app?.forms?.[request.params?.id]?.def?.serviceName ||
-          config.serviceName,
+        serviceName: request.server?.app?.forms?.[request.params?.id]?.def?.serviceName || config.serviceName,
         feedbackLink: config.feedbackLink,
-        pageTitle:
-          (request.server?.app?.forms?.[request.params?.id]?.def?.serviceName ||
-            config.serviceName) + " - GOV.UK",
+        pageTitle: (request.server?.app?.forms?.[request.params?.id]?.def?.serviceName || config.serviceName) + " - GOV.UK",
         analyticsAccount: config.analyticsAccount,
         gtmId1: analytics.gtmId1 || "",
         gtmId2: analytics.gtmId2 || "",
@@ -86,12 +82,7 @@ export default {
         BROWSER_REFRESH_URL: config.browserRefreshUrl,
         sessionTimeout: config.sessionTimeout,
         skipTimeoutWarning: false,
-        serviceStartPage:
-          request.server?.app?.forms?.[request.params?.id]?.def
-            ?.fullStartPage ||
-          config.serviceStartPage ||
-          config.serviceName ||
-          "#",
+        serviceStartPage: request.server?.app?.forms?.[request.params?.id]?.def ?.fullStartPage || config.serviceStartPage || config.serviceName || "#",
         privacyPolicyUrl: config.privacyPolicyUrl || "/help/privacy",
         phaseTag: config.phaseTag,
         navigation: request?.auth.isAuthenticated
