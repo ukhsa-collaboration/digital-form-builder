@@ -82,7 +82,7 @@ export default {
         BROWSER_REFRESH_URL: config.browserRefreshUrl,
         sessionTimeout: config.sessionTimeout,
         skipTimeoutWarning: false,
-        serviceStartPage: request.server?.app?.forms?.[request.params?.id]?.def ?.fullStartPage || config.serviceStartPage || config.serviceName || "#",
+        serviceStartPage: request.server?.app?.forms?.[request.params?.id]?.def?.fullStartPage || config.serviceStartPage || config.serviceName || "#",
         privacyPolicyUrl: config.privacyPolicyUrl || "/help/privacy",
         phaseTag: config.phaseTag,
         navigation: request?.auth.isAuthenticated
