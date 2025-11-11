@@ -7,9 +7,9 @@
 {% from "skip-link/macro.njk" import govukSkipLink -%}
 {% from "cookie-banner/macro.njk" import govukCookieBanner %}
 {% from "service-navigation/macro.njk" import govukServiceNavigation %}
-{% set bannerName = name or serviceName %}
+{% set naviName = name or serviceName %}
 {%if returnTo %}
-  {% set bannerName = 'Return to ' ~ bannerName %}
+  {% set naviName = 'Return to ' ~ naviName %}
 {% endif %}
 
 {% block headIcons %}
@@ -110,7 +110,7 @@
     })
   }}
   {{ govukServiceNavigation({
-      serviceName: bannerName,
+      serviceName: naviName,
       serviceUrl: serviceStartPage,
       navigation: navigation if navigation,
       rebrand: true
