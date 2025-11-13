@@ -1,0 +1,9 @@
+
+\n
+Time Details:
+    DNS Lookup:  %{time_namelookup}s
+    TCP Connect: %{time_connect}s
+    TLS Handshake: %{time_appconnect}s
+    Server Processing: %{time_starttransfer}s
+    Total Time: %{time_total}s
+\n
