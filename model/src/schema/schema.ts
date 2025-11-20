@@ -361,6 +361,7 @@ export const Schema = joi
     webhookHmacSharedKey: joi.string().optional(),
     fileUploadHmacSharedKey: joi.string().optional(),
     fullStartPage: joi.string().optional(),
+    returnTo: joi.boolean().optional(),
     serviceName: joi.string().optional(),
     confirmationSessionTimeout: joi.number().optional(),
   });

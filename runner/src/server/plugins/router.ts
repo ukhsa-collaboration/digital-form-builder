@@ -67,6 +67,7 @@ export default {
             return h.view(title, {
               name: form.name,
               serviceName: form.def.serviceName,
+              returnTo: form.def.returnTo,
               serviceStartPage: form.serviceStartPage,
               feedbackLink: feedbackUrlFromRequest(_request, form, title)
             });
@@ -111,6 +112,7 @@ export default {
               analytics,
               name: form.name,
               serviceName: form.def.serviceName,
+              returnTo: form.def.returnTo,
               serviceStartPage: form.serviceStartPage,
               feedbackLink: feedbackUrlFromRequest(request, form, title),
               matomoUrl: form.def.analytics.matomoUrl,
@@ -228,6 +230,7 @@ export default {
           return h.view(title, {
             name: form.name,
             serviceName: form.def.serviceName,
+            returnTo: form.def.returnTo,
             serviceStartPage: form.serviceStartPage,
             feedbackLink: feedbackUrlFromRequest(_request, form, title)
           });
@@ -269,6 +272,7 @@ export default {
           return h.view(title, {
             name: form.name,
             serviceName: form.serviceName,
+            returnTo: form.def.returnTo,
             serviceStartPage: form.serviceStartPage,
             feedbackLink: feedbackUrlFromRequest(_request, form, title)
           });

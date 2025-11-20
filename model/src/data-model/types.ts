@@ -229,6 +229,7 @@ export type FormDefinition = {
   webhookHmacSharedKey?: string | undefined;
   fileUploadHmacSharedKey?: string | undefined;
   fullStartPage?: string | undefined;
+  returnTo?: boolean | undefined;
   serviceName?: string | undefined;
   confirmationSessionTimeout: number | undefined;
 };
