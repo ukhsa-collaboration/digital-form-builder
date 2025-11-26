@@ -52,4 +52,10 @@ function cleanNonProdForms() {
   }
 }
 
-cleanNonProdForms();
+// Run cleanup only when this file is executed directly (e.g. `node cleanNonProdForms.js`).
+// Prevents the function from running automatically when the module is imported in tests.
+if (require.main === module) {
+  cleanNonProdForms();
+}
+
+module.exports = { cleanNonProdForms, TARGET_DIR, PROD_FORMS };
