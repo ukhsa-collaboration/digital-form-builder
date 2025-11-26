@@ -1,9 +1,12 @@
 const fs = require("fs");
 const path = require("path");
 
-const TARGET_DIR = path.join(__dirname, "./");
+const TARGET_DIR = path.join(__dirname, "../runner/src/server/forms");
 const PROD_FORMS = [
   "ReportAnOutbreak.json",
+  "close-contact-feedback.json",
+  "close-contact-feedback-cca.json",
+  "close-contact-feedback-hpt.json",
   "feedback.json",
   "kls-enquiries.json",
   "kls-feedback.json",
