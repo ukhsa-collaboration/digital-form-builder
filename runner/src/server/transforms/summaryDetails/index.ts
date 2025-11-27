@@ -55,7 +55,7 @@ const summaryDetailsTransformations: SummaryDetailsTransformationMap = {
     const firstTransform = mergeRows(details, closeContactParams);
     return filterSections(firstTransform);
   },
-  "close-contact-form-apim": (details) => {
+  "close-contact-form": (details) => {
     const firstTransform = mergeRows(details, closeContactParams);
     return filterSections(firstTransform);
   },
@@ -87,7 +87,7 @@ const summaryDetailsTransformations: SummaryDetailsTransformationMap = {
     const firstTransform = mergeRows(details, closeContactParams);
     return filterSections(firstTransform);
   },
-  "close-contact-form-cca-apim": (details) => {
+  "close-contact-form-cca": (details) => {
     const firstTransform = mergeRows(details, closeContactParams);
     return filterSections(firstTransform);
   },
@@ -119,7 +119,7 @@ const summaryDetailsTransformations: SummaryDetailsTransformationMap = {
     const firstTransform = mergeRows(details, closeContactParams);
     return filterSections(firstTransform);
   },
-  "close-contact-form-hpt-apim": (details) => {
+  "close-contact-form-hpt": (details) => {
     const firstTransform = mergeRows(details, closeContactParams);
     return filterSections(firstTransform);
   },
@@ -132,5 +132,6 @@ const summaryDetailsTransformations: SummaryDetailsTransformationMap = {
 };
 
 module.exports = summaryDetailsTransformations;
+
 
 
