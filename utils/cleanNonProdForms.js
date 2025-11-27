@@ -5,8 +5,8 @@ const TARGET_DIR = path.join(__dirname, "../runner/src/server/forms");
 const PROD_FORMS = [
   "ReportAnOutbreak.json",
   "close-contact-feedback.json",
-  "close-contact-feedback-cca.json",
-  "close-contact-feedback-hpt.json",
+  "close-contact-form-cca.json",
+  "close-contact-form-hpt.json",
   "close-contact-form.json",
   "confirmation-timeout.json",
   "feedback.json",
