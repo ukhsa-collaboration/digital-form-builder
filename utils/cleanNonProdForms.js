@@ -7,6 +7,8 @@ const PROD_FORMS = [
   "close-contact-feedback.json",
   "close-contact-feedback-cca.json",
   "close-contact-feedback-hpt.json",
+  "close-contact-form.json",
+  "confirmation-timeout.json",
   "feedback.json",
   "kls-enquiries.json",
   "kls-feedback.json",

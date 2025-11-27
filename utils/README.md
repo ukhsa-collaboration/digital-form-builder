@@ -31,7 +31,7 @@ Ensure you have Node.js installed.
 From the project root, run:
 
 ```
-run clean:forms:nonprod
+npm run clean:forms:nonprod
 ```
 
 This will execute the cleanup script and remove non-production forms.
