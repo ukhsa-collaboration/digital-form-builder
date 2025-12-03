@@ -1,5 +1,6 @@
 {
   "startPage": "/start",
+  "returnTo": true,
   "skipSummary": true,
   "authentication": true,
   "toggle": true,
@@ -9,8 +10,7 @@
     "gtmId1": "GTM-WLKKLMQB"
   },
   "magicLinkConfig": "kls-magic-link",
-  "allowedDomains": ["ukhsa.gov.uk", "dhsc.gov.uk", "nhs.net", "nhs.uk", "gov.uk"],
-  "invalidDomainRedirect": "/kls-magic-link/your-email-is-not-on-our-approved-list",
+  "allowedDomains": ["ukhsa.gov.uk", "dhsc.gov.uk", "nhs.net", "nhs.uk", "gov.uk"],  "invalidDomainRedirect": "/kls-magic-link/your-email-is-not-on-our-approved-list",
   "serviceName": "UKHSA Knowledge and Library Services (KLS)",
   "name": "UKHSA Knowledge and Library Services (KLS)",
   "fullStartPage": "https://gov.uk/guidance/ukhsa-knowledge-and-library-services",
@@ -90,8 +90,7 @@
           "name": "SentAnotherEmail",
           "options": {},
           "type": "Para",
-          "content": "We’ve sent an email to {{ email }}. <p class=\"govuk-body\">Click the link in the email to continue to access the Knowledge and Library Services form.</p><p>NOTE: You will need to access the link in the same browser you’ve used to initiate this query.</p> <br><br> <h2 class=\"govuk-heading-m\">If you've not received an email</h2><p class=\"govuk-body\">Check your spam or junk folder.<br><br>If you’ve not received the email, you can resubmit the email in 5 minutes.</p>",
-          "schema": {}
+          "content": "We’ve sent an email to {{ email }}. <p class=\"govuk-body\">Click the link in the email to continue to access the Knowledge and Library Services form.</p><p>NOTE: You will need to access the link in the same browser you’ve used to initiate this query.</p> <br><br> <h2 class=\"govuk-heading-m\">If you've not received an email</h2><p class=\"govuk-body\">Check your spam or junk folder.<br><br>If you’ve not received the email, you can resubmit the email in 5 minutes.</p>",          "schema": {}
         },
         {
           "name": "alert",
@@ -124,12 +123,10 @@
           "content": "We only accept email addresses from organisations eligible to use our services (UKHSA, OHID, Local Authority Public Health teams and NHS England Public Health staff).<br>You can still contact the Knowledge and Library Services team via their email:<br><strong><a href=\"mailto:libraries@kls.ukhsa.gov.uk \">libraries@kls.ukhsa.gov.uk</a><strong>",
           "schema": {}
         }
-              ]
-
-            },
+      ]
+    },
 
     {
-
       "path": "/resubmit-email",
       "title": "We've sent you another email",
       "unauthenticated": true,
