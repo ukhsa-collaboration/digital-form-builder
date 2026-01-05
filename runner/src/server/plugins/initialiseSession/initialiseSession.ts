@@ -122,5 +122,19 @@ export const initialiseSession: Plugin<InitialiseSession> = {
         return h.response({ token }).code(201);
       },
     });
+
+    server.route({
+      method: "POST",
+      path: "/session/keep-alive",
+      options: {
+        auth: false,
+      },
+      handler: async (request, h) => {
+        // touching the session is enough to reset Redis TTL
+        request.yar?.touch?.();
+
+        return h.response().code(204);
+      },
+    });
   },
 };
