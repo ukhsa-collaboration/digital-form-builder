@@ -1,7 +1,7 @@
 {
   "metadata": {},
   "authentication": true,
-  "toggle": "false",
+  "toggle": "${magicLinkToggle}",
   "analytics": {
     "gtmId1": "GTM-MM6VPCXX"
   },
