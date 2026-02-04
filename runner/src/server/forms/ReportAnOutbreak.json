@@ -2132,7 +2132,7 @@
           "name": "StaffSymptomsNotTested",
           "type": "NumberField",
           "title": "How many other staff have symptoms of an acute respiratory infection, including chest infections?",
-          "hint": "Include those who are currently in hospital<br>If none or you do not know, enter",
+          "hint": "Include those who are currently in hospital<br>If none or you do not know, enter 0",
           "options": {
             "required": true,
             "summaryTitle": "Staff: with symptoms, but not tested",
@@ -2437,7 +2437,7 @@
       "components": [
         {
           "type": "Para",
-          "content": "You do not have to test staff for COVID-19. Staff that are eligible for COVID-19 treatments should test themselves at home, if they have symptoms."
+          "content": "You do not have to test staff."
         },
         {
           "type": "NumberField",
@@ -2461,8 +2461,8 @@
         {
           "type": "NumberField",
           "name": "StaffSymptomsNotTested",
-          "title": "How many staff have symptoms of an acute respiratory infection, but have not been tested for any infection?",
-          "hint": "Include those who are currently in hospital<br>If none, enter 0",
+          "title": "How many other staff have symptoms of an acute respiratory infection, including chest infections?",
+          "hint": "Do not include cases that have been confirmed by a test as COVID-19<br>Include those who are currently in hospital<br>If none or you do not know, enter 0",
           "options": {
             "required": true,
             "summaryTitle": "Staff: with symptoms, but not tested",
