@@ -510,7 +510,7 @@
           },
           "options": {
             "summaryTitle": "Service users: negative COVID-19 test results",
-            "required": true,
+            "required": false,
             "customValidationMessages": {
               "number.max": "The number of service users that have been tested for COVID-19 and had a negative test result must be between 0 and 999",
               "number.min": "The number of service users that have been tested for COVID-19 and had a negative test result must be between 0 and 999"
@@ -1405,8 +1405,8 @@
         {
           "name": "ServiceUsersConfirmedARI",
           "type": "NumberField",
-          "title": "How many service users have symptoms of an acute respiratory infection, but have not been tested for any infection?",
-          "hint": "Include those who are currently in hospital or on visits out<br>If none, enter 0",
+          "title": "How many service users have symptoms of an acute respiratory infection, including chest infections?",
+          "hint": "Include those who are currently in hospital or on visits out<br>If none or you do not know, enter 0",
           "schema": {
             "min": 0,
             "max": 999
@@ -1424,13 +1424,12 @@
           "name": "ServiceUsersTestedCovid",
           "type": "NumberField",
           "title": "How many service users have been tested for COVID-19 and had a negative test result?",
-          "hint": "If none, enter 0",
+          "hint": "If none or you do not know, enter 0",
           "schema": {
             "min": 0,
             "max": 999
           },
           "options": {
-            "required": false,
             "summaryTitle": "Service users: negative COVID-19 test results",
             "customValidationMessages": {
               "number.max": "The number of service users that have been tested for COVID-19 and had a negative test result must be between 0 and 999",
@@ -1442,7 +1441,7 @@
           "name": "ServiceUsersTestedFlu",
           "type": "NumberField",
           "title": "How many service users have been tested for flu and had a negative test result?",
-          "hint": "If none, enter 0",
+          "hint": "If none or you do not know, enter 0",
           "options": {
             "required": false,
             "summaryTitle": "Service users: negative flu test results",
@@ -1475,13 +1474,13 @@
       "components": [
         {
           "type": "Para",
-          "content": "You do not have to test staff for COVID-19. Staff that are eligible for COVID-19 treatments should test themselves at home, if they have symptoms."
+          "content": "You do not have to test your staff."
         },
         {
           "name": "StaffSymptomsNotTested",
           "type": "NumberField",
-          "title": "How many staff have symptoms of an acute respiratory infection, but have not been tested for any infection?",
-          "hint": "Include those who are currently in hospital<br>If none, enter 0",
+          "title": "How many staff have symptoms of an acute respiratory infection, including chest infections?",
+          "hint": "Include those who are currently in hospital<br>If none or you do not know, enter 0",
           "schema": {
             "min": 0,
             "max": 999
@@ -1499,14 +1498,13 @@
           "name": "StaffTestedCovid",
           "type": "NumberField",
           "title": "How many staff have been tested for COVID-19 and had a negative test result?",
-          "hint": "If none, enter 0",
+          "hint": "If none or you do not know, enter 0",
           "schema": {
             "min": 0,
             "max": 999
           },
           "options": {
             "summaryTitle": "Staff: negative COVID-19 test results",
-            "required": false,
             "customValidationMessages": {
               "number.max": "The number of staff that have been tested for COVID-19 and had a negative test result must be between 0 and 999",
               "number.min": "The number of staff that have been tested for COVID-19 and had a negative test result must be between 0 and 999"
@@ -1517,7 +1515,7 @@
           "name": "StaffTestedFlu",
           "type": "NumberField",
           "title": "How many staff have been tested for flu and had a negative test result?",
-          "hint": "If none, enter 0",
+          "hint": "If none or you do not know, enter 0",
           "options": {
             "required": false,
             "summaryTitle": "Staff: negative flu test results",
@@ -2385,7 +2383,7 @@
           "type": "NumberField",
           "name": "ServiceUsersCovidTestPositive",
           "title": "How many service users have COVID-19 confirmed by a positive test?",
-          "hint": "Include those who are currently in hospital or on visits out<br>If none, enter 0",
+          "hint": "Include those who are currently in hospital or on visits out<br>If none or you do not know, enter 0",
           "options": {
             "required": true,
             "summaryTitle": "Service users: confirmed positive COVID-19 test results",
@@ -2443,7 +2441,7 @@
           "type": "NumberField",
           "name": "StaffCovidTestPositive",
           "title": "How many staff have COVID-19 confirmed by a positive test?",
-          "hint": "Include those who are currently in hospital<br>If none, enter 0",
+          "hint": "Include those who are currently in hospital<br>If none or you do not know, enter 0",
           "options": {
             "required": true,
             "summaryTitle": "Staff: confirmed positive COVID-19 test results",
