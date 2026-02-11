@@ -1,6 +1,7 @@
 import { post, put } from "./httpService";
 import { HapiServer } from "../types";
 
+// TODO comment to remove MICOL
 const DEFAULT_OPTIONS = {
   headers: {
     accept: "application/json",
