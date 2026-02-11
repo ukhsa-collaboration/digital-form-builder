@@ -132,6 +132,3 @@ const summaryDetailsTransformations: SummaryDetailsTransformationMap = {
 };
 
 module.exports = summaryDetailsTransformations;
-
-
-
