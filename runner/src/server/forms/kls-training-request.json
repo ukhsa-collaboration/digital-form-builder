@@ -41,6 +41,7 @@
           "name": "ZpmVWP",
           "options": {
             "required": true,
+            "disableChangingFromSummary": true,
             "customValidationMessages": {
               "any.required": "Select the organisation you work for",
               "any.only": "Select the organisation you work for",
@@ -208,6 +209,7 @@
           "name": "hMxELK",
           "options": {
             "required": true,
+            "disableChangingFromSummary": true,
             "customValidationMessages": {
               "any.required": "Select the topics you would like to cover",
               "any.only": "Select the topics you would like to cover",
