@@ -41,7 +41,6 @@
           "name": "ZpmVWP",
           "options": {
             "required": true,
-            "disableChangingFromSummary": true,
             "customValidationMessages": {
               "any.required": "Select the organisation you work for",
               "any.only": "Select the organisation you work for",
