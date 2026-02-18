@@ -3533,7 +3533,7 @@
         },
         {
           "text": "South East",
-          "value": "South East"
+          "value": "South East HPT"
         },
         {
           "text": "South West",
@@ -3703,6 +3703,20 @@
               "type": "Value",
               "value": "East Midlands HPT",
               "display": "East Midlands"
+            }
+          },
+          {
+            "coordinator": "or",
+            "field": {
+              "name": "HPT",
+              "type": "RadiosField",
+              "display": "region"
+            },
+            "operator": "is",
+            "value": {
+              "type": "Value",
+              "value": "South East HPT",
+              "display": "South East"
             }
           }
         ]
