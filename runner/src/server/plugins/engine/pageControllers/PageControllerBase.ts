@@ -568,17 +568,31 @@ export class PageControllerBase {
       //Calculate our relevantState, which will filter out previously input answers that are no longer relevant to this user journey
       let relevantState = this.getConditionEvaluationContext(this.model, state);
 
-      //Filter our components based on their conditions using our calculated state
       viewModel.components = viewModel.components.filter((component) => {
         if (
           (component.model.content || component.type === "Details") &&
           component.model.condition
         ) {
+          // Filter our 'content' and 'Details' components based on their conditions using our calculated state
           const condition = this.model.conditions[component.model.condition];
           return condition.fn(relevantState);
+        } else if (component.model.condition) {
+          /* Filter components based on global form state
+           * To allow conditional fields based on state from current page and previous pages
+           */
+
+          const condition = this.model.conditions[component.model.condition];
+
+          if (!condition) {
+            return false;
+          }
+
+          return condition.fn(state);
         }
+
         return true;
       });
+
       /**
        * For conditional reveal components (which we no longer support until GDS resolves the related accessibility issues {@link https://github.com/alphagov/govuk-frontend/issues/1991}
        */

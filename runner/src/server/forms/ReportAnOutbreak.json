@@ -2780,7 +2780,8 @@
             "customValidationMessages": {
               "string.empty": "Enter your setting name",
               "string.base": "Enter your setting name"
-            }
+            },
+            "condition": "ComponentLevelTestCondition"
           },
           "type": "TextField",
           "nameHasError": false,
@@ -5068,6 +5069,28 @@
               "type": "Value",
               "value": "false",
               "display": "false"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "displayName": "ComponentLevelTestCondition",
+      "name": "ComponentLevelTestCondition",
+      "value": {
+        "name": "ComponentLevelTestCondition",
+        "conditions": [
+          {
+            "field": {
+              "name": "OtherAdultSocialCare",
+              "type": "RadiosField",
+              "display": "What's this for?"
+            },
+            "operator": "is",
+            "value": {
+              "type": "Value",
+              "value": "test",
+              "display": "test"
             }
           }
         ]
