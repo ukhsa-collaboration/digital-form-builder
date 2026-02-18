@@ -3174,7 +3174,54 @@
           "condition": "PositiveARI:No"
         },
         {
-          "path": "/which-flu-test-kit"
+          "path": "/which-test-kit"
+        }
+      ]
+    },
+    {
+      "path": "/which-test-kit",
+      "title": "Did you use a combined COVID-19 and flu test kit supplied by UKHSA?",
+      "sectionForEndSummaryPages": "InfectionsInYourSetting",
+      "components": [
+        {
+          "type": "Para",
+          "content": "<p class='govuk-hint'>This is a 2SAN combo rapid test supplied for use in your setting <img src='' alt='2SAN combo rapid test placeholder' /></p>"
+        },
+        {
+          "name": "TestKitCombinedCovidAndFlu",
+          "options": {
+            "summaryTitle": "Combined COVID-19 and flu test kits used",
+            "hideTitle": true,
+            "conditionallyRevealedComponents": {
+              "TestKitsUsed": {
+                "type": "NumberField",
+                "name": "TestKitsUsed",
+                "title": "Enter how many",
+                "options": {
+                  "customValidationMessages": {
+                    "number.base": "Enter how many test kits you used"
+                  }
+                },
+                "schema": {}
+              }
+            },
+            "customValidationMessages": {
+              "any.required": "Select if a combined COVID-19 and flu test kit supplied by UKHSA was used"
+            }
+          },
+          "type": "RadiosField",
+          "list": "TestKitsUsed",
+          "nameHasError": false,
+          "title": "hidden",
+          "schema": {},
+          "values": {
+            "type": "listRef"
+          }
+        }
+      ],
+      "next": [
+        {
+          "path": "/single-case-of-flu"
         }
       ]
     }
@@ -3226,6 +3273,25 @@
         {
           "text": "Not sure",
           "value": "Not sure"
+        }
+      ]
+    },
+    {
+      "title": "test-kits-used",
+      "name": "TestKitsUsed",
+      "type": "string",
+      "items": [
+        {
+          "text": "Yes",
+          "value": "TestKitsUsed"
+        },
+        {
+          "text": "No",
+          "value": "No"
+        },
+        {
+          "text": "I do not know",
+          "value": "I do not know"
         }
       ]
     },
