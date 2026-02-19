@@ -383,14 +383,14 @@
           "options": {
             "summaryTitle": "Number of cases",
             "customValidationMessages": {
-              "any.required": "Select the number of acute respiratory infection cases you are reporting"
+              "any.required": "Select how many cases you have"
             },
             "hideTitle": true
           },
           "type": "RadiosField",
           "list": "OneOrMoreBoolean",
           "nameHasError": false,
-          "title": "How many cases of an acute respiratory infection are you reporting?",
+          "title": "hidden",
           "values": {
             "type": "listRef"
           }
@@ -3140,7 +3140,7 @@
     },
     {
       "path": "/positive-flu",
-      "title": "Are you reporting a confirmed case of the flu?",
+      "title": "Are you reporting a confirmed case of flu?",
       "sectionForExitJourneySummaryPages": "AcuteInfections",
       "sectionForMultiSummaryPages": "InfectionsInYourSetting",
       "sectionForEndSummaryPages": "InfectionsInYourSetting",
@@ -3154,14 +3154,14 @@
           "options": {
             "summaryTitle": "Positive test result",
             "customValidationMessages": {
-              "any.required": "Select yes if you have any positive test results for an acute respiratory infection"
+              "any.required": "Select yes if you have a confirmed case of flu"
             },
             "hideTitle": true
           },
           "type": "RadiosField",
           "list": "YesNo",
           "nameHasError": false,
-          "title": "Are you reporting a confirmed case of the flu?",
+          "title": "hidden",
           "schema": {},
           "values": {
             "type": "listRef"
@@ -3184,8 +3184,8 @@
       "sectionForEndSummaryPages": "InfectionsInYourSetting",
       "components": [
         {
-          "type": "Para",
-          "content": "<p class='govuk-hint'>This is a 2SAN combo rapid test supplied for use in your setting <img src='' alt='2SAN combo rapid test placeholder' /></p>"
+          "type": "Html",
+          "content": "<p class='govuk-hint'>This is a 2SAN combo rapid test supplied for use in your setting <img src='/assets/rao-2san-covid-flu-kit.png' alt='2SAN combo rapid test kit' width='224' height='461' /></p>"
         },
         {
           "name": "TestKitCombinedCovidAndFlu",
@@ -3206,7 +3206,7 @@
               }
             },
             "customValidationMessages": {
-              "any.required": "Select if a combined COVID-19 and flu test kit supplied by UKHSA was used"
+              "any.required": "Select if you have used a combined COVID-19 and flu test kit supplied by UKHSA"
             }
           },
           "type": "RadiosField",
