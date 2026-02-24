@@ -515,21 +515,21 @@
       "next": [
         {
           "condition": "ARIServiceOrStaff:ServiceUsers",
-          "path": "/service-users-ari-confirmed"
+          "path": "/service-users-ari-confirmed-flu"
         },
         {
           "condition": "ARIServiceOrStaff:Staff",
-          "path": "/staff-ari-confirmed"
+          "path": "/staff-ari-confirmed-flu"
         },
         {
           "condition": "ARIServiceOrStaff:Both",
-          "path": "/service-users-ari-confirmed"
+          "path": "/service-users-ari-confirmed-flu"
         }
       ]
     },
     {
-      "path": "/service-users-ari-confirmed",
-      "title": "Service users: number of other cases",
+      "path": "/service-users-ari-confirmed-flu",
+      "title": "Service users: number of cases",
       "sectionForEndSummaryPages": "InfectionsInYourSetting",
       "disableSingleComponentAsHeading": true,
       "components": [
@@ -539,7 +539,7 @@
         },
         {
           "type": "Para",
-          "content": "<h2>Total number</h2>"
+          "content": "<h2 class='govuk-heading-m'>Total number</h2>"
         },
         {
           "name": "ServiceUsersSymptoms",
@@ -581,15 +581,11 @@
         },
         {
           "type": "Para",
-          "content": "<h2>Flu</h2>",
-          "options": {
-            "condition": "WhichARI:FLU"
-          }
+          "content": "<h2 class='govuk-heading-m'>Flu</h2>"
         },
         {
           "name": "ServiceUsersFluTestPositive",
           "options": {
-            "condition": "WhichARI:FLU",
             "summaryTitle": "Service users: confirmed positive flu test results",
             "customValidationMessages": {
               "number.base": "Enter the number of service users that have flu confirmed by a positive swab test",
@@ -613,7 +609,6 @@
           "title": "How many service users have been tested for flu and had a negative test result?",
           "hint": "If a service user has both positive and negative flu strain results, do not include the negative result here<br>If none or you do not know, enter 0",
           "options": {
-            "condition": "WhichARI:FLU",
             "summaryTitle": "Service users: negative flu test results",
             "customValidationMessages": {
               "number.base": "Enter the number of service users that have been tested for flu and had a negative test result",
@@ -629,10 +624,7 @@
         },
         {
           "type": "Para",
-          "content": "<h2>COVID-19</h2>",
-          "options": {
-            "condition": "WhichARI:FLU"
-          }
+          "content": "<h2 class='govuk-heading-m'>COVID-19</h2>"
         },
         {
           "name": "ServiceUsersCovidTestNegative",
@@ -644,7 +636,6 @@
             "max": 999
           },
           "options": {
-            "condition": "WhichARI:FLU",
             "summaryTitle": "Service users: negative COVID-19 test results",
             "required": true,
             "customValidationMessages": {
@@ -658,7 +649,7 @@
       "next": [
         {
           "condition": "ARIServiceOrStaff:Both",
-          "path": "/staff-ari-confirmed"
+          "path": "/staff-ari-confirmed-flu"
         },
         {
           "path": "/severity-of-illness"
@@ -666,8 +657,8 @@
       ]
     },
     {
-      "path": "/staff-ari-confirmed",
-      "title": "Staff: number of other cases",
+      "path": "/staff-ari-confirmed-flu",
+      "title": "Staff: number of cases",
       "sectionForEndSummaryPages": "InfectionsInYourSetting",
       "components": [
         {
@@ -676,7 +667,7 @@
         },
         {
           "type": "Para",
-          "content": "<h2>Total number</h2>"
+          "content": "<h2 class='govuk-heading-m'>Total number</h2>"
         },
         {
           "name": "StaffSymptoms",
@@ -718,15 +709,11 @@
         },
         {
           "type": "Para",
-          "content": "<h2>Flu</h2>",
-          "options": {
-            "condition": "WhichARI:FLU"
-          }
+          "content": "<h2 class='govuk-heading-m'>Flu</h2>"
         },
         {
           "name": "StaffFluTestPositive",
           "options": {
-            "condition": "WhichARI:FLU",
             "summaryTitle": "Staff: confirmed positive flu test results",
             "customValidationMessages": {
               "number.base": "Enter the number of staff that have flu confirmed by a positive swab test",
@@ -750,7 +737,6 @@
           "title": "How many staff have had a negative flu test result?",
           "hint": "If staff have both positive and negative flu strain results, do not include the negative result here<br>If none or you do not know, enter 0",
           "options": {
-            "condition": "WhichARI:FLU",
             "summaryTitle": "Staff: negative flu test results",
             "customValidationMessages": {
               "number.base": "Enter the number of staff that have been tested for flu and had a negative test result",
@@ -766,10 +752,7 @@
         },
         {
           "type": "Para",
-          "content": "<h2>COVID-19</h2>",
-          "options": {
-            "condition": "WhichARI:FLU"
-          }
+          "content": "<h2 class='govuk-heading-m'>COVID-19</h2>"
         },
         {
           "name": "StaffCovidTestNegative",
@@ -781,7 +764,6 @@
             "max": 999
           },
           "options": {
-            "condition": "WhichARI:FLU",
             "summaryTitle": "Staff: negative COVID-19 test results",
             "required": true,
             "customValidationMessages": {
@@ -3204,10 +3186,10 @@
           {
             "field": {
               "name": "WhichARI",
-              "type": "RadiosField",
+              "type": "CheckboxesField",
               "display": "Which acute respiratory infection do you have a positive test result for?"
             },
-            "operator": "is",
+            "operator": "contains",
             "value": {
               "type": "Value",
               "value": "Flu",
@@ -3226,10 +3208,10 @@
           {
             "field": {
               "name": "WhichARI",
-              "type": "RadiosField",
+              "type": "CheckboxesField",
               "display": "Which acute respiratory infection do you have a positive test result for?"
             },
-            "operator": "is",
+            "operator": "contains",
             "value": {
               "type": "Value",
               "value": "COVID-19",
@@ -3248,10 +3230,10 @@
           {
             "field": {
               "name": "WhichARI",
-              "type": "RadiosField",
+              "type": "CheckboxesField",
               "display": "Which acute respiratory infection do you have a positive test result for?"
             },
-            "operator": "is",
+            "operator": "contains",
             "value": {
               "type": "Value",
               "value": "Any other acute respiratory infection",
@@ -3666,7 +3648,7 @@
       }
     }
   ],
-  "version": 3,
+  "version": 2,
   "skipSummary": false,
   "name": "Report an outbreak",
   "feedback": {
