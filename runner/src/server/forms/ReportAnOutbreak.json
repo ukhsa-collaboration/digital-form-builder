@@ -3688,5 +3688,6 @@
       }
     }
   },
-  "jwtKey": "${jwtKey}"
+  "jwtKey": "${jwtKey}",
+  "enableConditionalFieldSupport": true
 }

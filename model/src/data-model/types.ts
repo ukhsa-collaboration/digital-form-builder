@@ -232,4 +232,5 @@ export type FormDefinition = {
   serviceName?: string | undefined;
   confirmationSessionTimeout: number | undefined;
   returnTo?: boolean | undefined;
+  enableConditionalFieldSupport?: boolean | undefined;
 };
