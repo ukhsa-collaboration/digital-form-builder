@@ -529,7 +529,7 @@
     },
     {
       "path": "/service-users-ari-confirmed",
-      "title": "Service users: number of other cases",
+      "title": "Service users: number of cases",
       "sectionForEndSummaryPages": "InfectionsInYourSetting",
       "disableSingleComponentAsHeading": true,
       "components": [
@@ -539,7 +539,7 @@
         },
         {
           "type": "Para",
-          "content": "<h2>Total number</h2>"
+          "content": "<h2 class='govuk-heading-m'>Total number</h2>"
         },
         {
           "name": "ServiceUsersSymptoms",
@@ -570,6 +570,7 @@
             "max": 999
           },
           "options": {
+            "condition": "AnyTests:Yes",
             "summaryTitle": "Service users: tested for acute respiratory infection",
             "customValidationMessages": {
               "number.base": "Enter the number of service users that have been tested for any acute respiratory infection",
@@ -581,7 +582,7 @@
         },
         {
           "type": "Para",
-          "content": "<h2>Flu</h2>",
+          "content": "<h2 class='govuk-heading-m'>Flu</h2>",
           "options": {
             "condition": "WhichARI:FLU"
           }
@@ -629,7 +630,7 @@
         },
         {
           "type": "Para",
-          "content": "<h2>COVID-19</h2>",
+          "content": "<h2 class='govuk-heading-m'>COVID-19</h2>",
           "options": {
             "condition": "WhichARI:FLU"
           }
@@ -667,7 +668,7 @@
     },
     {
       "path": "/staff-ari-confirmed",
-      "title": "Staff: number of other cases",
+      "title": "Staff: number of cases",
       "sectionForEndSummaryPages": "InfectionsInYourSetting",
       "components": [
         {
@@ -676,7 +677,7 @@
         },
         {
           "type": "Para",
-          "content": "<h2>Total number</h2>"
+          "content": "<h2 class='govuk-heading-m'>Total number</h2>"
         },
         {
           "name": "StaffSymptoms",
@@ -707,6 +708,7 @@
             "max": 999
           },
           "options": {
+            "condition": "AnyTests:Yes",
             "summaryTitle": "Staff: tested for acute respiratory infection",
             "customValidationMessages": {
               "number.base": "Enter the number of staff that have been tested for any acute respiratory infection",
@@ -718,7 +720,7 @@
         },
         {
           "type": "Para",
-          "content": "<h2>Flu</h2>",
+          "content": "<h2 class='govuk-heading-m'>Flu</h2>",
           "options": {
             "condition": "WhichARI:FLU"
           }
@@ -766,7 +768,7 @@
         },
         {
           "type": "Para",
-          "content": "<h2>COVID-19</h2>",
+          "content": "<h2 class='govuk-heading-m'>COVID-19</h2>",
           "options": {
             "condition": "WhichARI:FLU"
           }
@@ -3204,10 +3206,10 @@
           {
             "field": {
               "name": "WhichARI",
-              "type": "RadiosField",
+              "type": "CheckboxesField",
               "display": "Which acute respiratory infection do you have a positive test result for?"
             },
-            "operator": "is",
+            "operator": "contains",
             "value": {
               "type": "Value",
               "value": "Flu",
@@ -3226,10 +3228,10 @@
           {
             "field": {
               "name": "WhichARI",
-              "type": "RadiosField",
+              "type": "CheckboxesField",
               "display": "Which acute respiratory infection do you have a positive test result for?"
             },
-            "operator": "is",
+            "operator": "contains",
             "value": {
               "type": "Value",
               "value": "COVID-19",
@@ -3248,10 +3250,10 @@
           {
             "field": {
               "name": "WhichARI",
-              "type": "RadiosField",
+              "type": "CheckboxesField",
               "display": "Which acute respiratory infection do you have a positive test result for?"
             },
-            "operator": "is",
+            "operator": "contains",
             "value": {
               "type": "Value",
               "value": "Any other acute respiratory infection",
@@ -3666,7 +3668,7 @@
       }
     }
   ],
-  "version": 3,
+  "version": 2,
   "skipSummary": false,
   "name": "Report an outbreak",
   "feedback": {
