@@ -173,7 +173,7 @@
           "type": "RadiosField",
           "list": "OneOrMoreBoolean",
           "nameHasError": false,
-          "title": "hidden",
+          "title": " ",
           "values": {
             "type": "listRef"
           }
@@ -1487,7 +1487,7 @@
           "type": "RadiosField",
           "list": "YesNo",
           "nameHasError": false,
-          "title": "hidden",
+          "title": " ",
           "schema": {},
           "values": {
             "type": "listRef"
@@ -1538,7 +1538,7 @@
           "type": "RadiosField",
           "list": "TestKitsUsed",
           "nameHasError": false,
-          "title": "hidden",
+          "title": " ",
           "schema": {},
           "values": {
             "type": "listRef"
@@ -1578,7 +1578,7 @@
           "type": "RadiosField",
           "list": "YesNo",
           "nameHasError": false,
-          "title": "hidden",
+          "title": " ",
           "schema": {},
           "values": {
             "type": "listRef"
@@ -1618,7 +1618,7 @@
           },
           "type": "CheckboxesField",
           "nameHasError": false,
-          "title": "hidden ",
+          "title": "  ",
           "list": "InfectionTypes",
           "values": {
             "type": "listRef"
