@@ -1613,7 +1613,8 @@
             "customValidationMessages": {
               "any.required": "Select which acute respiratory infections you have a positive test result for"
             },
-            "hideTitle": true
+            "hideTitle": true,
+            "divider": true
           },
           "type": "CheckboxesField",
           "nameHasError": false,
@@ -1781,6 +1782,10 @@
           "value": "Any other acute respiratory infection",
           "checkpointDisplayValue": "Other acute respiratory infection (not COVID-19 or flu)",
           "description": "including viruses such as respiratory syncytial virus (RSV), adenovirus, human metapneumovirus (hMPV), parainfluenza and rhinovirus"
+        },
+        {
+          "text": "_placeholder_for_or_",
+          "value": "_placeholder_for_or_"
         },
         {
           "text": "None, all test results were negative",
