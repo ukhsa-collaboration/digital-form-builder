@@ -166,7 +166,7 @@
           "options": {
             "summaryTitle": "Number of cases",
             "customValidationMessages": {
-              "any.required": "Select how many cases you have"
+              "any.required": "Select how many cases you are reporting"
             },
             "hideTitle": true
           },
@@ -201,38 +201,6 @@
       },
       "components": []
     },
-
-    {
-      "path": "/ari-infection-type",
-      "title": "What infection are you reporting?",
-      "sectionForMultiSummaryPages": "OtherInYourSetting",
-      "sectionForEndSummaryPages": "InfectionsInYourSetting",
-      "components": [
-        {
-          "name": "ARIInfectionType",
-          "options": {
-            "summaryTitle": "Other acute respiratory infection: infection type",
-            "customValidationMessages": {
-              "any.required": "Select the infection you are reporting"
-            }
-          },
-          "type": "CheckboxesField",
-          "nameHasError": false,
-          "title": "What infection are you reporting?",
-          "hint": "You can select more than one option",
-          "list": "ARIInfectionType",
-          "values": {
-            "type": "listRef"
-          }
-        }
-      ],
-      "next": [
-        {
-          "path": "/ari-confirmed-cases-setting"
-        }
-      ]
-    },
-
     {
       "path": "/single-case-of-flu",
       "title": "Who has the case of flu?",
@@ -1514,16 +1482,17 @@
           "content": "<p class='govuk-hint'>This is a 2SAN combo rapid test supplied for use in your setting <img src='/assets/rao-2san-covid-flu-kit.png' alt='2SAN branded packaging for combined COVID-19 and flu test kit' width='224' height='461' /></p>"
         },
         {
-          "name": "TestKitCombinedCovidAndFlu",
+          "name": "TestKitsUsed",
           "options": {
-            "summaryTitle": "Combined COVID-19 and flu test kits used",
+            "summaryTitle": "Used UKHSA-supplied test",
             "hideTitle": true,
             "conditionallyRevealedComponents": {
               "TestKitsUsed": {
                 "type": "NumberField",
-                "name": "TestKitsUsed",
+                "name": "TestKitsUsedNo",
                 "title": "Enter how many",
                 "options": {
+                  "summaryTitle": "Number of test kits",
                   "customValidationMessages": {
                     "number.base": "Enter how many test kits you used"
                   }
@@ -1569,7 +1538,7 @@
         {
           "name": "AnyTests",
           "options": {
-            "summaryTitle": "Any test results",
+            "summaryTitle": "Confirmed test result",
             "customValidationMessages": {
               "any.required": "Select yes if you have any test results for an acute respiratory infection"
             },
@@ -1611,7 +1580,7 @@
           "options": {
             "summaryTitle": "Infection",
             "customValidationMessages": {
-              "any.required": "Select which acute respiratory infections you have a positive test result for"
+              "any.required": "Select what you have test results for"
             },
             "hideTitle": true,
             "divider": true
