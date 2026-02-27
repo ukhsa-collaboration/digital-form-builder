@@ -1554,7 +1554,7 @@
         {
           "name": "AnyTests",
           "options": {
-            "summaryTitle": "Any test result",
+            "summaryTitle": "Any test results",
             "customValidationMessages": {
               "any.required": "Select yes if you have any test results for an acute respiratory infection"
             },
@@ -2171,7 +2171,7 @@
         {
           "name": "StaffFluTestNegative",
           "type": "NumberField",
-          "title": "How many staff have had a negative Flu test result?",
+          "title": "How many staff have had a negative flu test result?",
           "hint": "If none or you do not know, enter 0",
           "schema": {
             "min": 0,
