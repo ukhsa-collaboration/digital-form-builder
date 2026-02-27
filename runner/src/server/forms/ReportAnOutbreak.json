@@ -602,7 +602,7 @@
           "name": "ServiceUsersCovidTestNegative",
           "type": "NumberField",
           "title": "How many service users have been tested for COVID-19 and had a negative test result?",
-          "hint": "If a service user has a positive flu result and a negative COVID-19 result, do not include the negativbe result here`<br>If none or you do not know, enter 0",
+          "hint": "If a service user has a positive flu result and a negative COVID-19 result, do not include the negative result here<br>If none or you do not know, enter 0",
           "schema": {
             "min": 0,
             "max": 999
