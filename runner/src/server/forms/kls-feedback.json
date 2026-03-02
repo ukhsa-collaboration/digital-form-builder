@@ -1,12 +1,12 @@
 {
   "metadata": {},
   "startPage": "/start",
-  "name": "XGOV SOW TEST PAGE EDIT 8",
+  "name": "XGOV SOW TEST PAGE EDIT 9",
   "skipSummary": true,
   "pages": [
     {
       "path": "/start",
-      "title": "XGOV SOW TEST PAGE EDIT 8",
+      "title": "XGOV SOW TEST PAGE EDIT 9",
       "components": [
         {
           "name": "Feedback",
@@ -16,8 +16,8 @@
             }
           },
           "type": "CheckboxesField",
-          "title": "EDIT 8",
-          "hint": "EDIT 8",
+          "title": "EDIT 9",
+          "hint": "EDIT 9",
           "list": "FeedbackOptions"
         },
         {
