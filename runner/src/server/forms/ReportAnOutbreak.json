@@ -541,7 +541,7 @@
           "name": "ServiceUsersSymptoms",
           "type": "NumberField",
           "title": "How many service users have symptoms of an acute respiratory infection, including chest infections?",
-          "hint": "Include all tested and untested service users.<br>If none or you do not know, enter 0",
+          "hint": "Include all tested and untested service users<br>If none or you do not know, enter 0",
           "schema": {
             "min": 0,
             "max": 999
@@ -1965,7 +1965,7 @@
           "name": "ServiceUsersSymptoms",
           "type": "NumberField",
           "title": "How many service users have symptoms of an acute respiratory infection, including chest infections?",
-          "hint": "Include all tested and untested service users.<br>If none or you do not know, enter 0",
+          "hint": "Include all tested and untested service users<br>If none or you do not know, enter 0",
           "schema": {
             "min": 0,
             "max": 999
@@ -2220,7 +2220,7 @@
           "name": "ServiceUsersSymptoms",
           "type": "NumberField",
           "title": "How many service users have symptoms of an acute respiratory infection, including chest infections?",
-          "hint": "Include all tested and untested service users.<br>If none or you do not know, enter 0",
+          "hint": "Include all tested and untested service users<br>If none or you do not know, enter 0",
           "schema": {
             "min": 0,
             "max": 999
@@ -2256,7 +2256,7 @@
         },
         {
           "type": "Para",
-          "content": "<h2 class='govuk-heading-m'>Other Acute respiratory infections</h2>"
+          "content": "<h2 class='govuk-heading-m'>Other acute respiratory infections</h2>"
         },
         {
           "name": "ServiceUsersOtherTestPositive",
@@ -2389,7 +2389,7 @@
         },
         {
           "type": "Para",
-          "content": "<h2 class='govuk-heading-m'>Other Acute respiratory infections</h2>"
+          "content": "<h2 class='govuk-heading-m'>Other acute respiratory infections</h2>"
         },
         {
           "name": "StaffOtherTestPositive",
