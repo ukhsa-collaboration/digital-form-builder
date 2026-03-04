@@ -2075,7 +2075,7 @@
             "max": 999
           },
           "options": {
-            "summaryTitle": "Service users: negative Flu test",
+            "summaryTitle": "Service users: negative flu test",
             "required": true,
             "customValidationMessages": {
               "number.base": "Enter the number of service users that have been tested for flu and had a negative test result",
@@ -2205,7 +2205,7 @@
             "max": 999
           },
           "options": {
-            "summaryTitle": "Staff: negative Flu test",
+            "summaryTitle": "Staff: negative flu test",
             "required": true,
             "customValidationMessages": {
               "number.base": "Enter the number of staff that have been tested for flu and had a negative test result",
@@ -2311,7 +2311,7 @@
             "max": 999
           },
           "options": {
-            "summaryTitle": "Service users: negative Flu test",
+            "summaryTitle": "Service users: negative flu test",
             "required": true,
             "customValidationMessages": {
               "number.base": "Enter the number of service users that have been tested for flu and had a negative test result",
@@ -2437,14 +2437,14 @@
         {
           "name": "StaffFluTestNegative",
           "type": "NumberField",
-          "title": "How many staff have had a negative Flu test result?",
+          "title": "How many staff have had a negative flu test result?",
           "hint": "If none or you do not know, enter 0",
           "schema": {
             "min": 0,
             "max": 999
           },
           "options": {
-            "summaryTitle": "Staff: negative Flu test",
+            "summaryTitle": "Staff: negative flu test",
             "required": true,
             "customValidationMessages": {
               "number.base": "Enter the number of staff that have been tested for flu and had a negative test result",
@@ -2710,14 +2710,14 @@
         {
           "name": "StaffFluTestNegative",
           "type": "NumberField",
-          "title": "How many staff have had a negative Flu test result?",
+          "title": "How many staff have had a negative flu test result?",
           "hint": "If a staff have both a positive flu strain results, do not include the negative result here<br>If none or you do not know, enter 0",
           "schema": {
             "min": 0,
             "max": 999
           },
           "options": {
-            "summaryTitle": "Staff: negative Flu test",
+            "summaryTitle": "Staff: negative flu test",
             "required": true,
             "customValidationMessages": {
               "number.base": "Enter the number of staff that have been tested for flu and had a negative test result",
@@ -3011,14 +3011,14 @@
         {
           "name": "StaffFluTestNegative",
           "type": "NumberField",
-          "title": "How many staff have had a negative Flu test result?",
+          "title": "How many staff have had a negative flu test result?",
           "hint": "If a staff have both a positive flu strain results, do not include the negative result here<br>If none or you do not know, enter 0",
           "schema": {
             "min": 0,
             "max": 999
           },
           "options": {
-            "summaryTitle": "Staff: negative Flu test",
+            "summaryTitle": "Staff: negative flu test",
             "required": true,
             "customValidationMessages": {
               "number.base": "Enter the number of staff that have been tested for flu and had a negative test result",
