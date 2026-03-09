@@ -584,7 +584,7 @@
             "max": 999
           },
           "options": {
-            "summaryTitle": "Service users: with symptoms",
+            "summaryTitle": "Service users: total number with symptoms",
             "customValidationMessages": {
               "number.base": "Enter the number of service users that have symptoms of an acute respiratory infection",
               "number.max": "The number of service users that have symptoms of an acute respiratory infection must be between 0 and 999",
@@ -603,7 +603,7 @@
             "max": 999
           },
           "options": {
-            "summaryTitle": "Service users: tested for acute respiratory infection",
+            "summaryTitle": "Service users: tested for ARI",
             "customValidationMessages": {
               "number.base": "Enter the number of service users that have been tested for any acute respiratory infection",
               "number.max": "The number of service users that have been tested for any acute respiratory infection must be between 0 and 999",
@@ -619,7 +619,7 @@
         {
           "name": "ServiceUsersFluTestPositive",
           "options": {
-            "summaryTitle": "Service users: confirmed positive flu test results",
+            "summaryTitle": "Service users: positive flu test",
             "customValidationMessages": {
               "number.base": "Enter the number of service users that have flu confirmed by a positive swab test",
               "number.max": "The number of service users that have flu confirmed by a positive swab test must be between 0 and 999",
@@ -642,7 +642,7 @@
           "title": "How many service users have had a negative flu test result?",
           "hint": "If a service user has both positive and negative flu strain results, do not include the negative result here<br>If none or you do not know, enter 0",
           "options": {
-            "summaryTitle": "Service users: negative flu test results",
+            "summaryTitle": "Service users: negative flu test",
             "customValidationMessages": {
               "number.base": "Enter the number of service users that have been tested for flu and had a negative test result",
               "number.max": "The number of service users that have been tested for flu and had a negative test result must be between 0 and 999",
@@ -709,7 +709,7 @@
           "hint": "Include all tested and untested staff<br>If none or you do not know, enter 0",
           "options": {
             "required": true,
-            "summaryTitle": "Staff: with symptoms",
+            "summaryTitle": "Staff: total number with symptoms",
             "customValidationMessages": {
               "number.base": "Enter the number of staff that have symptoms of an acute respiratory infection",
               "number.max": "The number of staff that have symptoms of an acute respiratory infection must be between 0 and 999",
@@ -731,7 +731,7 @@
             "max": 999
           },
           "options": {
-            "summaryTitle": "Staff: tested for acute respiratory infection",
+            "summaryTitle": "Staff: tested for ARI",
             "customValidationMessages": {
               "number.base": "Enter the number of staff that have been tested for any acute respiratory infection",
               "number.max": "The number of staff that have been tested for any acute respiratory infection must be between 0 and 999",
@@ -747,7 +747,7 @@
         {
           "name": "StaffFluTestPositive",
           "options": {
-            "summaryTitle": "Staff: confirmed positive flu test results",
+            "summaryTitle": "Staff: positive flu test",
             "customValidationMessages": {
               "number.base": "Enter the number of staff that have flu confirmed by a positive swab test",
               "number.max": "The number of staff that have flu confirmed by a positive swab test must be between 0 and 999",
@@ -770,7 +770,7 @@
           "title": "How many staff have had a negative flu test result?",
           "hint": "If staff have both positive and negative flu strain results, do not include the negative result here<br>If none or you do not know, enter 0",
           "options": {
-            "summaryTitle": "Staff: negative flu test results",
+            "summaryTitle": "Staff: negative flu test",
             "customValidationMessages": {
               "number.base": "Enter the number of staff that have been tested for flu and had a negative test result",
               "number.max": "The number of staff that have had a negative flu test result must be between 0 and 999",
@@ -797,7 +797,7 @@
             "max": 999
           },
           "options": {
-            "summaryTitle": "Staff: negative COVID-19 test results",
+            "summaryTitle": "Staff: negative COVID-19 test",
             "required": true,
             "customValidationMessages": {
               "number.base": "Enter the number of staff that have been tested for COVID-19 and had a negative test result",
@@ -1507,7 +1507,7 @@
         {
           "name": "PositiveARI",
           "options": {
-            "summaryTitle": "Positive test result",
+            "summaryTitle": "Confirmed test result",
             "customValidationMessages": {
               "any.required": "Select yes if you have a confirmed case of flu"
             },
@@ -1545,7 +1545,7 @@
         {
           "name": "TestKitsUsed",
           "options": {
-            "summaryTitle": "Used UKHSA-supplied test",
+            "summaryTitle": "Used UKHSA-supplied test kit",
             "hideTitle": true,
             "conditionallyRevealedComponents": {
               "TestKitsUsed": {
@@ -1553,7 +1553,7 @@
                 "name": "TestKitsUsedNo",
                 "title": "Enter how many",
                 "options": {
-                  "summaryTitle": "Number of test kits",
+                  "summaryTitle": "Number of test kits used",
                   "customValidationMessages": {
                     "number.base": "Enter how many test kits you used"
                   }
@@ -1639,7 +1639,7 @@
         {
           "name": "WhichARI",
           "options": {
-            "summaryTitle": "Infection",
+            "summaryTitle": "Positive test results",
             "customValidationMessages": {
               "any.required": "Select what you have test results for"
             },
@@ -1679,7 +1679,7 @@
             "max": 999
           },
           "options": {
-            "summaryTitle": "Service users: with symptoms",
+            "summaryTitle": "Service users: total number with symptoms",
             "customValidationMessages": {
               "number.base": "Enter the number of service users that have symptoms of an acute respiratory infection",
               "number.max": "The number of service users that have symptoms of an acute respiratory infection must be between 0 and 999",
@@ -1711,7 +1711,7 @@
           "hint": "Include those who are currently in hospital<br>If none or you do not know, enter 0",
           "options": {
             "required": true,
-            "summaryTitle": "Staff: with symptoms",
+            "summaryTitle": "Staff: total number with symptoms",
             "customValidationMessages": {
               "number.base": "Enter the number of staff that have symptoms of an acute respiratory infection",
               "number.max": "The number of staff that have symptoms of an acute respiratory infection must be between 0 and 999",
@@ -1754,7 +1754,7 @@
             "max": 999
           },
           "options": {
-            "summaryTitle": "Service users: with symptoms",
+            "summaryTitle": "Service users: total number with symptoms",
             "customValidationMessages": {
               "number.base": "Enter the number of service users that have symptoms of an acute respiratory infection",
               "number.max": "The number of service users that have symptoms of an acute respiratory infection must be between 0 and 999",
@@ -1773,7 +1773,7 @@
             "max": 999
           },
           "options": {
-            "summaryTitle": "Service users: tested for acute respiratory infection",
+            "summaryTitle": "Service users: tested for ARI",
             "customValidationMessages": {
               "number.base": "Enter the number of service users that have been tested for any acute respiratory infection",
               "number.max": "The number of service users that have been tested for any acute respiratory infection must be between 0 and 999",
@@ -1792,7 +1792,7 @@
           "title": "How many service users have had a negative flu test result?",
           "hint": "If none or you do not know, enter 0",
           "options": {
-            "summaryTitle": "Service users: negative flu test results",
+            "summaryTitle": "Service users: negative flu test",
             "customValidationMessages": {
               "number.base": "Enter the number of service users that have been tested for flu and had a negative test result",
               "number.max": "The number of service users that have been tested for flu and had a negative test result must be between 0 and 999",
@@ -1860,7 +1860,7 @@
           "hint": "Include all tested and untested staff<br>If none or you do not know, enter 0",
           "options": {
             "required": true,
-            "summaryTitle": "Staff: with symptoms",
+            "summaryTitle": "Staff: total number with symptoms",
             "customValidationMessages": {
               "number.base": "Enter the number of staff that have symptoms of an acute respiratory infection",
               "number.max": "The number of staff that have symptoms of an acute respiratory infection must be between 0 and 999",
@@ -1882,7 +1882,7 @@
             "max": 999
           },
           "options": {
-            "summaryTitle": "Staff: tested for acute respiratory infection",
+            "summaryTitle": "Staff: tested for ARI",
             "customValidationMessages": {
               "number.base": "Enter the number of staff that have been tested for any acute respiratory infection",
               "number.max": "The number of staff that have been tested for any acute respiratory infection must be between 0 and 999",
@@ -1901,7 +1901,7 @@
           "title": "How many staff have had a negative flu test result?",
           "hint": "If none or you do not know, enter 0",
           "options": {
-            "summaryTitle": "Staff: negative flu test results",
+            "summaryTitle": "Staff: negative flu test",
             "customValidationMessages": {
               "number.base": "Enter the number of staff that have been tested for flu and had a negative test result",
               "number.max": "The number of staff that have had a negative flu test result must be between 0 and 999",
@@ -1928,7 +1928,7 @@
             "max": 999
           },
           "options": {
-            "summaryTitle": "Staff: negative COVID-19 test results",
+            "summaryTitle": "Staff: negative COVID-19 test",
             "required": true,
             "customValidationMessages": {
               "number.base": "Enter the number of staff that have been tested for COVID-19 and had a negative test result",
@@ -2008,7 +2008,7 @@
             "max": 999
           },
           "options": {
-            "summaryTitle": "Service users: with symptoms",
+            "summaryTitle": "Service users: total number with symptoms",
             "customValidationMessages": {
               "number.base": "Enter the number of service users that have symptoms of an acute respiratory infection",
               "number.max": "The number of service users that have symptoms of an acute respiratory infection must be between 0 and 999",
@@ -2027,7 +2027,7 @@
             "max": 999
           },
           "options": {
-            "summaryTitle": "Service users: tested for acute respiratory infection",
+            "summaryTitle": "Service users: tested for ARI",
             "customValidationMessages": {
               "number.base": "Enter the number of service users that have been tested for any acute respiratory infection",
               "number.max": "The number of service users that have been tested for any acute respiratory infection must be between 0 and 999",
@@ -2134,7 +2134,7 @@
           "hint": "Include all tested and untested staff<br>If none or you do not know, enter 0",
           "options": {
             "required": true,
-            "summaryTitle": "Staff: with symptoms",
+            "summaryTitle": "Staff: total number with symptoms",
             "customValidationMessages": {
               "number.base": "Enter the number of staff that have symptoms of an acute respiratory infection",
               "number.max": "The number of staff that have symptoms of an acute respiratory infection must be between 0 and 999",
@@ -2156,7 +2156,7 @@
             "max": 999
           },
           "options": {
-            "summaryTitle": "Staff: tested for acute respiratory infection",
+            "summaryTitle": "Staff: tested for ARI",
             "customValidationMessages": {
               "number.base": "Enter the number of staff that have been tested for any acute respiratory infection",
               "number.max": "The number of staff that have been tested for any acute respiratory infection must be between 0 and 999",
@@ -2172,7 +2172,7 @@
         {
           "name": "StaffCovidTestPositive",
           "options": {
-            "summaryTitle": "Staff: confirmed positive COVID-19 test",
+            "summaryTitle": "Staff: positive COVID-19 test",
             "customValidationMessages": {
               "number.base": "Enter the number of staff that have COVID-19 confirmed by a positive swab test",
               "number.max": "The number of staff that have COVID-19 confirmed by a positive swab test must be between 0 and 999",
@@ -2263,7 +2263,7 @@
             "max": 999
           },
           "options": {
-            "summaryTitle": "Service users: with symptoms",
+            "summaryTitle": "Service users: total number with symptoms",
             "customValidationMessages": {
               "number.base": "Enter the number of service users that have symptoms of an acute respiratory infection",
               "number.max": "The number of service users that have symptoms of an acute respiratory infection must be between 0 and 999",
@@ -2282,7 +2282,7 @@
             "max": 999
           },
           "options": {
-            "summaryTitle": "Service users: tested for acute respiratory infection",
+            "summaryTitle": "Service users: tested for ARI",
             "customValidationMessages": {
               "number.base": "Enter the number of service users that have been tested for any acute respiratory infection",
               "number.max": "The number of service users that have been tested for any acute respiratory infection must be between 0 and 999",
@@ -2393,7 +2393,7 @@
           "hint": "Include all tested and untested staff<br>If none or you do not know, enter 0",
           "options": {
             "required": true,
-            "summaryTitle": "Staff: with symptoms",
+            "summaryTitle": "Staff: total number with symptoms",
             "customValidationMessages": {
               "number.base": "Enter the number of staff that have symptoms of an acute respiratory infection",
               "number.max": "The number of staff that have symptoms of an acute respiratory infection must be between 0 and 999",
@@ -2415,7 +2415,7 @@
             "max": 999
           },
           "options": {
-            "summaryTitle": "Staff: tested for acute respiratory infection",
+            "summaryTitle": "Staff: tested for ARI",
             "customValidationMessages": {
               "number.base": "Enter the number of staff that have been tested for any acute respiratory infection",
               "number.max": "The number of staff that have been tested for any acute respiratory infection must be between 0 and 999",
@@ -2525,7 +2525,7 @@
             "max": 999
           },
           "options": {
-            "summaryTitle": "Service users: with symptoms",
+            "summaryTitle": "Service users: total number with symptoms",
             "customValidationMessages": {
               "number.base": "Enter the number of service users that have symptoms of an acute respiratory infection",
               "number.max": "The number of service users that have symptoms of an acute respiratory infection must be between 0 and 999",
@@ -2544,7 +2544,7 @@
             "max": 999
           },
           "options": {
-            "summaryTitle": "Service users: tested for acute respiratory infection",
+            "summaryTitle": "Service users: tested for ARI",
             "customValidationMessages": {
               "number.base": "Enter the number of service users that have been tested for any acute respiratory infection",
               "number.max": "The number of service users that have been tested for any acute respiratory infection must be between 0 and 999",
@@ -2560,7 +2560,7 @@
         {
           "name": "ServiceUsersFluTestPositive",
           "options": {
-            "summaryTitle": "Service users: confirmed positive flu test results",
+            "summaryTitle": "Service users: positive flu test",
             "customValidationMessages": {
               "number.base": "Enter the number of service users that have flu confirmed by a positive swab test",
               "number.max": "The number of service users that have flu confirmed by a positive swab test must be between 0 and 999",
@@ -2583,7 +2583,7 @@
           "title": "How many service users have had a negative flu test result?",
           "hint": "If a service user has both positive and negative flu strain results, do not include the negative result here<br>If none or you do not know, enter 0",
           "options": {
-            "summaryTitle": "Service users: negative flu test results",
+            "summaryTitle": "Service users: negative flu test",
             "customValidationMessages": {
               "number.base": "Enter the number of service users that have been tested for flu and had a negative test result",
               "number.max": "The number of service users that have been tested for flu and had a negative test result must be between 0 and 999",
@@ -2670,7 +2670,7 @@
           "hint": "Include all tested and untested staff<br>If none or you do not know, enter 0",
           "options": {
             "required": true,
-            "summaryTitle": "Staff: with symptoms",
+            "summaryTitle": "Staff: total number with symptoms",
             "customValidationMessages": {
               "number.base": "Enter the number of staff that have symptoms of an acute respiratory infection",
               "number.max": "The number of staff that have symptoms of an acute respiratory infection must be between 0 and 999",
@@ -2692,7 +2692,7 @@
             "max": 999
           },
           "options": {
-            "summaryTitle": "Staff: tested for acute respiratory infection",
+            "summaryTitle": "Staff: tested for ARI",
             "customValidationMessages": {
               "number.base": "Enter the number of staff that have been tested for any acute respiratory infection",
               "number.max": "The number of staff that have been tested for any acute respiratory infection must be between 0 and 999",
@@ -2708,7 +2708,7 @@
         {
           "name": "StaffFluTestPositive",
           "options": {
-            "summaryTitle": "Staff: confirmed positive flu test results",
+            "summaryTitle": "Staff: positive flu test",
             "customValidationMessages": {
               "number.base": "Enter the number of staff that have flu confirmed by a positive swab test",
               "number.max": "The number of staff that have flu confirmed by a positive swab test must be between 0 and 999",
@@ -2751,7 +2751,7 @@
         {
           "name": "StaffCovidTestPositive",
           "options": {
-            "summaryTitle": "Staff: confirmed positive COVID-19 test",
+            "summaryTitle": "Staff: positive COVID-19 test",
             "customValidationMessages": {
               "number.base": "Enter the number of staff that have COVID-19 confirmed by a positive swab test",
               "number.max": "The number of staff that have COVID-19 confirmed by a positive swab test must be between 0 and 999",
@@ -2819,7 +2819,7 @@
             "max": 999
           },
           "options": {
-            "summaryTitle": "Service users: with symptoms",
+            "summaryTitle": "Service users: total number with symptoms",
             "customValidationMessages": {
               "number.base": "Enter the number of service users that have symptoms of an acute respiratory infection",
               "number.max": "The number of service users that have symptoms of an acute respiratory infection must be between 0 and 999",
@@ -2838,7 +2838,7 @@
             "max": 999
           },
           "options": {
-            "summaryTitle": "Service users: tested for acute respiratory infection",
+            "summaryTitle": "Service users: tested for ARI",
             "customValidationMessages": {
               "number.base": "Enter the number of service users that have been tested for any acute respiratory infection",
               "number.max": "The number of service users that have been tested for any acute respiratory infection must be between 0 and 999",
@@ -2854,7 +2854,7 @@
         {
           "name": "ServiceUsersFluTestPositive",
           "options": {
-            "summaryTitle": "Service users: confirmed positive flu test results",
+            "summaryTitle": "Service users: positive flu test",
             "customValidationMessages": {
               "number.base": "Enter the number of service users that have flu confirmed by a positive swab test",
               "number.max": "The number of service users that have flu confirmed by a positive swab test must be between 0 and 999",
@@ -2877,7 +2877,7 @@
           "title": "How many service users have had a negative flu test result?",
           "hint": "If a service user has both positive and negative flu strain results, do not include the negative result here<br>If none or you do not know, enter 0",
           "options": {
-            "summaryTitle": "Service users: negative flu test results",
+            "summaryTitle": "Service users: negative flu test",
             "customValidationMessages": {
               "number.base": "Enter the number of service users that have been tested for flu and had a negative test result",
               "number.max": "The number of service users that have been tested for flu and had a negative test result must be between 0 and 999",
@@ -2971,7 +2971,7 @@
           "hint": "Include all tested and untested staff<br>If none or you do not know, enter 0",
           "options": {
             "required": true,
-            "summaryTitle": "Staff: with symptoms",
+            "summaryTitle": "Staff: total number with symptoms",
             "customValidationMessages": {
               "number.base": "Enter the number of staff that have symptoms of an acute respiratory infection",
               "number.max": "The number of staff that have symptoms of an acute respiratory infection must be between 0 and 999",
@@ -2993,7 +2993,7 @@
             "max": 999
           },
           "options": {
-            "summaryTitle": "Staff: tested for acute respiratory infection",
+            "summaryTitle": "Staff: tested for ARI",
             "customValidationMessages": {
               "number.base": "Enter the number of staff that have been tested for any acute respiratory infection",
               "number.max": "The number of staff that have been tested for any acute respiratory infection must be between 0 and 999",
@@ -3011,7 +3011,7 @@
           "title": "How many staff have had a positive flu test result?",
           "hint": "If none or you do not know, enter 0",
           "options": {
-            "summaryTitle": "Staff: confirmed positive flu test results",
+            "summaryTitle": "Staff: positive flu test",
             "customValidationMessages": {
               "number.base": "Enter the number of staff that have flu confirmed by a positive swab test",
               "number.max": "The number of staff that have flu confirmed by a positive swab test must be between 0 and 999",
@@ -3125,7 +3125,7 @@
             "max": 999
           },
           "options": {
-            "summaryTitle": "Service users: with symptoms",
+            "summaryTitle": "Service users: total number with symptoms",
             "customValidationMessages": {
               "number.base": "Enter the number of service users that have symptoms of an acute respiratory infection",
               "number.max": "The number of service users that have symptoms of an acute respiratory infection must be between 0 and 999",
@@ -3144,7 +3144,7 @@
             "max": 999
           },
           "options": {
-            "summaryTitle": "Service users: tested for acute respiratory infection",
+            "summaryTitle": "Service users: tested for ARI",
             "customValidationMessages": {
               "number.base": "Enter the number of service users that have been tested for any acute respiratory infection",
               "number.max": "The number of service users that have been tested for any acute respiratory infection must be between 0 and 999",
@@ -3233,7 +3233,7 @@
           "title": "How many service users have had a negative flu test result?",
           "hint": "If none or you do not know, enter 0",
           "options": {
-            "summaryTitle": "Service users: negative flu test results",
+            "summaryTitle": "Service users: negative flu test",
             "customValidationMessages": {
               "number.base": "Enter the number of service users that have been tested for flu and had a negative test result",
               "number.max": "The number of service users that have been tested for flu and had a negative test result must be between 0 and 999",
@@ -3278,7 +3278,7 @@
           "hint": "Include all tested and untested staff<br>If none or you do not know, enter 0",
           "options": {
             "required": true,
-            "summaryTitle": "Staff: with symptoms",
+            "summaryTitle": "Staff: total number with symptoms",
             "customValidationMessages": {
               "number.base": "Enter the number of staff that have symptoms of an acute respiratory infection",
               "number.max": "The number of staff that have symptoms of an acute respiratory infection must be between 0 and 999",
@@ -3300,7 +3300,7 @@
             "max": 999
           },
           "options": {
-            "summaryTitle": "Staff: tested for acute respiratory infection",
+            "summaryTitle": "Staff: tested for ARI",
             "customValidationMessages": {
               "number.base": "Enter the number of staff that have been tested for any acute respiratory infection",
               "number.max": "The number of staff that have been tested for any acute respiratory infection must be between 0 and 999",
@@ -3320,7 +3320,7 @@
           "title": "How many staff have had a positive COVID-19 test result?",
           "hint": "If none or you do not know, enter 0",
           "options": {
-            "summaryTitle": "Staff: confirmed positive COVID-19 test",
+            "summaryTitle": "Staff: positive COVID-19 test",
             "customValidationMessages": {
               "number.base": "Enter the number of staff that have COVID-19 confirmed by a positive swab test",
               "number.max": "The number of staff that have COVID-19 confirmed by a positive swab test must be between 0 and 999",
@@ -3435,7 +3435,7 @@
             "max": 999
           },
           "options": {
-            "summaryTitle": "Service users: with symptoms",
+            "summaryTitle": "Service users: total number with symptoms",
             "customValidationMessages": {
               "number.base": "Enter the number of service users that have symptoms of an acute respiratory infection",
               "number.max": "The number of service users that have symptoms of an acute respiratory infection must be between 0 and 999",
@@ -3454,7 +3454,7 @@
             "max": 999
           },
           "options": {
-            "summaryTitle": "Service users: tested for acute respiratory infection",
+            "summaryTitle": "Service users: tested for ARI",
             "customValidationMessages": {
               "number.base": "Enter the number of service users that have been tested for any acute respiratory infection",
               "number.max": "The number of service users that have been tested for any acute respiratory infection must be between 0 and 999",
@@ -3473,7 +3473,7 @@
           "title": "How many service users have had a positive flu test result?",
           "hint": "If none or you do not know, enter 0",
           "options": {
-            "summaryTitle": "Service users: confirmed positive flu test results",
+            "summaryTitle": "Service users: positive flu test",
             "customValidationMessages": {
               "number.base": "Enter the number of service users that have flu confirmed by a positive swab test",
               "number.max": "The number of service users that have flu confirmed by a positive swab test must be between 0 and 999",
@@ -3494,7 +3494,7 @@
           "title": "How many service users have had a negative flu test result?",
           "hint": "If a service user has both positive and negative flu strain results, do not include the negative result here<br>If none or you do not know, enter 0",
           "options": {
-            "summaryTitle": "Service users: negative flu test results",
+            "summaryTitle": "Service users: negative flu test",
             "customValidationMessages": {
               "number.base": "Enter the number of service users that have been tested for flu and had a negative test result",
               "number.max": "The number of service users that have been tested for flu and had a negative test result must be between 0 and 999",
@@ -3608,7 +3608,7 @@
           "hint": "Include all tested and untested staff<br>If none or you do not know, enter 0",
           "options": {
             "required": true,
-            "summaryTitle": "Staff: with symptoms",
+            "summaryTitle": "Staff: total number with symptoms",
             "customValidationMessages": {
               "number.base": "Enter the number of staff that have symptoms of an acute respiratory infection",
               "number.max": "The number of staff that have symptoms of an acute respiratory infection must be between 0 and 999",
@@ -3630,7 +3630,7 @@
             "max": 999
           },
           "options": {
-            "summaryTitle": "Staff: tested for acute respiratory infection",
+            "summaryTitle": "Staff: tested for ARI",
             "customValidationMessages": {
               "number.base": "Enter the number of staff that have been tested for any acute respiratory infection",
               "number.max": "The number of staff that have been tested for any acute respiratory infection must be between 0 and 999",
@@ -3649,7 +3649,7 @@
           "title": "How many staff have had a positive flu test result?",
           "hint": "If none or you do not know, enter 0",
           "options": {
-            "summaryTitle": "Staff: confirmed positive flu test results",
+            "summaryTitle": "Staff: positive flu test",
             "customValidationMessages": {
               "number.base": "Enter the number of staff that have flu confirmed by a positive swab test",
               "number.max": "The number of staff that have flu confirmed by a positive swab test must be between 0 and 999",
@@ -3693,7 +3693,7 @@
           "title": "How many staff have had a positive COVID-19 test result?",
           "hint": "If none or you do not know, enter 0",
           "options": {
-            "summaryTitle": "Staff: confirmed positive COVID-19 test",
+            "summaryTitle": "Staff: positive COVID-19 test",
             "customValidationMessages": {
               "number.base": "Enter the number of staff that have COVID-19 confirmed by a positive swab test",
               "number.max": "The number of staff that have COVID-19 confirmed by a positive swab test must be between 0 and 999",
