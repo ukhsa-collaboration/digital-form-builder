@@ -24,7 +24,7 @@ const closeContactParams = [
   },
 ];
 
-const klsRemoveParams = ["ZpmVWP"];
+// const klsRemoveParams = ["ZpmVWP"];
 
 const summaryDetailsTransformations: SummaryDetailsTransformationMap = {
   "close-contact-form-nl1-dev": (details) => {
@@ -132,6 +132,3 @@ const summaryDetailsTransformations: SummaryDetailsTransformationMap = {
 };
 
 module.exports = summaryDetailsTransformations;
-
-
-
