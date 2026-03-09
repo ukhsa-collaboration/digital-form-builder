@@ -73,6 +73,16 @@ export class PageControllerBase {
   constructor(model: FormModel, pageDef: { [prop: string]: any } = {}) {
     const { def } = model;
 
+    // TODO: remove sample log messgaes
+    console.log("MICLA TEST LOGS");
+    console.log(
+      "Initialising page",
+      def.name,
+      pageDef.title,
+      "with path",
+      pageDef.title
+    );
+
     // @ts-ignore
     this.def = def;
     // @ts-ignore
@@ -89,6 +99,10 @@ export class PageControllerBase {
       pageDef.disableSingleComponentAsHeading;
     this.buttonText = pageDef.customButtonText ?? this.defaultButtonText;
 
+    console.log("MICLA TEST LOGS");
+    // TODO: STILL UNSURE AS TO WHAT PAGE CONDTIONS ARE ?
+    console.log("Page condition:", this.pageDef.condition);
+    console.log("Available conditions:", Object.keys(this.model.conditions));
     // Resolve section
     this.section = model.sections?.find(
       (section) => section.name === pageDef.section
@@ -256,6 +270,8 @@ export class PageControllerBase {
    * @param suppressRepetition - cancels repetition logic
    */
   getNextPage(state: FormSubmissionState, suppressRepetition = false) {
+    console.log("Starting Get Next Page Function");
+
     if (this.repeatField && !suppressRepetition) {
       const requiredCount = reach(state, this.repeatField);
       const otherRepeatPagesInSection = this.model.pages.filter(
@@ -929,7 +945,8 @@ export class PageControllerBase {
   }
 
   get defaultNextPath() {
-    return `${this.model.basePath || ""}/summary`;
+    return `summary`;
+    // return `${this.model.basePath || ""}/summary`;
   }
 
   get validationOptions() {
