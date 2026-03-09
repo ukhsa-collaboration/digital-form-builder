@@ -101,7 +101,8 @@ export class FormModel {
     this.sections = def.sections;
     this.options = options;
     this.name = def.name;
-    this.serviceStartPage = def.fullStartPage || config.serviceStartPage || config.serviceName || "#";
+    this.serviceStartPage =
+      def.fullStartPage || config.serviceStartPage || config.serviceName || "#";
     this.returnTo = def.returnTo || false;
     this.values = result.value;
 
@@ -264,7 +265,10 @@ export class FormModel {
   }
 
   get conditionOptions() {
-    return { allowUnknown: true, presence: "required" };
+    return {
+      allowUnknown: true,
+      // presence: "required",
+    };
   }
 
   getList(name: string): List | [] {
