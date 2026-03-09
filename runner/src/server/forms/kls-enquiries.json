@@ -37,6 +37,7 @@
     {
       "path": "/which-organisation-do-you-work-for",
       "unauthenticated": true,
+      "section": "whichOrganisation",
       "title": "Which organisation do you work for?",
       "components": [
         {
@@ -2198,7 +2199,13 @@
       ]
     }
   ],
-  "sections": [],
+  "sections": [
+    {
+      "name": "whichOrganisation",
+      "title": "whichOrganisation",
+      "hideTitle": true
+    }
+  ],
   "conditions": [
     {
       "displayName": "Other",
@@ -2208,7 +2215,7 @@
         "conditions": [
           {
             "field": {
-              "name": "ZpmVWP",
+              "name": "whichOrganisation.ZpmVWP",
               "type": "RadiosField",
               "display": "Organisation"
             },
@@ -2230,7 +2237,7 @@
         "conditions": [
           {
             "field": {
-              "name": "ZpmVWP",
+              "name": "whichOrganisation.ZpmVWP",
               "type": "RadiosField",
               "display": "Organisation"
             },
