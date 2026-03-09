@@ -1703,6 +1703,7 @@
       "path": "/staff-ari-unconfirmed",
       "title": "Staff: number of cases",
       "sectionForEndSummaryPages": "InfectionsInYourSetting",
+      "disableSingleComponentAsHeading": true,
       "components": [
         {
           "name": "StaffSymptoms",
