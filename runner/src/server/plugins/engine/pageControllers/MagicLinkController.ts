@@ -23,10 +23,10 @@ export class MagicLinkController extends PageController {
 
       const validation = await validateHmac(email, hmac, requestTime, hmacKey);
 
-     //Outlook safelink consumes magic link - This bypasses it
-     if (!request.headers["user-agent"]) {
-      return h.response("Ignored bot request").code(200);
-    }
+      //Outlook safelink consumes magic link - This bypasses it
+      if (!request.headers["user-agent"]) {
+        return h.response("Ignored bot request").code(200);
+      }
 
       const { cacheService } = request.services([]);
 
@@ -50,7 +50,9 @@ export class MagicLinkController extends PageController {
           case "expired":
             return h.redirect(`/${this.model.basePath}/expired`).code(302);
           case "invalid_signature":
-            return h.redirect(`/${this.model.basePath}/incorrect-email`).code(302);
+            return h
+              .redirect(`/${this.model.basePath}/incorrect-email`)
+              .code(302);
           default:
             return h.redirect(`/${this.model.basePath}/error`).code(302);
         }
@@ -136,11 +138,12 @@ export class MagicLinkController extends PageController {
       const hmacKey = this.model.def.outputs[0].outputConfiguration.hmacKey;
 
       const validation = await validateHmac(email, hmac, requestTime, hmacKey);
-     
+
       //Outlook safelink consumes magic link - This bypasses it
       if (!request.headers["user-agent"]) {
-      return h.response("Ignored bot request").code(200);
-    }
+        return h.response("Ignored bot request").code(200);
+      }
+
       if (validation.isValid) {
         const token = Jwt.token.generate(
           { email: request.query.email },
