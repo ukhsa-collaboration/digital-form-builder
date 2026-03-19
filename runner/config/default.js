@@ -68,12 +68,12 @@ module.exports = {
   sessionTimeout: 40 * minute,
   confirmationSessionTimeout: 20 * minute,
   paymentSessionTimeout: 90 * minute, // GOV.UK Pay sessions are 90 minutes. It is possible a user takes longer than 20 minutes to complete a payment.
-  httpsCookieSecureAttribute: true, // Assumed usage of HTTPS. Set to false if you are using HTTP.
-  sessionCookiePassword: "${SessionCookies.Password}",
-  redisHost: "${Redis.Host}",
-  redisPort: 6379,
-  redisPassword: "${Redis.Password}", // This should be set if you are deploying replicas - SET AS SECRET
-  redisTls: true, //run in TLS mode
+  // httpsCookieSecureAttribute: true, // Assumed usage of HTTPS. Set to false if you are using HTTP.
+  // sessionCookiePassword: "${SessionCookies.Password}",
+  // redisHost: "${Redis.Host}",
+  // redisPort: 6379,
+  // redisPassword: "${Redis.Password}", // This should be set if you are deploying replicas - SET AS SECRET
+  // redisTls: true, //run in TLS mode
 
   /**
    * SSL
