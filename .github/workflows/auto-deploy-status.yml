@@ -1,0 +1,37 @@
+name: Auto Deploy Status
+run-name: Auto Deploy Status | ${{ inputs.commit_message}} | Run ID ${{ inputs.caller_run_id }}
+
+on:
+  workflow_dispatch:
+    inputs:
+      success:
+        description: "Automatic deployment status for the latest build"
+        type: boolean
+        required: true
+        default: false
+      skip_reason:
+        description: "Reason for skipping the deployment"
+        type: string
+        required: false
+      commit_message:
+        description: "Commit message of the latest build"
+        type: string
+        required: true
+      caller_run_id:
+        description: "Run ID of the workflow that triggered this status update"
+        type: string
+        required: true
+
+jobs:
+  Deployment-Status:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deployment Status
+        run: |
+          if [[ '${{ inputs.success }}' == 'true' ]]; then
+            echo "Automatic deployment succeeded"
+          else
+            echo "::error:: Automatic deployment failed"
+            echo "Reason: ${{ inputs.skip_reason }}"
+            exit 1
+          fi
