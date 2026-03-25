@@ -52,13 +52,11 @@ jobs:
         NON_FORM_FILES=$(git diff --name-only ${{ github.event.before }} ${{ github.event.after }} -- ":(exclude)${{ env.FORMS_FOLDER }}" | wc -l)
         if [ "$NON_FORM_FILES" -eq 0 ]; then
           echo "Only form changes found, able to deploy"
-          FORM_ONLY = true
+          echo "SHOULD_DEPLOY=true" >> "$GITHUB_ENV"
         else
           echo "Non-form changes found, do not deploy"
-          FORM_ONLY = false
+          echo "SHOULD_DEPLOY=false" >> "$GITHUB_ENV"
         fi
-
-        echo "SHOULD_DEPLOY=$FORM_ONLY" >> "$GITHUB_ENV"
 
     - name: Generate token
       if: env.SHOULD_DEPLOY == true
