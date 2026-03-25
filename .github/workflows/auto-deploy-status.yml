@@ -9,8 +9,7 @@ on:
         type: boolean
         required: true
         default: false
-      skip_reason:
-        description: "Reason for skipping the deployment"
+      status_message:
         type: string
         required: false
       commit_message:
@@ -32,6 +31,6 @@ jobs:
             echo "Automatic deployment succeeded"
           else
             echo "::error:: Automatic deployment failed"
-            echo "Reason: ${{ inputs.skip_reason }}"
+            echo "Reason: ${{ inputs.status_message }}"
             exit 1
           fi
