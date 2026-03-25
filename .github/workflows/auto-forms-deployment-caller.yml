@@ -9,14 +9,37 @@ on:
       - xgf-65
     paths:
       - 'runner/src/server/forms/**'
+  workflow_dispatch: 
+    inputs:
+      success:
+        description: "Did the deployment succeed"
+        type: boolean
+        required: true
+        default: false
+      auto_deploy_status:
+        description: "Failure status message"
+        type: string
+        required: false
+      commit_message:
+        description: "Triggering commit message"
+        type: string
+        required: true
+      caller_run_id:
+        description: "Workflow Caller ID"
+        type: string
+        required: true
 
 jobs:
-  check_files:
-    outputs:
-      should_deploy: ${{ steps.check_file_path.outputs.form_only }}
+  Trigger-Deployment:
+    if: github.event_name == 'push'
     runs-on: ubuntu-latest
+    permissions:
+        actions: read
+    outputs:
+        should_deploy: ${{ steps.check_file_path.outputs.form_only }}
     env:
-      FORMS_FOLDER: 'runner/src/server/forms/'
+        FORMS_FOLDER: 'runner/src/server/forms/'
+        SHOULD_DEPLOY: false
     steps:
     - name: Checkout
       uses: actions/checkout@v4
@@ -29,22 +52,16 @@ jobs:
         NON_FORM_FILES=$(git diff --name-only ${{ github.event.before }} ${{ github.event.after }} -- ":(exclude)${{ env.FORMS_FOLDER }}" | wc -l)
         if [ "$NON_FORM_FILES" -eq 0 ]; then
           echo "Only form changes found, able to deploy"
-          FORM_ONLY="true"
+          FORM_ONLY = true
         else
           echo "Non-form changes found, do not deploy"
-          FORM_ONLY="false"
+          FORM_ONLY = false
         fi
 
-        echo "form_only=$FORM_ONLY" >> "$GITHUB_OUTPUT"
-    
-  dispatch:
-    runs-on: ubuntu-latest
-    needs: check_files
-    if: needs.check_files.outputs.should_deploy == 'true'
-    permissions:
-      actions: read
-    steps:
+        echo "SHOULD_DEPLOY=$FORM_ONLY" >> "$GITHUB_ENV"
+
     - name: Generate token
+      if: env.SHOULD_DEPLOY == true
       uses: actions/create-github-app-token@v2
       id: app-token
       with:
@@ -52,7 +69,9 @@ jobs:
         private-key: ${{ secrets.DEPLOYMENT_APP_KEY }}
         owner: ${{ secrets.DEPLOYMENT_OWNER }}
         repositories: ${{ secrets.DEPLOYMENT_REPO }}
+
     - name: Call deployment repo
+      if: env.SHOULD_DEPLOY == true
       uses: actions/github-script@v8
       with:
         github-token: ${{ steps.app-token.outputs.token }}
@@ -69,3 +88,14 @@ jobs:
               caller_run_id: '${{ github.run_id }}'
             }
           });
+
+  Print-Status:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print Deployment Status
+        run: |
+          echo "Deployment Success: ${{ github.event.inputs.success }}"
+          echo "Deployment Status Message: ${{ github.event.inputs.auto_deploy_status }}"
+          echo "Triggering Commit Message: ${{ github.event.inputs.commit_message }}"
+          echo "Caller Run ID: ${{ github.event.inputs.caller_run_id }}"
