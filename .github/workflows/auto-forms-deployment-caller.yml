@@ -36,10 +36,9 @@ jobs:
     permissions:
         actions: read
     outputs:
-        should_deploy: ${{ steps.check_file_path.outputs.form_only }}
+        should_deploy: ${{ steps.check_file_path.outputs.should_deploy }}
     env:
         FORMS_FOLDER: 'runner/src/server/forms/'
-        SHOULD_DEPLOY: false
     steps:
     - name: Checkout
       uses: actions/checkout@v4
@@ -52,14 +51,14 @@ jobs:
         NON_FORM_FILES=$(git diff --name-only ${{ github.event.before }} ${{ github.event.after }} -- ":(exclude)${{ env.FORMS_FOLDER }}" | wc -l)
         if [ "$NON_FORM_FILES" -eq 0 ]; then
           echo "Only form changes found, able to deploy"
-          echo "SHOULD_DEPLOY=true" >> "$GITHUB_ENV"
+          echo "should_deploy=true" >> $GITHUB_OUTPUT
         else
           echo "Non-form changes found, do not deploy"
-          echo "SHOULD_DEPLOY=false" >> "$GITHUB_ENV"
+          echo "should_deploy=false" >> $GITHUB_OUTPUT
         fi
 
     - name: Generate token
-      if: env.SHOULD_DEPLOY == true
+      if: steps.check_file_path.outputs.should_deploy == 'true'
       uses: actions/create-github-app-token@v2
       id: app-token
       with:
@@ -69,7 +68,7 @@ jobs:
         repositories: ${{ secrets.DEPLOYMENT_REPO }}
 
     - name: Call deployment repo
-      if: env.SHOULD_DEPLOY == true
+      if: steps.check_file_path.outputs.should_deploy == 'true'
       uses: actions/github-script@v8
       with:
         github-token: ${{ steps.app-token.outputs.token }}
