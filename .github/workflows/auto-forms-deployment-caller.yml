@@ -1,6 +1,6 @@
 # This workflow automatically calls to deploy if a change is made to only the forms folder
 
-name: Automatic Forms Deployment Caller
+name: Automated Form Deployment
 
 # Workflow runs automatically when the form folder is updated
 on:
