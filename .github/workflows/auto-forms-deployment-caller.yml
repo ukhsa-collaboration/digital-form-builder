@@ -80,7 +80,6 @@ jobs:
             ref: 'xgf-65',
             inputs: {
               branch: 'xgf-65',
-              environment: 'dev',
               commit_message: '${{ github.event.head_commit.message }}',
               caller_run_id: '${{ github.run_id }}'
             }
