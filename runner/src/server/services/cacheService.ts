@@ -124,7 +124,8 @@ export class CacheService {
 
   async clearState(request: HapiRequest) {
     if (request.yar?.id) {
-      this.cache.drop(this.Key(request));
+      //this.cache.drop(this.Key(request));
+      request.yar.reset();
     }
   }
 
