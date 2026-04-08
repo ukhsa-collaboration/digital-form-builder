@@ -35,6 +35,8 @@ export class WebhookService {
     //   ["WebhookService", "postRequest body"],
     //   JSON.stringify(data)
     // );
+    this.logger.info(`**** ${JSON.stringify(data)}`);
+
 
     let request = method === "POST" ? post : put;
     try {
@@ -51,12 +53,14 @@ export class WebhookService {
       });
 
       if (typeof payload === "object" && !Buffer.isBuffer(payload)) {
+        this.logger.info(`**** Retruning the payload Refrence ${payload.reference}`);
         return payload.reference;
       }
 
       const Name = JSON.parse(payload)[0]?.Name;
 
       if (Name) {
+        this.logger.info(`**** Retruning the name ${Name}`);
         return Name;
       }
 
@@ -75,6 +79,7 @@ export class WebhookService {
       // );
       return reference;
     } catch (error) {
+      this.logger.info(`**** ${error}`);
       this.logger.error(["WebhookService", "postRequest"], error);
       return "UNKNOWN";
     }

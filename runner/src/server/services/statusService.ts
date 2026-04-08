@@ -166,6 +166,7 @@ export class StatusService {
           "PUT"
         );
       } catch (e) {
+        this.logger.error(`**** Failed on callback ${e}`);
         throw Boom.badRequest(e);
       }
     }

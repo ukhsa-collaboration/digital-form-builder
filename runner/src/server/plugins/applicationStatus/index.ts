@@ -48,9 +48,12 @@ const index = {
 
             const state = await cacheService.getState(request);
 
+            request.logger.info(`**** making the webhook call`);
             const {
               reference: newReference,
             } = await statusService.outputRequests(request);
+
+            request.logger.info(`****  the webhook call returned with reference ${newReference}`);
 
             if (state.callback?.skipSummary?.redirectUrl) {
               const { redirectUrl } = state.callback?.skipSummary;

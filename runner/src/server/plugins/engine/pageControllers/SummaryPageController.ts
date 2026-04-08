@@ -101,7 +101,7 @@ export class SummaryPageController extends PageController {
    */
   makePostRouteHandler() {
     return async (request: HapiRequest, h: HapiResponseToolkit) => {
-      const { payService, cacheService } = request.services([]);
+      const { payService, cacheService } = request.services([]); 
       const model = this.model;
       const state = await cacheService.getState(request);
       const summaryViewModel = new SummaryViewModel(
@@ -178,13 +178,16 @@ export class SummaryPageController extends PageController {
         webhookData: summaryViewModel.validatedWebhookData,
       });
 
+      request.logger.info(`**** merged cacheState ${cacheService.getState(request)}`);
+
       const feesModel = FeesModel(model, state);
 
       /**
        * If a user does not need to pay, redirect them to /status
        */
       if ((feesModel?.details ?? [])?.length === 0) {
-        return redirectTo(request, h, `/${request.params.id}/status`);
+        request.logger.info(`**** Redirecting to status page `);
+        return redirectTo(request, h, `/${request.params.id}/status`); 
       }
 
       const payReturnUrl =
