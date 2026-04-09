@@ -14,8 +14,7 @@ export default {
     debug: config.isDev,
     logRequestStart: config.isDev,
     logRequestComplete: config.isDev,
-    ignoreFunc: (_options, request) =>
-      request.path.startsWith("/assets") || request.url.contains("assets"),
+    ignoreFunc: (_options, request) => request.path.startsWith("/assets"),
     redact: {
       paths: config.logRedactPaths,
       censor: "REDACTED",
