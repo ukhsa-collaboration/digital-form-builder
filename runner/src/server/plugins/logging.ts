@@ -22,6 +22,5 @@ export default {
       paths: config.logRedactPaths,
       censor: "REDACTED",
     },
-    // ignorePaths: [/^\/assets/, "/session/keep-alive"],
   },
 };
