@@ -15,8 +15,11 @@ export default {
     debug: config.isDev,
     logRequestStart: false,
     logRequestComplete: false,
-    ignoreFunc: (_options, request) => {
-      return request.path.startsWith("/assets");
+    ignoreFunc: async (_options, request) => {
+      return (
+        request.path.startsWith("/assets") ||
+        request.path === "/session/keep-alive"
+      );
     },
     redact: {
       paths: config.logRedactPaths,
