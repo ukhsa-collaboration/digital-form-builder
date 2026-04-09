@@ -26,9 +26,9 @@ export const configureCrumbPlugin = (
           skippedRoutes.find((route) => `${request.path}`.startsWith(route)) ??
           false;
         if (isSkippedRoute) {
-          request.logger.info(
-            ["Crumb", "CSRF", "Skipping route"],
-            `${request.url}`
+          request.logger.warn(
+            ["Crumb", "CSRF"],
+            `Skipping CSRF check — POST with no payload on ${request.path}`
           );
         }
 
