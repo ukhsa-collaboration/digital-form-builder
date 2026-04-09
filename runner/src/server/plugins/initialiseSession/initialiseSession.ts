@@ -27,28 +27,6 @@ export const initialiseSession: Plugin<InitialiseSession> = {
   name: "initialiseSession",
   register: async function (server, options) {
     const { safelist } = options;
-
-    server.route({
-      method: "POST",
-      path: "/session/keep-alive",
-      options: {
-        auth: false,
-      },
-      handler: async (request, h) => {
-        const { cacheService } = request.services([]);
-
-        // Read existing state
-        const state = await cacheService.getState(request);
-
-        if (state) {
-          // Re-save without changes → refresh TTL
-          await cacheService.mergeState(request, {});
-        }
-
-        return h.response().code(204);
-      },
-    });
-
     server.route({
       method: "GET",
       path: "/session/{token}",
@@ -142,6 +120,27 @@ export const initialiseSession: Plugin<InitialiseSession> = {
         });
 
         return h.response({ token }).code(201);
+      },
+    });
+
+    server.route({
+      method: "POST",
+      path: "/session/keep-alive",
+      options: {
+        auth: false,
+      },
+      handler: async (request, h) => {
+        const { cacheService } = request.services([]);
+
+        // Read existing state
+        const state = await cacheService.getState(request);
+
+        if (state) {
+          // Re-save without changes → refresh TTL
+          await cacheService.mergeState(request, {});
+        }
+
+        return h.response().code(204);
       },
     });
   },
