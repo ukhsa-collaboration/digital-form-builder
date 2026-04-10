@@ -31,10 +31,10 @@ export class WebhookService {
     authHeaders?: Record<string, string>
   ) {
     // Commented out due to potential for logging PII
-    // this.logger.info(
-    //   ["WebhookService", "postRequest body"],
-    //   JSON.stringify(data)
-    // );
+    this.logger.info(
+      ["WebhookService", "postRequest body"],
+      JSON.stringify(data)
+    );
 
     let request = method === "POST" ? post : put;
     try {
@@ -69,10 +69,12 @@ export class WebhookService {
         `Webhook request to ${url} submitted OK`
       );
       // Commented out due to potential for logging PII
-      // this.logger.debug(
-      //   ["WebhookService", "postRequest", `REF: ${reference}`],
-      //   JSON.stringify(payload)
-      // );
+
+      this.logger.debug(
+        ["WebhookService", "postRequest", `REF: ${reference}`],
+        JSON.stringify(payload)
+      );
+
       return reference;
     } catch (error) {
       this.logger.error(["WebhookService", "postRequest"], error);
