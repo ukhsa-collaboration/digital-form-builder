@@ -1,12 +1,12 @@
 {
   "metadata": {},
   "startPage": "/start",
-  "name": "XGOV SOW TEST PAGE",
+  "name": "RPS TEST PAGE",
   "skipSummary": true,
   "pages": [
     {
       "path": "/start",
-      "title": "XGOV SOW TEST PAGE",
+      "title": "RPS TEST PAGE",
       "components": [
         {
           "name": "Feedback",
