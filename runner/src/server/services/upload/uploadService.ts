@@ -1,9 +1,9 @@
 import FormData from "form-data";
 
 import config from "../../config";
-import { get, post } from "../httpService";
-import { createHmacRaw } from "../../utils/hmac";
+import { get, post, Response } from "../httpService";
 import { HapiRequest, HapiResponseToolkit, HapiServer } from "../../types";
+import { ServerConfiguration } from "src/server/utils/configSchema";
 
 type Payload = HapiRequest["payload"];
 type HapiReadableStream = ReadableStream & {
@@ -110,7 +110,10 @@ export class UploadService {
     });
   }
 
-  async uploadDocuments(streams: any[], request: HapiRequest) {
+  async uploadDocuments(
+    streams: HapiReadableStream[],
+    uploadConfig: { url: string; additionalHeaders?: Record<string, string> }
+  ) {
     const form = new FormData();
     for (const stream of streams) {
       form.append("files", stream, {
@@ -119,39 +122,20 @@ export class UploadService {
       });
     }
 
-    const formHeaders = form.getHeaders();
+    let formHeaders = form.getHeaders();
 
-    const id = request.params?.id;
-    const forms = request.server?.app?.forms;
-    const model = id && forms?.[id];
-    const hmacKey = model?.def?.fileUploadHmacSharedKey;
+    if (uploadConfig.additionalHeaders) {
+      /* Support form specific file upload api security headers */
+      formHeaders = { ...formHeaders, ...uploadConfig.additionalHeaders };
+    }
 
-    const [hmacSignature, requestTime] = await createHmacRaw(
-      request.yar.id,
-      hmacKey
-    );
-
-    const customSecurityHeaders = {
-      "X-Request-ID": request.yar.id.toString(),
-      "X-HMAC-Signature": hmacSignature.toString(),
-      "X-HMAC-Time": requestTime.toString(),
-    };
-
-    const headers = {
-      ...formHeaders,
-      ...customSecurityHeaders,
-    };
-
-    const requestData = { headers, payload: form };
-    const responseData = await post(
-      `${config.documentUploadApiUrl}/v1/files`,
-      requestData
-    );
+    const requestData = { headers: formHeaders, payload: form };
+    const responseData = await post(`${uploadConfig.url}`, requestData);
 
     return this.parsedDocumentUploadResponse(responseData);
   }
 
-  parsedDocumentUploadResponse({ res, payload }) {
+  parsedDocumentUploadResponse({ res, payload }: Response<any>) {
     const payloadString = payload?.toString?.();
     let payloadJson: any;
     let warning: string | undefined;
@@ -256,6 +240,34 @@ export class UploadService {
       ...mergedObject,
     };
   }
+
+  getFileUploadUrl = (
+    serverConfig: ServerConfiguration,
+    request: HapiRequest
+  ) => {
+    let url = "";
+
+    /* Prioritize form level url */
+    const formId = request.params?.id;
+    if (formId) {
+      const forms = request.server?.app?.forms;
+      if (forms) {
+        const formModel = forms[formId];
+        if (formModel) {
+          const formLevelUploadUrl = formModel.def.documentUploadApiUrl;
+          if (formLevelUploadUrl && formLevelUploadUrl.trim().length > 0)
+            url = formLevelUploadUrl;
+        }
+      }
+    }
+
+    /* Fall back to server level url */
+    if (!url && serverConfig.documentUploadApiUrl) {
+      url = `${serverConfig.documentUploadApiUrl}/v1/files`;
+    }
+
+    return url;
+  };
 }
 
 /**
@@ -282,5 +294,4 @@ const contentTypeToName = {
   "application/vnd.openxmlformats-officedocument.presentationml.presentation":
     "pptx",
   "application/vnd.ms-excel": "xls",
-  // "application/zip": "zip"
 };
