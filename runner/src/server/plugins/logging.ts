@@ -14,10 +14,11 @@ export default {
     debug: config.isDev,
     logRequestStart: config.isDev,
     logRequestComplete: config.isDev,
-    ignoreFunc: (_options, request) => request.path.startsWith("/assets"),
+    ignoreFunc: async (_options, request) => true,
     redact: {
       paths: config.logRedactPaths,
       censor: "REDACTED",
     },
+    ignorePaths: ["/assets"],
   },
 };
