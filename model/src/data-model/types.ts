@@ -209,6 +209,12 @@ export interface SecureFormSubmissionConfig extends MsalAuthorizerConfig {
   useAwsWafUserAgentWorkaround?: boolean;
 }
 
+export type AddressLookupServiceConfig = {
+  apimBaseUrl: string;
+  callingApplication: string;
+  subscriptionKey?:  string;
+}
+
 /**
  * `FormDefinition` is a typescript representation of `Schema`
  */
@@ -246,4 +252,5 @@ export type FormDefinition = {
   confirmationSessionTimeout: number | undefined;
   returnTo?: boolean | undefined;
   secureFormSubmissionConfig: SecureFormSubmissionConfig;
+  addressLookupServiceConfig?: AddressLookupServiceConfig;
 };

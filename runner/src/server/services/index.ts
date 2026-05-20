@@ -14,3 +14,4 @@ export {
   SecureFormSubmissionService,
   getSecureFormSubmissionServiceInstance,
 } from "./secureFormSubmissionService";
+export { AddressLookupService } from "./addressLookupService"

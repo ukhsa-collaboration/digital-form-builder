@@ -37,6 +37,7 @@ import {
   FormSecurityService,
   SecureFormSubmissionService,
   getSecureFormSubmissionServiceInstance,
+  AddressLookupService
 } from "./services";
 import { HapiRequest, HapiResponseToolkit, RouteConfig } from "./types";
 import getRequestInfo from "./utils/getRequestInfo";
@@ -121,6 +122,7 @@ async function createServer(routeConfig: RouteConfig) {
     AddressService,
     ExitService,
     FormSecurityService,
+    AddressLookupService,
   ]);
   if (!config.documentUploadApiUrl) {
     server.registerService([
