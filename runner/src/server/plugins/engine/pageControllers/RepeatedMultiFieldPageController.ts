@@ -1,7 +1,7 @@
 import { HapiRequest, HapiResponseToolkit } from "server/types";
 import { PageController } from "./PageController";
 import { FormModel } from "server/plugins/engine/models";
-import { RepeatingSummaryPageController } from "./RepeatingSummaryPageController";
+import { RepeatedMultiFieldSummaryPageController } from "./RepeatedMultiFieldSummaryPageController";
 import { ComponentDef, RepeatingFieldPage } from "@xgovformbuilder/model";
 import { FormComponent } from "../components";
 
@@ -32,7 +32,7 @@ const DEFAULT_OPTIONS = {
  * TODO:- this will be refactored as per https://github.com/XGovFormBuilder/digital-form-builder/discussions/855
  */
 export class RepeatedMultiFieldPageController extends PageController {
-  summary: RepeatingSummaryPageController;
+  summary: RepeatedMultiFieldSummaryPageController;
   inputComponent: FormComponent;
   isRepeatingFieldPageController = true;
   isSamePageDisplayMode: boolean;
@@ -62,10 +62,10 @@ export class RepeatedMultiFieldPageController extends PageController {
 
     this.inputComponent = inputComponent as FormComponent;
 
-    this.summary = new RepeatingSummaryPageController(
+    this.summary = new RepeatedMultiFieldSummaryPageController(
       model,
       pageDef,
-      this.inputComponent
+      this.inputComponent // should take this.sectionKey instead
     );
     this.summary.getPartialState = this.getPartialState;
     this.summary.nextIndex = this.nextIndex;
