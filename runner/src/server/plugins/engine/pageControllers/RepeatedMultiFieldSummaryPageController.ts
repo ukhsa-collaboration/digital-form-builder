@@ -12,13 +12,12 @@ export class RepeatedMultiFieldSummaryPageController extends PageController {
   getPartialState!: RepeatingFieldPageController["getPartialState"];
   options!: RepeatingFieldPageController["options"];
   removeAtIndex!: RepeatingFieldPageController["removeAtIndex"];
-  hideRowTitles!: RepeatingFieldPageController["hideRowTitles"];
 
-  inputComponent;
+  sectionKey: string;
 
-  constructor(model, pageDef, inputComponent) {
+  constructor(model, pageDef, sectionKey) {
     super(model, pageDef);
-    this.inputComponent = inputComponent;
+    this.sectionKey = sectionKey;
   }
 
   get getRouteHandler() {
@@ -39,21 +38,25 @@ export class RepeatedMultiFieldSummaryPageController extends PageController {
    * Returns an async function. This is called in plugin.ts when there is a GET request at `/{id}/{path*}`,
    */
   makeGetRouteHandler() {
+    console.log("MultiFieldSummary makeGetRouteHandler");
     return async (request: HapiRequest, h: HapiResponseToolkit) => {
-      const { cacheService } = request.services([]);
+      const { cacheService } = request.services([]); // Unsure what this line does
 
       const { removeAtIndex } = request.query;
       if (removeAtIndex ?? false) {
-        return this.removeAtIndex(request, h);
+        return this.removeAtIndex(request, h); // Unsure about this line as well
       }
 
       const state = await cacheService.getState(request);
       const { progress = [] } = state;
+
+      // Unsure what the purpose of this line is as well
       progress?.push(`/${this.model.basePath}${this.path}?view=summary`);
       await cacheService.mergeState(request, { progress });
 
       const viewModel = this.getViewModel(state);
 
+      console.log("MultiFieldSummary makeGetRouteHandler end");
       return h.view("repeating-multi-field-summary", viewModel);
     };
   }
@@ -84,11 +87,18 @@ export class RepeatedMultiFieldSummaryPageController extends PageController {
     };
   };
 
+  // I don't understand why there is a seprate get view model function
+  // Is the view model not defined by the template
   getViewModel(formData) {
     const baseViewModel = super.getViewModel(formData);
+
+    // Unsure what the purpose of get partial state is if we are passign in thw whole state
     const answers = this.getPartialState(formData);
+
+    // I believe this cas to be changed to something like get cards from answers
     const rows = this.getRowsFromAnswers(answers, "summary");
 
+    // Ok this will allow me to change the way I pass in the details
     return {
       ...baseViewModel,
       customText: this.options.customText,
@@ -109,6 +119,7 @@ export class RepeatedMultiFieldSummaryPageController extends PageController {
         key: {
           text: titleWithIteration,
           classes: `${
+            // Probably should remove this or do it another way
             this.hideRowTitles ? "govuk-summary-list__row--hidden-titles" : ""
           }`,
         },

@@ -2,7 +2,7 @@ import { HapiRequest, HapiResponseToolkit } from "server/types";
 import { PageController } from "./PageController";
 import { FormModel } from "server/plugins/engine/models";
 import { RepeatedMultiFieldSummaryPageController } from "./RepeatedMultiFieldSummaryPageController";
-import { ComponentDef, RepeatingFieldPage } from "@xgovformbuilder/model";
+import { ComponentDef, RepeatingMultiFieldPage } from "@xgovformbuilder/model";
 import { FormComponent } from "../components";
 
 import joi from "joi";
@@ -33,20 +33,24 @@ const DEFAULT_OPTIONS = {
  */
 export class RepeatedMultiFieldPageController extends PageController {
   summary: RepeatedMultiFieldSummaryPageController;
-  inputComponent: FormComponent;
+  inputComponent: FormComponent[];
   isRepeatingFieldPageController = true;
   isSamePageDisplayMode: boolean;
   isSeparateDisplayMode: boolean;
   hideRowTitles: boolean;
 
-  options: RepeatingFieldPage["options"];
+  options: RepeatingMultiFieldPage["options"];
 
-  constructor(model: FormModel, pageDef: RepeatingFieldPage) {
+  constructor(model: FormModel, pageDef: RepeatingMultiFieldPage) {
     super(model, pageDef);
-    const inputComponent = this.components?.items?.find(isInputType);
-    if (!inputComponent) {
+
+    // Change this so it is now a lits to filter
+    const inputComponents = this.components?.items?.find(isInputType);
+
+    const sectionKey = pageDef.options?.sectionKey;
+    if (!sectionKey) {
       throw Error(
-        "RepeatingFieldPageController initialisation failed, no input component (non-content) was found"
+        "RepeatedMultiFieldPage initialisation failed, no section key was found"
       );
     }
 
@@ -60,21 +64,21 @@ export class RepeatedMultiFieldPageController extends PageController {
     this.isSeparateDisplayMode = this.options.summaryDisplayMode.separatePage!;
     this.hideRowTitles = this.options.summaryDisplayMode.hideRowTitles!;
 
-    this.inputComponent = inputComponent as FormComponent;
+    this.inputComponents = inputComponents as FormComponent[];
 
     this.summary = new RepeatedMultiFieldSummaryPageController(
       model,
       pageDef,
-      this.inputComponent // should take this.sectionKey instead
+      sectionKey
     );
     this.summary.getPartialState = this.getPartialState;
     this.summary.nextIndex = this.nextIndex;
     this.summary.removeAtIndex = this.removeAtIndex;
-    this.summary.hideRowTitles = this.hideRowTitles;
 
     this.summary.options = this.options;
   }
 
+  // OK COPY STATE SCHEMA FROM THE ONE I WROTE PREVIOUSLY
   get stateSchema() {
     const name = this.inputComponent.name;
     const parentSchema = super.stateSchema.fork([name], (schema) => {
@@ -166,13 +170,15 @@ export class RepeatedMultiFieldPageController extends PageController {
         return h.redirect(this.getNext(rest));
       }
 
+      // THIS SHOULD DEFINELTY CHANGED TO HANDLE THE NESTED STRUCTURE IN THE STATE
       const modifyUpdate = (update) => {
-        const key = this.inputComponent.name;
-        const value = update[key];
-        const wrappedValue = !Array.isArray(value) ? [value] : value;
-        return {
-          [key]: [...new Set(wrappedValue)],
-        };
+        // const key = this.inputComponent.name;
+        // const value = update[key];
+        // const wrappedValue = !Array.isArray(value) ? [value] : value;
+        // return {
+        //   [key]: [...new Set(wrappedValue)],
+        // };
+        console.log("modifyUpdate called with update:", update);
       };
 
       const response = await this.handlePostRequest(request, h, {
@@ -195,10 +201,14 @@ export class RepeatedMultiFieldPageController extends PageController {
   }
 
   getPartialState(state, atIndex?: number) {
-    const keyName = this.inputComponent.name;
+    // I guess I will have to change this to sectionKey
+    // const keyName = this.inputComponent.name;
+    const keyName = this.pageDef.sectionKey ?? "";
     const sectionName = this.pageDef.sectionName ?? "";
+
     const path = [sectionName, keyName].filter(Boolean).join(".");
-    const partial = reach(state, path);
+
+    const partial = reach(state, path); // TODO: look up reach function
     if (atIndex ?? false) {
       return partial[atIndex!];
     }

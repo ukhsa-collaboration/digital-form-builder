@@ -38,9 +38,9 @@ export interface RepeatingFieldPage extends Page {
   };
 }
 export interface RepeatingMultiFieldPage extends Page {
-  controller: "RepeatingMultiFieldPageController";
-  sectionKey: string;
+  controller: "RepeatedMultiFieldPageController";
   options: {
+    sectionKey: string;
     summaryDisplayMode?: {
       samePage?: boolean;
       separatePage?: boolean;
