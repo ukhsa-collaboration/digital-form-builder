@@ -68,13 +68,12 @@
       ],
       "next": [
         {
-          "path": "/example",
-          "condition": "IfPeopleYouLiveWith"
+          "path": "/example-multi-field"
         }
       ]
     },
     {
-      "path": "/example",
+      "path": "/example-multi-field",
       "title": "Page 2 - Repeating field with multiple inputs example",
       "controller": "RepeatedMultiFieldPageController",
       "options": {
@@ -89,14 +88,15 @@
       },
       "components": [
         {
-          "name": "languagesProvided",
+          "name": "live_with_others",
           "options": {
-            "hideTitle": true
+            "hideTitle": true,
+            "customValidationMessages": {
+              "any.required": "Select 'yes' if you live with other people"
+            }
           },
-          "list": "languages",
-          "type": "AutocompleteField",
-          "title": "Language",
-          "hint": "Start typing and select a language. Add each language separately. Include all the languages you provide a service in, apart from English.",
+          "type": "YesNoField",
+          "title": "Do you live with other people?",
           "schema": {}
         }
       ],
