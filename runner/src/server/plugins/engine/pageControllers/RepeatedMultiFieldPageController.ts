@@ -88,6 +88,7 @@ export class RepeatedMultiFieldPageController extends PageController {
   }
 
   makeGetRouteHandler() {
+    console.log("RepeatedMultiFieldPageController makeGetRouteHandler");
     return async (request: HapiRequest, h: HapiResponseToolkit) => {
       const { query } = request;
       const { removeAtIndex, view, returnUrl } = query;

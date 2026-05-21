@@ -88,16 +88,43 @@
       },
       "components": [
         {
-          "name": "live_with_others",
+          "name": "first_name",
           "options": {
-            "hideTitle": true,
             "customValidationMessages": {
-              "any.required": "Select 'yes' if you live with other people"
+              "string.pattern.base": "Enter a valid first (given) name"
             }
           },
-          "type": "YesNoField",
-          "title": "Do you live with other people?",
-          "schema": {}
+          "type": "TextField",
+          "title": "Your first (given) name",
+          "schema": {
+            "regex": "(?=.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*)^[\\sA-Za-zÀ-ÖØ-öø-ÿ'\\-,.]*$"
+          }
+        },
+        {
+          "name": "last_name",
+          "options": {
+            "customValidationMessages": {
+              "string.pattern.base": "Enter a valid last (family) name"
+            }
+          },
+          "type": "TextField",
+          "title": "Your last (family) name",
+          "schema": {
+            "regex": "(?=.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*)^[\\sA-Za-zÀ-ÖØ-öø-ÿ'\\-,.]*$"
+          }
+        },
+        {
+          "name": "VnYxYja",
+          "options": {},
+          "type": "Html",
+          "content": "<br/><h2 class='govuk-heading-m'>Date of birth</h2>"
+        },
+        {
+          "name": "date_of_birth",
+          "options": { "hideTitle": true },
+          "type": "DatePartsField",
+          "title": "Your date of birth",
+          "hint": "For example, 27 3 2005"
         }
       ],
       "next": [{ "path": "/last-page" }]

@@ -37,6 +37,20 @@ export interface RepeatingFieldPage extends Page {
     };
   };
 }
+export interface RepeatingMultiFieldPage extends Page {
+  controller: "RepeatingMultiFieldPageController";
+  sectionKey: string;
+  options: {
+    summaryDisplayMode?: {
+      samePage?: boolean;
+      separatePage?: boolean;
+      hideRowTitles?: boolean;
+    };
+    customText?: {
+      separatePageTitle?: string;
+    };
+  };
+}
 export interface CheckpointSummaryPage extends Page {
   controller: "CheckpointSummaryPageController";
   options: {
