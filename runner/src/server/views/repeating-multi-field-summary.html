@@ -8,6 +8,19 @@
 
 {% block content %}
   <div class="govuk-main-wrapper">
+        <h2 class="govuk-heading-m">
+    {{ details | dump  }}
+    </h2>
+    <h2 class="govuk-heading-m">
+    {% for detail in details %}
+        {% if details.length === 1 %}
+          Some text to see if this is printed{{ detail }}
+        {% else %}
+          Some text to see if this is printed {{ detail }}
+        {% endif %}
+      {% endfor %}
+    </h2>
+    <p>Is templeate refernce updated ? </p>
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-two-thirds">
         <h1 class="govuk-heading-l">{{customText.separatePageTitle or pageTitle }}</h1>
