@@ -5,6 +5,9 @@ import {
   HapiLifecycleMethod,
 } from "server/types";
 import { RepeatingFieldPageController } from "./RepeatingFieldPageController";
+import { summaryDetailsTransformationMap } from "...";
+import { clone } from "...";
+import { logger } from "...";
 export class RepeatedMultiFieldSummaryPageController extends PageController {
   private getRoute!: HapiLifecycleMethod;
   private postRoute!: HapiLifecycleMethod;
@@ -49,17 +52,19 @@ export class RepeatedMultiFieldSummaryPageController extends PageController {
       // }
 
       const state = await cacheService.getState(request);
-      const { progress = [] } = state;
+      const { progress = [] } = state; // I forget what this was used for TODO: re - insert
 
       // Unsure what the purpose of this line is as well
       // progress?.push(`/${this.model.basePath}${this.path}?view=summary`);
       // await cacheService.mergeState(request, { progress });
 
-      // const viewModel = this.getViewModel(state);
+      const viewModel = this.getViewModel(state);
+      console.log(
+        "View model in multi-field summary page controller",
+        viewModel
+      );
 
-      // console.log("MultiFieldSummary makeGetRouteHandler end");
-      // return h.view("repeating-multi-field-summary", viewModel);
-      return h.view("repeating-multi-field-summary");
+      return h.view("repeating-multi-field-summary", viewModel);
       // };
     };
   }
@@ -90,60 +95,138 @@ export class RepeatedMultiFieldSummaryPageController extends PageController {
     };
   };
 
-  // I don't understand why there is a seprate get view model function
-  // Is the view model not defined by the template
-  getViewModel(formData) {
+  getViewModel(formData: any) {
     const baseViewModel = super.getViewModel(formData);
+    const entries = this.getPartialState(formData) ?? [];
 
-    // Unsure what the purpose of get partial state is if we are passign in thw whole state
-    const answers = this.getPartialState(formData);
+    // 1. Build details in the canonical SummaryViewModel shape.
+    let details = this.buildDetails(entries);
 
-    // I believe this cas to be changed to something like get cards from answers
-    const rows = this.getRowsFromAnswers(answers, "summary");
+    // 2. Run the per-form transform against that shape (same pattern as SummaryViewModel).
+    const transformDetails =
+      summaryDetailsTransformationMap[this.model.basePath];
+    if (transformDetails) {
+      const clonedDetails = clone(details);
+      try {
+        details = transformDetails(clonedDetails);
+      } catch (err) {
+        logger.error({ err }, "Error transforming repeating-section summary");
+      }
+    }
 
-    // Ok this will allow me to change the way I pass in the details
+    // 3. Map the (possibly transformed) details into govuk summary cards.
     return {
       ...baseViewModel,
       customText: this.options.customText,
-      details: { rows },
+      details: { cards: this.detailsToCards(details) },
     };
   }
 
-  getRowsFromAnswers(answers, view = false) {
-    const { title = "" } = this.inputComponent;
-    const listValueToText = this.inputComponent.list?.items?.reduce(
-      (prev, curr) => ({ ...prev, [curr.value]: curr.text }),
-      {}
-    );
+  private buildDetails(entries: Array<Record<string, unknown>>) {
+    return entries.map((entry, index) => ({
+      name: `${this.sectionKey}.${index}`,
+      title: this.cardTitle(index),
+      index, // kept so detailsToCards can recover the entry index post-transform
+      items: (this.inputComponents ?? []).map((comp: any) => ({
+        name: comp.name,
+        label: comp.title ?? comp.name,
+        value: this.formatValue(comp, entry[comp.name]),
+        url: `/${this.model.basePath}${this.path}?view=${index}`,
+      })),
+    }));
+  }
 
-    return answers?.map((value, i) => {
-      const titleWithIteration = `${title} ${i + 1}`;
+  private cardTitle(index: number): string {
+    const tmpl = (this.options?.customText as any)?.cardTitle ?? "Item {index}";
+    return tmpl.replace("{index}", String(index + 1));
+  }
+
+  private formatValue(comp: any, value: unknown): string {
+    if (value === undefined || value === null || value === "") return "";
+
+    // Selection fields store a value but display text — map it.
+    const listText = comp.list?.items?.find((i: any) => i.value === value)
+      ?.text;
+    if (listText !== undefined) return listText;
+
+    // Composite components (e.g. ContactDetailsCollection) store an object.
+    if (typeof value === "object") {
+      return Object.values(value as Record<string, unknown>)
+        .filter((v) => v !== undefined && v !== null && v !== "")
+        .join(", ");
+    }
+
+    return String(value);
+  }
+
+  private detailsToCards(details: any[]) {
+    return details.map((detail, i) => {
+      const index = detail.index ?? i;
+      const title = detail.title ?? this.cardTitle(index);
       return {
-        key: {
-          text: titleWithIteration,
-          classes: `${
-            // Probably should remove this or do it another way
-            this.hideRowTitles ? "govuk-summary-list__row--hidden-titles" : ""
-          }`,
+        card: {
+          title: { text: title },
+          actions: {
+            items: [
+              {
+                href: `?view=${index}`,
+                text: "Change",
+                visuallyHiddenText: title,
+              },
+              {
+                href: `?removeAtIndex=${index}`,
+                text: "Remove",
+                visuallyHiddenText: title,
+              },
+            ],
+          },
         },
-        value: {
-          text: listValueToText?.[value] ?? value,
-          classes: `${
-            this.hideRowTitles ? "govuk-summary-list__key--hidden-titles" : ""
-          }`,
-        },
-        actions: {
-          items: [
-            {
-              href: `?removeAtIndex=${i}${view ? `&view=${view}` : ``}`,
-              text: "Remove",
-              visuallyHiddenText: titleWithIteration,
-            },
-          ],
-        },
+        rows: (detail.items ?? [])
+          .filter((item: any) => item.value !== "" && item.value != null)
+          .map((item: any) => ({
+            key: { text: item.label ?? item.name },
+            value: { text: item.value },
+          })),
       };
     });
   }
+
+  // I think this function is no longer used
+  // getRowsFromAnswers(answers, view = false) {
+  //   const { title = "" } = this.inputComponent;
+  //   const listValueToText = this.inputComponent.list?.items?.reduce(
+  //     (prev, curr) => ({ ...prev, [curr.value]: curr.text }),
+  //     {}
+  //   );
+
+  //   return answers?.map((value, i) => {
+  //     const titleWithIteration = `${title} ${i + 1}`;
+  //     return {
+  //       key: {
+  //         text: titleWithIteration,
+  //         classes: `${
+  //           // Probably should remove this or do it another way
+  //           this.hideRowTitles ? "govuk-summary-list__row--hidden-titles" : ""
+  //         }`,
+  //       },
+  //       value: {
+  //         text: listValueToText?.[value] ?? value,
+  //         classes: `${
+  //           this.hideRowTitles ? "govuk-summary-list__key--hidden-titles" : ""
+  //         }`,
+  //       },
+  //       actions: {
+  //         items: [
+  //           {
+  //             href: `?removeAtIndex=${i}${view ? `&view=${view}` : ``}`,
+  //             text: "Remove",
+  //             visuallyHiddenText: titleWithIteration,
+  //           },
+  //         ],
+  //       },
+  //     };
+  //   });
+  // }
 
   /**
    * Returns an async function. This is called in plugin.ts when there is a POST request at `/{id}/{path*}`.
@@ -155,7 +238,7 @@ export class RepeatedMultiFieldSummaryPageController extends PageController {
       const state = await cacheService.getState(request);
 
       if (request.payload?.next === "increment") {
-        const nextIndex = this.nextIndex(state);
+        const nextIndex = this.nextIndex(state); // = list.length, the next free slot
         return h.redirect(
           `/${this.model.basePath}${this.path}?view=${nextIndex}`
         );
