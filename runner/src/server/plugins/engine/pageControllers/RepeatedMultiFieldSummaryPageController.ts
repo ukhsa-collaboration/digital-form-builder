@@ -39,25 +39,28 @@ export class RepeatedMultiFieldSummaryPageController extends PageController {
    */
   makeGetRouteHandler() {
     console.log("MultiFieldSummary makeGetRouteHandler");
+    // TODO TODO TODO FAILS HERE SGIYKD JUST SKIP FOR NOW
     return async (request: HapiRequest, h: HapiResponseToolkit) => {
       const { cacheService } = request.services([]); // Unsure what this line does
 
-      const { removeAtIndex } = request.query;
-      if (removeAtIndex ?? false) {
-        return this.removeAtIndex(request, h); // Unsure about this line as well
-      }
+      // const { removeAtIndex } = request.query;
+      // if (removeAtIndex ?? false) {
+      //   return this.removeAtIndex(request, h); // Unsure about this line as well
+      // }
 
       const state = await cacheService.getState(request);
       const { progress = [] } = state;
 
       // Unsure what the purpose of this line is as well
-      progress?.push(`/${this.model.basePath}${this.path}?view=summary`);
-      await cacheService.mergeState(request, { progress });
+      // progress?.push(`/${this.model.basePath}${this.path}?view=summary`);
+      // await cacheService.mergeState(request, { progress });
 
-      const viewModel = this.getViewModel(state);
+      // const viewModel = this.getViewModel(state);
 
-      console.log("MultiFieldSummary makeGetRouteHandler end");
-      return h.view("repeating-multi-field-summary", viewModel);
+      // console.log("MultiFieldSummary makeGetRouteHandler end");
+      // return h.view("repeating-multi-field-summary", viewModel);
+      return h.view("repeating-multi-field-summary");
+      // };
     };
   }
 
