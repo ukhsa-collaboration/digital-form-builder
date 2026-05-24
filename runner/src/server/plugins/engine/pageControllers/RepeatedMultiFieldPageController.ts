@@ -104,7 +104,8 @@ export class RepeatedMultiFieldPageController extends PageController {
     this.summary = new RepeatedMultiFieldSummaryPageController(
       model,
       pageDef,
-      this.sectionKey
+      this.sectionKey,
+      this.inputComponents
     );
     this.summary.getPartialState = this.getPartialState;
     this.summary.nextIndex = this.nextIndex;
@@ -151,164 +152,148 @@ export class RepeatedMultiFieldPageController extends PageController {
   }
 
   makeGetRouteHandler() {
-    console.log("RepeatedMultiFieldPageController makeGetRouteHandler");
     return async (request: HapiRequest, h: HapiResponseToolkit) => {
       const { query } = request;
-      const { removeAtIndex, view, returnUrl } = query;
+      const { removeAtIndex, remove, view, returnUrl } = query;
 
-      if (removeAtIndex ?? false) {
+      if (removeAtIndex !== undefined || remove !== undefined) {
         return this.removeAtIndex(request, h);
       }
 
+      // Not sure if I am using return URL anymore why is this here ? TODO: check if this is needed
       if (view === "summary" || returnUrl) {
         return this.summary.getRouteHandler(request, h);
       }
 
-      if ((view ?? false) || this.isSamePageDisplayMode) {
+      // Editing an existing entry: ?view=N where N is a row index.
+      // Not sure I feel like the logic of pre filling this based on components should go here
+      const isIndexView =
+        view !== undefined && view !== "" && !isNaN(Number(view));
+
+      if (isIndexView) {
         const response = await super.makeGetRouteHandler()(request, h);
         const { cacheService } = request.services([]);
         const state = await cacheService.getState(request);
-        const partialState = this.getPartialState(state, view);
+        const entry = this.getPartialState(state, view) ?? {};
+
         response.source.context.components &&= response.source.context.components.map(
           (component) => {
-            const { model } = component;
-            model.value = partialState;
-            model.items &&= model.items.filter(
-              (item) => !state[model.name]?.includes(item.value)
+            console.log(
+              "pre-filling component",
+              component.name,
+              "with value from entry:",
+              entry
             );
-            return {
-              ...component,
-              model,
-            };
+            const { model } = component;
+            model.value = entry[model.name];
+            return { ...component, model };
           }
         );
 
-        this.addRowsToViewContext(response, state);
         return response;
       }
+
       return super.makeGetRouteHandler()(request, h);
     };
   }
 
-  addRowsToViewContext(response, state) {
-    if (this.options!.summaryDisplayMode!.samePage) {
-      const rows = this.summary.getRowsFromAnswers(this.getPartialState(state));
-      response.source.context.details = { rows };
-    }
-  }
-
+  // Check this funciton
   async removeAtIndex(request, h) {
-    console.log("this is the remove at index function");
-    // const { query } = request;
-    // const { removeAtIndex, view } = query;
-    // const { cacheService } = request.services([]);
-    // let state = await cacheService.getState(request);
-    // const key = this.inputComponent.name;
-    // const answers = state[key];
-    // answers?.splice(removeAtIndex, 1);
-    // await cacheService.mergeState(request, { [key]: answers });
-    // if (state[key]?.length < 1) {
-    //   return h.redirect("?view=0");
-    // }
+    console.log("MICOL MICOL MICOL RUNNING NEW REMOVE INDEX:", request.query);
+    console.log("removeAtIndex called with query:", request.query);
+    const { query } = request;
+    const { cacheService } = request.services([]);
+    const state = await cacheService.getState(request);
 
-    // return h.redirect(`?view=${view ?? 0}`);
+    const index = Number(query.removeAtIndex ?? query.remove);
+    console.log("Parsed index to remove:", index);
+
+    const current = this.getPartialState(state);
+    const list = Array.isArray(current) ? [...current] : [];
+    console.log("Current list before removal:", list);
+
+    if (!Number.isNaN(index)) {
+      console.log("Removing at index:", index);
+      list.splice(index, 1);
+    }
+
+    await cacheService.mergeState(request, { [this.sectionKey]: list });
+    console.log("Updated list after removal:", list);
+
+    if (list.length < 1) {
+      return h.redirect(`/${this.model.basePath}${this.path}?view=0`);
+    }
+    return h.redirect(`/${this.model.basePath}${this.path}?view=summary`);
   }
 
   makePostRouteHandler() {
     return async (request: HapiRequest, h: HapiResponseToolkit) => {
       const { query } = request;
       const { cacheService } = request.services([]);
-      const state = await cacheService.getState(request);
 
-      // Summary-page POST ("add another" / continue buttons rendered by the
-      // separate summary view) is owned by the summary controller.
+      // Summary-page POSTs are owned by the summary controller.
       if (query.view === "summary") {
         return this.summary.postRouteHandler(request, h);
       }
 
-      // "Continue" leaves the repeating section. Separate-page mode routes to the
-      // summary first (so the user can review / add more); otherwise normal next.
-      if (request?.payload?.next === "continue") {
-        const { next, ...rest } = request.payload;
-        if (this.isSeparateDisplayMode) {
-          return h.redirect(`/${this.model.basePath}${this.path}?view=summary`);
-        }
-        return h.redirect(this.getNext(rest));
-      }
-
-      // Bundle every input component's posted value into ONE entry object, then
-      // append it (new) or replace it (editing ?view=N) in state[sectionKey].
-      const modifyUpdate = (update: Record<string, unknown>) => {
-        const entry = this.inputComponents.reduce<Record<string, unknown>>(
-          (acc, comp) => {
-            // Only copy keys actually present in the payload, so conditionally
-            // hidden / un-posted fields don't get wiped to undefined on edit.
-            if (comp.name in update) {
-              acc[comp.name] = update[comp.name];
-            }
-            return acc;
-          },
-          {}
-        );
-
-        const current = this.getPartialState(state) ?? [];
-        const list = Array.isArray(current) ? [...current] : [];
-
-        const rawIndex = query.view;
-        const editIndex =
-          rawIndex !== undefined && rawIndex !== "" && !isNaN(Number(rawIndex))
-            ? Number(rawIndex)
-            : undefined;
-
-        if (editIndex !== undefined && editIndex < list.length) {
-          // Replace at index, merging so untouched keys on that entry survive.
-          list[editIndex] = {
-            ...(list[editIndex] as Record<string, unknown>),
-            ...entry,
-          };
-        } else {
-          // New entry (no view, or view === length) → append.
-          list.push(entry);
-        }
-
-        return { [this.sectionKey]: list };
-      };
-
-      // We build the full array ourselves → the merge must REPLACE the section
-      // key, not concat onto it.
+      // 1. VALIDATE FIRST — capture the validated field values, but write nothing
+      //    here (modifyUpdate returns {} so the merge step is a no-op).
+      let validated: Record<string, unknown> = {};
       const response = await this.handlePostRequest(request, h, {
         arrayMerge: false,
-        modifyUpdate,
+        modifyUpdate: (update: Record<string, unknown>) => {
+          validated = update;
+          return {};
+        },
       });
 
-      // Validation failed → re-render with errors (plus the list in same-page mode).
+      // 2. Invalid → re-render the form with its errors. State is untouched.
       if (response?.source?.context?.errors) {
-        this.addRowsToViewContext(response, state);
         return response;
       }
 
-      // Saved. Same-page mode stays and shows the updated list; separate-page
-      // mode bounces to the summary to add another or continue.
-      if (this.isSamePageDisplayMode) {
-        return h.redirect(`/${this.model.basePath}${this.path}`);
+      // 3. Valid → bundle the validated values into one entry and write it.
+      const entry = this.inputComponents.reduce<Record<string, unknown>>(
+        (acc, comp) => {
+          if (comp.name in validated) {
+            acc[comp.name] = validated[comp.name];
+          }
+          return acc;
+        },
+        {}
+      );
+
+      const state = await cacheService.getState(request);
+      const current = this.getPartialState(state);
+      const list = Array.isArray(current) ? [...current] : [];
+
+      const rawIndex = query.view;
+      const editIndex =
+        rawIndex !== undefined && rawIndex !== "" && !isNaN(Number(rawIndex))
+          ? Number(rawIndex)
+          : undefined;
+
+      if (editIndex !== undefined && editIndex < list.length) {
+        list[editIndex] = {
+          ...(list[editIndex] as Record<string, unknown>),
+          ...entry,
+        };
+      } else {
+        list.push(entry);
       }
+
+      await cacheService.mergeState(request, { [this.sectionKey]: list });
+
       return h.redirect(`/${this.model.basePath}${this.path}?view=summary`);
     };
   }
+  getPartialState(state, atIndex?: number | string) {
+    const partial: Array<Record<string, unknown>> =
+      reach(state, this.sectionKey) ?? [];
 
-  getPartialState(state, atIndex?: number) {
-    // I guess I will have to change this to sectionKey
-    // const keyName = this.inputComponent.name;
-    const keyName = this.pageDef.sectionKey ?? "";
-    const sectionName = this.pageDef.sectionName ?? "";
-
-    const path = [sectionName, keyName].filter(Boolean).join(".");
-
-    const partial = reach(state, path); // TODO: look up reach function
-    if (atIndex ?? false) {
-      return partial[atIndex!];
+    if (atIndex !== undefined && atIndex !== null && atIndex !== "") {
+      return partial[Number(atIndex)];
     }
-
     return partial;
   }
 

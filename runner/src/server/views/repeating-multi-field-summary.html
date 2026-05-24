@@ -2,6 +2,7 @@
 {% from "partials/summary-detail.html" import summaryDetail %}
 {% from "summary-list/macro.njk" import govukSummaryList -%}
 {% from "button/macro.njk" import govukButton %}
+{% from "partials/summary-card.html" import summaryCard %}
 
 {% extends 'layout.html' %}
 
@@ -12,15 +13,16 @@
         <h2 class="govuk-heading-m">
     {{ details | dump  }}
     </h2>
+    <h1>List of details</h1>
     <h2 class="govuk-heading-m">
-    <!-- {% for detail in details %}
+    {% for detail in details %}
         {% if details.length === 1 %}
-          Some text to see if this is printed{{ detail }}
+          {{ summaryCard(detail, true) }}
         {% else %}
-          Some text to see if this is printed {{ detail }}
+          {{ summaryCard(detail, false, returnUrl) }}
         {% endif %}
       {% endfor %}
-    </h2> -->
+    </h2>
     <p>Is templeate refernce updated ? </p>
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-two-thirds">
