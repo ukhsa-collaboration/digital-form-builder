@@ -5,15 +5,14 @@ import {
   HapiLifecycleMethod,
 } from "server/types";
 import { RepeatingFieldPageController } from "./RepeatingFieldPageController";
+// import summaryDetailsTransformationsMap from "server/transforms/summaryDetails";
+
 // TODO: re-insert summay details transformation
 // import { SummaryDetailsTransformationMap } from "./summaryDetailsTransformations";
 import { clone } from "hoek";
 
-// import pino from "pino";
-// const logger = pino().child({
-//   name: "RepeatedMultiFieldSummaryPageController",
-// });
-
+import type { SummaryDetailsTransformationMap } from "server/transforms/summaryDetails/types";
+const summaryDetailsTransformations: SummaryDetailsTransformationMap = require("../../../transforms/summaryDetails");
 export class RepeatedMultiFieldSummaryPageController extends PageController {
   private getRoute!: HapiLifecycleMethod;
   private postRoute!: HapiLifecycleMethod;
@@ -46,77 +45,61 @@ export class RepeatedMultiFieldSummaryPageController extends PageController {
    * Returns an async function. This is called in plugin.ts when there is a GET request at `/{id}/{path*}`,
    */
   makeGetRouteHandler() {
-    console.log("MultiFieldSummary makeGetRouteHandler");
-    // TODO TODO TODO FAILS HERE SGIYKD JUST SKIP FOR NOW
     return async (request: HapiRequest, h: HapiResponseToolkit) => {
       const { cacheService } = request.services([]); // Unsure what this line does
 
+      // TODO: check remove function
       const { removeAtIndex } = request.query;
-      console.log("micol, micol micol", removeAtIndex);
       if (removeAtIndex ?? false) {
-        console.log(
-          "removeAtIndex query param detected, calling removeAtIndex handler"
-        );
         return this.removeAtIndex(request, h); // Unsure about this line as well
       }
 
       const state = await cacheService.getState(request);
-      const { progress = [] } = state; // I forget what this was used for TODO: re - insert
+      const { progress = [] } = state; // I forget what this was used for TODO: re-insert
 
       // Unsure what the purpose of this line is as well
       progress?.push(`/${this.model.basePath}${this.path}?view=summary`);
       await cacheService.mergeState(request, { progress });
 
       const viewModel = this.getViewModel(state);
-      console.log(
-        "View model in multi-field summary page controller",
-        viewModel
-      );
 
       // Check this has already filtered out only the relevant entries
       return h.view("repeating-multi-field-summary", viewModel);
-      // };
     };
   }
 
-  // entryToViewModelRow = ([key, value], iteration) => {
-  //   const componentDef = this.pageDef.components.filter(
-  //     (component) => component.name === key
-  //   );
-
-  //   const { title } = componentDef;
-  //   const titleWithIteration = `${title} ${iteration + 1}`;
-  //   return {
-  //     key: {
-  //       text: titleWithIteration,
-  //     },
-  //     value: {
-  //       text: value,
-  //     },
-  //     actions: {
-  //       items: [
-  //         {
-  //           href: `?view=${iteration}`,
-  //           text: "change",
-  //           visuallyHiddenText: titleWithIteration,
-  //         },
-  //       ],
-  //     },
-  //   };
-  // };
-
-  // TODO: consider moving this view model to a seprate class we instantiate in the controller
-  // This class could inherit from the normal Summary View model
+  // Thi some what duplicates the logic in Summary View Model --- consider whether to re-use the Summary View Model instead of having this logic in two places
+  // Descion to not do the above was postponed for now as it would require some refactoring of the Summary View Model
+  // The other suitable option would be to create a View Model that extends Summary View Model and contains this additional logic for handling multiple entries, and then use this new View Model in both the Summary Page Controller and the Repeated Multi Field Summary Page Controller
   getViewModel(formData: any) {
     const baseViewModel = super.getViewModel(formData);
     const entries = this.getPartialState(formData) ?? [];
 
     let details = this.buildDetails(entries);
 
+    // TODO: change transform Detials into a seprate function
+    // Get viewModel currently doesn't take the model
+
+    const transformDetails = summaryDetailsTransformations[this.model.basePath];
+
+    if (transformDetails) {
+      const clonedDetails = clone(details);
+      try {
+        this.details = transformDetails(clonedDetails);
+      } catch (err) {
+        console.error(
+          "Error applying summary details transformation:",
+          err,
+          "Original details:",
+          details
+        );
+      }
+    }
+
     return {
       ...baseViewModel,
       customText: this.options.customText,
-      details, // ← array in the old shape, fed straight to the summaryCard macro
+      details: this.details,
       returnUrl: this.returnUrl,
     };
   }
@@ -126,7 +109,7 @@ export class RepeatedMultiFieldSummaryPageController extends PageController {
       name: String(index), // macro delete link → ?remove={{ data.name }}
       title: this.cardTitle(index), // "Item 1"
       index,
-      card: `?view=${index}`, // macro change link → href="{{ data.card }}"
+      card: `?view=${index}`, // macro change link → href="{{ data.card }}" /// TODO: unsure Where this si actually used
       items: (this.inputComponents ?? []).map((comp: any) => ({
         name: comp.name,
         label: comp.title ?? comp.name,
@@ -137,6 +120,7 @@ export class RepeatedMultiFieldSummaryPageController extends PageController {
   }
 
   private cardTitle(index: number): string {
+    // TODO: the name of this should probably have another default as opposed to "Item {index}", and this default should be used in the summary page template as well, so that it's consistent with the case where there is no custom text at all
     const tmpl = (this.options?.customText as any)?.cardTitle ?? "Item {index}";
     return tmpl.replace("{index}", String(index + 1));
   }
@@ -182,7 +166,7 @@ export class RepeatedMultiFieldSummaryPageController extends PageController {
       const { cacheService } = request.services([]);
       const state = await cacheService.getState(request);
 
-      // This Correctly re-directs back to the next page
+      // This needs to be fixed and logic should live in the main component
       if (request.payload?.next === "increment") {
         const nextIndex = this.nextIndex(state); // = list.length, the next free slot
         return h.redirect(
