@@ -41,9 +41,6 @@ export class RepeatedMultiFieldSummaryPageController extends PageController {
     return this.postRoute;
   }
 
-  /**
-   * Returns an async function. This is called in plugin.ts when there is a GET request at `/{id}/{path*}`,
-   */
   makeGetRouteHandler() {
     return async (request: HapiRequest, h: HapiResponseToolkit) => {
       const { cacheService } = request.services([]); // Unsure what this line does
@@ -68,24 +65,19 @@ export class RepeatedMultiFieldSummaryPageController extends PageController {
     };
   }
 
-  // Thi some what duplicates the logic in Summary View Model --- consider whether to re-use the Summary View Model instead of having this logic in two places
-  // Descion to not do the above was postponed for now as it would require some refactoring of the Summary View Model
+  // This somewhat duplicates the logic in Summary View Model --- consider whether to re-use the Summary View Model instead of having this logic in two places
+  // Decision to not do the above was postponed for now as it would require some refactoring of the Summary View Model
   // The other suitable option would be to create a View Model that extends Summary View Model and contains this additional logic for handling multiple entries, and then use this new View Model in both the Summary Page Controller and the Repeated Multi Field Summary Page Controller
   getViewModel(formData: any) {
     const baseViewModel = super.getViewModel(formData);
     const entries = this.getPartialState(formData) ?? [];
-
     let details = this.buildDetails(entries);
-
-    // TODO: change transform Detials into a seprate function
-    // Get viewModel currently doesn't take the model
 
     const transformDetails = summaryDetailsTransformations[this.model.basePath];
 
     if (transformDetails) {
-      const clonedDetails = clone(details);
       try {
-        this.details = transformDetails(clonedDetails);
+        details = transformDetails(clone(details));
       } catch (err) {
         console.error(
           "Error applying summary details transformation:",
@@ -99,11 +91,12 @@ export class RepeatedMultiFieldSummaryPageController extends PageController {
     return {
       ...baseViewModel,
       customText: this.options.customText,
-      details: this.details,
-      returnUrl: this.returnUrl,
+      details,
+      returnUrl: this.returnUrl, // TODO: check return Url logic here
     };
   }
 
+  // TODO: I think this needs reviewing
   private buildDetails(entries: Array<Record<string, unknown>>) {
     return entries.map((entry, index) => ({
       name: String(index), // macro delete link → ?remove={{ data.name }}
@@ -125,6 +118,7 @@ export class RepeatedMultiFieldSummaryPageController extends PageController {
     return tmpl.replace("{index}", String(index + 1));
   }
 
+  // I don't understand why we need this extra function this should be the same as everyere else
   private formatValue(comp: any, value: unknown): string {
     if (value === undefined || value === null || value === "") return "";
 
@@ -133,7 +127,8 @@ export class RepeatedMultiFieldSummaryPageController extends PageController {
       ?.text;
     if (listText !== undefined) return listText;
 
-    // Dates store ISO strings — format them.
+    // Was this done before?
+    // Is this done in the normal page controller
     if (comp.dataType === "date" || comp.dataType === "monthYear") {
       const d = new Date(value as string);
       if (!isNaN(d.getTime())) {
