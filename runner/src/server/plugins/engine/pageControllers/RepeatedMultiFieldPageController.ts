@@ -66,7 +66,6 @@ export class RepeatedMultiFieldPageController extends PageController {
   summary: RepeatedMultiFieldSummaryPageController;
   inputComponents!: FormComponent[];
   isRepeatingFieldPageController = true;
-  isSamePageDisplayMode: boolean;
   isSeparateDisplayMode: boolean;
   hideRowTitles: boolean;
   sectionKey: string;
@@ -89,7 +88,6 @@ export class RepeatedMultiFieldPageController extends PageController {
       DEFAULT_OPTIONS.summaryDisplayMode.hideRowTitles;
     this.options.customText ??= DEFAULT_OPTIONS.customText;
 
-    this.isSamePageDisplayMode = this.options.summaryDisplayMode.samePage!;
     this.isSeparateDisplayMode = this.options.summaryDisplayMode.separatePage!;
     this.hideRowTitles = this.options.summaryDisplayMode.hideRowTitles!;
 
@@ -156,50 +154,51 @@ export class RepeatedMultiFieldPageController extends PageController {
       const { query } = request;
       const { removeAtIndex, remove, view, returnUrl } = query;
 
+      // TODO: Check this
       if (removeAtIndex !== undefined || remove !== undefined) {
         return this.removeAtIndex(request, h);
       }
 
-      // Not sure if I am using return URL anymore why is this here ? TODO: check if this is needed
+      // Summary view Scenario: ?view=summary or ?returnUrl=/somewhere
       if (view === "summary" || returnUrl) {
         return this.summary.getRouteHandler(request, h);
       }
 
       // Editing an existing entry: ?view=N where N is a row index.
       // Not sure I feel like the logic of pre filling this based on components should go here
-      const isIndexView =
+      const isPastView =
         view !== undefined && view !== "" && !isNaN(Number(view));
 
-      if (isIndexView) {
+      if (isPastView) {
         const response = await super.makeGetRouteHandler()(request, h);
         const { cacheService } = request.services([]);
         const state = await cacheService.getState(request);
         const entry = this.getPartialState(state, view) ?? {};
 
+        // Get Existing values
+        const formData = this.components.getFormDataFromState(entry);
+        const freshModels = this.components.getViewModel(formData);
+
+        // Swap only the model onto the components the base handler already
         response.source.context.components &&= response.source.context.components.map(
           (component) => {
-            console.log(
-              "pre-filling component",
-              component.name,
-              "with value from entry:",
-              entry
+            const fresh = freshModels.find(
+              (c) => c.model?.name === component.model?.name
             );
-            const { model } = component;
-            model.value = entry[model.name];
-            return { ...component, model };
+            return fresh ? { ...component, model: fresh.model } : component;
           }
         );
 
         return response;
       }
 
+      // New entry scenario
       return super.makeGetRouteHandler()(request, h);
     };
   }
 
   // Check this funciton
   async removeAtIndex(request, h) {
-    console.log("MICOL MICOL MICOL RUNNING NEW REMOVE INDEX:", request.query);
     console.log("removeAtIndex called with query:", request.query);
     const { query } = request;
     const { cacheService } = request.services([]);
@@ -241,18 +240,18 @@ export class RepeatedMultiFieldPageController extends PageController {
       let validated: Record<string, unknown> = {};
       const response = await this.handlePostRequest(request, h, {
         arrayMerge: false,
+        // Work arround that allows us to capture errors building on top of Page controller
         modifyUpdate: (update: Record<string, unknown>) => {
           validated = update;
           return {};
         },
       });
 
-      // 2. Invalid → re-render the form with its errors. State is untouched.
       if (response?.source?.context?.errors) {
         return response;
       }
 
-      // 3. Valid → bundle the validated values into one entry and write it.
+      // Valid Path add new entery to array
       const entry = this.inputComponents.reduce<Record<string, unknown>>(
         (acc, comp) => {
           if (comp.name in validated) {
@@ -267,6 +266,7 @@ export class RepeatedMultiFieldPageController extends PageController {
       const current = this.getPartialState(state);
       const list = Array.isArray(current) ? [...current] : [];
 
+      // Checking if edit or new entery
       const rawIndex = query.view;
       const editIndex =
         rawIndex !== undefined && rawIndex !== "" && !isNaN(Number(rawIndex))
