@@ -82,11 +82,21 @@ export class RepeatedMultiFieldPageController extends PageController {
       );
     }
 
-    this.options = pageDef?.options ?? DEFAULT_OPTIONS;
-    this.options.summaryDisplayMode ??= DEFAULT_OPTIONS.summaryDisplayMode;
-    this.options.summaryDisplayMode.hideRowTitles ??=
-      DEFAULT_OPTIONS.summaryDisplayMode.hideRowTitles;
-    this.options.customText ??= DEFAULT_OPTIONS.customText;
+    // CHeck this assignmetn of variables? should I re set summary display mode ?
+    // TODO: check if default values should be
+    const providedOptions = pageDef?.options ?? {};
+    this.options = {
+      ...DEFAULT_OPTIONS,
+      ...providedOptions,
+      summaryDisplayMode: {
+        ...DEFAULT_OPTIONS.summaryDisplayMode,
+        ...providedOptions.summaryDisplayMode,
+      },
+      customText: {
+        ...DEFAULT_OPTIONS.customText,
+        ...providedOptions.customText,
+      },
+    };
 
     this.isSeparateDisplayMode = this.options.summaryDisplayMode.separatePage!;
     this.hideRowTitles = this.options.summaryDisplayMode.hideRowTitles!;
