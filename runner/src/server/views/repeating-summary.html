@@ -7,10 +7,11 @@
 
 {% block content %}
   <div class="govuk-main-wrapper">
+    <h1 class="govuk-heading-l">
+        Check these details are correct before continuing
+    </h1>
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-two-thirds">
-        <h1 class="govuk-heading-l">{{customText.separatePageTitle or pageTitle }}</h1>
-        {{ govukSummaryList(details) }}
         <form action="?view=summary"  method="post" enctype="multipart/form-data">
           <div class="govuk-button-group">
             <input type="hidden" name="crumb" value="{{crumb}}"/>
