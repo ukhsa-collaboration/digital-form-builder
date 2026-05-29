@@ -6,13 +6,14 @@ Feature: Repeating multi field - add multiple sections
   Scenario: User can repeat sections with multiple fields
     When I enter "Alice" for "Your name"
     And I enter "French" for "Language"
-    And I continue
-    And I continue
-    And I enter "Alice" for "Your name"
-    And I enter "Italian" for "Which languages do you translate or interpret?"
+    Then I see "You have selected these Interpreters"
+    And I select the button "Continue"
+    And I select the button "Add another"
+    And I enter "Bob{enter}" for "Your name"
+    And I enter "Italian" for "Language"
     Then I don't see "French"
-    When I continue
-    Then I see "You have selected these languages"
+    And I select the button "Continue"
+    Then I see "You have selected these Interpreters"
     And I see "French"
     And I see "Italian"
     When I continue

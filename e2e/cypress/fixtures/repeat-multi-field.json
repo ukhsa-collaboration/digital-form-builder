@@ -10,7 +10,7 @@
     },
     {
       "path": "/which-languages-do-you-translate-or-interpret",
-      "title": "this is the page title for",
+      "title": "Select Interpreters",
       "controller": "RepeatedMultiFieldPageController",
       "options": {
         "sectionKey": "people_you_live_with",
@@ -19,7 +19,7 @@
           "separatePage": true
         },
         "customText": {
-          "separatePageTitle": "You have selected these languages"
+          "separatePageTitle": "You have selected these Interpreters"
         }
       },
       "components": [
@@ -38,9 +38,6 @@
         },
         {
           "name": "languagesProvided",
-          "options": {
-            "hideTitle": true
-          },
           "list": "languages",
           "type": "AutocompleteField",
           "title": "Language",

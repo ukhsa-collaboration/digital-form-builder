@@ -8,12 +8,8 @@
 
 
 {% block content %}
-  <h1> Example Empty for now summary page</h1>
   <div class="govuk-main-wrapper">
-        <h2 class="govuk-heading-m">
-    {{ details | dump  }}
-    </h2>
-    <h1>List of details</h1>
+          <h1 class="govuk-heading-l">{{customText.separatePageTitle or pageTitle }}</h1>
     <h2 class="govuk-heading-m">
     {% for detail in details %}
         {% if details.length === 1 %}
@@ -23,10 +19,8 @@
         {% endif %}
       {% endfor %}
     </h2>
-    <p>Is templeate refernce updated ? </p>
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-two-thirds">
-        <!-- <h1 class="govuk-heading-l">{{customText.separatePageTitle or pageTitle }}</h1> -->
         <!-- {{ govukSummaryList(details) }} -->
         <form action="?view=summary"  method="post" enctype="multipart/form-data">
           <div class="govuk-button-group">
