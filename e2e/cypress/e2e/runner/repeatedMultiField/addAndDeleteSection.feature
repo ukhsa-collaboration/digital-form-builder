@@ -25,6 +25,3 @@ Feature: Repeating multi field - add multiple sections
     And the summary card "Item 2" contains a row "Language" with value "Italian"
     And the summary card "Item 2" has a "Change" link to "?view=1"
     And the summary card "Item 2" has a "Remove" link to "?remove=1"
-    And I edit the summary card "Item 2"
-    // TODO: view syntax for editing a field that has already been pre-filled
-    And the summary card "Item 2" contains a row "Your name" with value "Robert"

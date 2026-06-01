@@ -28,3 +28,21 @@ Then(
       });
   }
 );
+
+// Click the delete button on a specific card
+When("I delete the summary card {string}", (cardTitle) => {
+  cy.findByRole("heading", { name: cardTitle })
+    .parents(".govuk-summary-card")
+    .within(() => {
+      cy.findByRole("button", { name: /delete/i }).click();
+    });
+});
+
+// Click the edit button on a specific card
+When("I edit the summary card {string}", (cardTitle) => {
+  cy.findByRole("heading", { name: cardTitle })
+    .parents(".govuk-summary-card")
+    .within(() => {
+      cy.findByRole("link", { name: /edit/i }).click();
+    });
+});
