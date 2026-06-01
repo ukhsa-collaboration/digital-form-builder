@@ -1,0 +1,76 @@
+{
+  "metadata": {},
+  "startPage": "/start-page",
+  "pages": [
+    {
+      "title": "Start page",
+      "path": "/start-page",
+      "components": [],
+      "next": [{ "path": "/enter-your-details" }],
+      "controller": "./pages/start.js"
+    },
+    {
+      "path": "/enter-your-details",
+      "title": "Enter your details",
+      "components": [
+        {
+          "name": "BsASya",
+          "options": {},
+          "type": "Para",
+          "content": "<b>Enter your full name</b>"
+        },
+        {
+          "name": "cRzxRL",
+          "options": { "hideTitle": true, "autocomplete": "first name" },
+          "type": "TextField",
+          "title": "First Name",
+          "hint": "First name",
+          "schema": {}
+        },
+        {
+          "name": "USKNbx",
+          "options": { "hideTitle": true, "autocomplete": "last name" },
+          "type": "TextField",
+          "hint": "Last name",
+          "title": "Last name"
+        },
+        {
+          "name": "cKQCeF",
+          "options": { "autocomplete": "email", "customValidationMessages":{"string.pattern.base": "We will send your payment confirmation and the report to the email address provided."}},
+          "type": "TextField",
+          "hint": "For example, 'name@example.com'",
+          "title": "Enter your email address",
+          "schema": {
+            "regex": "/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$/"
+          }
+        },
+        {
+          "name": "wLwmDg",
+          "options": {},
+          "type": "Para",
+          "content": "We will send your payment confirmation and the report to the email address provided."
+        }
+      ],
+      "next": [{ "path": "/summary" }]
+    },
+    {
+      "title": "Summary",
+      "path": "/summary",
+      "controller": "./pages/summary.js",
+      "components": [],
+      "next": []
+    }
+  ],
+  "lists": [],
+  "sections": [],
+  "conditions": [],
+  "fees": [],
+  "outputs": [],
+  "version": 2,
+  "skipSummary": false,
+  "feeOptions": {
+    "allowSubmissionWithoutPayment": true,
+    "maxAttempts": 3,
+    "showPaymentSkippedWarningPage": false
+  }
+}
