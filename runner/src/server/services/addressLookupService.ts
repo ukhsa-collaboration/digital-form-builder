@@ -13,11 +13,21 @@ export interface AddressLookupOptions {
 }
 
 export interface Address {
-  [key: string]: unknown;
+  addressString: string;
+  postcode: string;
+  uprn: string;
+  parentUprn: string;
+  udprn?: string;
+  blpuCode: string;
+  locationX: number;
+  locationY: number;
+  latitude: number;
+  longitude: number;
+  countryCode: string;
 }
 
 export interface AddressLookupResponse {
-  addresses: Address[];
+  matchedAddresses: Address[];
 }
 
 export class AddressLookupService {
@@ -59,7 +69,8 @@ export class AddressLookupService {
     );
 
     if (!res.ok) {
-      throw new Error(`Request failed with status code ${res.status}`);
+      const body = await res.text();
+      throw new Error(`Request failed with status ${res.status}: ${body}`);
     }
 
     return res.json();
