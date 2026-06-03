@@ -11,6 +11,7 @@ import { Logger } from "pino";
 
 import { RateOptions } from "./plugins/rateLimit";
 import {
+  AddressLookupService,
   CacheService,
   ExitService,
   FormSecurityService,
