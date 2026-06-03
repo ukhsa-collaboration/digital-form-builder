@@ -20,7 +20,6 @@ import {
   StatusService,
   UploadService,
   WebhookService,
-  AddressLookupService,
 } from "./services";
 import { QueueStatusService } from "server/services/queueStatusService";
 import { QueueService } from "./services/QueueService";

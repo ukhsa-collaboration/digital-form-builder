@@ -337,6 +337,12 @@ const secureFormSubmissionConfig = msalAuthorizeConfigSchema.concat(
   })
 );
 
+const addressLookupConfigSchema = joi.object().keys({
+  apimBaseUrl: joi.string(),
+  callingApplication: joi.string(),
+  subscriptionKey: joi.string().optional(),
+});
+
 export const Schema = joi
   .object()
   .required()
@@ -381,6 +387,7 @@ export const Schema = joi
     confirmationSessionTimeout: joi.number().optional(),
     returnTo: joi.boolean().optional(),
     secureFormSubmissionConfig: secureFormSubmissionConfig.optional(),
+    addressLookupConfig: addressLookupConfigSchema.optional(),
   });
 
 /**

@@ -209,10 +209,10 @@ export interface SecureFormSubmissionConfig extends MsalAuthorizerConfig {
   useAwsWafUserAgentWorkaround?: boolean;
 }
 
-export type AddressLookupServiceConfig = {
+export interface AddressLookupConfig extends MsalAuthorizerConfig {
   apimBaseUrl: string;
   callingApplication: string;
-  subscriptionKey?:  string;
+  subscriptionKey?: string;
 }
 
 /**
@@ -251,6 +251,5 @@ export type FormDefinition = {
   serviceName?: string | undefined;
   confirmationSessionTimeout: number | undefined;
   returnTo?: boolean | undefined;
-  secureFormSubmissionConfig: SecureFormSubmissionConfig;
   addressLookupServiceConfig?: AddressLookupServiceConfig;
 };
