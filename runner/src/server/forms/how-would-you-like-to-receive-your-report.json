@@ -34,7 +34,11 @@
       "components": [
         {
           "name": "DpJwOG",
-          "options": { "hideTitle": true },
+          "options": { "hideTitle": true,
+          "customValidationMessages": {
+              "any.required": "Select if would like to receive your report by Email or Post",
+              "any.only": "Select if would like to receive your report by Email or Post"
+            }},
           "type": "RadiosField",
           "title": "How would you like to receive your report",
           "list": "qYugsD",
