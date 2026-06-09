@@ -55,6 +55,7 @@
           },
           "type": "RadiosField",
           "title": "What type of help or support are you looking for?",
+          "hint": "Select the closest match and add detail in your message if needed",
           "list": "testingTypesList"
         }
       ],
