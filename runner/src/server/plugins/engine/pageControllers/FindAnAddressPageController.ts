@@ -1,13 +1,13 @@
 import { PageControllerBase } from "./PageControllerBase";
 import { HapiRequest, HapiResponseToolkit } from "server/types";
-import { AddressLookupService } from "../../../services/addressLookupService";
+import { Address, AddressLookupService } from "../../../services/addressLookupService";
 import { getLocationServiceInstanceName, idFromFilename } from "../helpers";
-
+import Boom from "boom";
+import { List, Item } from "@xgovformbuilder/model/dist/module/data-model/types";
 export class FindAnAddressPageController extends PageControllerBase {
   makePostRouteHandler() {
     return async (request: HapiRequest, h: HapiResponseToolkit) => {
       const response = await this.handlePostRequest(request, h);
-
       console.log("=== FindAnAddress POST ===");
       console.log("Payload:", request.payload);
       if (response) {
@@ -36,14 +36,19 @@ export class FindAnAddressPageController extends PageControllerBase {
         }
         return response;
       }
-      const state = await cacheService.getState(request);
+      let state = await cacheService.getState(request);
       
       const postcode = state.postcodeLookup || "";
       const building = state.buildingLookup || "";
       const addressLine1 = state.addressLine1Lookup || "";
 
       // 4. Call the method on your new local instance
-      const addressResponse = await addressLookupService.lookupByPostcode(postcode);
+      let addressResponse;
+      try {
+        addressResponse = await addressLookupService.lookupByPostcode(postcode);
+      } catch (err) {
+        throw Boom.internal(err);
+      }
 
       let addresses = addressResponse.addresses;
       const numberOfAddresses = addresses.length;
@@ -91,10 +96,15 @@ export class FindAnAddressPageController extends PageControllerBase {
 
           if (matchedAddress) {
             hasMatchedAddress = true;
+            
           }
         }
       }
 
+      const list = this.model.lists.find((list) => list.name === "addressesList"); 
+      if(list) {
+        list.items = this.addressesToList(addresses);
+      }
       const updateState = {
         addresses,
         hasMatchedAddress,
@@ -103,10 +113,28 @@ export class FindAnAddressPageController extends PageControllerBase {
       };
 
       await cacheService.mergeState(request, updateState);
+      const savedState = await cacheService.getState(request);
+
+      let relevantState = this.getConditionEvaluationContext(
+        this.model,
+        savedState
+      )
 
       // Navigate to the next page
-      const nextPath = this.getNext({ ...state, hasMatchedAddress });
-      return h.redirect(nextPath);
+      return this.proceed(request, h, relevantState);
     };
+  }
+
+  addressesToList(addresses: Address[]){
+    let addressItems: Item[] = [];
+    addresses.forEach((address) => {
+      const item: Item = {
+        text: address.address + ", " + address.postcode,
+        value: address.uprn
+      };
+      addressItems.push(item);
+    });
+
+    return addressItems;
   }
 }
