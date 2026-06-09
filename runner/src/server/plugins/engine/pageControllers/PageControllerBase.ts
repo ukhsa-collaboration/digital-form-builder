@@ -699,8 +699,7 @@ export class PageControllerBase {
       modifyUpdate?: <T>(value: T) => any;
     } = {}
   ) {
-    const { cacheService, trustPaymentsService } = request.services([]);
-    const res = await trustPaymentsService.postToTrustPayments();
+    const { cacheService } = request.services([]);
     const hasFilesizeError = request.payload === null;
     const preHandlerErrors = request.pre.errors;
     const payload = (request.payload || {}) as FormData;
