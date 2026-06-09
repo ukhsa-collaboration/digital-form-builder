@@ -48,13 +48,6 @@
       "title": "Which service is your enquiry about?",
       "components": [
         {
-          "name": "yeHVWq",
-          "options": {},
-          "type": "Para",
-          "content": "Select the option that best describes your enquiry",
-          "schema": {}
-        },
-        {
           "name": "requestRelation",
           "options": {
             "hideTitle": true,
@@ -486,6 +479,7 @@
       "title": "Support Types",
       "name": "testingTypesList",
       "type": "string",
+      "hint": "Select the closest match and add detail in your message if needed",
       "items": [
         {
           "text": "Radon Measurement Services (UKradon)",
