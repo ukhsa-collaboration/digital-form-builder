@@ -78,25 +78,7 @@
     {
       "path": "/compliance",
       "title": "Which service is your enquiry about?",
-      "components": [
-        {
-          "name": "requestRelation",
-          "hint": "Select the closest match and add detail in your message if needed",
-          "options": {
-            "hideTitle": true,
-            "exposeToContext": true,
-            "divider": true,
-            "customValidationMessages": {
-              "any.required": "Select if your request is related to Radon Services, Personal Dosimetry Service or something else",
-              "any.only": "Select if your request is related to Radon Services, Personal Dosimetry Service or something else",
-              "string.empty": "Select if your request is related to Radon Services, Personal Dosimetry Service or something else"
-            }
-          },
-          "type": "RadiosField",
-          "title": "What type of help or support are you looking for?",
-          "list": "complianceTypesList"
-        }
-      ],
+      "components": [],
       "next": [
         { "path": "/radon-contact-us-form"}
       ]
@@ -544,52 +526,6 @@
           "text": "Whole Body Monitoring Service",
           "value": "wholeBody",
           "description": "Assessment of internal contamination by measuring gamma-emitting radionuclides in the body"
-        },
-        {
-          "text": "General enquiry",
-          "value": "other",
-          "description": "Your enquiry will be reviewed and directed to the most appropriate team, tell us in more detail in the next" }
-      ]
-    },
-    {
-      "title": "Compliance Types",
-      "name": "complianceTypesList",
-      "type": "string",
-      "items": [
-        {
-          "text": "Dangerous Goods Safety Adviser Service",
-          "value": "dangerousGoods", 
-          "description": "Compliance advice for organisations transporting radioactive or other dangerous goods, covering legal requirements and practical safety measures"
-        },
-        {
-          "text": "Dental X-ray Protection Services",
-          "value": "dental",
-          "description": "Radiation Protection Advisor and medical physics expertise, quality assurance and equipment assessments for dental practices and X-ray equipment suppliers"
-        },
-        {
-          "text": "Environmental Radiological Assessment Services",
-          "value": "environmental",
-          "description": "Consultancy on the radiological impact of routine discharges and accidental releases, supporting discharge authorisations and regulatory submissions"
-        },
-        {
-          "text": "Laboratory and Radiochemistry Services",
-          "value": "laboratory",
-          "description": "Specialist analytical consultancy for organisations needing independent advice on radioactive sample analysis or measurement methodology"
-        },
-        {
-          "text": "Medical Exposures Group",
-          "value": "medical",
-          "description": "Guidance, reports, and expert advice on radiation doses from medical and diagnostic imaging exposures, supporting clinical and regulatory decision-making"
-        },
-        {
-          "text": "Non-lonising Radiation Services",
-          "value": "nonIonising",
-          "description": "Advice and consultancy on electromagnetic fields, optical radiation, lasers and other non-ionising radiation hazards in the workplace"
-        },
-        {
-          "text": "Radiation Protection Adviser Services (RPA)",
-          "value": "rpa",
-          "description": "Appointed RPA support under IRR17, covering industry, education, veterinary, dental, and medical workplaces"
         },
         {
           "text": "General enquiry",
