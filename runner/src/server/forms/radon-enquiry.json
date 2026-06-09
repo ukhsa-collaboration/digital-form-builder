@@ -36,9 +36,6 @@
         { "path": "/software", "condition": "ffGGs" },
         { "path": "/research", "condition":  "XaNsL" },
         { "path": "/other", "condition":  "hpkaS" }
-        
-
-        
       ]
     },
     {
@@ -46,17 +43,21 @@
       "title": "Testing",
       "components": [
       ],
-      "next": []
+      "next": [
+        { "path": "/radon-contact-us-form"}
+      ]
     },
     {
       "path": "/compliance",
       "title": "Compliance",
       "components": [],
-      "next": []
+      "next": [
+        { "path": "/radon-contact-us-form"}
+      ]
     },
     {
       "path": "/training",
-      "title": "Which service is your enquiry",
+      "title": "Which service is your enquiry about?",
       "components": [
         {
           "name": "requestRelation",
@@ -81,19 +82,25 @@
       "path": "/software",
       "title": "Software",
       "components": [],
-      "next": []
+      "next": [
+        { "path": "/radon-contact-us-form"}
+      ]
     },
     {
       "path": "/research",
       "title": "Research",
       "components": [],
-      "next": []
+      "next": [
+        { "path": "/radon-contact-us-form"}
+      ]
     },
     {
       "path": "/other",
       "title": "Other",
       "components": [],
-      "next": []
+      "next": [
+        { "path": "/radon-contact-us-form"}
+      ]
     },
     {
       "title": "Contact the Radon Services team",
