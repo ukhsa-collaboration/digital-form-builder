@@ -10,13 +10,6 @@
       "title": "What type of help or support are you looking for?",
       "components": [
         {
-          "name": "yeHVWq",
-          "options": {},
-          "type": "Para",
-          "content": "Select the option that best describes your enquiry",
-          "schema": {}
-        },
-        {
           "name": "requestRelation",
           "backLinkFallback": "https://www.google.com",
           "options": {
@@ -31,6 +24,7 @@
           },
           "type": "RadiosField",
           "title": "What type of help or support are you looking for?",
+          "hint": "Select the option that best describes your enquiry",
           "list": "supportTypesList"
         }
       ],
@@ -80,25 +74,33 @@
       "path": "/training",
       "title": "Training",
       "components": [],
-      "next": []
+      "next": [
+        { "path": "/radon-contact-us-form"}
+      ]
     },
     {
       "path": "/software",
       "title": "Software",
       "components": [],
-      "next": []
+      "next": [
+        { "path": "/radon-contact-us-form"}
+      ]
     },
     {
       "path": "/research",
       "title": "Research",
       "components": [],
-      "next": []
+      "next": [
+        { "path": "/radon-contact-us-form"}
+      ]
     },
     {
       "path": "/other",
       "title": "Other",
       "components": [],
-      "next": []
+      "next": [
+        { "path": "/radon-contact-us-form"}
+      ]
     },
     {
       "title": "Contact the Radon Services team",
@@ -479,7 +481,6 @@
       "title": "Support Types",
       "name": "testingTypesList",
       "type": "string",
-      "hint": "Select the closest match and add detail in your message if needed",
       "items": [
         {
           "text": "Radon Measurement Services (UKradon)",
