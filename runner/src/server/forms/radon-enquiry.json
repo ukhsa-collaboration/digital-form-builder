@@ -34,24 +34,32 @@
         { "path": "/software", "condition": "ffGGs" },
         { "path": "/research", "condition":  "XaNsL" },
         { "path": "/other", "condition":  "hpkaS" }
-        
-
-        
       ]
     },
     {
       "path": "/testing",
-      "title": "Testing",
+      "title": "Which service is your enquiry about?",
       "components": [
         {
-          "name": "uabca",
-          "options": {},
-          "type": "Para",
-          "content": "placeholder",
-          "schema": {}
+          "name": "requestRelation",
+          "options": {
+            "hideTitle": true,
+            "exposeToContext": true,
+            "divider": true,
+            "customValidationMessages": {
+              "any.required": "Select if your request is related to Radon Services, Personal Dosimetry Service or something else",
+              "any.only": "Select if your request is related to Radon Services, Personal Dosimetry Service or something else",
+              "string.empty": "Select if your request is related to Radon Services, Personal Dosimetry Service or something else"
+            }
+          },
+          "type": "RadiosField",
+          "title": "What type of help or support are you looking for?",
+          "list": "testingTypesList"
         }
       ],
-      "next": []
+      "next": [
+        { "path": "/radon-contact-us-form"}
+      ]
     },
     {
       "path": "/compliance",
@@ -458,6 +466,60 @@
           "description": "If your enquiry does not fit any of the above, tell us in more detail in the next step" }
       ]
     },
+
+    {
+      "title": "Support Types",
+      "name": "testingTypesList",
+      "type": "string",
+      "items": [
+        {
+          "text": "Radon Measurement Services (UKradon)",
+          "value": "UKradon", 
+          "description": "Measurement of radon gas levels in homes, workplaces, and other buildings, with advice on remediation"
+        },
+        {
+          "text": "Personal Dosimetry Service",
+          "value": "personal",
+          "description": "Approved dosimetry service measuring and recording radiation doses received by customers and their employees"
+        },
+        {
+          "text": "Chromosome Dosimetry Services",
+          "value": "chromosome",
+          "description": "Assessing the damage to DNA, caused by ionising radiation exposures, in individual blood samples, in order to give an estimation of radiation dose"
+        },
+        {
+          "text": "Dental X-ray Protection Services",
+          "value": "dental",
+          "description": "X-ray equipment testing, quality assurance assessments, and radiation protection advice for dental practices and trade companies"
+        },
+        {
+          "text": "Dose Calculation Service",
+          "value": "dose",
+          "description": "Calculation of radiation doses to patients and staff from radiopharmaceuticals, with detailed reports for clinical and regulatory use"
+        },
+        {
+          "text": "Instrument Testing Services",
+          "value": "instrument",
+          "description": "Testing, calibration, and approval of radiation protection instruments"
+        },
+        {
+          "text": "Laboratory and Radiochemistry Services",
+          "value": "laboratory",
+          "description": "Analysis of environmental, biological, and other samples for radioactive content"
+        },
+        {
+          "text": "Whole Body Monitoring Service",
+          "value": "wholeBody",
+          "description": "Assessment of internal contamination by measuring gamma-emitting radionuclides in the body"
+        },
+        {
+          "text": "General enquiry",
+          "value": "other",
+          "description": "Your enquiry will be reviewed and directed to the most appropriate team, tell us in more detail in the next" }
+      ]
+    },
+
+    
     {
       "title": "Contact Reasons",
       "name": "contactReasonList",
