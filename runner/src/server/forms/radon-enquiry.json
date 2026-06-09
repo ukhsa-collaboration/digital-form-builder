@@ -81,6 +81,7 @@
       "components": [
         {
           "name": "requestRelation",
+          "hint": "Select the closest match and add detail in your message if needed",
           "options": {
             "hideTitle": true,
             "exposeToContext": true,
