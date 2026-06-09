@@ -10,15 +10,9 @@
       "title": "What type of help or support are you looking for?",
       "components": [
         {
-          "name": "yeHVWq",
-          "options": {},
-          "type": "Para",
-          "content": "Select the option that best describes your enquiry",
-          "schema": {}
-        },
-        {
           "name": "requestRelation",
           "backLinkFallback": "https://www.google.com",
+          
           "options": {
             "hideTitle": true,
             "exposeToContext": true,
@@ -31,6 +25,7 @@
           },
           "type": "RadiosField",
           "title": "What type of help or support are you looking for?",
+          "hint": "Select the option that best describes your enquiry",
           "list": "supportTypesList"
         }
       ],
@@ -50,13 +45,6 @@
       "path": "/testing",
       "title": "Testing",
       "components": [
-        {
-          "name": "uabca",
-          "options": {},
-          "type": "Para",
-          "content": "placeholder",
-          "schema": {}
-        }
       ],
       "next": []
     },
@@ -68,9 +56,26 @@
     },
     {
       "path": "/training",
-      "title": "Training",
-      "components": [],
-      "next": []
+      "title": "Which service is your enquiry",
+      "components": [
+        {
+          "name": "requestRelation",
+          "hint": "Select the closest match and add detail in your message if needed",
+          "options": {
+            "hideTitle": true,
+            "exposeToContext": true,
+            "divider": true,
+            "customValidationMessages": {
+              "any.required": "Select if your request is related to Radon Services, Personal Dosimetry Service or something else",
+              "any.only": "Select if your request is related to Radon Services, Personal Dosimetry Service or something else",
+              "string.empty": "Select if your request is related to Radon Services, Personal Dosimetry Service or something else"
+            }
+          },
+          "type": "RadiosField",
+          "title": "What type of help or support are you looking for?",
+          "list": "trainingTypesList"
+        }],
+      "next": [{"path":"/pds-contact-us-form"}]
     },
     {
       "path": "/software",
@@ -433,7 +438,6 @@
       "title": "Support Types",
       "name": "supportTypesList",
       "type": "string",
-      "hint": "Select the option that best describes your enquiry",
       "items": [
         {
           "text": "I need radiation measurements, testing, or dosimetry",
@@ -466,6 +470,48 @@
           "description": "If your enquiry does not fit any of the above, tell us in more detail in the next step" }
       ]
     },
+    {
+      "title": "Training Types",
+      "name": "trainingTypesList",
+      "type": "string",
+      "items": [
+        {
+          "text": "Chromosome Dosimetry Services",
+          "value": "chromosone", 
+          "description": "Specialist training in biological dosimetry techniques, including cytogenetic methods used for individual dose assessment and emergency triage."
+        },
+        {
+          "text": "Non-lonising Radiation Services",
+          "value": "nonIonising",
+          "description": "Training on the health effects of electromagnetic fields, optical radiation, and other non-ionising hazards and how to comply with relevant regulations"
+        },
+        {
+          "text": "Radiation Emergency Preparedness Service",
+          "value": "emergency",
+          "description": "Training courses for emergency responders and planners, including NAIR training, exercises, and preparedness for radiological or nuclear incidents"
+        },
+        {
+          "text": "Radiation Protection Services Facilities",
+          "value": "protection",
+          "description": "Hire of specialist training facilities at UKHSA sites. Suitable for organisations delivering their own radiation protection or related training courses"
+        },
+        {
+          "text": "Radiation Safety Training for the Workplace",
+          "value": "safety",
+          "description": "Face-to-face and online courses covering all aspects of radiation safety"
+        },
+        {
+          "text": "Training for Radiological Protection Professionals",
+          "value": "radiological",
+          "description": "Professional-level courses including the Radiological Protection Training Scheme, designed for graduates and practitioners seeking specialist qualifications"
+        },
+        {
+          "text": "General enquiry",
+          "value": "other",
+          "description": "Your enquiry will be reviewed and directed to the most appropriate team, tell us in more detail in the next" }
+      ]
+    },
+
     {
       "title": "Contact Reasons",
       "name": "contactReasonList",
