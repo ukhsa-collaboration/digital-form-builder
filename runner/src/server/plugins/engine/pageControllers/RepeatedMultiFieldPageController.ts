@@ -4,6 +4,8 @@ import { FormModel } from "server/plugins/engine/models";
 import { RepeatedMultiFieldSummaryPageController } from "./RepeatedMultiFieldSummaryPageController";
 import { ComponentDef, RepeatingMultiFieldPage } from "@xgovformbuilder/model";
 import { FormComponent } from "../components";
+import { FormSubmissionState } from "server/plugins/engine/types";
+import nunjucks from "nunjucks";
 
 import joi from "joi";
 import { reach } from "hoek";
@@ -124,13 +126,7 @@ export class RepeatedMultiFieldPageController extends PageController {
 
   // TODO: drafted this function needs checking and documenting
   get stateSchema() {
-    console.log("State schema function");
-    console.log(
-      `[RepeatingSectionPageController] Building state schema; sectionKey=${this.sectionKey}, ` +
-        `inputComponents=[${this.inputComponents
-          .map((c) => c.name)
-          .join(", ")}]`
-    );
+    const componentNames = this.inputComponents.map((c) => c.name);
 
     const itemSchema = joi.object(
       this.inputComponents.reduce<Record<string, joi.Schema>>((acc, comp) => {
@@ -145,18 +141,16 @@ export class RepeatedMultiFieldPageController extends PageController {
       }, {})
     );
 
-    console.log("components reduced to itemSchema:");
-    console.log(itemSchema.describe());
-    const parentSchema = super.stateSchema.keys({
-      [this.sectionKey]: joi
-        .array()
-        .items(itemSchema)
-        .single()
-        .empty(null)
-        .default([]),
-    });
-
-    return parentSchema;
+    return super.stateSchema
+      .fork(componentNames, (schema) => schema.optional())
+      .keys({
+        [this.sectionKey]: joi
+          .array()
+          .items(itemSchema)
+          .single()
+          .empty(null)
+          .default([]),
+      });
   }
 
   makeGetRouteHandler() {
@@ -209,25 +203,20 @@ export class RepeatedMultiFieldPageController extends PageController {
 
   // Check this funciton
   async removeAtIndex(request, h) {
-    console.log("removeAtIndex called with query:", request.query);
     const { query } = request;
     const { cacheService } = request.services([]);
     const state = await cacheService.getState(request);
 
     const index = Number(query.removeAtIndex ?? query.remove);
-    console.log("Parsed index to remove:", index);
 
     const current = this.getPartialState(state);
     const list = Array.isArray(current) ? [...current] : [];
-    console.log("Current list before removal:", list);
 
     if (!Number.isNaN(index)) {
-      console.log("Removing at index:", index);
       list.splice(index, 1);
     }
 
     await cacheService.mergeState(request, { [this.sectionKey]: list });
-    console.log("Updated list after removal:", list);
 
     if (list.length < 1) {
       return h.redirect(`/${this.model.basePath}${this.path}?view=0`);
@@ -310,5 +299,30 @@ export class RepeatedMultiFieldPageController extends PageController {
   nextIndex(state) {
     const partial = this.getPartialState(state) ?? [];
     return partial.length;
+  }
+
+  toWebhookQuestions(state: FormSubmissionState) {
+    const entries =
+      ((state as any)[this.sectionKey] as Array<Record<string, unknown>>) ?? [];
+
+    const pageTitle = nunjucks.renderString(this.title.en ?? this.title, {
+      ...state,
+    });
+
+    return [
+      {
+        category: this.section?.name,
+        question: pageTitle,
+        fields: [
+          {
+            key: this.sectionKey,
+            title: pageTitle,
+            type: "list",
+            answer: entries,
+          },
+        ],
+        index: 0,
+      },
+    ];
   }
 }
