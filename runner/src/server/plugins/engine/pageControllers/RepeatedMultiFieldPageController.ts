@@ -30,40 +30,6 @@ const DEFAULT_OPTIONS = {
   customText: {},
 };
 
-// Should be somethign along these lines
-/**
- * RepeatedMultiFieldPageController
- *
- * Repeats a SECTION (a group of input components) on a single page, rather
- * than a single field. Replaces the pattern of duplicating page definitions
- * 1..N with conditional Yes/No routing between them.
- *
- * State shape:
- *   state[sectionKey] = Array<{ [componentName]: value }>
- *
- * Example (8 input components on this page):
- *   state.peopleYouLiveWith = [
- *     { first_name: "Alice", last_name: "...", contact_directly: "...",
- *       contact_details_collection: {...} },
- *     { first_name: "Bob",   last_name: "...", ... }
- *   ]
- *
- * Inherits from RepeatingFieldPageController to reuse:
- *   - options / summaryDisplayMode plumbing
- *   - RepeatingSummaryPageController wiring
- *   - the basic GET/POST shape (we override the data-handling internals)
- *
- * Overrides everything that assumed a single `inputComponent`:
- *   - constructor: collect ALL input components, not just the first
- *   - stateSchema: array-of-objects rather than array-of-primitives
- *   - getPartialState / nextIndex / removeAtIndex: key off sectionKey
- *   - GET handler: populate each component from state[sectionKey][view][name]
- *   - POST handler: bundle all field values into one object; append or
- *     replace-at-index when editing
- */
-/**
- * TODO:- this will be refactored as per https://github.com/XGovFormBuilder/digital-form-builder/discussions/855
- */
 export class RepeatedMultiFieldPageController extends PageController {
   summary: RepeatedMultiFieldSummaryPageController;
   inputComponents!: FormComponent[];
@@ -169,7 +135,6 @@ export class RepeatedMultiFieldPageController extends PageController {
       }
 
       // Editing an existing entry: ?view=N where N is a row index.
-      // Not sure I feel like the logic of pre filling this based on components should go here
       const isPastView =
         view !== undefined && view !== "" && !isNaN(Number(view));
 
@@ -234,8 +199,6 @@ export class RepeatedMultiFieldPageController extends PageController {
         return this.summary.postRouteHandler(request, h);
       }
 
-      // 1. VALIDATE FIRST — capture the validated field values, but write nothing
-      //    here (modifyUpdate returns {} so the merge step is a no-op).
       let validated: Record<string, unknown> = {};
       const response = await this.handlePostRequest(request, h, {
         arrayMerge: false,
