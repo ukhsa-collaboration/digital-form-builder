@@ -71,11 +71,26 @@
     },
     {
       "path": "/research",
-      "title": "Research",
-      "components": [],
-      "next": [
-        { "path": "/radon-contact-us-form"}
-      ]
+      "title": "Which service is your enquiry about?",
+      "components": [
+        {
+          "name": "researchRelation",
+          "hint": "Select the closest match and add detail in your message if needed",
+          "options": {
+            "hideTitle": true,
+            "exposeToContext": true,
+            "divider": true,
+            "customValidationMessages": {
+              "any.required": "Select an option for the service your enquiry is about",
+              "any.only": "Select an option for the service your enquiry is about",
+              "string.empty": "Select an option for the service your enquiry is about"
+            }
+          },
+          "type": "RadiosField",
+          "title": "What type of help or support are you looking for?",
+          "list": "researchTypesList"
+        }],
+      "next": [{"path":"/pds-contact-us-form"}]
     },
     {
       "path": "/other",
@@ -458,6 +473,42 @@
           "text": "I'm not sure, or my enquiry doesn't fit the above",
           "value": "other",
           "description": "If your enquiry does not fit any of the above, tell us in more detail in the next step" }
+      ]
+    },
+    {
+      "title": "Research Types",
+      "name": "researchTypesList",
+      "type": "string",
+      "items": [
+        {
+          "text": "Chromosome Dosimetry Services",
+          "value": "chromosone", 
+          "description": "Research and development in biological dosimetry, including novel assay development and collaboration with international biodosimetry networks"
+        },
+        {
+          "text": "Medical Dosimetry Group",
+          "value": "dosimetry",
+          "description": "Specialist research, advice, and guidance on radiation doses from medical exposures, supporting clinical practice, regulation and radiation protection policy"
+        },
+        {
+          "text": "Radiation Effects",
+          "value": "radiationEffects",
+          "description": "Research into the health effects of ionising radiation exposure, including epidemiological studies and mechanistic research underpinning radiation protection standards"
+        },
+        {
+          "text": "Radiation Emergency Preparedness Service",
+          "value": "radiationEmergancy",
+          "description": "Research, consultancy, and collaborative work supporting UK readiness for radiological or nuclear emergencies, including post-accident recovery and environmental assessment"
+        },
+        {
+          "text": "Working with UK Health Security Agency",
+          "value": "workingWithUKHSA",
+          "description": "Collaborative projects, access to specialist facilities, equipment, and intellectual property and longer-term partnership arrangements with UKHSA"
+        },
+        {
+          "text": "General enquiry",
+          "value": "other",
+          "description": "Your enquiry will be reviewed and directed to the most appropriate team, tell us in more detail in the next" }
       ]
     },
     {
