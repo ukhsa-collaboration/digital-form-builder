@@ -10,7 +10,7 @@
       "title": "What type of help or support are you looking for?",
       "components": [
         {
-          "name": "requestRelation",
+          "name": "requestRelationBase",
           "backLinkFallback": "https://www.google.com",
           "options": {
             "hideTitle": true,
@@ -42,7 +42,7 @@
       "title": "Testing",
       "components": [],
       "next": [
-        { "path": "/radon-contact-us-form"}
+        { "path": "/other-contact-us-form"}
       ]
     },
     {
@@ -50,7 +50,7 @@
       "title": "Compliance",
       "components": [],
       "next": [
-        { "path": "/radon-contact-us-form"}
+        { "path": "/other-contact-us-form"}
       ]
     },
     {
@@ -58,7 +58,7 @@
       "title": "Training",
       "components": [],
       "next": [
-        { "path": "/radon-contact-us-form"}
+        { "path": "/other-contact-us-form"}
       ]
     },
     {
@@ -66,7 +66,7 @@
       "title": "Which service is your enquiry about?",
       "components": [
         {
-          "name": "softwareRelation",
+          "name": "requestRelation",
           "hint": "Select the closest match and add detail in your message if needed",
           "options": {
             "hideTitle": true,
@@ -82,14 +82,14 @@
           "title": "What type of help or support are you looking for?",
           "list": "softwareTypesList"
         }],
-      "next": [{"path":"/pds-contact-us-form"}]
+      "next": [{"path":"/other-contact-us-form"}]
     },
     {
       "path": "/research",
       "title": "Research",
       "components": [],
       "next": [
-        { "path": "/radon-contact-us-form"}
+        { "path": "/other-contact-us-form"}
       ]
     },
     {
@@ -97,7 +97,7 @@
       "title": "Other",
       "components": [],
       "next": [
-        { "path": "/radon-contact-us-form"}
+        { "path": "/other-contact-us-form"}
       ]
     },
     {
@@ -482,27 +482,27 @@
       "items": [
         {
           "text": "Environmental Radiological Assessment Services",
-          "value": "assessment", 
+          "value": "Environmental Radiological Assessment Services", 
           "description": "Bespoke modelling tools and software products for assessing the impact of planned and accidental releases of radioactivity to the environment"
         },
         {
           "text": "PACE - Probabilistic Accident Consequence Evaluation",
-          "value": "PACE",
+          "value": "PACE - Probabilistic Accident Consequence Evaluation",
           "description": "Level-3 Probabilistic Safety Analysis tool for evaluating off-site radiological consequences of accidental releases from nuclear facilities"
         },
         {
           "text": "PC-CREAM - Radiological Impact Assessment Software",
-          "value": "PC-CREAM",
+          "value": "PC-CREAM - Radiological Impact Assessment Software",
           "description": "Suite of models for assessing the radiological impact of routine, continuous discharges from nuclear and non-nuclear installations"
         },
         {
           "text": "Taurus and IMBA Internal Dosimetry Software",
-          "value": "IMBA",
+          "value": "Taurus and IMBA Internal Dosimetry Software",
           "description": "Software for calculating internal radiation doses from intakes of radionuclides"
         },
         {
           "text": "General enquiry",
-          "value": "other",
+          "value": "General enquiry",
           "description": "Your enquiry will be reviewed and directed to the most appropriate team, tell us in more detail in the next" }
       ]
     },
@@ -555,7 +555,7 @@
         "conditions": [
           {
             "field": {
-              "name": "requestRelation",
+              "name": "requestRelationBase",
               "type": "RadiosField",
               "display": "What is your request related to?"
             },
@@ -577,7 +577,7 @@
         "conditions": [
           {
             "field": {
-              "name": "requestRelation",
+              "name": "requestRelationBase",
               "type": "RadiosField",
               "display": "What is your request related to?"
             },
@@ -599,7 +599,7 @@
         "conditions": [
           {
             "field": {
-              "name": "requestRelation",
+              "name": "requestRelationBase",
               "type": "RadiosField",
               "display": "What is your request related to?"
             },
@@ -621,7 +621,7 @@
         "conditions": [
           {
             "field": {
-              "name": "requestRelation",
+              "name": "requestRelationBase",
               "type": "RadiosField",
               "display": "What is your request related to?"
             },
@@ -643,7 +643,7 @@
         "conditions": [
           {
             "field": {
-              "name": "requestRelation",
+              "name": "requestRelationBase",
               "type": "RadiosField",
               "display": "What is your request related to?"
             },
@@ -665,7 +665,7 @@
         "conditions": [
           {
             "field": {
-              "name": "requestRelation",
+              "name": "requestRelationBase",
               "type": "RadiosField",
               "display": "What is your request related to?"
             },
