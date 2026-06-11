@@ -257,7 +257,7 @@
       "title": "Execute API",
       "type": "webhook",
       "outputConfiguration": {
-        "url": "https://api.nl8.test.srs.test-and-trace.nhs.uk/v1/forms",
+        "url": "http://host.docker.internal:3000",
         "allowRetry": true
       }
     }
