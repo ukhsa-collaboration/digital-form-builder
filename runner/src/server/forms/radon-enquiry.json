@@ -415,7 +415,7 @@
       "componentsAfter": [
         {
           "name": "temp",
-          "options": {},
+          "options": {  "condition": "ybdwE" },
           "type": "Para",
           "content": "<div class=\"govuk-inset-text\">Your Enquiry will be sent to the <b>{{ requestRelation }}</b> team</div>"
         },
@@ -554,6 +554,28 @@
   ],
   "sections": [],
   "conditions": [
+    {
+      "displayName": "Is this a general enquiry?",
+      "name": "ybdwE",
+      "value": {
+        "name": "GeneralEnquiries",
+        "conditions": [
+          {
+            "field": {
+              "name": "requestRelation",
+              "type": "RadiosField",
+              "display": "Which service is your enquiry about?"
+            },
+            "operator": "is",
+            "value": {
+              "type": "Value",
+              "value": "General enquiry",
+              "display": "General enquiry"
+            }
+          }
+        ]
+      }
+    },
     {
       "displayName": "ServiceRequest",
       "name": "yafSJD",
