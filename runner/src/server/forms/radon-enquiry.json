@@ -10,9 +10,9 @@
       "title": "What type of help or support are you looking for?",
       "components": [
         {
-          "name": "requestRelation",
+          "name": "requestRelationBase",
           "backLinkFallback": "https://www.google.com",
-          
+
           "options": {
             "hideTitle": true,
             "exposeToContext": true,
@@ -44,7 +44,7 @@
       "components": [
       ],
       "next": [
-        { "path": "/radon-contact-us-form"}
+        { "path": "/other-contact-us-form"}
       ]
     },
     {
@@ -52,7 +52,7 @@
       "title": "Compliance",
       "components": [],
       "next": [
-        { "path": "/radon-contact-us-form"}
+        { "path": "/other-contact-us-form"}
       ]
     },
     {
@@ -76,14 +76,14 @@
           "title": "What type of help or support are you looking for?",
           "list": "trainingTypesList"
         }],
-      "next": [{"path":"/pds-contact-us-form"}]
+      "next": [{"path":"/other-contact-us-form"}]
     },
     {
       "path": "/software",
       "title": "Software",
       "components": [],
       "next": [
-        { "path": "/radon-contact-us-form"}
+        { "path": "/other-contact-us-form"}
       ]
     },
     {
@@ -91,7 +91,7 @@
       "title": "Research",
       "components": [],
       "next": [
-        { "path": "/radon-contact-us-form"}
+        { "path": "/other-contact-us-form"}
       ]
     },
     {
@@ -99,7 +99,7 @@
       "title": "Other",
       "components": [],
       "next": [
-        { "path": "/radon-contact-us-form"}
+        { "path": "/other-contact-us-form"}
       ]
     },
     {
@@ -484,37 +484,37 @@
       "items": [
         {
           "text": "Chromosome Dosimetry Services",
-          "value": "chromosone", 
+          "value": "Chromosome Dosimetry Services", 
           "description": "Specialist training in biological dosimetry techniques, including cytogenetic methods used for individual dose assessment and emergency triage."
         },
         {
           "text": "Non-lonising Radiation Services",
-          "value": "nonIonising",
+          "value": "Non-lonising Radiation Services",
           "description": "Training on the health effects of electromagnetic fields, optical radiation, and other non-ionising hazards and how to comply with relevant regulations"
         },
         {
           "text": "Radiation Emergency Preparedness Service",
-          "value": "emergency",
+          "value": "Radiation Emergency Preparedness Service",
           "description": "Training courses for emergency responders and planners, including NAIR training, exercises, and preparedness for radiological or nuclear incidents"
         },
         {
           "text": "Radiation Protection Services Facilities",
-          "value": "protection",
+          "value": "Radiation Protection Services Facilities",
           "description": "Hire of specialist training facilities at UKHSA sites. Suitable for organisations delivering their own radiation protection or related training courses"
         },
         {
           "text": "Radiation Safety Training for the Workplace",
-          "value": "safety",
+          "value": "Radiation Safety Training for the Workplace",
           "description": "Face-to-face and online courses covering all aspects of radiation safety"
         },
         {
           "text": "Training for Radiological Protection Professionals",
-          "value": "radiological",
+          "value": "Training for Radiological Protection Professionals",
           "description": "Professional-level courses including the Radiological Protection Training Scheme, designed for graduates and practitioners seeking specialist qualifications"
         },
         {
           "text": "General enquiry",
-          "value": "other",
+          "value": "General enquiry",
           "description": "Your enquiry will be reviewed and directed to the most appropriate team, tell us in more detail in the next" }
       ]
     },
@@ -568,7 +568,7 @@
         "conditions": [
           {
             "field": {
-              "name": "requestRelation",
+              "name": "requestRelationBase",
               "type": "RadiosField",
               "display": "What is your request related to?"
             },
@@ -590,7 +590,7 @@
         "conditions": [
           {
             "field": {
-              "name": "requestRelation",
+              "name": "requestRelationBase",
               "type": "RadiosField",
               "display": "What is your request related to?"
             },
@@ -612,7 +612,7 @@
         "conditions": [
           {
             "field": {
-              "name": "requestRelation",
+              "name": "requestRelationBase",
               "type": "RadiosField",
               "display": "What is your request related to?"
             },
@@ -634,7 +634,7 @@
         "conditions": [
           {
             "field": {
-              "name": "requestRelation",
+              "name": "requestRelationBase",
               "type": "RadiosField",
               "display": "What is your request related to?"
             },
@@ -656,7 +656,7 @@
         "conditions": [
           {
             "field": {
-              "name": "requestRelation",
+              "name": "requestRelationBase",
               "type": "RadiosField",
               "display": "What is your request related to?"
             },
@@ -678,7 +678,7 @@
         "conditions": [
           {
             "field": {
-              "name": "requestRelation",
+              "name": "requestRelationBase",
               "type": "RadiosField",
               "display": "What is your request related to?"
             },
