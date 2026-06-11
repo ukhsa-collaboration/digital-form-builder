@@ -151,9 +151,10 @@ export class RepeatedMultiFieldPageController extends PageController {
         // Swap only the model onto the components the base handler already
         response.source.context.components &&= response.source.context.components.map(
           (component) => {
-            const fresh = freshModels.find(
-              (c) => c.model?.name === component.model?.name
-            );
+            const name = component.model?.name;
+            if (!name) return component;
+
+            const fresh = freshModels.find((c) => c.model?.name === name);
             return fresh ? { ...component, model: fresh.model } : component;
           }
         );
