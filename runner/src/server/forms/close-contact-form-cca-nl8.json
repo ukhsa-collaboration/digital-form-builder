@@ -508,8 +508,7 @@
           "title": "Contact Details"
         }
       ],
-      "next": [{ "path": "/close-contact" }],
-      "section": "PeopleYouLiveWith"
+      "next": [{ "path": "/close-contact" }]
     },
     {
       "path": "/close-contact",
@@ -550,7 +549,7 @@
       ],
       "next": [
         { "path": "/close-contacts", "condition": "IfCloseContacts" },
-        { "path": "/summary", "condition": "IfNoCloseContacts" }
+        { "path": "/summary" }
       ],
       "section": "OtherContacts"
     },
@@ -774,70 +773,10 @@
       "hideTitle": true
     },
     {
-      "name": "PersonYouLiveWith1",
-      "title": "Person 1",
-      "hideTitle": true
-    },
-    {
-      "name": "PersonYouLiveWith2",
-      "title": "Person 2",
-      "hideTitle": true
-    },
-    {
-      "name": "PersonYouLiveWith3",
-      "title": "Person 3",
-      "hideTitle": true
-    },
-    {
-      "name": "PersonYouLiveWith4",
-      "title": "Person 4",
-      "hideTitle": true
-    },
-    {
-      "name": "PersonYouLiveWith5",
-      "title": "Person 5",
-      "hideTitle": true
-    },
-    {
-      "name": "PersonYouLiveWith6",
-      "title": "Person 6",
-      "hideTitle": true
-    },
-    {
-      "name": "PersonYouLiveWith7",
-      "title": "Person 7",
-      "hideTitle": true
-    },
-    {
-      "name": "PersonYouLiveWith8",
-      "title": "Person 8",
-      "hideTitle": true
-    },
-    {
-      "name": "PersonYouLiveWith9",
-      "title": "Person 9",
-      "hideTitle": true
-    },
-    {
-      "name": "PersonYouLiveWith10",
-      "title": "Person 10",
-      "hideTitle": true
-    },
-    {
       "name": "OtherContacts",
       "title": "Other close contacts in the last 14 days",
       "hideTitle": true
-    },
-    { "name": "CloseContact1", "title": "Close contact 1", "hideTitle": true },
-    { "name": "CloseContact2", "title": "Close contact 2", "hideTitle": true },
-    { "name": "CloseContact3", "title": "Close contact 3", "hideTitle": true },
-    { "name": "CloseContact4", "title": "Close contact 4", "hideTitle": true },
-    { "name": "CloseContact5", "title": "Close contact 5", "hideTitle": true },
-    { "name": "CloseContact6", "title": "Close contact 6", "hideTitle": true },
-    { "name": "CloseContact7", "title": "Close contact 7", "hideTitle": true },
-    { "name": "CloseContact8", "title": "Close contact 8", "hideTitle": true },
-    { "name": "CloseContact9", "title": "Close contact 9", "hideTitle": true },
-    { "name": "CloseContact10", "title": "Close contact 10", "hideTitle": true }
+    }
   ],
   "conditions": [
     {
