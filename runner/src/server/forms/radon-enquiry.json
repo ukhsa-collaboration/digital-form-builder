@@ -10,7 +10,7 @@
       "title": "What type of help or support are you looking for?",
       "components": [
         {
-          "name": "requestRelation",
+          "name": "requestRelationBase",
           "backLinkFallback": "https://www.google.com",
           "options": {
             "hideTitle": true,
@@ -509,7 +509,7 @@
         "conditions": [
           {
             "field": {
-              "name": "requestRelation",
+              "name": "requestRelationBase",
               "type": "RadiosField",
               "display": "What is your request related to?"
             },
@@ -531,7 +531,7 @@
         "conditions": [
           {
             "field": {
-              "name": "requestRelation",
+              "name": "requestRelationBase",
               "type": "RadiosField",
               "display": "What is your request related to?"
             },
@@ -553,7 +553,7 @@
         "conditions": [
           {
             "field": {
-              "name": "requestRelation",
+              "name": "requestRelationBase",
               "type": "RadiosField",
               "display": "What is your request related to?"
             },
@@ -575,7 +575,7 @@
         "conditions": [
           {
             "field": {
-              "name": "requestRelation",
+              "name": "requestRelationBase",
               "type": "RadiosField",
               "display": "What is your request related to?"
             },
@@ -597,7 +597,7 @@
         "conditions": [
           {
             "field": {
-              "name": "requestRelation",
+              "name": "requestRelationBase",
               "type": "RadiosField",
               "display": "What is your request related to?"
             },
@@ -619,7 +619,7 @@
         "conditions": [
           {
             "field": {
-              "name": "requestRelation",
+              "name": "requestRelationBase",
               "type": "RadiosField",
               "display": "What is your request related to?"
             },
