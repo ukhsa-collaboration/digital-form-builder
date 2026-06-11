@@ -17,7 +17,7 @@
           "schema": {}
         },
         {
-          "name": "requestRelation",
+          "name": "requestRelationBase",
           "backLinkFallback": "https://www.google.com",
           "options": {
             "hideTitle": true,
@@ -52,7 +52,7 @@
       "components": [
       ],
       "next": [
-        { "path": "/radon-contact-us-form"}
+        { "path": "/other-contact-us-form"}
       ]
     },
     {
@@ -78,7 +78,7 @@
         }
       ],
       "next": [
-        { "path": "/radon-contact-us-form"}
+        { "path": "/other-contact-us-form"}
       ]
     },
     {
@@ -86,7 +86,7 @@
       "title": "Training",
       "components": [],
       "next": [
-        { "path": "/radon-contact-us-form"}
+        { "path": "/other-contact-us-form"}
       ]
     },
     {
@@ -94,7 +94,7 @@
       "title": "Software",
       "components": [],
       "next": [
-        { "path": "/radon-contact-us-form"}
+        { "path": "/other-contact-us-form"}
       ]
     },
     {
@@ -102,7 +102,7 @@
       "title": "Research",
       "components": [],
       "next": [
-        { "path": "/radon-contact-us-form"}
+        { "path": "/other-contact-us-form"}
       ]
     },
     {
@@ -110,7 +110,7 @@
       "title": "Other",
       "components": [],
       "next": [
-        { "path": "/radon-contact-us-form"}
+        { "path": "/other-contact-us-form"}
       ]
     },
     {
@@ -495,42 +495,42 @@
       "items": [
         {
           "text": "Dangerous Goods Safety Adviser Service",
-          "value": "dangerousGoods", 
+          "value": "Dangerous Goods Safety Adviser Service", 
           "description": "Compliance advice for organisations transporting radioactive or other dangerous goods, covering legal requirements and practical safety measures"
         },
         {
           "text": "Dental X-ray Protection Services",
-          "value": "dental",
+          "value": "Dental X-ray Protection Services",
           "description": "Radiation Protection Advisor and medical physics expertise, quality assurance and equipment assessments for dental practices and X-ray equipment suppliers"
         },
         {
           "text": "Environmental Radiological Assessment Services",
-          "value": "environmental",
+          "value": "Environmental Radiological Assessment Services",
           "description": "Consultancy on the radiological impact of routine discharges and accidental releases, supporting discharge authorisations and regulatory submissions"
         },
         {
           "text": "Laboratory and Radiochemistry Services",
-          "value": "laboratory",
+          "value": "Laboratory and Radiochemistry Services",
           "description": "Specialist analytical consultancy for organisations needing independent advice on radioactive sample analysis or measurement methodology"
         },
         {
           "text": "Medical Exposures Group",
-          "value": "medical",
+          "value": "Medical Exposures Group",
           "description": "Guidance, reports, and expert advice on radiation doses from medical and diagnostic imaging exposures, supporting clinical and regulatory decision-making"
         },
         {
           "text": "Non-lonising Radiation Services",
-          "value": "nonIonising",
+          "value": "Non-lonising Radiation Services",
           "description": "Advice and consultancy on electromagnetic fields, optical radiation, lasers and other non-ionising radiation hazards in the workplace"
         },
         {
           "text": "Radiation Protection Adviser Services (RPA)",
-          "value": "rpa",
+          "value": "Radiation Protection Adviser Services (RPA)",
           "description": "Appointed RPA support under IRR17, covering industry, education, veterinary, dental, and medical workplaces"
         },
         {
           "text": "General enquiry",
-          "value": "other",
+          "value": "General enquiry",
           "description": "Your enquiry will be reviewed and directed to the most appropriate team, tell us in more detail in the next" }
       ]
     },
@@ -583,7 +583,7 @@
         "conditions": [
           {
             "field": {
-              "name": "requestRelation",
+              "name": "requestRelationBase",
               "type": "RadiosField",
               "display": "What is your request related to?"
             },
@@ -605,7 +605,7 @@
         "conditions": [
           {
             "field": {
-              "name": "requestRelation",
+              "name": "requestRelationBase",
               "type": "RadiosField",
               "display": "What is your request related to?"
             },
@@ -627,7 +627,7 @@
         "conditions": [
           {
             "field": {
-              "name": "requestRelation",
+              "name": "requestRelationBase",
               "type": "RadiosField",
               "display": "What is your request related to?"
             },
@@ -649,7 +649,7 @@
         "conditions": [
           {
             "field": {
-              "name": "requestRelation",
+              "name": "requestRelationBase",
               "type": "RadiosField",
               "display": "What is your request related to?"
             },
@@ -671,7 +671,7 @@
         "conditions": [
           {
             "field": {
-              "name": "requestRelation",
+              "name": "requestRelationBase",
               "type": "RadiosField",
               "display": "What is your request related to?"
             },
@@ -693,7 +693,7 @@
         "conditions": [
           {
             "field": {
-              "name": "requestRelation",
+              "name": "requestRelationBase",
               "type": "RadiosField",
               "display": "What is your request related to?"
             },
