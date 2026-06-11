@@ -123,11 +123,11 @@
             "exposeToContext": true,
             "disableChangingFromSummary": true,
             "customValidationMessages": {
-              "any.required": "Select 'yes' if you have received a positive test result for {{additionalContexts.diseaseInfo[disease_name].name | safe }}"
+              "any.required": "Select 'yes' if you have received a positive test result"
             }
           },
           "type": "RadiosField",
-          "title": "Have you received a positive test result for {{additionalContexts.diseaseInfo[disease_name].name | safe }}?",
+          "title": "Have you received a positive test result",
           "list": "ApjoNd"
         }
       ],
@@ -362,7 +362,7 @@
       ],
       "next": [
         {
-          "path": "/person-live-with-1",
+          "path": "/person-live-with",
           "condition": "IfPeopleYouLiveWith"
         },
         { "path": "/close-contact", "condition": "IfNoPeopleYouLiveWith" }
@@ -409,7 +409,7 @@
       ],
       "next": [
         {
-          "path": "/person-live-with-1",
+          "path": "/person-live-with",
           "condition": "IfPeopleTheyLiveWith"
         },
         { "path": "/close-contact", "condition": "IfNoPeopleTheyLiveWith" }
@@ -417,8 +417,16 @@
       "section": "PeopleTheyLiveWith"
     },
     {
-      "path": "/person-live-with-1",
+      "path": "/person-live-with",
       "title": "Details of a person {{ PersonalInformation.for }} live with",
+      "controller": "RepeatedMultiFieldPageController",
+      "options": {
+        "sectionKey": "people_you_live_with",
+        "summaryDisplayMode": {
+          "samePage": false,
+          "separatePage": true
+        }
+      },
       "components": [
         {
           "name": "iulooA",
@@ -549,6 +557,14 @@
     {
       "path": "/close-contacts",
       "title": "Details of the person {{ PersonalInformation.for }}'ve been in close contact with",
+      "controller": "RepeatedMultiFieldPageController",
+      "options": {
+        "sectionKey": "close_contacts",
+        "summaryDisplayMode": {
+          "samePage": false,
+          "separatePage": true
+        }
+      },
       "components": [
         {
           "name": "iulooA",

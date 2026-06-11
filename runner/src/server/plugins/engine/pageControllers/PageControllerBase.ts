@@ -256,9 +256,6 @@ export class PageControllerBase {
    * @param suppressRepetition - cancels repetition logic
    */
   getNextPage(state: FormSubmissionState, suppressRepetition = false) {
-    console.log("Running getNextPage with state", state);
-    console.log("repeatField:", this.repeatField);
-
     if (this.repeatField && !suppressRepetition) {
       const requiredCount = reach(state, this.repeatField);
       const otherRepeatPagesInSection = this.model.pages.filter(
@@ -283,7 +280,6 @@ export class PageControllerBase {
     }
 
     let defaultLink;
-    console.log("getting this.next with", this.next);
     const nextLink = this.next.find((link) => {
       const { condition } = link;
       if (!condition) {
@@ -309,7 +305,6 @@ export class PageControllerBase {
    */
   getNext(state: any) {
     const nextPage = this.getNextPage(state);
-    console.log("Running getNext with found Next Page", nextPage);
     if (nextPage?.redirect) {
       return nextPage.redirect;
     }
