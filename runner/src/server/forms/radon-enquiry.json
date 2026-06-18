@@ -135,6 +135,7 @@
               "any.only": "Enter your first name",
               "string.empty": "Enter your first name"
             },
+            "exposeToContext": true,
             "autocomplete": "given-name"
           },
           "type": "TextField",
@@ -148,6 +149,7 @@
               "any.only": "Enter your last name",
               "string.empty": "Enter your last name"
             },
+            "exposeToContext": true,
             "autocomplete": "family-name"
           },
           "type": "TextField",
@@ -156,7 +158,7 @@
         },
         {
           "name": "organisation",
-          "options": { "required": false },
+          "options": { "required": false, "exposeToContext": true },
           "type": "TextField",
           "title": "Your organisation name"
         },
@@ -183,7 +185,8 @@
               "any.only": "Enter more information about your request",
               "string.empty": "Enter more information about your request",
               "string.max": "Information about your request must be 1000 characters or less"
-            }
+            },
+            "exposeToContext": true
           },
           "type": "MultilineTextField",
           "title": "Give us some more information about your request",
@@ -440,7 +443,7 @@
     "confirmationPage": {
       "customText": {
         "title": "Contact request submitted",
-        "nextSteps": "We have sent a confirmation email to {{ email }}.<p class=\"govuk-body-m\"><h2 class=\"govuk-heading-m\">What happens next</h2></p><p class=\"govuk-body-m\">We will review your request and get back to you within 5 days.</p>",
+        "nextSteps": "We have sent a confirmation email to <b>{{ email }}</b>.<p class=\"govuk-body-m\"><h2 class=\"govuk-heading-m\">What happens next</h2></p><p class=\"govuk-body-m\">We will review your request and get back to you within 5 days.</p><table class=\"govuk-table\"><p class=\"govuk-body-m\"><h2 class=\"govuk-heading-m\">What happens next</h2></p><p class=\"govuk-body-m\">The <b>{{requestRelation}}</b> team will review your enquiry and aim to respond within 5 days. If your enquiry is urgent, please  <a href=\"https://www.google.com/\">call us</a></p><table class=\"govuk-table\"><caption class=\"govuk-table__caption govuk-table__caption--m\">Your enquiry details</caption><tbody class=\"govuk-table__body\"><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\">First name</th><td class=\"govuk-table__cell\">{{ firstname }}</td></tr><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\">Last Name</th><td class=\"govuk-table__cell\">{{ lastname }}</td></tr><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\">Organisation</th><td class=\"govuk-table__cell\">{{ organisation }}</td></tr><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\">Email</th><td class=\"govuk-table__cell\">{{ email }}</td></tr><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\">Category</th><td class=\"govuk-table__cell\">{{ requestRelationBase }}</td></tr><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\">Service</th><td class=\"govuk-table__cell\">{{ requestRelation }}</td></tr><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\">Request information</th><td class=\"govuk-table__cell\">{{ requestInformation }}</td></tr></tbody></table></br></br> <a href=\"https://www.google.com/\">What did you think of this service?</a> (takes 30 seconds)</br></br> <a href=\"https://www.google.com/\">Go to Radiation Protection Sciences homepage</a>",
         "hidePanel": false
       }
     }
