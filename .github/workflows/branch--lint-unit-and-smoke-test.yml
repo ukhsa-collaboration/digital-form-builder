@@ -1,50 +1,52 @@
-name: Branch QA
-on:
-  pull_request:
-    branches:
-      - main
-      - beta
-    paths-ignore:
-      - "docs/**"
-      - "**/README.md"
-  workflow_dispatch:
+# Used upstream only
 
-jobs:
-  dependencies:
-    uses: ./.github/workflows/dependabot.yml
-    secrets: inherit
-  lint-and-test:
-    needs: [dependencies]
-    if: ${{!contains(github.event.head_commit.message, 'chore(deps-dev)')}}
-    name: Workspace
-    strategy:
-      matrix:
-        workspace: [model, designer, runner, submitter]
-    uses: ./.github/workflows/lint-and-test.yml
-    with:
-      workspace: ${{ matrix.workspace }}
+# name: Branch QA
+# on:
+#   pull_request:
+#     branches:
+#       - main
+#       - beta
+#     paths-ignore:
+#       - "docs/**"
+#       - "**/README.md"
+#   workflow_dispatch:
 
-  build-designer:
-    name: Designer
-    uses: ./.github/workflows/build.yml
-    with:
-      app: designer
-    secrets: inherit
+# jobs:
+#   dependencies:
+#     uses: ./.github/workflows/dependabot.yml
+#     secrets: inherit
+#   lint-and-test:
+#     needs: [dependencies]
+#     if: ${{!contains(github.event.head_commit.message, 'chore(deps-dev)')}}
+#     name: Workspace
+#     strategy:
+#       matrix:
+#         workspace: [model, designer, runner, submitter]
+#     uses: ./.github/workflows/lint-and-test.yml
+#     with:
+#       workspace: ${{ matrix.workspace }}
 
-  build-submitter:
-    name: Submitter
-    uses: ./.github/workflows/build.yml
-    with:
-      app: submitter
-    secrets: inherit
+#   build-designer:
+#     name: Designer
+#     uses: ./.github/workflows/build.yml
+#     with:
+#       app: designer
+#     secrets: inherit
 
-  build-runner:
-    name: Runner
-    uses: ./.github/workflows/build.yml
-    with:
-      app: runner
-    secrets: inherit
+#   build-submitter:
+#     name: Submitter
+#     uses: ./.github/workflows/build.yml
+#     with:
+#       app: submitter
+#     secrets: inherit
 
-  smoke-test:
-    uses: ./.github/workflows/smoke-test.yml
-    secrets: inherit
+#   build-runner:
+#     name: Runner
+#     uses: ./.github/workflows/build.yml
+#     with:
+#       app: runner
+#     secrets: inherit
+
+#   smoke-test:
+#     uses: ./.github/workflows/smoke-test.yml
+#     secrets: inherit
