@@ -34,25 +34,22 @@
           "path": "/was-the-level-above-the-action-level-200-bqm-3",
           "condition": "jCTvKA"
         },
-        {
-          "path": "/enter-your-personal-details-placeholder",
-          "condition": "KTPJJd"
-        }
+        { "path": "/enter-details", "condition": "KTPJJd" }
       ]
     },
     {
       "path": "/was-the-level-above-the-action-level-200-bqm-3",
-      "title": "Was the level above the action level 200 Bq m⁻³",
+      "title": "Was the level above the action level 200 Bqm-3",
       "components": [
         {
           "name": "vLGkYq",
-         "options": {
+          "options": {
             "customValidationMessages": {
               "any.required": "Select yes if the level was above the action level of 200 Bq m⁻³"
             }
           },
           "type": "YesNoField",
-          "title": "Was the level above the action level 200 Bq m⁻³",
+          "title": "Was the level above the action level 200 Bqm-3",
           "schema": {}
         }
       ],
@@ -61,10 +58,7 @@
           "path": "/have-you-taken-any-steps-to-reduce-the-radon-level-since-the-last-test",
           "condition": "yYdSeb"
         },
-        {
-          "path": "/enter-your-personal-details-placeholder",
-          "condition": "sxYJjS"
-        }
+        { "path": "/enter-details", "condition": "sxYJjS" }
       ]
     },
     {
@@ -88,10 +82,7 @@
           "path": "/you-may-be-eligible-for-a-free-test",
           "condition": "cHAkee"
         },
-        {
-          "path": "/enter-your-personal-details-placeholder",
-          "condition": "mUgnbI"
-        }
+        { "path": "/enter-details", "condition": "mUgnbI" }
       ]
     },
     {
@@ -116,8 +107,115 @@
       "next": []
     },
     {
-      "path": "/enter-your-personal-details-placeholder",
-      "title": "Enter your personal details placeholder",
+      "path": "/enter-details",
+      "title": "Enter details",
+      "components": [
+        {
+          "name": "VtmvaR",
+          "options": {},
+          "type": "Para",
+          "content": "<h2>Enter your personal details</h2>"
+        },
+        {
+          "name": "ozPAxH",
+          "options": { "exposeToContext": true },
+          "type": "TextField",
+          "title": "Title",
+          "hint": "e.g. Mr, Mrs, Dr"
+        },
+        {
+          "name": "JHHRvT",
+          "options": {},
+          "type": "TextField",
+          "title": "Initials"
+        },
+        {
+          "name": "uHLLlH",
+          "options": {},
+          "type": "TextField",
+          "title": "Last Name"
+        },
+        {
+          "name": "yxXtNS",
+          "options": {},
+          "type": "Para",
+          "content": "<h2>Enter your email address</h2>"
+        },
+        {
+          "name": "xpyyag",
+          "options": { "exposeToContext": true, "hideTitle": true },
+          "type": "TextField",
+          "title": "Email address",
+          "hint": "For example, 'name@example.com'."
+        }
+      ],
+      "next": [{ "path": "/measurement-address-details" }]
+    },
+    {
+      "path": "/measurement-address-details",
+      "title": "Measurement address details",
+      "components": [
+        {
+          "name": "HxzsKV",
+          "options": {},
+          "type": "InsetText",
+          "content": "Placeholder</br>\nAddress</br>\nTODO</br>\nAdd take from context"
+        },
+        {
+          "name": "DZHYLU",
+          "options": {},
+          "type": "YesNoField",
+          "title": "Is this the address you want the kit delivered to?"
+        },
+        {
+          "name": "AKEkjp",
+          "options": {},
+          "type": "InsetText",
+          "content": "The detectors record continuously so the reading may be less accurate if they are not at the measurement address."
+        },
+        {
+          "name": "VLRgoA",
+          "options": {},
+          "type": "Para",
+          "content": "If the kits are delivered to a different address than where they will be used, the detectors must be placed within the measurement address within 7 days of delivery.\n</br></br>\nA kit fits through a standard letter box."
+        },
+        {
+          "name": "eWdxvJ",
+          "options": {},
+          "type": "YesNoField",
+          "title": "Is this the address you want your radon gas test results to?"
+        },
+        {
+          "name": "MMdxVl",
+          "options": {},
+          "type": "Para",
+          "content": "You will receive a physical report showing the radon level at your measurement address and advice on whether you need to take action."
+        }
+      ],
+      "next": [
+        { "path": "/who-is-the-recipient-of-the-kit", "condition": "YwveTU" },
+        { "path": "/review-your-order", "condition": "LtJjpU" },
+        {
+          "path": "/who-is-the-recipient-of-radon-gas-test-results",
+          "condition": "CSAYfU"
+        }
+      ]
+    },
+    {
+      "path": "/who-is-the-recipient-of-the-kit",
+      "title": "Who is the recipient of the kit",
+      "components": [],
+      "next": []
+    },
+    {
+      "path": "/review-your-order",
+      "title": "Review your order",
+      "components": [],
+      "next": []
+    },
+    {
+      "path": "/who-is-the-recipient-of-radon-gas-test-results",
+      "title": "Who is the recipient of radon gas test results",
       "components": [],
       "next": []
     }
@@ -226,6 +324,70 @@
               "name": "XOXigN",
               "type": "YesNoField",
               "display": "Have you taken any steps to reduce the radon level since the last test?"
+            },
+            "operator": "is",
+            "value": { "type": "Value", "value": "false", "display": "false" }
+          }
+        ]
+      }
+    },
+    {
+      "displayName": "Delivery Address Incorrect",
+      "name": "YwveTU",
+      "value": {
+        "name": "Delivery Address Incorrect",
+        "conditions": [
+          {
+            "field": {
+              "name": "DZHYLU",
+              "type": "YesNoField",
+              "display": "Is this the address you want the kit delivered to?"
+            },
+            "operator": "is",
+            "value": { "type": "Value", "value": "false", "display": "false" }
+          }
+        ]
+      }
+    },
+    {
+      "displayName": "Ready to review",
+      "name": "LtJjpU",
+      "value": {
+        "name": "Ready to review",
+        "conditions": [
+          {
+            "field": {
+              "name": "DZHYLU",
+              "type": "YesNoField",
+              "display": "Is this the address you want the kit delivered to?"
+            },
+            "operator": "is",
+            "value": { "type": "Value", "value": "true", "display": "true" }
+          }
+        ]
+      }
+    },
+    {
+      "displayName": "correct kit address incorrect results address",
+      "name": "CSAYfU",
+      "value": {
+        "name": "correct kit address incorrect results address",
+        "conditions": [
+          {
+            "field": {
+              "name": "DZHYLU",
+              "type": "YesNoField",
+              "display": "Is this the address you want the kit delivered to?"
+            },
+            "operator": "is",
+            "value": { "type": "Value", "value": "true", "display": "true" }
+          },
+          {
+            "coordinator": "and",
+            "field": {
+              "name": "eWdxvJ",
+              "type": "YesNoField",
+              "display": "Is this the address you want your radon gas test results to?"
             },
             "operator": "is",
             "value": { "type": "Value", "value": "false", "display": "false" }
