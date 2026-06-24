@@ -1,4 +1,4 @@
-import { HapiRequest, HapiResponseToolkit } from "../types";
+import { HapiRequest, HapiResponseToolkit, HapiServer } from "../types";
 import config from "../config";
 
 /*
@@ -7,7 +7,7 @@ import config from "../config";
 export default {
   plugin: {
     name: "error-pages",
-    register: (server) => {
+    register: (server: HapiServer) => {
       server.ext(
         "onPreResponse",
         (request: HapiRequest, h: HapiResponseToolkit) => {
@@ -47,7 +47,10 @@ export default {
 
             // The return the `500` view
             return h
-              .view("500", { name: form.name || config.serviceName })
+              .view("500", {
+                name: form?.name || config.serviceName,
+                contactEmail: form?.def.error500ContactEmail,
+              })
               .code(statusCode);
           }
           return h.continue;
