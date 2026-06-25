@@ -50,6 +50,12 @@ export class RepeatedMultiFieldPageController extends PageController {
         "RepeatedMultiFieldPage initialisation failed, no section key was found"
       );
     }
+    if (this.section && this.section.name === this.sectionKey) {
+      throw Error(
+        `RepeatedMultiFieldPage at "${pageDef.path}": section name "${this.section.name}" ` +
+          `must not equal sectionKey "${this.sectionKey}". Use distinct strings in the form definition.`
+      );
+    }
 
     const providedOptions = pageDef?.options ?? {};
     this.options = {
@@ -176,7 +182,12 @@ export class RepeatedMultiFieldPageController extends PageController {
       list.splice(index, 1);
     }
 
-    await cacheService.mergeState(request, { [this.sectionKey]: list });
+    await cacheService.mergeState(
+      request,
+      this.buildEntriesMergePayload(list),
+      true, // nullOverride
+      false // arrayMerge off → replace the array wholesale, don't index-merge
+    );
 
     if (list.length < 1) {
       return h.redirect(`/${this.model.basePath}${this.path}?view=0`);
@@ -207,8 +218,11 @@ export class RepeatedMultiFieldPageController extends PageController {
       const response = await this.handlePostRequest(request, h, {
         arrayMerge: false,
         // Work around that allows us to capture errors building on top of Page controller
-        modifyUpdate: (update: Record<string, unknown>) => {
-          validated = update;
+        modifyUpdate: (update) => {
+          validated =
+            this.section && update[this.section.name]
+              ? update[this.section.name]
+              : update;
           return {};
         },
       });
@@ -248,10 +262,18 @@ export class RepeatedMultiFieldPageController extends PageController {
         list.push(entry);
       }
 
-      await cacheService.mergeState(request, { [this.sectionKey]: list });
+      await cacheService.mergeState(
+        request,
+        this.buildEntriesMergePayload(list)
+      );
 
       return h.redirect(`/${this.model.basePath}${this.path}?view=summary`);
     };
+  }
+
+  buildEntriesMergePayload(list: Array<Record<string, unknown>>) {
+    const inner = { [this.sectionKey]: list };
+    return this.section ? { [this.section.name]: inner } : inner;
   }
 
   private getSummaryViewModel(state: any) {
@@ -287,8 +309,10 @@ export class RepeatedMultiFieldPageController extends PageController {
   }
 
   getPartialState(state, atIndex?: number | string) {
+    // Consider if base should be saved in constructor
+    const base = this.section ? reach(state, this.section.name) : state;
     const partial: Array<Record<string, unknown>> =
-      reach(state, this.sectionKey) ?? [];
+      reach(base ?? {}, this.sectionKey) ?? [];
 
     if (atIndex !== undefined && atIndex !== null && atIndex !== "") {
       return partial[Number(atIndex)];
@@ -365,7 +389,7 @@ export class RepeatedMultiFieldPageController extends PageController {
 
   toWebhookQuestions(state: FormSubmissionState) {
     const entries =
-      ((state as any)[this.sectionKey] as Array<Record<string, unknown>>) ?? [];
+      (this.getPartialState(state) as Array<Record<string, unknown>>) ?? [];
 
     const pageTitle = nunjucks.renderString(this.title.en ?? this.title, {
       ...state,
