@@ -114,28 +114,16 @@ export class RepeatedMultiFieldPageController extends PageController {
   makeGetRouteHandler() {
     return async (request: HapiRequest, h: HapiResponseToolkit) => {
       const { query } = request;
-      const { removeAtIndex, remove, view, returnUrl } = query;
+      const { removeAtIndex, remove, view } = query;
 
       if (removeAtIndex !== undefined || remove !== undefined) {
         return this.removeAtIndex(request, h);
       }
 
-      // Summary view scenario: ?view=summary or ?returnUrl=/somewhere
-      if (view === "summary" || returnUrl) {
-        const { cacheService } = request.services([]);
-        const state = await cacheService.getState(request);
-
-        const { progress = [] } = state;
-        progress.push(`/${this.model.basePath}${this.path}?view=summary`);
-        await cacheService.mergeState(request, { progress });
-
-        return h.view(
-          "repeating-multi-field-summary",
-          this.getSummaryViewModel(state)
-        );
-      }
-
       // Editing an existing entry: ?view=N where N is a row index.
+      // Checked BEFORE the summary branch so a link carrying returnUrl
+      // (e.g. from the main summary page) still routes to the edit view
+      // instead of being hijacked into the repeat summary list.
       const isPastView =
         view !== undefined && view !== "" && !isNaN(Number(view));
 
@@ -163,11 +151,27 @@ export class RepeatedMultiFieldPageController extends PageController {
         return response;
       }
 
+      // Summary view scenario: explicit ?view=summary only.
+      // Note: no longer triggered by the mere presence of returnUrl —
+      // returnUrl now keeps its normal meaning (where to go after editing).
+      if (view === "summary") {
+        const { cacheService } = request.services([]);
+        const state = await cacheService.getState(request);
+
+        const { progress = [] } = state;
+        progress.push(`/${this.model.basePath}${this.path}?view=summary`);
+        await cacheService.mergeState(request, { progress });
+
+        return h.view(
+          "repeating-multi-field-summary",
+          this.getSummaryViewModel(state)
+        );
+      }
+
       // New entry scenario
       return super.makeGetRouteHandler()(request, h);
     };
   }
-
   async removeAtIndex(request, h) {
     const { query } = request;
     const { cacheService } = request.services([]);
