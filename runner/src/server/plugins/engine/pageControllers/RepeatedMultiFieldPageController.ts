@@ -271,7 +271,18 @@ export class RepeatedMultiFieldPageController extends PageController {
         this.buildEntriesMergePayload(list)
       );
 
-      return h.redirect(`/${this.model.basePath}${this.path}?view=summary`);
+      await cacheService.mergeState(
+        request,
+        this.buildEntriesMergePayload(list)
+      );
+
+      // Goes back to main summary page if change is made form there
+      const { returnUrl } = request.query;
+      return h.redirect(
+        returnUrl
+          ? String(returnUrl)
+          : `/${this.model.basePath}${this.path}?view=summary`
+      );
     };
   }
 
