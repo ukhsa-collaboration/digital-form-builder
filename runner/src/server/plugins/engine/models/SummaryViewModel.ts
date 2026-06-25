@@ -57,6 +57,7 @@ export class SummaryViewModel {
   callback?: InitialiseSessionOptions;
   showPaymentSkippedWarningPage: boolean = false;
   returnUrl: string;
+
   constructor(
     pageTitle: string,
     model: FormModel,
@@ -205,6 +206,10 @@ export class SummaryViewModel {
       }
 
       sectionPages.forEach((page) => {
+        if (page.isRepeatingFieldPageController) {
+          details.push(...page.toSummaryDetails(state));
+          return;
+        }
         for (const component of page.components.formItems) {
           const item = Item(request, component, sectionState, page, model);
           if (items.find((cbItem) => cbItem.name === item.name)) return;
