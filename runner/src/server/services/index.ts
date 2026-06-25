@@ -9,8 +9,3 @@ export { StatusService } from "./statusService";
 export { AddressService } from "./addressService";
 export { ExitService } from "./ExitService";
 export { FormSecurityService } from "./formSecurityService";
-export { MsalAuthorizer } from "./msalAuthorizerService";
-export {
-  SecureFormSubmissionService,
-  getSecureFormSubmissionServiceInstance,
-} from "./secureFormSubmissionService";

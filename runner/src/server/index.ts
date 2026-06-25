@@ -35,8 +35,6 @@ import {
   WebhookService,
   ExitService,
   FormSecurityService,
-  SecureFormSubmissionService,
-  getSecureFormSubmissionServiceInstance,
 } from "./services";
 import { HapiRequest, HapiResponseToolkit, RouteConfig } from "./types";
 import getRequestInfo from "./utils/getRequestInfo";
@@ -178,26 +176,6 @@ async function createServer(routeConfig: RouteConfig) {
 
     return h.continue;
   });
-
-  const enginePlugin = configureEnginePlugin(
-    formFileName,
-    formFilePath,
-    options
-  );
-
-  for (const form of enginePlugin.options.configs) {
-    const formId = form.id;
-
-    if (form.configuration.secureFormSubmissionConfig) {
-      const instanceName = getSecureFormSubmissionServiceInstance(formId);
-      const namedService = new SecureFormSubmissionService(
-        form.configuration.secureFormSubmissionConfig
-      );
-      await server.registerService(
-        Schmervice.withName(instanceName, namedService)
-      );
-    }
-  }
 
   await server.register(pluginLocale);
   await server.register(pluginViews);

@@ -10,8 +10,7 @@ const DEFAULT_OPTIONS = {
 };
 
 export class WebhookService {
-  logger: HapiServer["logger"];
-
+  logger: any;
   constructor(server: HapiServer) {
     this.logger = server.logger;
   }
@@ -31,7 +30,7 @@ export class WebhookService {
     method: "POST" | "PUT" = "POST",
     sendAdditionalPayMetadata: boolean = false,
     additionalHeaders?: Record<string, string>
-  ): Promise<string> {
+  ) {
     // Commented out due to potential for logging PII
     // this.logger.info(
     //   ["WebhookService", "postRequest body"],
@@ -76,7 +75,7 @@ export class WebhookService {
       //   JSON.stringify(payload)
       // );
       return reference;
-    } catch (error: any) {
+    } catch (error) {
       this.logger.error(["WebhookService", "postRequest"], error);
       return "UNKNOWN";
     }

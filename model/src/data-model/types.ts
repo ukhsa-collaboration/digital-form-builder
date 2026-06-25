@@ -206,18 +206,6 @@ export type Analytics = {
   matomoUrl: string;
 };
 
-export interface MsalAuthorizerConfig {
-  tenantId: string;
-  clientId: string;
-  clientSecret: string;
-  scopes: string[];
-}
-
-export interface SecureFormSubmissionConfig extends MsalAuthorizerConfig {
-  /* Empty for now */
-  useAwsWafUserAgentWorkaround?: boolean;
-}
-
 /**
  * `FormDefinition` is a typescript representation of `Schema`
  */
@@ -255,5 +243,4 @@ export type FormDefinition = {
   confirmationSessionTimeout: number | undefined;
   returnTo?: boolean | undefined;
   documentUploadApiUrl?: string | undefined;
-  secureFormSubmissionConfig: SecureFormSubmissionConfig;
 };
