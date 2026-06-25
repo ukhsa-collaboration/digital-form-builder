@@ -117,7 +117,7 @@
           "content": "<p class=\"govuk-body-m\"><h2 class=\"govuk-heading-m\">Enter your personal details</h2></p>"
         },
         {
-          "name": "ozPAxH",
+          "name": "Title",
           "options": {
             "exposeToContext": true,
             "customValidationMessages":{
@@ -125,33 +125,34 @@
             }
           },
           "type": "TextField",
-          "title": "Title",
+          "title": "title",
           "hint": "e.g. Mr, Mrs, Dr"
         },
         {
-          "name": "JHHRvT",
+          "name": "Initials",
           "options": {
             "customValidationMessages":{
               "string.empty": "Enter your Initials"
-            }
+            },
+            "exposeToContext": true
           },
           "type": "TextField",
           "title": "Initials"
         },
         {
-          "name": "uHLLlH",
-          "options": { "required": false },
+          "name": "LastName",
+          "options": { "required": false, "exposeToContext": true },
           "type": "TextField",
           "title": "Last Name"
         },
         {
-          "name": "yxXtNS",
+          "name": "EmailAddressText",
           "options": {},
           "type": "Para",
           "content": "<p class=\"govuk-body-m\"><h2 class=\"govuk-heading-m\">Enter your email address</h2></p>"
         },
         {
-          "name": "xpyyag",
+          "name": "EmailAddress",
           "options": {
             "exposeToContext": true,
             "customValidationMessages": {
@@ -233,7 +234,7 @@
       ],
       "next": [
         { "path": "/who-is-the-recipient-of-the-kit", "condition": "YwveTU" },
-        { "path": "/review-your-order", "condition": "LtJjpU" },
+        { "path": "/gas-test-kit-check-your-answers", "condition": "LtJjpU" },
         {
           "path": "/who-is-the-recipient-of-radon-gas-test-results",
           "condition": "CSAYfU"
@@ -247,19 +248,63 @@
       "next": []
     },
     {
-      "path": "/review-your-order",
+      "path": "/gas-test-kit-check-your-answers",
       "title": "Review your order",
-      "components": [],
-      "next": []
+      "components": [
+        {
+          "name": "MMdxVl",
+          "options": {},
+          "type": "Para",
+          "content": "<table class=\"govuk-table\"><caption class=\"govuk-table__caption govuk-table__caption--m\">Order Summary</caption><tbody class=\"govuk-table__body\"><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\"><b>Which type of test kit do you need?</b></th><td class=\"govuk-table__cell\">Home radon  gas test kit</td><td class=\"govuk-table__cell\"></td></tr><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\"><b>Total</b></th><td class=\"govuk-table__cell\">£52.80 (icluding VAT)</td><td class=\"govuk-table__cell\"></td></tr></tbody></table>"
+        },
+        {
+          "name": "MMdxVl",
+          "options": {},
+          "type": "Para",
+          "content": "<table class=\"govuk-table\"><caption class=\"govuk-table__caption govuk-table__caption--m\">Contact Information</caption><tbody class=\"govuk-table__body\"><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\">Title</th><td class=\"govuk-table__cell\">{{ Title }}</td><td class=\"govuk-table__cell\"><a href=\"/gas-test-kit/enter-details\" \"target\"=\"_blank\">Change</a></td></tr><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\">Initials</th><td class=\"govuk-table__cell\">{{ Initials }}</td><td class=\"govuk-table__cell\"><a href=\"/gas-test-kit/enter-details\" \"target\"=\"_blank\">Change</a></td></tr><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\">Last name</th><td class=\"govuk-table__cell\">{{ LastName }}</td><td class=\"govuk-table__cell\"><a href=\"/gas-test-kit/enter-details\" \"target\"=\"_blank\">Change</a></td></tr><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\">Email</th><td class=\"govuk-table__cell\">{{ EmailAddress }}</td><td class=\"govuk-table__cell\"><a href=\"/gas-test-kit/enter-details\" \"target\"=\"_blank\">Change</a></td></tr><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\">Property address</th><td class=\"govuk-table__cell\">{{ PropertyAddress }}</td><td class=\"govuk-table__cell\"><a href=\"google.com\" \"target\"=\"_blank\">Change</a></td></tr><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\">Delivery recipient</th><td class=\"govuk-table__cell\">{{ DeliveryRecipient }}</td><td class=\"govuk-table__cell\"><a href=\"/gas-test-kit/enter-details\" \"target\"=\"_blank\">Change</a></td></tr><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\">Delivery address</th><td class=\"govuk-table__cell\">{{ DeliveryAddress }}</td><td class=\"govuk-table__cell\"><a href=\"google.com\" \"target\"=\"_blank\">Change</a></td></tr><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\">Results recipient</th><td class=\"govuk-table__cell\">{{ ResultsRecipient }}</td><td class=\"govuk-table__cell\"><a href=\"google.com\" \"target\"=\"_blank\">Change</a></td></tr><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\">Results address</th><td class=\"govuk-table__cell\">{{ ResultsAddress }}</td><td class=\"govuk-table__cell\"><a href=\"google.com\" \"target\"=\"_blank\">Change</a></td></tr></tbody></table>"
+        },
+        {
+          "name": "checkbox",
+          "type": "CheckboxesField",
+          "title": " ",
+          "list": "TermsAndConditions",
+          "options": {
+            "required": true,
+            "customValidationMessages": {
+              "any.required": "<p class=\"govuk-body-m\">You must accept the <a href=\"www.google.com\" target=\"_blank\">Privacy Policy</a> and <a href=\"www.google.com\" target=\"_blank\">Terms and Conditions</a> before continuing</p>"
+            }
+            
+          }
+        }
+      ],
+      "next": [{"path": "/payment"}]
     },
     {
       "path": "/who-is-the-recipient-of-radon-gas-test-results",
       "title": "Who is the recipient of radon gas test results",
       "components": [],
       "next": []
+    },
+    {
+      "path": "/payment",
+      "title": "Payment",
+      "components": [],
+      "next": []
     }
   ],
-  "lists": [],
+  "lists": [
+    {
+      "title": "terms and conditions",
+      "name": "TermsAndConditions",
+      "type": "string",
+      "items": [
+        {
+          "text": "I agree to the Privacy Policy and Terms and Conditions for this order.",
+          "value": "I agree to the Privacy Policy and Terms and Conditions for this order."
+        }
+      ]
+    }
+  ],
   "sections": [],
   "conditions": [
     {
