@@ -50,8 +50,6 @@ export class RepeatedMultiFieldPageController extends PageController {
       );
     }
 
-    // CHeck this assignmetn of variables? should I re set summary display mode ?
-    // TODO: check if default values should be
     const providedOptions = pageDef?.options ?? {};
     this.options = {
       ...DEFAULT_OPTIONS,
@@ -90,7 +88,6 @@ export class RepeatedMultiFieldPageController extends PageController {
     this.summary.options = this.options;
   }
 
-  // TODO: drafted this function needs checking and documenting
   get stateSchema() {
     const componentNames = this.inputComponents.map((c) => c.name);
 
@@ -124,7 +121,6 @@ export class RepeatedMultiFieldPageController extends PageController {
       const { query } = request;
       const { removeAtIndex, remove, view, returnUrl } = query;
 
-      // TODO: Check this
       if (removeAtIndex !== undefined || remove !== undefined) {
         return this.removeAtIndex(request, h);
       }
@@ -167,7 +163,6 @@ export class RepeatedMultiFieldPageController extends PageController {
     };
   }
 
-  // Check this funciton
   async removeAtIndex(request, h) {
     const { query } = request;
     const { cacheService } = request.services([]);

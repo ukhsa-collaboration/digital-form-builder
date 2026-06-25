@@ -97,8 +97,6 @@ export class ContactDetailsCollection extends FormComponent {
       model
     );
 
-    // State schema (Pass 2) — shape only
-    // TODO: fix landline number is no-longer read
     this.stateSchema = Joi.object({
       mobile_number: Joi.string().empty(["", null]),
       email_address: Joi.string().empty(["", null]).email(),

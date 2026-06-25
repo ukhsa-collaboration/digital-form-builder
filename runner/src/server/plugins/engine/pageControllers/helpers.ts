@@ -8,7 +8,6 @@ import { StartPageController } from "./StartPageController";
 import { SummaryPageController } from "./SummaryPageController";
 import { PageControllerBase } from "./PageControllerBase";
 import { RepeatingFieldPageController } from "./RepeatingFieldPageController";
-// Unsure why I get this error when I have this class defined
 
 import { MiniSummaryPageController } from "./MiniSummaryPageController";
 import { Page } from "@xgovformbuilder/model";
