@@ -114,24 +114,33 @@
           "name": "VtmvaR",
           "options": {},
           "type": "Para",
-          "content": "<h2>Enter your personal details</h2>"
+          "content": "<p class=\"govuk-body-m\"><h2 class=\"govuk-heading-m\">Enter your personal details</h2></p>"
         },
         {
           "name": "ozPAxH",
-          "options": { "exposeToContext": true },
+          "options": {
+            "exposeToContext": true,
+            "customValidationMessages":{
+              "string.empty": "Enter your Title"
+            }
+          },
           "type": "TextField",
           "title": "Title",
           "hint": "e.g. Mr, Mrs, Dr"
         },
         {
           "name": "JHHRvT",
-          "options": {},
+          "options": {
+            "customValidationMessages":{
+              "string.empty": "Enter your Initials"
+            }
+          },
           "type": "TextField",
           "title": "Initials"
         },
         {
           "name": "uHLLlH",
-          "options": {},
+          "options": { "required": false },
           "type": "TextField",
           "title": "Last Name"
         },
@@ -139,14 +148,29 @@
           "name": "yxXtNS",
           "options": {},
           "type": "Para",
-          "content": "<h2>Enter your email address</h2>"
+          "content": "<p class=\"govuk-body-m\"><h2 class=\"govuk-heading-m\">Enter your email address</h2></p>"
         },
         {
           "name": "xpyyag",
-          "options": { "exposeToContext": true, "hideTitle": true },
-          "type": "TextField",
+          "options": {
+            "exposeToContext": true,
+            "customValidationMessages": {
+              "any.required": "Enter your email address",
+              "any.only": "Enter your email address",
+              "string.empty": "Enter your email address",
+              "string.pattern.base": "Enter an email address in the correct format, like name@example.com"
+            },
+            "hideTitle": true
+          },
+          "type": "EmailAddressField",
           "title": "Email address",
           "hint": "For example, 'name@example.com'."
+        },
+        {
+          "name": "yuyIIP",
+          "options": {},
+          "type": "InsetText",
+          "content": "We will use your email address to send your payment confirmation."
         }
       ],
       "next": [{ "path": "/measurement-address-details" }]
@@ -159,11 +183,20 @@
           "name": "HxzsKV",
           "options": {},
           "type": "InsetText",
-          "content": "Placeholder</br>\nAddress</br>\nTODO</br>\nAdd take from context"
+          "content": "{{ Name }}</br>{{ Street }}</br>\n{{ Town }}</br>\n{{ Postcode }}"
+        },
+        
+
+
+        {
+          "name": "HAJdbi",
+          "options": {},
+          "type": "Para",
+          "content": "<p class=\"govuk-body-m\"><h2 class=\"govuk-heading-m\">Is this the address you want the kit delivered to?</h2></p>"
         },
         {
           "name": "DZHYLU",
-          "options": {},
+          "options": {"hideTitle": true},
           "type": "YesNoField",
           "title": "Is this the address you want the kit delivered to?"
         },
@@ -171,7 +204,7 @@
           "name": "AKEkjp",
           "options": {},
           "type": "InsetText",
-          "content": "The detectors record continuously so the reading may be less accurate if they are not at the measurement address."
+          "content": "<p class=\"govuk-body-m\"><b>The detectors record continuously so the reading may be less accurate if they are not at the measurement address.</b></p>"
         },
         {
           "name": "VLRgoA",
@@ -180,8 +213,14 @@
           "content": "If the kits are delivered to a different address than where they will be used, the detectors must be placed within the measurement address within 7 days of delivery.\n</br></br>\nA kit fits through a standard letter box."
         },
         {
-          "name": "eWdxvJ",
+          "name": "HAJdbi",
           "options": {},
+          "type": "Para",
+          "content": "<p class=\"govuk-body-m\"><h2 class=\"govuk-heading-m\">Is this the address you want your radon gas test results to?</h2></p>"
+        },
+        {
+          "name": "eWdxvJ",
+          "options": {"hideTitle": true},
           "type": "YesNoField",
           "title": "Is this the address you want your radon gas test results to?"
         },
