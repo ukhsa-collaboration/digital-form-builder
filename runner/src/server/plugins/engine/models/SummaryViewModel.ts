@@ -178,6 +178,7 @@ export class SummaryViewModel {
 
     [undefined, ...model.sections].forEach((section) => {
       const items: any[] = [];
+      const repeatingCards: any[] = [];
       let sectionState = section ? state[section.name] || {} : state;
 
       sectionState.originalFilenames = state.originalFilenames ?? {};
@@ -214,14 +215,13 @@ export class SummaryViewModel {
               returnUrl: redirectUrl(request, `/${model.basePath}/summary`),
               view: card.index,
             });
-
             card.card = url;
             card.items.forEach((item) => {
               item.url = url;
             });
           });
 
-          details.push(...cards);
+          repeatingCards.push(...cards);
           return;
         }
         for (const component of page.components.formItems) {
@@ -263,6 +263,7 @@ export class SummaryViewModel {
           });
         }
       }
+      details.push(...repeatingCards);
     });
 
     return details;
