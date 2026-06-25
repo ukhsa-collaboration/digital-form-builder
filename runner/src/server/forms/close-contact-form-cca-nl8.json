@@ -420,8 +420,12 @@
       "path": "/person-live-with",
       "title": "Details of a person {{ PersonalInformation.for }} live with",
       "controller": "RepeatedMultiFieldPageController",
+      "section": "PeopleYouLiveWith",
       "options": {
         "sectionKey": "people_you_live_with",
+        "customText": {
+          "cardTitle": "Person {index}"
+        },
         "summaryDisplayMode": {
           "samePage": false,
           "separatePage": true
@@ -557,8 +561,12 @@
       "path": "/close-contacts",
       "title": "Details of the person {{ PersonalInformation.for }}'ve been in close contact with",
       "controller": "RepeatedMultiFieldPageController",
+      "section": "OtherContacts",
       "options": {
         "sectionKey": "close_contacts",
+        "customText": {
+          "cardTitle": "Close Contact {index}"
+        },
         "summaryDisplayMode": {
           "samePage": false,
           "separatePage": true
@@ -651,8 +659,7 @@
           "title": "Contact Details"
         }
       ],
-      "next": [{ "path": "/summary" }],
-      "section": "CloseContacts"
+      "next": [{ "path": "/summary" }]
     },
     {
       "path": "/summary",

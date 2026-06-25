@@ -48,6 +48,7 @@ export interface RepeatingMultiFieldPage extends Page {
     };
     customText?: {
       separatePageTitle?: string;
+      customCardTitle?: string;
     };
   };
 }
