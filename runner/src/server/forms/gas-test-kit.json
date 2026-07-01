@@ -125,7 +125,7 @@
             }
           },
           "type": "TextField",
-          "title": "title",
+          "title": "Title",
           "hint": "e.g. Mr, Mrs, Dr"
         },
         {
@@ -184,11 +184,8 @@
           "name": "HxzsKV",
           "options": {},
           "type": "InsetText",
-          "content": "{{ Name }}</br>{{ Street }}</br>\n{{ Town }}</br>\n{{ Postcode }}"
+          "content": "{{ Name }}</br>{{ Street }}</br>\n{{ Town }}</br>\n{{ Postcode }} This is all a placeholder"
         },
-        
-
-
         {
           "name": "HAJdbi",
           "options": {},
@@ -258,11 +255,18 @@
           "content": "<table class=\"govuk-table\"><caption class=\"govuk-table__caption govuk-table__caption--m\">Order Summary</caption><tbody class=\"govuk-table__body\"><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\"><b>Which type of test kit do you need?</b></th><td class=\"govuk-table__cell\">Home radon  gas test kit</td><td class=\"govuk-table__cell\"></td></tr><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\"><b>Total</b></th><td class=\"govuk-table__cell\">£52.80 (icluding VAT)</td><td class=\"govuk-table__cell\"></td></tr></tbody></table>"
         },
         {
+          "name": "linebreaks",
+          "options": {},
+          "type": "Para",
+          "content": "</br>"
+        },
+        {
           "name": "MMdxVl",
           "options": {},
           "type": "Para",
           "content": "<table class=\"govuk-table\"><caption class=\"govuk-table__caption govuk-table__caption--m\">Contact Information</caption><tbody class=\"govuk-table__body\"><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\">Title</th><td class=\"govuk-table__cell\">{{ Title }}</td><td class=\"govuk-table__cell\"><a href=\"/gas-test-kit/enter-details\" \"target\"=\"_blank\">Change</a></td></tr><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\">Initials</th><td class=\"govuk-table__cell\">{{ Initials }}</td><td class=\"govuk-table__cell\"><a href=\"/gas-test-kit/enter-details\" \"target\"=\"_blank\">Change</a></td></tr><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\">Last name</th><td class=\"govuk-table__cell\">{{ LastName }}</td><td class=\"govuk-table__cell\"><a href=\"/gas-test-kit/enter-details\" \"target\"=\"_blank\">Change</a></td></tr><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\">Email</th><td class=\"govuk-table__cell\">{{ EmailAddress }}</td><td class=\"govuk-table__cell\"><a href=\"/gas-test-kit/enter-details\" \"target\"=\"_blank\">Change</a></td></tr><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\">Property address</th><td class=\"govuk-table__cell\">{{ PropertyAddress }}</td><td class=\"govuk-table__cell\"><a href=\"google.com\" \"target\"=\"_blank\">Change</a></td></tr><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\">Delivery recipient</th><td class=\"govuk-table__cell\">{{ DeliveryRecipient }}</td><td class=\"govuk-table__cell\"><a href=\"/gas-test-kit/enter-details\" \"target\"=\"_blank\">Change</a></td></tr><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\">Delivery address</th><td class=\"govuk-table__cell\">{{ DeliveryAddress }}</td><td class=\"govuk-table__cell\"><a href=\"google.com\" \"target\"=\"_blank\">Change</a></td></tr><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\">Results recipient</th><td class=\"govuk-table__cell\">{{ ResultsRecipient }}</td><td class=\"govuk-table__cell\"><a href=\"google.com\" \"target\"=\"_blank\">Change</a></td></tr><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\">Results address</th><td class=\"govuk-table__cell\">{{ ResultsAddress }}</td><td class=\"govuk-table__cell\"><a href=\"google.com\" \"target\"=\"_blank\">Change</a></td></tr></tbody></table>"
         },
+
         {
           "name": "checkbox",
           "type": "CheckboxesField",
@@ -270,8 +274,9 @@
           "list": "TermsAndConditions",
           "options": {
             "required": true,
+            "html": true,
             "customValidationMessages": {
-              "any.required": "<p class=\"govuk-body-m\">You must accept the <a href=\"www.google.com\" target=\"_blank\">Privacy Policy</a> and <a href=\"www.google.com\" target=\"_blank\">Terms and Conditions</a> before continuing</p>"
+              "any.required": "<p class=\"govuk-body-m\">You must accept the <a href=\"https://www.ukhsa-protectionservices.org.uk/tc/privacy-policy\" target=\"_blank\">Privacy Policy</a> and <a href=\"https://www.ukhsa-protectionservices.org.uk/tc/terms-conditions\" target=\"_blank\">Terms and Conditions</a> before continuing</p>"
             }
             
           }
@@ -299,8 +304,8 @@
       "type": "string",
       "items": [
         {
-          "text": "I agree to the Privacy Policy and Terms and Conditions for this order.",
-          "value": "I agree to the Privacy Policy and Terms and Conditions for this order."
+          "text": "<p class=\"govuk-body-m\">I agree to the <a href=\"https://www.ukhsa-protectionservices.org.uk/tc/privacy-policy\" target=\"_blank\">Privacy Policy</a> and <a href=\"https://www.ukhsa-protectionservices.org.uk/tc/terms-conditions\" target=\"_blank\">Terms and Conditions</a> for this order.</p>",
+          "value": "accept"
         }
       ]
     }
