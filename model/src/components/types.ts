@@ -146,6 +146,7 @@ interface ListFieldBase {
     summaryTitle?: string;
     divider?: boolean;
     finalValue?: string;
+    html?: boolean;
   };
   list: string;
   schema: {};
