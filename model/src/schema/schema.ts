@@ -337,11 +337,12 @@ const secureFormSubmissionConfig = msalAuthorizeConfigSchema.concat(
   })
 );
 
-const addressLookupConfigSchema = joi.object().keys({
+const addressLookupConfigSchema = msalAuthorizeConfigSchema.concat(
+  joi.object().keys({
   apimBaseUrl: joi.string(),
   callingApplication: joi.string(),
   subscriptionKey: joi.string().optional(),
-});
+}));
 
 export const Schema = joi
   .object()

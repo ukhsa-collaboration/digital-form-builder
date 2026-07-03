@@ -2,7 +2,7 @@ import { RelativeUrl } from "./feedback";
 import { HapiRequest, HapiResponseToolkit } from "server/types";
 import { reach } from "@hapi/hoek";
 import _ from "lodash";
-import { AddressLookupConfig } from "src/server/services/addressLookupService";
+import { AddressLookupConfig } from "@xgovformbuilder/model";
 
 export const feedbackReturnInfoKey = "f_t";
 

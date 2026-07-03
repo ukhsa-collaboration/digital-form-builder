@@ -122,8 +122,7 @@ async function createServer(routeConfig: RouteConfig) {
     WebhookService,
     AddressService,
     ExitService,
-    FormSecurityService,
-    AddressLookupService,
+    FormSecurityService
   ]);
   if (!config.documentUploadApiUrl) {
     server.registerService([

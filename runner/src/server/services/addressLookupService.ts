@@ -1,10 +1,5 @@
-import { MsalAuthorizer, MsalAuthorizerConfig } from "./MsalAuthorizerService";
-
-export interface AddressLookupConfig extends MsalAuthorizerConfig {
-  apimBaseUrl: string;
-  callingApplication: string;
-  subscriptionKey?: string;
-}
+import { MsalAuthorizer } from "./msalAuthorizerService";
+import { AddressLookupConfig } from "@xgovformbuilder/model";
 
 export interface AddressLookupOptions {
   maxResults?: number;

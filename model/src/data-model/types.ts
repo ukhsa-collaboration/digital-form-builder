@@ -251,5 +251,5 @@ export type FormDefinition = {
   serviceName?: string | undefined;
   confirmationSessionTimeout: number | undefined;
   returnTo?: boolean | undefined;
-  addressLookupServiceConfig?: AddressLookupServiceConfig;
+  addressLookupConfig?: AddressLookupConfig;
 };
