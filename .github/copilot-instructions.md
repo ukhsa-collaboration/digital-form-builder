@@ -1,4 +1,4 @@
-# Copilot Instructions
+#Copilot Instructions
 
 ## 🚫 Sensitive Files — Do Not Use for Context
 
