@@ -52,6 +52,24 @@ To learn more about workspaces, check these links:
 - [Workspaces in Yarn](https://classic.yarnpkg.com/blog/2017/08/02/introducing-workspaces/)
 - [Workspaces](https://classic.yarnpkg.com/en/docs/workspaces)
 
+### Docker
+
+For local development purposes, we use docker to run the application stack.
+
+First build the runner application image:
+
+```bash
+docker build -t digital-form-builder-runner:latest . -f runner/Dockerfile
+```
+
+Then you can run docker compose:
+
+```bash
+docker compose up
+```
+
+> Note: this process requires docker, docker buildx and docker compose v2 to be installed on your machine.
+
 ### I want to...
 
 #### run a specific workspaces' script

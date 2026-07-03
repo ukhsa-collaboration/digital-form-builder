@@ -339,6 +339,7 @@ export const Schema = joi
   .object()
   .required()
   .keys({
+    group: localisedString.optional(),
     name: localisedString.optional(),
     feedback: feedbackSchema,
     startPage: joi.string().required(),

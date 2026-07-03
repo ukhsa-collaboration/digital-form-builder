@@ -1,5 +1,80 @@
-import { HapiRequest, HapiResponseToolkit } from "../types";
+import fs from "node:fs";
+import path from "node:path";
 import config from "../config";
+import { HapiRequest, HapiResponseToolkit } from "../types";
+import type { ApplicationErrorMetadata } from "./engine/errors";
+
+/**
+ * Extracts the Project ID from the URL path
+ * @param path a url path
+ * @returns
+ */
+const extractProjectIdFromPath = (path: string) => {
+  const segments = path.split("/").filter(Boolean);
+  return segments[0];
+};
+
+/**
+ * Get's a view from a folder
+ *
+ * @param folder the folder where the view is located. If not provided the default folder is `views`.
+ * @param view the name of the view
+ * @returns
+ */
+const getView = (folder: string, view: string) => {
+  const viewPath = path.join(__dirname, `../views/${folder}/${view}.html`);
+
+  if (!fs.existsSync(viewPath)) {
+    return undefined;
+  }
+
+  return folder ? `${folder}/${view}` : view;
+};
+
+/**
+ * Finds the first view that exists across a list of candidate folders,
+ * checked in order (e.g. project folder, then group folder, then generic).
+ *
+ * @param folders the folders to check, in priority order
+ * @param view the name of the view
+ * @returns
+ */
+const findView = (folders: (string | undefined)[], view: string) => {
+  for (const folder of folders) {
+    const match = folder !== undefined && getView(folder, view);
+    if (match) return match;
+  }
+  return undefined;
+};
+
+/**
+ * Handles the rendering of errors caused by application errors
+ *
+ * @param request a hapi request object
+ * @param response a hapi response toolkit
+ * @param data the metadata ({@link ApplicationErrorMetadata}) attached to the application error
+ * @param group the project group name
+ * @returns
+ */
+const handleApplicationError = (
+  request: HapiRequest,
+  response: HapiResponseToolkit,
+  data: ApplicationErrorMetadata,
+  group?: string
+) => {
+  // extract project from url path
+  const projectId = extractProjectIdFromPath(request.path);
+  const code = `${data.code}`;
+
+  // views are looked up from most to least specific: project, group, generic
+  const folders = [projectId, group, ""];
+
+  const view =
+    ("page" in data && data.page && findView(folders, data.page)) ||
+    findView(folders, code);
+
+  return response.view(view || code).code(data.code);
+};
 
 /*
  * Add an `onPreResponse` listener to return error pages
@@ -14,42 +89,47 @@ export default {
           const response = request.response;
 
           if ("isBoom" in response && response.isBoom) {
-            // An error was raised during
-            // processing the request
+            // An error was raised during processing the request
             const statusCode = response.output.statusCode;
 
-            // In the event of 404
-            // return the `404` view
-            if (statusCode === 404) {
-              return h.view("404").code(statusCode);
-            }
-
-            request.log("error", {
-              statusCode: statusCode,
-              data: response.data,
-              message: response.message,
-            });
-
             try {
-              const url = request.url;
-              var urlPath = url.pathname.split("/");
-              var form = server.app.forms[urlPath[1]];
-            } catch (e) {
-              return h.view("500").code(500);
-            }
+              const projectId = extractProjectIdFromPath(request.path);
+              const form = server.app.forms[projectId];
 
-            // In the event of 403 (CSRF protection)
-            if (statusCode === 403) {
+              const group = form.def.group;
+
+              request.log("error", {
+                statusCode: statusCode,
+                data: response.data,
+                message: response.message,
+              });
+
+              if (
+                response.message.includes("ControllerError") ||
+                response.message.includes("RenderingError")
+              ) {
+                return handleApplicationError(request, h, response.data, group);
+              }
+
+              // In the event of 403 (CSRF protection)
+              if (statusCode === 403) {
+                return h
+                  .view("csrf-protection", {
+                    url: projectId,
+                    name: form.name,
+                  })
+                  .code(statusCode);
+              }
+
               return h
-                .view("csrf-protection", { url: urlPath[1], name: form.name })
+                .view("500", { name: form.name || config.serviceName })
                 .code(statusCode);
+            } catch (error) {
+              // The return the `500` view
+              return h.view("500").code(statusCode);
             }
-
-            // The return the `500` view
-            return h
-              .view("500", { name: form.name || config.serviceName })
-              .code(statusCode);
           }
+
           return h.continue;
         }
       );

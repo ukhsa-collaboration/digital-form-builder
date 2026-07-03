@@ -1,34 +1,46 @@
-import path from "path";
-import { plugin } from "./plugin";
-
-import {
-  loadPreConfiguredForms,
-  FormConfiguration,
-} from "./services/configurationService";
-import { idFromFilename } from "./helpers";
-import config from "../../config";
 import { FormDefinition } from "@xgovformbuilder/model";
+import path from "path";
+import config from "../../config";
+import { idFromFilename } from "./helpers";
+import { plugin } from "./plugin";
+import {
+  FormConfiguration,
+  loadPreConfiguredForms,
+} from "./services/configurationService";
+
+type ConfigureEnginePlugin = (
+  formFileName?: string,
+  formFilePath?: string,
+  options?: { previewMode?: string }
+) => {
+  plugin: any;
+  options: {
+    modelOptions: {
+      relativeTo: string;
+      previewMode: any;
+    };
+    configs: {
+      configuration: FormDefinition;
+      id: string;
+    }[];
+    previewMode: boolean;
+  };
+};
 
 const relativeTo = __dirname;
 
-type EngineOptions = {
-  previewMode?: boolean;
-};
-export const configureEnginePlugin = (
+export const configureEnginePlugin: ConfigureEnginePlugin = (
   formFileName,
   formFilePath,
-  options?: EngineOptions
+  options
 ) => {
   let configs: FormConfiguration[];
 
   if (formFileName && formFilePath) {
     configs = [
       {
-        configuration: require(path.join(
-          formFilePath,
-          formFileName
-        )) as FormDefinition,
         id: idFromFilename(formFileName),
+        configuration: require(path.join(formFilePath, formFileName)),
       },
     ];
   } else {
