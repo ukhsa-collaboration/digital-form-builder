@@ -4291,90 +4291,76 @@
         "name": "HPTRegionActive",
         "conditions": [
           {
-            "field": {
-              "name": "HPT",
-              "type": "RadiosField",
-              "display": "region"
-            },
-            "operator": "is",
-            "value": {
-              "type": "Value",
-              "value": "West Midlands HPT",
-              "display": "West Midlands"
-            }
+            "conditionName": "HPT_WM",
+            "conditionDisplayName": "HPT_WM"
           },
           {
             "coordinator": "or",
-            "field": {
-              "name": "HPT",
-              "type": "RadiosField",
-              "display": "region"
-            },
-            "operator": "is",
-            "value": {
-              "type": "Value",
-              "value": "East of England HPT",
-              "display": "East of England"
-            }
+            "conditionName": "HPT_EE",
+            "conditionDisplayName": "HPT_EE"
           },
           {
             "coordinator": "or",
-            "field": {
-              "name": "HPT",
-              "type": "RadiosField",
-              "display": "region"
-            },
-            "operator": "is",
-            "value": {
-              "type": "Value",
-              "value": "South West HPT",
-              "display": "South West"
-            }
+            "conditionName": "HPT_SW",
+            "conditionDisplayName": "HPT_SW"
           },
           {
             "coordinator": "or",
-            "field": {
-              "name": "HPT",
-              "type": "RadiosField",
-              "display": "region"
-            },
-            "operator": "is",
-            "value": {
-              "type": "Value",
-              "value": "Yorkshire and the Humber HPT",
-              "display": "Yorkshire and the Humber"
-            }
+            "conditionName": "HPT_YH",
+            "conditionDisplayName": "HPT_YH"
           },
           {
             "coordinator": "or",
-            "field": {
-              "name": "HPT",
-              "type": "RadiosField",
-              "display": "region"
-            },
-            "operator": "is",
-            "value": {
-              "type": "Value",
-              "value": "London HPT",
-              "display": "London"
-            }
+            "conditionName": "HPT_LDN",
+            "conditionDisplayName": "HPT_LDN"
           },
           {
             "coordinator": "or",
-            "field": {
-              "name": "HPT",
-              "type": "RadiosField",
-              "display": "region"
-            },
-            "operator": "is",
-            "value": {
-              "type": "Value",
-              "value": "East Midlands HPT",
-              "display": "East Midlands"
-            }
+            "conditionName": "HPT_EM",
+            "conditionDisplayName": "HPT_EM"
+          },
+          {
+            "coordinator": "or",
+            "conditionName": "HPT_SE",
+            "conditionDisplayName": "HPT_SE"
           }
         ]
       }
+    },
+    {
+      "name": "HPT_WM",
+      "displayName": "West Midlands",
+      "value": "HPT=='West Midlands HPT'"
+    },
+    {
+      "name": "HPT_EE",
+      "displayName": "East of England",
+      "value": "HPT=='East of England HPT'"
+    },
+    {
+      "name": "HPT_SW",
+      "displayName": "South West",
+      "value": "HPT=='South West HPT'"
+    },
+    {
+      "name": "HPT_YH",
+      "displayName": "Yorkshire and the Humber",
+      "value": "HPT=='Yorkshire and the Humber HPT'"
+    },
+    {
+      "name": "HPT_LDN",
+      "displayName": "London",
+      "value": "HPT=='London HPT'"
+    },
+    {
+      "name": "HPT_EM",
+      "displayName": "East Midlands",
+      "value": "HPT=='East Midlands HPT'"
+    },
+    {
+      "name": "HPT_SE",
+      "displayName": "South East",
+      "value": "HPT=='South East HPT'"
     },
     {
       "displayName": "PositiveARI:No",
