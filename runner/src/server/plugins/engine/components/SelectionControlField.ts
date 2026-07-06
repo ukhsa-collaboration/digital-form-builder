@@ -141,7 +141,7 @@ export class SelectionControlField extends ListFormComponent {
     viewModel.items = items.map((item: any) => {
       const itemModel: ListItem = {
         // If options include html, convert the text field to a html field to properly render
-        ...(options.html ? { html: item.text } : { text: item.text }), 
+        ...item,
         value: item.value,
         checked: `${item.value}` === `${formData[name]}`,
       };

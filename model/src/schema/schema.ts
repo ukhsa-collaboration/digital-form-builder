@@ -178,8 +178,7 @@ const specialPagesSchema = joi.object().keys({
   paymentSkippedWarningPage: paymentSkippedWarningPage.optional(),
 });
 
-const listItemSchema = joi.object().keys({
-  text: localisedString,
+const listItemBaseKeys = {
   value: joi.alternatives().try(joi.number(), joi.string()),
   checkpointDisplayValue: joi.alternatives().try(joi.number(), joi.string()),
   description: localisedString.optional(),
@@ -196,7 +195,14 @@ const listItemSchema = joi.object().keys({
     .allow(null)
     .optional(),
   condition: joi.string().allow(null, "").optional(),
-});
+};
+
+const listItemSchema = joi
+  .alternatives()
+  .try(
+    joi.object().keys({ ...listItemBaseKeys, html: localisedString }),
+    joi.object().keys({ ...listItemBaseKeys, text: localisedString })
+  );
 
 const listSchema = joi.object().keys({
   name: joi.string().required(),
