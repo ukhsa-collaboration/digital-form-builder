@@ -26,7 +26,6 @@ export enum ComponentTypeEnum {
   List = "List",
   ContextComponent = "ContextComponent",
   ContentWithState = "ContentWithState",
-  DisplayAddress = "DisplayAddress",
 }
 
 export type ComponentType =
@@ -57,8 +56,7 @@ export type ComponentType =
   | "List"
   | "WebsiteField"
   | "ContextComponent"
-  | "ContentWithState"
-  | "DisplayAddress";
+  | "ContentWithState";
 
 export type ComponentSubType = "field" | "content";
 
@@ -91,10 +89,6 @@ interface TextFieldBase {
     exposeToContext?: boolean;
     disableChangingFromSummary?: boolean;
     customValidationMessages?: Record<string, string>;
-    format?: {
-      trim?: boolean;
-      case?: "upper" | "lower";
-    };
   };
   schema: {
     max?: number;
@@ -307,10 +301,6 @@ export interface InsetTextComponent extends ContentFieldBase {
   type: "InsetText";
 }
 
-export interface DisplayAddressComponent extends ContentFieldBase {
-  type: "DisplayAddress";
-}
-
 // List Fields
 export interface ListComponent extends ListFieldBase {
   type: "List";
@@ -337,7 +327,7 @@ export interface RadiosFieldComponent extends ListFieldBase {
 
 export interface SelectFieldComponent extends ListFieldBase {
   type: "SelectField";
-  options: ListFieldBase["options"] & { autocomplete?: string } & { preselected?: { text: string; value: string | number | boolean } };
+  options: ListFieldBase["options"] & { autocomplete?: string };
   subType?: "listField";
 }
 
@@ -375,8 +365,7 @@ export type ComponentDef =
   | YesNoFieldComponent
   | WebsiteFieldComponent
   | ContextComponent
-  | ContentWithStateComponent
-  | DisplayAddressComponent;
+  | ContentWithStateComponent;
 
 // Components that render inputs.
 export type InputFieldsComponentsDef =
@@ -403,8 +392,7 @@ export type ContentComponentsDef =
   | InsetTextComponent
   | ListComponent
   | FlashCardComponent
-  | ContentWithStateComponent
-  | DisplayAddressComponent;
+  | ContentWithStateComponent;
 
 // Components that render Lists
 export type ListComponentsDef =

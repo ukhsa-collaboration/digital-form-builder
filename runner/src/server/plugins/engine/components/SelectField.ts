@@ -9,12 +9,7 @@ export class SelectField extends ListFormComponent {
     const options: SelectFieldComponent["options"] = this.options;
     const viewModel = super.getViewModel(formData, errors);
 
-    if(options.preselected) {
-      viewModel.items = [options.preselected, ...(viewModel.items ?? [])];
-    } else {
-      viewModel.items = [{ value: "" }, ...(viewModel.items ?? [])];
-    }
-
+    viewModel.items = [{ value: "" }, ...(viewModel.items ?? [])];
     if (options.autocomplete) {
       viewModel.attributes.autocomplete = options.autocomplete;
     }

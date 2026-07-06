@@ -8,4 +8,3 @@ export { WebhookService } from "./webhookService";
 export { StatusService } from "./statusService";
 export { AddressService } from "./addressService";
 export { ExitService } from "./ExitService";
-export { AddressLookupService } from "./addressLookupService"

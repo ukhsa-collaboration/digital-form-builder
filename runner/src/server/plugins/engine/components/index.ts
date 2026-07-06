@@ -36,4 +36,3 @@ export { YesNoField } from "./YesNoField";
 export { MonthYearField } from "./MonthYearField";
 export { ContextComponent } from "./ContextComponent";
 export { ContentWithState } from "./ContentWithState";
-export { DisplayAddress } from "./DisplayAddress";

@@ -2,7 +2,6 @@ import { RelativeUrl } from "./feedback";
 import { HapiRequest, HapiResponseToolkit } from "server/types";
 import { reach } from "@hapi/hoek";
 import _ from "lodash";
-import { AddressLookupConfig } from "src/server/services/addressLookupService";
 
 export const feedbackReturnInfoKey = "f_t";
 
@@ -108,8 +107,4 @@ export function getValidStateFromQueryParameters(
     },
     {}
   );
-}
-
-export const getLocationServiceInstanceName = (addressLookupConfig: AddressLookupConfig) => {
-    return `locationServiceInstance:${addressLookupConfig.callingApplication}`;
 }

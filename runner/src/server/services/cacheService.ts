@@ -168,13 +168,12 @@ export const catboxProvider = () => {
    * If redisHost doesn't exist, CatboxMemory will be used instead.
    * More information at {@link https://hapi.dev/module/catbox/api}
    */
-  const useRedis = redisHost && redisHost !== "${Redis.Host}";
   const provider = {
-    constructor: useRedis ? CatboxRedis.Engine : CatboxMemory.Engine,
+    constructor: redisHost ? CatboxRedis.Engine : CatboxMemory.Engine,
     options: {},
   };
 
-  if (useRedis) {
+  if (redisHost) {
     const redisOptions: {
       password?: string;
       tls?: {};
