@@ -2,6 +2,7 @@ import fs from "fs";
 import path from "path";
 
 import { idFromFilename } from "../helpers";
+import { resolvePlaceholders } from "../utils/resolvePlaceholders";
 import { FormDefinition } from "@xgovformbuilder/model";
 
 const FORMS_FOLDER = path.join(__dirname, "..", "..", "..", "forms");
@@ -21,7 +22,7 @@ export const loadPreConfiguredForms = (): FormConfiguration[] => {
 
   return configFiles.map((configFile) => {
     const dataFilePath = path.join(FORMS_FOLDER, configFile);
-    const configuration = require(dataFilePath);
+    const configuration = resolvePlaceholders(require(dataFilePath));
     const id = idFromFilename(configFile);
     return { configuration, id };
   });

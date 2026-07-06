@@ -51,6 +51,7 @@
   "initialisedSessionTimeout": "INITIALISED_SESSION_TIMEOUT",
   "initialisedSessionKey": "INITIALISED_SESSION_KEY",
   "initialisedSessionAlgorithm": "INITIALISED_SESSION_ALGORITHM",
+  "enableMockApi": "ENABLE_MOCK_API",
   "enableQueueService": "ENABLE_QUEUE_SERVICE",
   "queueType": "QUEUE_TYPE",
   "queueDatabaseUrl": "QUEUE_DATABASE_URL",

@@ -111,7 +111,13 @@ export const configSchema = Joi.object({
       "HS512"
     )
     .default("HS512"),
-
+  enableMockApi: Joi.boolean()
+    .optional()
+    .default(false)
+    .when("env", {
+      is: "production",
+      then: Joi.valid(false),
+    }),
   enableQueueService: Joi.boolean().optional(),
   queueType: Joi.string().when("enableQueueService", {
     is: true,
