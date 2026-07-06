@@ -65,10 +65,11 @@ docker build -t digital-form-builder-runner:latest . -f runner/Dockerfile
 Then you can run docker compose:
 
 ```bash
-docker compose up
+docker compose -f docker-compose.yml -f docker-compose.dev.yml up
 ```
 
 > Note: this process requires docker, docker buildx and docker compose v2 to be installed on your machine.
+> If you don't have docker installed, you can podman. Just switch `docker <COMMAND` with `podman <COMMAND`
 
 ### I want to...
 
