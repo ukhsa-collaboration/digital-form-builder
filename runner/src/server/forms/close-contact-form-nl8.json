@@ -3638,7 +3638,7 @@
       "name": "disease_code_list",
       "type": "string",
       "items": [
-        { "text": "Avian Bird Flu", "value": "001F00" },
+        { "text": "001F00", "value": "001F00" },
         { "text": "Mers-Cov", "value": "001F01" }
       ]
     },
@@ -4604,7 +4604,7 @@
       "title": "Execute API",
       "type": "webhook",
       "outputConfiguration": {
-        "url": "https://api.nl8.test.srs.test-and-trace.nhs.uk/v1/forms",
+        "url": "http://host.docker.internal:3009",
         "allowRetry": true
       }
     }
