@@ -3,6 +3,7 @@ import path from "node:path";
 import config from "../config";
 import { HapiRequest, HapiResponseToolkit } from "../types";
 import type { ApplicationErrorMetadata } from "./engine/errors";
+import { FormModel } from "./engine/models";
 
 /**
  * Extracts the Project ID from the URL path
@@ -94,15 +95,26 @@ export default {
 
             try {
               const projectId = extractProjectIdFromPath(request.path);
-              const form = server.app.forms[projectId];
+              const form: FormModel | undefined = server.app.forms[projectId];
 
-              const group = form.def.group;
+              const group = form?.def.group;
+              const formName = form?.name;
 
               request.log("error", {
                 statusCode: statusCode,
                 data: response.data,
                 message: response.message,
               });
+
+              // In the event of 403 (CSRF protection)
+              if (statusCode === 403) {
+                return h
+                  .view("csrf-protection", {
+                    url: projectId,
+                    name: formName,
+                  })
+                  .code(statusCode);
+              }
 
               if (
                 response.message.includes("ControllerError") ||
@@ -111,18 +123,8 @@ export default {
                 return handleApplicationError(request, h, response.data, group);
               }
 
-              // In the event of 403 (CSRF protection)
-              if (statusCode === 403) {
-                return h
-                  .view("csrf-protection", {
-                    url: projectId,
-                    name: form.name,
-                  })
-                  .code(statusCode);
-              }
-
               return h
-                .view("500", { name: form.name || config.serviceName })
+                .view("500", { name: formName || config.serviceName })
                 .code(statusCode);
             } catch (error) {
               // The return the `500` view
