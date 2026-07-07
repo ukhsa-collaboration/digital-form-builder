@@ -12,10 +12,12 @@ export default {
       },
     },
     debug: config.isDev,
-    logRequestStart: config.isDev,
-    logRequestComplete: config.isDev,
-    ignoreFunc: (_options, request) =>
-      request.path.startsWith("/assets") || request.url.contains("assets"),
+    logRequestStart: config.isDev
+      ? (request) => !request.path.startsWith("/assets")
+      : false,
+    logRequestComplete: config.isDev
+      ? (request) => !request.path.startsWith("/assets")
+      : false,
     redact: {
       paths: config.logRedactPaths,
       censor: "REDACTED",

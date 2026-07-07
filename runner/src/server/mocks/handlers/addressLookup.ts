@@ -19,7 +19,7 @@ export const MOCK_ADDRESSES = [
 ];
 
 export const addressLookupHandlers = [
-  http.get("*/matchAddress", () => {
+  http.get("*/matchAddress", (req) => {
     return HttpResponse.json({
       matchedAddresses: MOCK_ADDRESSES,
     });

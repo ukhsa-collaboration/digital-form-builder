@@ -119,6 +119,7 @@ const pageSchema = joi.object().keys({
   sectionForEndSummaryPages: joi.string(),
   sidebarContent: joi.object().optional(),
   controller: joi.string(),
+  condition: joi.string().optional(),
   components: joi.array().items(componentSchema),
   componentsAfter: joi.array().items(componentSchema).optional(),
   disableSingleComponentAsHeading: joi.boolean(),
@@ -178,8 +179,7 @@ const specialPagesSchema = joi.object().keys({
   paymentSkippedWarningPage: paymentSkippedWarningPage.optional(),
 });
 
-const listItemSchema = joi.object().keys({
-  text: localisedString,
+const listItemBaseKeys = {
   value: joi.alternatives().try(joi.number(), joi.string()),
   checkpointDisplayValue: joi.alternatives().try(joi.number(), joi.string()),
   description: localisedString.optional(),
@@ -196,7 +196,17 @@ const listItemSchema = joi.object().keys({
     .allow(null)
     .optional(),
   condition: joi.string().allow(null, "").optional(),
-});
+};
+
+// Either `html` or `text` must be present, but not both — .oxor enforces this.
+const listItemSchema = joi
+  .object()
+  .keys({
+    ...listItemBaseKeys,
+    html: localisedString,
+    text: localisedString,
+  })
+  .oxor("html", "text");
 
 const listSchema = joi.object().keys({
   name: joi.string().required(),
@@ -339,10 +349,59 @@ const secureFormSubmissionConfig = msalAuthorizeConfigSchema.concat(
 
 const addressLookupConfigSchema = msalAuthorizeConfigSchema.concat(
   joi.object().keys({
-  apimBaseUrl: joi.string(),
-  callingApplication: joi.string(),
-  subscriptionKey: joi.string().optional(),
-}));
+    apimBaseUrl: joi.string(),
+    callingApplication: joi.string(),
+    subscriptionKey: joi.string().optional(),
+  })
+);
+
+const summaryConfigSchema = joi.object().keys({
+  submitLabel: joi.string().optional(),
+  declaration: joi
+    .object()
+    .keys({
+      label: joi.string().required(),
+      errorMessage: joi.string().optional(),
+      hideDeclarationHeading: joi.boolean().optional(),
+    })
+    .optional(),
+  removeFields: joi.array().items(joi.string()).optional(),
+  mergeFields: joi
+    .array()
+    .items(
+      joi.object().keys({
+        names: joi.array().items(joi.string()).required(),
+        to: joi.string().required(),
+        joiner: joi.string().required(),
+      })
+    )
+    .optional(),
+  relabelFields: joi.object().pattern(joi.string(), joi.string()).optional(),
+  conditionalRows: joi
+    .array()
+    .items(
+      joi.object().keys({
+        when: joi
+          .object()
+          .keys({
+            field: joi.string().required(),
+            value: joi.string().required(),
+          })
+          .required(),
+        removeFields: joi.array().items(joi.string()).optional(),
+        appendToLastSection: joi
+          .object()
+          .keys({
+            name: joi.string().required(),
+            label: joi.string().required(),
+            value: joi.string().required(),
+            immutable: joi.boolean().optional(),
+          })
+          .optional(),
+      })
+    )
+    .optional(),
+});
 
 export const Schema = joi
   .object()
@@ -389,6 +448,7 @@ export const Schema = joi
     returnTo: joi.boolean().optional(),
     secureFormSubmissionConfig: secureFormSubmissionConfig.optional(),
     addressLookupConfig: addressLookupConfigSchema.optional(),
+    summaryConfig: summaryConfigSchema.optional(),
   });
 
 /**

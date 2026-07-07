@@ -101,7 +101,8 @@ export class FormModel {
     this.sections = def.sections;
     this.options = options;
     this.name = def.name;
-    this.serviceStartPage = def.fullStartPage || config.serviceStartPage || config.serviceName || "#";
+    this.serviceStartPage =
+      def.fullStartPage || config.serviceStartPage || config.serviceName || "#";
     this.returnTo = def.returnTo || false;
     this.values = result.value;
 
@@ -292,14 +293,17 @@ export class FormModel {
       nextPage = nextPage.getNextPage(state, true);
     }
 
-    const correctAddressIdx = relevantPages.findIndex((p) => p.path === "/is-this-the-correct-address");
+    const correctAddressIdx = relevantPages.findIndex(
+      (p) => p.path === "/is-this-the-correct-address"
+    );
     if (correctAddressIdx > -1 && state.isCorrectAddress === "Yes") {
-      const selectAddressPage = this.pages.find((p) => p.path === "/select-an-address");
+      const selectAddressPage = this.pages.find(
+        (p) => p.path === "/select-an-address"
+      );
       if (selectAddressPage && !relevantPages.includes(selectAddressPage)) {
         relevantPages.splice(correctAddressIdx + 1, 0, selectAddressPage);
       }
     }
-    
 
     return { relevantPages, endPage };
   }

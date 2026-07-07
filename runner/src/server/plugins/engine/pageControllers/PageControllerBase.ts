@@ -124,7 +124,10 @@ export class PageControllerBase {
     this.hasFormComponents = !!components.formItems.length;
     this.hasConditionalFormComponents = !!conditionalFormComponents.length;
 
-    this.componentsAfter = new ComponentCollection(pageDef.componentsAfter ?? [], model)
+    this.componentsAfter = new ComponentCollection(
+      pageDef.componentsAfter ?? [],
+      model
+    );
 
     this[FORM_SCHEMA] = this.components.formSchema;
     this[STATE_SCHEMA] = this.components.stateSchema;
@@ -145,8 +148,8 @@ export class PageControllerBase {
    */
   getViewModel(
     formData: FormData,
-    iteration?: any, // TODO
-    errors?: any // TODO
+    iteration?: any,
+    errors?: any
   ): {
     page: PageControllerBase;
     name: string;
@@ -287,13 +290,15 @@ export class PageControllerBase {
     let defaultLink;
     const nextLink = this.next.find((link) => {
       const { condition } = link;
+
       if (!condition) {
         defaultLink = link;
       }
+
       const conditionPassed = this.model.conditions[condition]?.fn?.(state);
-      if (conditionPassed) {
-        return link;
-      }
+
+      if (conditionPassed) return link;
+
       return false;
     });
 
@@ -373,18 +378,6 @@ export class PageControllerBase {
       };
     }
 
-    if (state) {
-      if (state.matchedAddress) {
-        formData.matchedAddress = state.matchedAddress;
-      }
-      if (state.hasMatchedAddress !== undefined) {
-        formData.hasMatchedAddress = state.hasMatchedAddress;
-      }
-      if(state.numberOfAddresses !== undefined) {
-        formData.numberOfAddresses = state.numberOfAddresses;
-      }
-    }
-
     return formData;
   }
 
@@ -434,11 +427,11 @@ export class PageControllerBase {
    * @param value - user's answers
    * @param schema - which schema to validate against
    */
-  validate(value, schema) {
+  validate<T = any>(value, schema) {
     const result = schema.validate(value, this.validationOptions);
     const errors = result.error ? this.getErrors(result) : null;
 
-    return { value: result.value, errors };
+    return { value: result.value as T, errors };
   }
 
   validateForm(payload) {
@@ -468,12 +461,7 @@ export class PageControllerBase {
     //Note: This function does not support repeatFields right now
 
     let relevantState: FormSubmissionState = {};
-    const virtualKeys = ["hasMatchedAddress", "numberOfAddresses", "matchedAddress", "addresses"];
-    for (const key of virtualKeys) {
-      if (state && state[key] !== undefined) {
-        relevantState[key] = state[key];
-      }
-    }
+
     //Start at our startPage
     let nextPage = model.startPage;
 
@@ -515,7 +503,7 @@ export class PageControllerBase {
       }
 
       //If a nextPage is returned, we must have taken that route through the form so continue our iteration with the new page
-      if(checkedPages.includes(nextPage)) {
+      if (checkedPages.includes(nextPage)) {
         nextPage = null;
       } else {
         checkedPages.push(nextPage);
@@ -524,6 +512,12 @@ export class PageControllerBase {
 
     return relevantState;
   }
+
+  /**
+   * This method is called at the start of the getRouteHandler function. It can be overridden to retrieve state
+   * @param _request the http request object
+   */
+  async getRouteHandlerHook(_request: HapiRequest) {}
 
   makeGetRouteHandler() {
     return async (request: HapiRequest, h: HapiResponseToolkit) => {
@@ -535,6 +529,8 @@ export class PageControllerBase {
       const currentPath = `/${this.model.basePath}${this.path}${request.url.search}`;
       const startPage = this.model.def.startPage;
       const formData = this.getFormDataFromState(state, num - 1);
+
+      await this.getRouteHandlerHook(request);
 
       const isStartPage = this.path === `${startPage}`;
       const isInitialisedSession = !!state.callback;
@@ -619,16 +615,18 @@ export class PageControllerBase {
         return true;
       });
 
-      viewModel.componentsAfter = viewModel.componentsAfter.filter((component) => {
-        if (
-          (component.model.content || component.type === "Details") &&
-          component.model.condition
-        ) {
-          const condition = this.model.conditions[component.model.condition];
-          return condition.fn(relevantState);
+      viewModel.componentsAfter = viewModel.componentsAfter.filter(
+        (component) => {
+          if (
+            (component.model.content || component.type === "Details") &&
+            component.model.condition
+          ) {
+            const condition = this.model.conditions[component.model.condition];
+            return condition.fn(relevantState);
+          }
+          return true;
         }
-        return true;
-      });
+      );
       /**
        * For conditional reveal components (which we no longer support until GDS resolves the related accessibility issues {@link https://github.com/alphagov/govuk-frontend/issues/1991}
        */
@@ -668,6 +666,16 @@ export class PageControllerBase {
         }
       }
 
+      const validated = this.validatePageCondition(
+        request,
+        h,
+        progress,
+        relevantState,
+        startPage
+      );
+
+      if (validated) return validated;
+
       await cacheService.mergeState(request, { progress });
 
       if (this.disableBackLink) {
@@ -681,6 +689,22 @@ export class PageControllerBase {
 
       return h.view(this.viewName, viewModel);
     };
+  }
+
+  validatePageCondition(request, h, progress, relevantState, startPage) {
+    if (this.condition && this.model.conditions[this.condition]) {
+      const conditionPassed = this.model.conditions[this.condition].fn(
+        relevantState
+      );
+      if (!conditionPassed) {
+        const previousPath =
+          progress[progress.length - 1] ??
+          `/${this.model.basePath}${startPage}`;
+        return redirectTo(request, h, previousPath);
+      }
+    }
+
+    return undefined;
   }
 
   /**
@@ -712,7 +736,7 @@ export class PageControllerBase {
     const progress = state.progress || [];
     const { num } = request.query;
     const formData = this.getFormDataFromState(state, num - 1);
-    const combined = {...formData, ...payload } as FormData;
+    const combined = { ...formData, ...payload } as FormData;
 
     // TODO:- Refactor this into a validation method
     if (hasFilesizeError) {
@@ -809,9 +833,15 @@ export class PageControllerBase {
     if (modifyUpdate) {
       update = modifyUpdate(update);
     }
-    if (this.path === "/is-this-the-correct-address" && update.isCorrectAddress === "Yes" && state.matchedAddress) {
-      update.matchedAddress = state.matchedAddress.uprn;
-    }
+
+    // if (
+    //   this.path === "/is-this-the-correct-address" &&
+    //   update.isCorrectAddress === "Yes" &&
+    //   state.matchedAddress
+    // ) {
+    //   update.matchedAddress = state.matchedAddress.uprn;
+    // }
+
     await cacheService.mergeState(request, update, nullOverride, arrayMerge);
   }
 

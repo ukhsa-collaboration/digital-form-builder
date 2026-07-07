@@ -11,6 +11,9 @@ import { HapiRequest } from "src/server/types";
 import { InitialiseSessionOptions } from "server/plugins/initialiseSession/types";
 import { Outputs } from "server/plugins/engine/models/submission/Outputs";
 import { summaryDetailsTransformationMap } from "./SummaryViewModel.detailsTransformationMap";
+import { mergeRows } from "server/transforms/summaryDetails/mergeRows";
+import { removeRows } from "server/transforms/summaryDetails/removeRows";
+import { adjustRows } from "server/transforms/summaryDetails/adjustRows";
 
 import pino from "pino";
 const logger = pino().child({ name: "SummaryViewModel" });
@@ -57,6 +60,11 @@ export class SummaryViewModel {
   callback?: InitialiseSessionOptions;
   showPaymentSkippedWarningPage: boolean = false;
   returnUrl: string;
+  backLink: string | undefined;
+  submitLabel: string | undefined;
+  declarationLabel: string | undefined;
+  hideDeclarationHeading: boolean | undefined;
+
   constructor(
     pageTitle: string,
     model: FormModel,
@@ -121,6 +129,77 @@ export class SummaryViewModel {
         this.details = transformDetails(clonedDetails);
       } catch (err) {
         logger.error({ err }, "Error transforming summary");
+      }
+    }
+
+    // summaryConfig provides a data-driven alternative to the per-form
+    // transformation functions in summaryDetailsTransformationMap. Transforms
+    // run after the legacy map so they can build on top of any existing
+    // per-form logic. Order matters: merge first (combines fields), then
+    // remove (drops fields), then relabel (renames), then conditional rules
+    // (which may remove or append based on a field value).
+    const summaryConfig = def.summaryConfig;
+
+    if (summaryConfig) {
+      try {
+        let transformed = clone(this.details);
+
+        if (summaryConfig.mergeFields?.length) {
+          transformed = mergeRows(transformed, summaryConfig.mergeFields);
+        }
+
+        if (summaryConfig.removeFields?.length) {
+          transformed = removeRows(transformed, summaryConfig.removeFields);
+        }
+
+        if (summaryConfig.relabelFields) {
+          const adjustments = Object.fromEntries(
+            Object.entries(summaryConfig.relabelFields).map(([k, v]) => [
+              k,
+              { label: v as string },
+            ])
+          );
+
+          transformed = adjustRows(transformed, adjustments);
+        }
+
+        if (summaryConfig.conditionalRows?.length) {
+          // Snapshot all items before iterating so rule order doesn't affect
+          // which `when` conditions are evaluated.
+          const allItems = transformed.flatMap((d: any) => d.items);
+
+          for (const rule of summaryConfig.conditionalRows) {
+            const match = allItems.find(
+              (item: any) => item.name === rule.when.field
+            );
+
+            if (match?.rawValue === rule.when.value) {
+              if (rule.removeFields?.length) {
+                transformed = removeRows(transformed, rule.removeFields);
+              }
+              if (rule.appendToLastSection) {
+                transformed = transformed.map((d: any, i: number) =>
+                  i === transformed.length - 1
+                    ? { ...d, items: [...d.items, rule.appendToLastSection] }
+                    : d
+                );
+              }
+            }
+          }
+        }
+
+        this.details = transformed;
+      } catch (err) {
+        logger.error({ err }, "Error applying summaryConfig transforms");
+      }
+
+      this.submitLabel = summaryConfig.submitLabel;
+
+      if (summaryConfig.declaration) {
+        this.declaration = undefined;
+        this.declarationLabel = summaryConfig.declaration.label;
+        this.hideDeclarationHeading =
+          summaryConfig.declaration.hideDeclarationHeading;
       }
     }
 
@@ -207,7 +286,7 @@ export class SummaryViewModel {
       sectionPages.forEach((page) => {
         for (const component of page.components.formItems) {
           const item = Item(request, component, sectionState, page, model);
-          if (items.find((cbItem) => cbItem.name === item.name)) return;
+          if (items.find((cbItem) => cbItem.name === item.name)) continue;
           items.push(item);
           if (component.items) {
             const selectedValue = sectionState[component.name];
@@ -388,6 +467,7 @@ function Item(
     title: component.title,
     dataType: component.dataType,
     immutable: component.options.disableChangingFromSummary,
+    filename: undefined,
   };
 
   if (

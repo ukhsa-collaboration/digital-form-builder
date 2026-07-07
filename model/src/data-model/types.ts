@@ -215,6 +215,61 @@ export interface AddressLookupConfig extends MsalAuthorizerConfig {
   subscriptionKey?: string;
 }
 
+export interface SummaryDeclaration {
+  /** Checkbox label rendered on the summary page. */
+  label: string;
+  /** Overrides the default "You must declare…" flash error when unchecked. */
+  errorMessage?: string;
+  /** Hides the h2 Declaration heading in the summary page */
+  hideDeclarationHeading?: boolean;
+}
+
+/**
+ * Merges multiple named fields into a single summary row.
+ * The resulting row uses `to` as its field name and joins the source values with `joiner`.
+ */
+export interface SummaryMergeField {
+  names: string[];
+  to: string;
+  joiner: string;
+}
+
+/** A synthetic row that can be appended to the last summary section via a conditional rule. */
+export interface SummaryAppendSection {
+  name: string;
+  label: string;
+  value: string;
+  /** When true the user cannot return to change this value from the summary. */
+  immutable?: boolean;
+}
+
+export interface SummaryConditionalRowCondition {
+  field: string;
+  value: string;
+}
+
+export interface SummaryConditionalRow {
+  when: SummaryConditionalRowCondition;
+  removeFields?: string[];
+  appendToLastSection?: SummaryAppendSection;
+}
+
+/**
+ * Data-driven configuration for the summary page, set at the form-definition level.
+ * Transforms are applied in order: merge → remove → relabel → conditional rules.
+ */
+export interface SummaryConfig {
+  /** Overrides the default "Confirm and submit" button label. */
+  submitLabel?: string;
+  declaration?: SummaryDeclaration;
+  /** Field names to strip from the summary rows entirely. */
+  removeFields?: string[];
+  mergeFields?: Array<SummaryMergeField>;
+  /** Map of field name → new display label. */
+  relabelFields?: Record<string, string>;
+  conditionalRows?: Array<SummaryConditionalRow>;
+}
+
 /**
  * `FormDefinition` is a typescript representation of `Schema`
  */
@@ -252,4 +307,5 @@ export type FormDefinition = {
   confirmationSessionTimeout: number | undefined;
   returnTo?: boolean | undefined;
   addressLookupConfig?: AddressLookupConfig;
+  summaryConfig?: SummaryConfig;
 };

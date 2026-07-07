@@ -87,6 +87,12 @@ export class SummaryPageController extends PageController {
         }
       }
 
+      const { progress = [] } = state;
+      if (!this.disableBackLink) {
+        viewModel.backLink =
+          progress[progress.length - 1] ?? this.backLinkFallback;
+      }
+
       const declarationError = request.yar.flash("declarationError");
       if (declarationError.length) {
         viewModel.declarationError = declarationError[0];
@@ -153,13 +159,14 @@ export class SummaryPageController extends PageController {
         };
 
         if (!declaration) {
-          request.yar.flash(
-            "declarationError",
-            "You must declare to be able to submit this application"
-          );
+          const errorMessage =
+            this.model.def.summaryConfig?.declaration?.errorMessage ??
+            "You must declare to be able to submit this application";
+          request.yar.flash("declarationError", errorMessage);
           const url = request.headers.referer ?? request.path;
           return redirectTo(request, h, `${url}#declaration`);
         }
+
         summaryViewModel.addDeclarationAsQuestion();
       }
 
@@ -277,7 +284,10 @@ export class SummaryPageController extends PageController {
         "Summary",
         `${request.url.pathname}${request.url.search}`
       );
-      relativeFeedbackUrl.setParam(feedbackReturnInfoKey, returnInfo.toString());
+      relativeFeedbackUrl.setParam(
+        feedbackReturnInfoKey,
+        returnInfo.toString()
+      );
       return relativeFeedbackUrl.toString();
     }
 
