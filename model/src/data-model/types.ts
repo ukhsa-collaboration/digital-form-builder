@@ -246,4 +246,5 @@ export type FormDefinition = {
   confirmationSessionTimeout: number | undefined;
   returnTo?: boolean | undefined;
   secureFormSubmissionConfig: SecureFormSubmissionConfig;
+  error500ContactEmail?: string | undefined;
 };

@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import config from "../config";
-import { HapiRequest, HapiResponseToolkit } from "../types";
+import { HapiRequest, HapiResponseToolkit, HapiServer } from "../types";
 import type { ApplicationErrorMetadata } from "./engine/errors";
 import { FormModel } from "./engine/models";
 
@@ -83,7 +83,7 @@ const handleApplicationError = (
 export default {
   plugin: {
     name: "error-pages",
-    register: (server) => {
+    register: (server: HapiServer) => {
       server.ext(
         "onPreResponse",
         (request: HapiRequest, h: HapiResponseToolkit) => {
@@ -124,7 +124,10 @@ export default {
               }
 
               return h
-                .view("500", { name: formName || config.serviceName })
+                .view("500", {
+                  name: formName || config.serviceName,
+                  contactEmail: form?.def.error500ContactEmail,
+                })
                 .code(statusCode);
             } catch (error) {
               // The return the `500` view
