@@ -129,10 +129,6 @@
           "list": "ApjoNd"
         }
       ],
-      // "next": [
-      //   { "path": "/your-personal-details", "condition": "atPVdy" },
-      //   { "path": "/other-persons-details", "condition": "Dpirys" }
-      // ],
       "next": [
         { "path": "/do-you-live-with-other-people", "condition": "atPVdy" },
         { "path": "/do-they-live-with-other-people", "condition": "Dpirys" }
