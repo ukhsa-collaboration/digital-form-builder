@@ -56,20 +56,14 @@ To learn more about workspaces, check these links:
 
 For local development purposes, we use docker to run the application stack.
 
-First build the runner application image:
+Run the following command to build and start your local development environment:
 
 ```bash
-docker build -t digital-form-builder-runner:latest . -f runner/Dockerfile
+docker compose -f docker-compose.yml -f docker-compose.dev.yml up --build
 ```
 
-Then you can run docker compose:
-
-```bash
-docker compose -f docker-compose.yml -f docker-compose.dev.yml up
-```
-
-> Note: this process requires docker, docker buildx and docker compose v2 to be installed on your machine.
-> If you don't have docker installed, you can podman. Just switch `docker <COMMAND` with `podman <COMMAND`
+> Note: this process requires docker and docker compose v2 to be installed on your machine.
+> If you don't have docker installed, you can use podman instead. Just switch `docker <COMMAND` with `podman <COMMAND`.
 
 ### I want to...
 
