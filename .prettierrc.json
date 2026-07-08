@@ -1,4 +1,3 @@
 {
-  "endOfLine": "auto",
-  "plugins": ["prettier-plugin-organize-imports"]
+  "endOfLine": "auto"
 }
