@@ -4604,7 +4604,7 @@
       "title": "Execute API",
       "type": "webhook",
       "outputConfiguration": {
-        "url": "${srs-nl8-output-url}",
+        "url": "${SRSNL8OutputUrl}",
         "allowRetry": true
       }
     }
@@ -4630,10 +4630,10 @@
     }
   },
   "secureFormSubmissionConfig": {
-    "tenantId": "${srs-nl8-core-aipm-tenent-id}",
-    "clientId": "${srs-nl8-core-aipm-client-id}",
-    "clientSecret": "$${srs-nl8-core-aipm-client-secret}",
-    "scopes": ["${srs-nl8-core-aipm-scope-1}"],
+    "tenantId": "${SRSNL8CoreAipmTenantId}",
+    "clientId": "${SRSNL8CoreAipmClientId}",
+    "clientSecret": "${SRSNL8CoreAipmClientSecret}",
+    "scopes": ["${SRSNL8CoreAipmScope1}"],
     "useAwsWafUserAgentWorkaround": true
   }
 }
