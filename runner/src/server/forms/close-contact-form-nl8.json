@@ -4604,7 +4604,7 @@
       "title": "Execute API",
       "type": "webhook",
       "outputConfiguration": {
-        "url": "https://api.nl8.test.srs.test-and-trace.nhs.uk/v1/forms",
+        "url": "${srs-nl8-output-url}",
         "allowRetry": true
       }
     }
@@ -4628,5 +4628,12 @@
         "referenceTitle": "Your reference number"
       }
     }
+  },
+  "secureFormSubmissionConfig": {
+    "tenantId": "${srs-nl8-core-aipm-tenent-id}",
+    "clientId": "${srs-nl8-core-aipm-client-id}",
+    "clientSecret": "$${srs-nl8-core-aipm-client-secret}",
+    "scopes": ["${srs-nl8-core-aipm-scope-1}"],
+    "useAwsWafUserAgentWorkaround": true
   }
 }

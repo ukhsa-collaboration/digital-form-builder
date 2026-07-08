@@ -25,10 +25,10 @@ export const configureCrumbPlugin = (
         const isSkippedRoute =
           skippedRoutes.find((route) => `${request.path}`.startsWith(route)) ??
           false;
-        if (isSkippedRoute) {
+        if (isSkippedRoute && request.path !== "/session/keep-alive") {
           request.logger.info(
-            ["Crumb", "CSRF", "Skipping route"],
-            `${request.url}`
+            ["Crumb", "CSRF"],
+            `Skipping CSRF check on ${request.path}`
           );
         }
 
