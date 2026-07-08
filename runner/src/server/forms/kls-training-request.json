@@ -1086,5 +1086,6 @@
     "feedbackForm": true,
     "url": "https://submit.forms.service.gov.uk/form/7932/give-feedback-on-knowledge-and-library-services-kls/30055"
   },
-  "jwtKey": "${KLSTrainingJwtKey}"
+  "jwtKey": "${KLSTrainingJwtKey}",
+  "error500ContactEmail": "libraries@kls.ukhsa.gov.uk"
 }
