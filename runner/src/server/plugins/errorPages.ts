@@ -10,7 +10,7 @@ import { FormModel } from "./engine/models";
  * @param path a url path
  * @returns
  */
-const extractFormIdFromPath = (path: string) => {
+export const extractFormIdFromPath = (path: string): string | undefined => {
   const segments = path.split("/").filter(Boolean);
   return segments[0];
 };
@@ -22,7 +22,7 @@ const extractFormIdFromPath = (path: string) => {
  * @param view the name of the view
  * @returns
  */
-const getView = (folder: string, view: string) => {
+export const getView = (folder: string, view: string) => {
   const viewPath = path.join(__dirname, `../views/${folder}/${view}.html`);
 
   if (!fs.existsSync(viewPath)) {
@@ -40,7 +40,7 @@ const getView = (folder: string, view: string) => {
  * @param view the name of the view
  * @returns
  */
-const findView = (folders: (string | undefined)[], view: string) => {
+export const findView = (folders: (string | undefined)[], view: string) => {
   for (const folder of folders) {
     const match = folder !== undefined && getView(folder, view);
     if (match) return match;
@@ -57,7 +57,7 @@ const findView = (folders: (string | undefined)[], view: string) => {
  * @param group the project group name
  * @returns
  */
-const handleApplicationError = (
+export const handleApplicationError = (
   request: HapiRequest,
   response: HapiResponseToolkit,
   data: ApplicationErrorMetadata,
@@ -95,6 +95,9 @@ export default {
 
             try {
               const formId = extractFormIdFromPath(request.path);
+
+              if (!formId) throw new Error("cannot find form id");
+
               const form: FormModel | undefined = server.app.forms[formId];
 
               const formGroup = form?.def.formGroup;
