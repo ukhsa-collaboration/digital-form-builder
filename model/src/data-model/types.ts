@@ -212,7 +212,7 @@ export interface SecureFormSubmissionConfig extends MsalAuthorizerConfig {
  * `FormDefinition` is a typescript representation of `Schema`
  */
 export type FormDefinition = {
-  group?: string;
+  formGroup?: string;
   name?: string | undefined;
   pages: Array<Page | RepeatingFieldPage>;
   conditions: ConditionRawData[];

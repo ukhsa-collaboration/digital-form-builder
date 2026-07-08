@@ -6,11 +6,11 @@ import type { ApplicationErrorMetadata } from "./engine/errors";
 import { FormModel } from "./engine/models";
 
 /**
- * Extracts the Project ID from the URL path
+ * Extracts the Form ID from the URL path
  * @param path a url path
  * @returns
  */
-const extractProjectIdFromPath = (path: string) => {
+const extractFormIdFromPath = (path: string) => {
   const segments = path.split("/").filter(Boolean);
   return segments[0];
 };
@@ -34,7 +34,7 @@ const getView = (folder: string, view: string) => {
 
 /**
  * Finds the first view that exists across a list of candidate folders,
- * checked in order (e.g. project folder, then group folder, then generic).
+ * checked in order (e.g. form folder, then form group folder, then generic).
  *
  * @param folders the folders to check, in priority order
  * @param view the name of the view
@@ -61,14 +61,14 @@ const handleApplicationError = (
   request: HapiRequest,
   response: HapiResponseToolkit,
   data: ApplicationErrorMetadata,
-  group?: string
+  formGroup?: string
 ) => {
   // extract project from url path
-  const projectId = extractProjectIdFromPath(request.path);
+  const formId = extractFormIdFromPath(request.path);
   const code = `${data.code}`;
 
-  // views are looked up from most to least specific: project, group, generic
-  const folders = [projectId, group, ""];
+  // views are looked up from most to least specific: form, form group, generic
+  const folders = [formId, formGroup, ""];
 
   const view =
     ("page" in data && data.page && findView(folders, data.page)) ||
@@ -94,10 +94,10 @@ export default {
             const statusCode = response.output.statusCode;
 
             try {
-              const projectId = extractProjectIdFromPath(request.path);
-              const form: FormModel | undefined = server.app.forms[projectId];
+              const formId = extractFormIdFromPath(request.path);
+              const form: FormModel | undefined = server.app.forms[formId];
 
-              const group = form?.def.group;
+              const formGroup = form?.def.formGroup;
               const formName = form?.name;
 
               request.log("error", {
@@ -110,7 +110,7 @@ export default {
               if (statusCode === 403) {
                 return h
                   .view("csrf-protection", {
-                    url: projectId,
+                    url: formId,
                     name: formName,
                   })
                   .code(statusCode);
@@ -120,7 +120,12 @@ export default {
                 response.message.includes("ControllerError") ||
                 response.message.includes("RenderingError")
               ) {
-                return handleApplicationError(request, h, response.data, group);
+                return handleApplicationError(
+                  request,
+                  h,
+                  response.data,
+                  formGroup
+                );
               }
 
               return h
