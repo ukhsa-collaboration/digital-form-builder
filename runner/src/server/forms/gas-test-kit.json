@@ -241,7 +241,14 @@
     {
       "path": "/who-is-the-recipient-of-the-kit",
       "title": "Who is the recipient of the kit",
-      "components": [],
+      "components": [
+        {
+          "name": "todo",
+          "options": {},
+          "type": "Para",
+          "content": "todo"
+        }
+      ],
       "next": []
     },
     {
@@ -287,8 +294,112 @@
     {
       "path": "/who-is-the-recipient-of-radon-gas-test-results",
       "title": "Who is the recipient of radon gas test results",
-      "components": [],
-      "next": []
+      "components": [
+        {
+          "name": "Title",
+          "options": {
+            "exposeToContext": true,
+            "customValidationMessages":{
+              "string.empty": "Enter the title of the recipient of the radon gas test results"
+            }
+          },
+          "type": "TextField",
+          "title": "Title",
+          "hint": "e.g. Mr, Mrs, Dr"
+        },
+        {
+          "name": "Initials",
+          "options": {
+            "customValidationMessages":{
+              "string.empty": "Enter the initials of the recipient of the radon gas test results"
+            },
+            "exposeToContext": true
+          },
+          "type": "TextField",
+          "title": "Initials"
+        },
+        {
+          "name": "LastName",
+          "options": {
+            "customValidationMessages":{
+              "string.empty": "Enter the last name of the recipient of the radon gas test results"
+            },
+            "exposeToContext": true 
+          },
+          "type": "TextField",
+          "title": "Last Name"
+        }
+      ],
+      "next": [{"path": "/gas-test-kit-enter-results-address-manually"}]
+    },
+    {
+      "path": "/gas-test-kit-enter-results-address-manually",
+      "title": "What Address TODO",
+      "components": [
+        {
+          "name": "Address Line 1",
+          "options": {
+            "customValidationMessages":{
+              "string.empty": "Enter address line 1, typically the building and street"
+            },
+            "exposeToContext": true
+          },
+          "type": "TextField",
+          "title": "Address Line 1"
+        },
+        {
+          "name": "Address Line 2",
+          "options": {
+            "required": false,
+            "exposeToContext": true
+          },
+          "type": "TextField",
+          "title": "Address Line 2"
+        },
+        {
+          "name": "Town or city",
+          "options": {
+            "customValidationMessages":{
+              "string.empty": "Enter town or city"
+            },
+            "exposeToContext": true
+          },
+          "type": "TextField",
+          "title": "Town or city"
+        },
+        {
+          "name": "County",
+          "options": {
+            "required": false,
+            "exposeToContext": true
+          },
+          "type": "TextField",
+          "title": "County"
+        },
+        {
+          "name": "postcodeLookup",
+          "options": {
+            "customValidationMessages": {
+              "string.empty": "Enter postcode",
+              "string.pattern.base": "Enter a full UK postcode",
+              "string.max": "Postcode must be less than 10 characters"
+            },
+            "autocomplete": "postal-code",
+            "exposeToContext": true,
+            "format": {
+              "trim": true,
+              "case": "upper"
+            }
+          },
+          "schema": {
+            "max": 10,
+            "regex": "^[\\s]*[A-z]{1,2}[0-9][A-z0-9]?[\\s]*[0-9]{1,2}[ABD-hJLNP-uW-z]{2}[\\s]*$"
+          },
+          "type": "TextField",
+          "title": "Postcode"
+        }
+      ],
+      "next": [{"path": "/gas-test-kit-check-your-answers"}]
     },
     {
       "path": "/payment",
@@ -449,6 +560,16 @@
               "name": "DZHYLU",
               "type": "YesNoField",
               "display": "Is this the address you want the kit delivered to?"
+            },
+            "operator": "is",
+            "value": { "type": "Value", "value": "true", "display": "true" }
+          },
+          {
+            "coordinator": "and",
+            "field": {
+              "name": "eWdxvJ",
+              "type": "YesNoField",
+              "display": "Is this the address you want your radon gas test results to?"
             },
             "operator": "is",
             "value": { "type": "Value", "value": "true", "display": "true" }
