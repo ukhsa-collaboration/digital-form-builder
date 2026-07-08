@@ -3638,8 +3638,8 @@
       "name": "disease_code_list",
       "type": "string",
       "items": [
-        { "text": "Avian Bird Flu", "value": "001F00" },
-        { "text": "Mers-Cov", "value": "001F01" }
+        { "text": "001F00", "value": "001F00" },
+        { "text": "001F01", "value": "001F01" }
       ]
     },
     {
