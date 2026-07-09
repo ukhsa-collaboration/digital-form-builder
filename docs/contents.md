@@ -29,6 +29,8 @@ Features and configuration options for the runner.
     as on the [renew or replace your adult passport pages](https://www.gov.uk/renew-adult-passport/renew)
 - [redirects](runner/redirects.md)
   - Redirect users to a different page in the runner or external URL
+- [error page resolution](runner/error-page-resolution.md)
+  - Serve project or group-specific error pages instead of the generic runner error pages
 - [queues](runner/submission-queue.md)
   - Submit data to a queue after the user has completed the form
 - [summary details transforms](runner/summary-details-transforms.md)

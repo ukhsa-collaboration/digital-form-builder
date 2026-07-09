@@ -219,13 +219,14 @@ export interface AddressLookupConfig extends MsalAuthorizerConfig {
  * `FormDefinition` is a typescript representation of `Schema`
  */
 export type FormDefinition = {
+  formGroup?: string;
+  name?: string | undefined;
   pages: Array<Page | RepeatingFieldPage>;
   conditions: ConditionRawData[];
   lists: List[];
   sections: Section[];
   startPage?: Page["path"] | undefined;
   authentication?: boolean | undefined;
-  name?: string | undefined;
   feedback?: Feedback;
   phaseBanner?: PhaseBanner;
   fees: Fee[];
@@ -251,5 +252,6 @@ export type FormDefinition = {
   serviceName?: string | undefined;
   confirmationSessionTimeout: number | undefined;
   returnTo?: boolean | undefined;
-  addressLookupConfig?: AddressLookupConfig;
+  error500ContactEmail?: string | undefined;
+    addressLookupConfig?: AddressLookupConfig;
 };

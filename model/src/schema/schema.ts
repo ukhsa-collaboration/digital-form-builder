@@ -339,15 +339,17 @@ const secureFormSubmissionConfig = msalAuthorizeConfigSchema.concat(
 
 const addressLookupConfigSchema = msalAuthorizeConfigSchema.concat(
   joi.object().keys({
-  apimBaseUrl: joi.string(),
-  callingApplication: joi.string(),
-  subscriptionKey: joi.string().optional(),
-}));
+    apimBaseUrl: joi.string(),
+    callingApplication: joi.string(),
+    subscriptionKey: joi.string().optional(),
+  })
+);
 
 export const Schema = joi
   .object()
   .required()
   .keys({
+    formGroup: localisedString.optional(),
     name: localisedString.optional(),
     feedback: feedbackSchema,
     startPage: joi.string().required(),
@@ -388,6 +390,7 @@ export const Schema = joi
     confirmationSessionTimeout: joi.number().optional(),
     returnTo: joi.boolean().optional(),
     secureFormSubmissionConfig: secureFormSubmissionConfig.optional(),
+    error500ContactEmail: joi.string().optional(),
     addressLookupConfig: addressLookupConfigSchema.optional(),
   });
 
