@@ -1,6 +1,5 @@
 import config from "../config";
 import pino from "hapi-pino";
-
 export default {
   plugin: pino,
   options: {
@@ -13,14 +12,10 @@ export default {
       },
     },
     debug: config.isDev,
-    logRequestStart: false,
-    logRequestComplete: false,
-    ignoreFunc: async (_options, request) => {
-      return (
-        request.path.startsWith("/assets") ||
-        request.path === "/session/keep-alive"
-      );
-    },
+    logRequestStart: config.isDev,
+    logRequestComplete: config.isDev,
+    ignoreFunc: (_options, request) =>
+      request.path.startsWith("/assets") || request.url.contains("assets"),
     redact: {
       paths: config.logRedactPaths,
       censor: "REDACTED",
