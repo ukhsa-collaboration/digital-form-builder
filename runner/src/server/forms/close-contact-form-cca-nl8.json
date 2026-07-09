@@ -427,8 +427,7 @@
           "cardTitle": "Person {index}"
         },
         "summaryDisplayMode": {
-          "samePage": false,
-          "separatePage": true
+          "samePage": false
         }
       },
       "components": [
@@ -568,8 +567,7 @@
           "cardTitle": "Close Contact {index}"
         },
         "summaryDisplayMode": {
-          "samePage": false,
-          "separatePage": true
+          "samePage": false
         }
       },
       "components": [

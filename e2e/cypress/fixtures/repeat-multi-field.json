@@ -15,8 +15,7 @@
       "options": {
         "sectionKey": "people_you_live_with",
         "summaryDisplayMode": {
-          "samePage": false,
-          "separatePage": true
+          "samePage": false
         },
         "customText": {
           "separatePageTitle": "You have selected these Interpreters"

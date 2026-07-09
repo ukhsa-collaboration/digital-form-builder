@@ -26,8 +26,6 @@ function isInputType(component) {
 const DEFAULT_OPTIONS = {
   summaryDisplayMode: {
     samePage: false,
-    separatePage: true,
-    hideRowTitles: false,
   },
   customText: {},
 };
@@ -35,8 +33,6 @@ const DEFAULT_OPTIONS = {
 export class RepeatedMultiFieldPageController extends PageController {
   inputComponents!: FormComponent[];
   isRepeatingFieldPageController = true;
-  isSeparateDisplayMode: boolean;
-  hideRowTitles: boolean;
   sectionKey: string;
 
   options: RepeatingMultiFieldPage["options"];
@@ -70,9 +66,6 @@ export class RepeatedMultiFieldPageController extends PageController {
         ...providedOptions.customText,
       },
     };
-
-    this.isSeparateDisplayMode = this.options.summaryDisplayMode.separatePage!;
-    this.hideRowTitles = this.options.summaryDisplayMode.hideRowTitles!;
 
     const allInputs = (this.components?.items ?? []).filter(isInputType);
     if (allInputs.length === 0) {

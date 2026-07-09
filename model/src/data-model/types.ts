@@ -43,8 +43,6 @@ export interface RepeatingMultiFieldPage extends Page {
     sectionKey: string;
     summaryDisplayMode?: {
       samePage?: boolean;
-      separatePage?: boolean;
-      hideRowTitles?: boolean;
     };
     customText?: {
       separatePageTitle?: string;

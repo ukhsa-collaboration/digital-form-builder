@@ -79,8 +79,7 @@
       "options": {
         "sectionKey": "people_you_live_with",
         "summaryDisplayMode": {
-          "samePage": false,
-          "separatePage": true
+          "samePage": false
         }
       },
       "components": [
