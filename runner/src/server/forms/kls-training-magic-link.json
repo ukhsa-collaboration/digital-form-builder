@@ -253,5 +253,6 @@
     "maxAttempts": 3,
     "showPaymentSkippedWarningPage": false
   },
-  "jwtKey": "${KLSTrainingJwtKey}"
+  "jwtKey": "${KLSTrainingJwtKey}",
+  "error500ContactEmail": "libraries@kls.ukhsa.gov.uk"
 }
