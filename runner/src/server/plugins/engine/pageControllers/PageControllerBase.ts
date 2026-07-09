@@ -666,16 +666,6 @@ export class PageControllerBase {
         }
       }
 
-      const validated = this.validatePageCondition(
-        request,
-        h,
-        progress,
-        relevantState,
-        startPage
-      );
-
-      if (validated) return validated;
-
       await cacheService.mergeState(request, { progress });
 
       if (this.disableBackLink) {
@@ -689,22 +679,6 @@ export class PageControllerBase {
 
       return h.view(this.viewName, viewModel);
     };
-  }
-
-  validatePageCondition(request, h, progress, relevantState, startPage) {
-    if (this.condition && this.model.conditions[this.condition]) {
-      const conditionPassed = this.model.conditions[this.condition].fn(
-        relevantState
-      );
-      if (!conditionPassed) {
-        const previousPath =
-          progress[progress.length - 1] ??
-          `/${this.model.basePath}${startPage}`;
-        return redirectTo(request, h, previousPath);
-      }
-    }
-
-    return undefined;
   }
 
   /**

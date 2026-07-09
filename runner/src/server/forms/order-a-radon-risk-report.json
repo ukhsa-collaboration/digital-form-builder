@@ -38,7 +38,7 @@
       "title": "What address are you ordering a risk report for?",
       "components": [
         {
-          "name": "postcodeLookup",
+          "name": "reportAddress_postcodeLookup",
           "options": {
             "customValidationMessages": {
               "string.empty": "Enter postcode",
@@ -58,7 +58,7 @@
           },
           "type": "TextField",
           "title": "Postcode",
-          "hint": "For example, AA3 1AB"
+          "hint": "For example, AA3 1AB."
         },
         {
           "name": "addressType",
@@ -69,7 +69,7 @@
           "type": "HiddenField"
         },
         {
-          "name": "buildingLookup",
+          "name": "reportAddress_buildingLookup",
           "options": {
             "customValidationMessages": {
               "string.empty": "Enter building number or name",
@@ -80,7 +80,7 @@
           "schema": { "max": 100 },
           "type": "TextField",
           "title": "Building number or name",
-          "hint": "For example, 15 or Prospect cottage"
+          "hint": "For example, 15 or Prospect Cottage."
         }
       ],
       "options": {
@@ -114,7 +114,7 @@
       "title": "Is this the correct address?",
       "components": [
         {
-          "name": "matchedAddressDisplay",
+          "name": "reportAddress_matchedAddressDisplay",
           "options": {},
           "type": "DisplayAddress",
           "content": "{{ reportAddress_matchedAddress.address }}"
@@ -134,7 +134,7 @@
           "title": "Risk report address"
         },
         {
-          "name": "isCorrectAddress",
+          "name": "reportAddress_isCorrectAddress",
           "options": {
             "hideTitle": true,
             "customValidationMessages": {
@@ -142,7 +142,7 @@
             }
           },
           "type": "YesNoField",
-          "title": "Is this the correct address?"
+          "title": "Is this the correct report address?"
         }
       ],
       "controller": "SelectAnAddressPageController",
@@ -234,7 +234,7 @@
       "title": "What is the address you want a risk report for?",
       "components": [
         {
-          "name": "addressLine1Lookup",
+          "name": "reportAddress_addressLine1Lookup",
           "options": {
             "customValidationMessages": {
               "any.required": "Enter address line 1, typically the building and street",
@@ -244,18 +244,18 @@
             "exposeToContext": true
           },
           "type": "TextField",
-          "title": "Address Line 1"
+          "title": "Address line 1"
         },
         {
-          "name": "addressLine2Lookup",
+          "name": "reportAddress_addressLine2Lookup",
           "options": {
             "required": false
           },
           "type": "TextField",
-          "title": "Address Line 2"
+          "title": "Address line 2"
         },
         {
-          "name": "townLookup",
+          "name": "reportAddress_townLookup",
           "options": {
             "customValidationMessages": {
               "any.required": "Enter town or city",
@@ -267,7 +267,7 @@
           "title": "Town or city"
         },
         {
-          "name": "countyLookup",
+          "name": "reportAddress_countyLookup",
           "options": {
             "required": false
           },
@@ -275,7 +275,7 @@
           "title": "County"
         },
         {
-          "name": "postcodeLookup",
+          "name": "reportAddress_postcodeLookup",
           "options": {
             "customValidationMessages": {
               "string.empty": "Enter postcode",
@@ -293,8 +293,7 @@
             "regex": "^[\\s]*[A-z]{1,2}[0-9][A-z0-9]?[\\s]*[0-9]{1,2}[ABD-hJLNP-uW-z]{2}[\\s]*$"
           },
           "type": "TextField",
-          "title": "Postcode",
-          "hint": "For example, AA3 1AB"
+          "title": "Postcode"
         }
       ],
       "controller": "FindAnAddressPageController",
@@ -365,7 +364,7 @@
           "name": "fullNameLabel",
           "options": {},
           "type": "Para",
-          "content": "<b>Enter your full name</b>"
+          "content": "<h2 class=\"govuk-heading-m\">Enter your full name</h2>"
         },
         {
           "name": "firstName",
@@ -395,7 +394,13 @@
           "title": "Last name"
         },
         {
-          "name": "email_address",
+          "name": "emailLabel",
+          "options": {},
+          "type": "Para",
+          "content": "<h2 class=\"govuk-heading-m\">Enter your email address</h2>"
+        },
+        {
+          "name": "emailAddress",
           "options": {
             "required": true,
             "optionalText": false,
@@ -406,13 +411,13 @@
             }
           },
           "type": "EmailAddressField",
-          "title": "Email address",
-          "hint": "For example, 'name@example.com'"
+          "title": "",
+          "hint": "For example, 'name@example.com'."
         },
         {
           "name": "emailConfirmationNote",
           "options": {},
-          "type": "Para",
+          "type": "InsetText",
           "content": "We will send your payment confirmation and the report to the email address provided."
         }
       ],
@@ -456,7 +461,7 @@
           "title": "Last name"
         },
         {
-          "name": "email_address",
+          "name": "emailAddress",
           "options": {
             "required": false,
             "optionalText": false,
@@ -487,10 +492,10 @@
           "name": "postalCostNote",
           "type": "Para",
           "options": {},
-          "content": "It costs £5.24 to send your results by post"
+          "content": "It costs £5.24 to send your results by post."
         },
         {
-          "name": "addressLine1Lookup2",
+          "name": "deliveryAddress_addressLine1Lookup",
           "options": {
             "customValidationMessages": {
               "any.required": "Enter address line 1, typically the building and street",
@@ -503,7 +508,7 @@
           "title": "Address Line 1"
         },
         {
-          "name": "addressLine2Lookup2",
+          "name": "deliveryAddress_addressLine2Lookup",
           "options": {
             "required": false
           },
@@ -511,7 +516,7 @@
           "title": "Address Line 2"
         },
         {
-          "name": "townLookup2",
+          "name": "deliveryAddress_townLookup",
           "options": {
             "customValidationMessages": {
               "any.required": "Enter town or city",
@@ -523,7 +528,7 @@
           "title": "Town or city"
         },
         {
-          "name": "countyLookup",
+          "name": "deliveryAddress_countyLookup",
           "options": {
             "required": false
           },
@@ -531,7 +536,7 @@
           "title": "County"
         },
         {
-          "name": "postcodeLookup2",
+          "name": "deliveryAddress_postcodeLookup",
           "options": {
             "customValidationMessages": {
               "string.empty": "Enter postcode",
@@ -556,7 +561,7 @@
           "name": "deliveryTimeNote",
           "options": {},
           "type": "Para",
-          "content": "You will receive the report to your delivery address within 3 to 5 working days"
+          "content": "You will receive the report to your delivery address within 3 to 5 working days."
         }
       ],
       "next": [{ "path": "/summary" }]
@@ -566,7 +571,7 @@
       "title": "What is the delivery address for your risk report?",
       "components": [
         {
-          "name": "postcodeLookup",
+          "name": "deliveryAddress_postcodeLookup",
           "options": {
             "customValidationMessages": {
               "string.empty": "Enter postcode",
@@ -597,7 +602,7 @@
           "type": "HiddenField"
         },
         {
-          "name": "buildingLookup",
+          "name": "deliveryAddress_buildingLookup",
           "options": {
             "customValidationMessages": {
               "string.empty": "Enter building number or name",
@@ -639,10 +644,10 @@
     },
     {
       "path": "/is-this-the-correct-delivery-address",
-      "title": "Is this the correct delivery address?",
+      "title": "Is this the correct address?",
       "components": [
         {
-          "name": "matchedAddressDisplay",
+          "name": "deliveryAddress_matchedAddressDisplay",
           "options": {},
           "type": "DisplayAddress",
           "content": "{{ deliveryAddress_matchedAddress.address }}"
@@ -662,7 +667,7 @@
           "title": "Delivery address"
         },
         {
-          "name": "isCorrectAddress",
+          "name": "deliveryAddress_isCorrectAddress",
           "options": {
             "hideTitle": true,
             "customValidationMessages": {
@@ -671,6 +676,12 @@
           },
           "type": "YesNoField",
           "title": "Is this the correct delivery address?"
+        },
+        {
+          "name": "deliveryTimeNote",
+          "options": {},
+          "type": "Para",
+          "content": "You will receive the report to your delivery address within 3 to 5 working days."
         }
       ],
       "controller": "SelectAnAddressPageController",
@@ -771,8 +782,11 @@
       "name": "deliveryMethodList",
       "type": "string",
       "items": [
-        { "text": "Email", "value": "Email" },
-        { "text": "Post", "value": "Post" }
+        { "text": "Email (£3.90) - delivered instantly", "value": "Email" },
+        {
+          "text": "Post (£5.24) - delivered within 3 to 6 working days",
+          "value": "Post"
+        }
       ]
     },
     {
@@ -939,31 +953,45 @@
     "mergeFields": [
       {
         "names": [
-          "addressLine1Lookup2",
-          "addressLine2Lookup2",
-          "townLookup2",
-          "postcodeLookup2"
+          "deliveryAddress_addressLine1Lookup",
+          "deliveryAddress_addressLine2Lookup",
+          "deliveryAddress_townLookup",
+          "deliveryAddress_countyLookup",
+          "deliveryAddress_postcodeLookup"
         ],
         "to": "Delivery address",
         "joiner": ", "
       }
     ],
     "removeFields": [
-      "postcodeLookup",
-      "buildingLookup",
-      "addressLine1Lookup",
-      "addressLine2Lookup",
-      "townLookup",
-      "countyLookup",
-      "isCorrectAddress",
-      "isCorrectDeliveryAddress",
-      "addressType",
-      "reportAddress"
+      "reportAddress_postcodeLookup",
+      "reportAddress_buildingLookup",
+      "reportAddress_addressLine1Lookup",
+      "reportAddress_addressLine2Lookup",
+      "reportAddress_townLookup",
+      "reportAddress_countyLookup",
+      "reportAddress_isCorrectAddress",
+
+      "deliveryAddress_postcodeLookup",
+      "deliveryAddress_buildingLookup",
+      "deliveryAddress_addressLine1Lookup",
+      "deliveryAddress_addressLine2Lookup",
+      "deliveryAddress_townLookup",
+      "deliveryAddress_countyLookup",
+      "deliveryAddress_isCorrectAddress",
+
+      "addressType"
     ],
     "relabelFields": {
       "deliveryMethod": "Delivery method",
       "firstName": "First name",
-      "email_address": "Email"
+      "emailAddress": "Email"
+    },
+    "valueTransforms": {
+      "deliveryMethod": {
+        "Email": "Email",
+        "Post": "Post"
+      }
     },
     "conditionalRows": [
       {

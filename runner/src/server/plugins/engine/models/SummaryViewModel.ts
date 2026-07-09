@@ -14,6 +14,7 @@ import { summaryDetailsTransformationMap } from "./SummaryViewModel.detailsTrans
 import { mergeRows } from "server/transforms/summaryDetails/mergeRows";
 import { removeRows } from "server/transforms/summaryDetails/removeRows";
 import { adjustRows } from "server/transforms/summaryDetails/adjustRows";
+import { transformValues } from "server/transforms/summaryDetails/transformValues";
 
 import pino from "pino";
 const logger = pino().child({ name: "SummaryViewModel" });
@@ -136,8 +137,9 @@ export class SummaryViewModel {
     // transformation functions in summaryDetailsTransformationMap. Transforms
     // run after the legacy map so they can build on top of any existing
     // per-form logic. Order matters: merge first (combines fields), then
-    // remove (drops fields), then relabel (renames), then conditional rules
-    // (which may remove or append based on a field value).
+    // remove (drops fields), then relabel (renames), then value transform
+    // (replaces the displayed value), then conditional rules (which may
+    // remove or append based on a field value).
     const summaryConfig = def.summaryConfig;
 
     if (summaryConfig) {
@@ -161,6 +163,13 @@ export class SummaryViewModel {
           );
 
           transformed = adjustRows(transformed, adjustments);
+        }
+
+        if (summaryConfig.valueTransforms) {
+          transformed = transformValues(
+            transformed,
+            summaryConfig.valueTransforms
+          );
         }
 
         if (summaryConfig.conditionalRows?.length) {

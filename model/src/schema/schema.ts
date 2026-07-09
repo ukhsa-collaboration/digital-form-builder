@@ -119,7 +119,6 @@ const pageSchema = joi.object().keys({
   sectionForEndSummaryPages: joi.string(),
   sidebarContent: joi.object().optional(),
   controller: joi.string(),
-  condition: joi.string().optional(),
   components: joi.array().items(componentSchema),
   componentsAfter: joi.array().items(componentSchema).optional(),
   disableSingleComponentAsHeading: joi.boolean(),
@@ -377,6 +376,10 @@ const summaryConfigSchema = joi.object().keys({
     )
     .optional(),
   relabelFields: joi.object().pattern(joi.string(), joi.string()).optional(),
+  valueTransforms: joi
+    .object()
+    .pattern(joi.string(), joi.object().pattern(joi.string(), joi.string()))
+    .optional(),
   conditionalRows: joi
     .array()
     .items(

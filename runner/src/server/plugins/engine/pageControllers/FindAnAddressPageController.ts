@@ -6,7 +6,6 @@ import {
 } from "../../../services/addressLookupService";
 import { getLocationServiceInstanceName } from "../helpers";
 import { Item } from "@xgovformbuilder/model/dist/module/data-model/types";
-
 import Joi from "joi";
 
 const findMatchingAddress = (
@@ -55,16 +54,22 @@ const addressesToList = (addresses: Address[]): Item[] => {
 
 const formSchema = Joi.object({
   addressType: Joi.string().valid("reportAddress", "deliveryAddress"),
-  postcodeLookup: Joi.string(),
-  buildingLookup: Joi.string().allow("").optional(),
-  addressLine1Lookup: Joi.string().optional(),
 }).unknown(true);
 
 type FormSubmission = {
-  addressType: string;
-  postcodeLookup: string;
-  buildingLookup?: string;
-  addressLine1Lookup?: string;
+  addressType: "reportAddress" | "deliveryAddress";
+  [x: string]: string;
+};
+
+const extractInputFromSubmission = (data: FormSubmission) => {
+  const { addressType, ...rest } = data;
+
+  return {
+    addressType,
+    postcodeLookup: rest[`${addressType}_postcodeLookup`],
+    addressLine1Lookup: rest[`${addressType}_addressLine1Lookup`],
+    buildingLookup: rest[`${addressType}_buildingLookup`],
+  };
 };
 
 export class FindAnAddressPageController extends PageControllerBase {
@@ -73,8 +78,6 @@ export class FindAnAddressPageController extends PageControllerBase {
       const response = await this.handlePostRequest(request, h);
 
       const payload = (request.payload || {}) as FormData;
-
-      console.log("payload:", JSON.stringify(payload, null, 2));
 
       const validation = this.validate<FormSubmission>(payload, formSchema);
 
@@ -87,11 +90,11 @@ export class FindAnAddressPageController extends PageControllerBase {
       }
 
       const {
+        addressType,
         postcodeLookup,
         addressLine1Lookup,
         buildingLookup,
-        addressType,
-      } = validation.value;
+      } = extractInputFromSubmission(validation.value);
 
       const config = this.model.def?.addressLookupConfig;
 
@@ -118,8 +121,6 @@ export class FindAnAddressPageController extends PageControllerBase {
 
       const addresses = cleanAddresses(addressResponse.addresses);
 
-      console.log("addresses:", JSON.stringify(addresses, null, 2));
-
       const matchedAddress = findMatchingAddress(
         addresses,
         buildingLookup,
@@ -135,9 +136,11 @@ export class FindAnAddressPageController extends PageControllerBase {
       }
 
       const savedState = await cacheService.mergeState(request, {
+        // save inputs
         [`${addressType}_postcodeLookup`]: postcodeLookup,
-        [`${addressType}_buildingLookup`]: buildingLookup ?? null,
-        [`${addressType}_addressLine1Lookup`]: addressLine1Lookup ?? null,
+        [`${addressType}_buildingLookup`]: buildingLookup,
+        [`${addressType}_addressLine1Lookup`]: addressLine1Lookup,
+        // save data
         [`${addressType}_addresses`]: addresses,
         [`${addressType}_numberOfAddresses`]: addresses.length,
         [`${addressType}_hasMatchedAddress`]: matchedAddress !== null,

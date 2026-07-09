@@ -19,12 +19,9 @@ const COMPONENT_MATCHED_ADDRESS_DISPLAY = "matchedAddressDisplay";
 
 const formSchema = Joi.object({
   addressType: Joi.string().valid("reportAddress", "deliveryAddress"),
-  isCorrectAddress: Joi.string().allow(""),
   selectedReportAddress: Joi.string().allow(""),
   selectedDeliveryAddress: Joi.string().allow(""),
-})
-  .or("isCorrectAddress", "selectedReportAddress", "selectedDeliveryAddress")
-  .unknown(true);
+}).unknown(true);
 
 function deriveSelectedFieldName(addressType: AddressType): SelectedFieldName {
   return addressType === "deliveryAddress"
@@ -55,6 +52,17 @@ function buildDisplayStringFromState(
     return match ? formatAddress(match) : String(value);
   };
 }
+
+const extractInputFromSubmission = (data: FormSubmission) => {
+  const { addressType, ...rest } = data;
+
+  return {
+    addressType,
+    selectedReportAddress: rest["selectedReportAddress"],
+    selectedDeliveryAddress: rest["selectedDeliveryAddress"],
+    isCorrectAddress: rest[`${addressType}_isCorrectAddress`],
+  };
+};
 
 export class SelectAnAddressPageController extends PageControllerBase {
   private addresses: any[] = [];
@@ -140,8 +148,8 @@ export class SelectAnAddressPageController extends PageControllerBase {
   }
 
   private updateMatchedAddressDisplay(viewModel: any): void {
-    const matchedDisplayIndex = this.components.items.findIndex(
-      (c: any) => c.name === COMPONENT_MATCHED_ADDRESS_DISPLAY
+    const matchedDisplayIndex = this.components.items.findIndex((c: any) =>
+      c.name.includes(COMPONENT_MATCHED_ADDRESS_DISPLAY)
     );
 
     if (
@@ -166,29 +174,43 @@ export class SelectAnAddressPageController extends PageControllerBase {
       }
 
       const {
+        addressType,
         isCorrectAddress,
         selectedReportAddress,
         selectedDeliveryAddress,
-      } = validation.value;
+      } = extractInputFromSubmission(validation.value);
+
       const selectedAddress = selectedReportAddress || selectedDeliveryAddress;
 
       const { cacheService } = request.services([]);
       const currentState = await cacheService.getState(request);
 
-      if (isCorrectAddress === "true") {
+      if (isCorrectAddress) {
+        const resolvedSelectedAddress =
+          isCorrectAddress === "true"
+            ? currentState[`${addressType}_matchedAddress`]
+            : null;
+
         const savedState = await cacheService.mergeState(request, {
-          [`${this.pageAddressType}_isCorrectAddress`]: true,
-          [`${this.pageAddressType}_selectedAddress`]: currentState[
-            `${this.pageAddressType}_matchedAddress`
-          ],
+          [`${addressType}_isCorrectAddress`]: isCorrectAddress === "true",
+          [`${addressType}_selectedAddress`]: resolvedSelectedAddress,
+          // clear selected addresses on "No"
+          ...(addressType === "reportAddress" && {
+            selectedReportAddress: null,
+          }),
+          ...(addressType === "deliveryAddress" && {
+            selectedDeliveryAddress: null,
+          }),
         });
+
         return this.proceed(request, h, savedState);
       }
 
       const savedState = await cacheService.mergeState(request, {
-        [`${this.pageAddressType}_isCorrectAddress`]: false,
-        [`${this.pageAddressType}_selectedAddress`]: selectedAddress,
+        [`${addressType}_isCorrectAddress`]: false,
+        [`${addressType}_selectedAddress`]: selectedAddress,
       });
+
       return this.proceed(request, h, savedState);
     };
   }
