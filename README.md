@@ -1,5 +1,9 @@
 # XGov Digital Form Builder
 
+## AI Evaluation
+
+![AI Ready](https://img.shields.io/badge/AI-Ready-brightgreen)
+
 ## Support
 
 - Join the [community on slack](https://join.slack.com/t/xgov-digital-form-bld/shared_invite/zt-xn5ltztf-3_oBzZaziV4sCpDDOGuP6Q)
