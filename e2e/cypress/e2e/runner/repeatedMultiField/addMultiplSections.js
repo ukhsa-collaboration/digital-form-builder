@@ -1,4 +1,4 @@
-import { Then } from "@badeball/cypress-cucumber-preprocessor";
+import { Then, When } from "@badeball/cypress-cucumber-preprocessor";
 
 Then("I see a summary card titled {string}", (cardTitle) => {
   cy.findByRole("heading", { name: cardTitle }).should("exist");
@@ -34,7 +34,7 @@ When("I delete the summary card {string}", (cardTitle) => {
   cy.findByRole("heading", { name: cardTitle })
     .parents(".govuk-summary-card")
     .within(() => {
-      cy.findByRole("button", { name: /delete/i }).click();
+      cy.findByRole("link", { name: /Delete/i }).click();
     });
 });
 
@@ -43,6 +43,6 @@ When("I edit the summary card {string}", (cardTitle) => {
   cy.findByRole("heading", { name: cardTitle })
     .parents(".govuk-summary-card")
     .within(() => {
-      cy.findByRole("link", { name: /edit/i }).click();
+      cy.findByRole("link", { name: /Change/i }).click();
     });
 });
