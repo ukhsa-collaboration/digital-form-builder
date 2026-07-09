@@ -1,21 +1,20 @@
-import path from "path";
-import { configure } from "nunjucks";
-import { getValidStateFromQueryParameters, redirectTo } from "./helpers";
-import { FormConfiguration } from "@xgovformbuilder/model";
-import { HapiRequest, HapiResponseToolkit, HapiServer } from "server/types";
-
-import { FormModel } from "./models";
-import Boom from "boom";
 import { PluginSpecificConfiguration } from "@hapi/hapi";
-import { FormPayload } from "./types";
+import { FormConfiguration } from "@xgovformbuilder/model";
+import { configure } from "nunjucks";
+import path from "path";
 import { shouldLogin } from "server/plugins/auth";
+import { HapiRequest, HapiResponseToolkit, HapiServer } from "server/types";
 import config from "../../config";
+import { RenderingError } from "./errors";
+import { getValidStateFromQueryParameters, redirectTo } from "./helpers";
+import { FormModel } from "./models";
 import * as exit from "./pluginHandlers/exit";
 import {
   getFiles,
   handleUpload,
   validateContentTypes,
 } from "./pluginHandlers/files/prehandlers";
+import { FormPayload } from "./types";
 
 configure([
   // Configure Nunjucks to allow rendering of content that is revealed conditionally.
@@ -64,6 +63,7 @@ export const plugin = {
     const { modelOptions, configs, previewMode } = options;
     server.app.forms = {};
     const forms = server.app.forms;
+
     configs.forEach((config) => {
       forms[config.id] = new FormModel(config.configuration, {
         ...modelOptions,
@@ -93,8 +93,12 @@ export const plugin = {
             [`POST /publish`, "previewModeError"],
             disabledRouteDetailString
           );
-          throw Boom.forbidden("Publishing is disabled");
+
+          throw new RenderingError("Publishing is disabled", {
+            code: 403,
+          });
         }
+
         const payload = request.payload as FormPayload;
         const { id, configuration } = payload;
 
@@ -124,10 +128,14 @@ export const plugin = {
             [`GET /published/${id}`, "previewModeError"],
             disabledRouteDetailString
           );
-          throw Boom.unauthorized("publishing is disabled");
+
+          throw new RenderingError("Publishing is disabled", {
+            code: 401,
+          });
         }
 
         const form = forms[id];
+
         if (!form) {
           return h.response({}).code(204);
         }
@@ -150,7 +158,10 @@ export const plugin = {
             [`GET /published`, "previewModeError"],
             disabledRouteDetailString
           );
-          throw Boom.unauthorized("publishing is disabled.");
+
+          throw new RenderingError("Publishing is disabled", {
+            code: 403,
+          });
         }
         return h
           .response(
@@ -179,10 +190,13 @@ export const plugin = {
       handler: (request: HapiRequest, h: HapiResponseToolkit) => {
         const keys = Object.keys(forms);
         let id = "";
+
         if (keys.length === 1) {
           id = keys[0];
         }
+
         const model = forms[id];
+
         if (model) {
           return getStartPageRedirect(request, h, id, model);
         }
@@ -191,7 +205,9 @@ export const plugin = {
           return h.redirect(config.serviceStartPage);
         }
 
-        throw Boom.notFound("No default form found");
+        throw new RenderingError("No default form found", {
+          code: 404,
+        });
       },
     });
 
@@ -201,29 +217,40 @@ export const plugin = {
     ) => {
       const { query } = request;
       const { id } = request.params;
+
       const model = forms[id];
+
       if (!model) {
-        throw Boom.notFound("No form found for id");
+        throw new RenderingError("No form found for id", {
+          code: 404,
+        });
       }
 
       const prePopFields = model.fieldsForPrePopulation;
+
       if (
         Object.keys(query).length === 0 ||
         Object.keys(prePopFields).length === 0
       ) {
         return h.continue;
       }
+
       const { cacheService } = request.services([]);
+
       const state = await cacheService.getState(request);
+
       const newValues = getValidStateFromQueryParameters(
         prePopFields,
         query,
         state
       );
+
       await cacheService.mergeState(request, newValues);
+
       if (Object.keys(newValues).length > 0) {
         h.request.pre.hasPrepopulatedSessionFromQueryParameter = true;
       }
+
       return h.continue;
     };
 
@@ -241,10 +268,14 @@ export const plugin = {
       handler: (request: HapiRequest, h: HapiResponseToolkit) => {
         const { id } = request.params;
         const model = forms[id];
+
         if (model) {
           return getStartPageRedirect(request, h, id, model);
         }
-        throw Boom.notFound("No form found for id");
+
+        throw new RenderingError("No form found for id", {
+          code: 404,
+        });
       },
     });
 
@@ -262,9 +293,11 @@ export const plugin = {
       handler: (request: HapiRequest, h: HapiResponseToolkit) => {
         const { path, id } = request.params;
         const model = forms[id];
+
         const page = model?.pages.find(
           (page) => normalisePath(page.path) === normalisePath(path)
         );
+
         if (page) {
           // NOTE: Start pages should live on gov.uk, but this allows prototypes to include signposting about having to log in.
           if (
@@ -276,10 +309,14 @@ export const plugin = {
 
           return page.makeGetRouteHandler()(request, h);
         }
+
         if (normalisePath(path) === "") {
           return getStartPageRedirect(request, h, id, model);
         }
-        throw Boom.notFound("No form or page found");
+
+        throw new RenderingError("No form or page found", {
+          code: 404,
+        });
       },
     });
 
@@ -303,7 +340,9 @@ export const plugin = {
         }
       }
 
-      throw Boom.notFound("No form of path found");
+      throw new RenderingError("No form or page found", {
+        code: 404,
+      });
     };
 
     //TODO:- move to ./pluginHandlers/id/*

@@ -210,17 +210,30 @@ export type Analytics = {
   matomoUrl: string;
 };
 
+export interface MsalAuthorizerConfig {
+  tenantId: string;
+  clientId: string;
+  clientSecret: string;
+  scopes: string[];
+}
+
+export interface SecureFormSubmissionConfig extends MsalAuthorizerConfig {
+  /* Empty for now */
+  useAwsWafUserAgentWorkaround?: boolean;
+}
+
 /**
  * `FormDefinition` is a typescript representation of `Schema`
  */
 export type FormDefinition = {
+  formGroup?: string;
+  name?: string | undefined;
   pages: Array<Page | RepeatingFieldPage>;
   conditions: ConditionRawData[];
   lists: List[];
   sections: Section[];
   startPage?: Page["path"] | undefined;
   authentication?: boolean | undefined;
-  name?: string | undefined;
   feedback?: Feedback;
   phaseBanner?: PhaseBanner;
   fees: Fee[];
@@ -246,4 +259,6 @@ export type FormDefinition = {
   serviceName?: string | undefined;
   confirmationSessionTimeout: number | undefined;
   returnTo?: boolean | undefined;
+  secureFormSubmissionConfig: SecureFormSubmissionConfig;
+  error500ContactEmail?: string | undefined;
 };

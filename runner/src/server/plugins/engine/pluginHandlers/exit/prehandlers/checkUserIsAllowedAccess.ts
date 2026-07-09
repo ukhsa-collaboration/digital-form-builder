@@ -1,5 +1,5 @@
 import { HapiRequest, HapiResponseToolkit } from "server/types";
-import Boom from "boom";
+import { RenderingError } from "../../../errors";
 
 /**
  * Attempts to redirect the user back to the start page of the form if ExitState is empty
@@ -17,7 +17,10 @@ export function checkUserIsAllowedAccess(
       {},
       `user ${userId} attempted to exit but it is not enabled for form ${form.name}`
     );
-    throw Boom.forbidden();
+
+    throw new RenderingError("User not allowed to exit the form", {
+      code: 403,
+    });
   }
   if (!state?.exitState) {
     const lastPage =
