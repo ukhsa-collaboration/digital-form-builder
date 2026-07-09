@@ -249,5 +249,6 @@
     "url": "https://submit.forms.service.gov.uk/form/7932/give-feedback-on-knowledge-and-library-services-kls/30055"
   },
   "version": 2,
-  "conditions": []
+  "conditions": [],
+  "error500ContactEmail": "libraries@kls.ukhsa.gov.uk"
 }
