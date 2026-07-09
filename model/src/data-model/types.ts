@@ -253,5 +253,5 @@ export type FormDefinition = {
   confirmationSessionTimeout: number | undefined;
   returnTo?: boolean | undefined;
   error500ContactEmail?: string | undefined;
-    addressLookupConfig?: AddressLookupConfig;
+  addressLookupConfig?: AddressLookupConfig;
 };
