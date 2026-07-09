@@ -81,13 +81,7 @@ export class RepeatedMultiFieldPageController extends PageController {
 
     const itemSchema = joi.object(
       this.inputComponents.reduce<Record<string, joi.Schema>>((acc, comp) => {
-        const anyComp = (comp as unknown) as {
-          getStateSchemaKeys?: () => Record<string, joi.Schema>;
-        };
-        const fieldSchema = anyComp.getStateSchemaKeys
-          ? anyComp.getStateSchemaKeys()[comp.name]
-          : joi.any();
-        acc[comp.name] = fieldSchema;
+        acc[comp.name] = comp.getStateSchemaKeys()[comp.name] ?? joi.any();
         return acc;
       }, {})
     );
@@ -113,7 +107,7 @@ export class RepeatedMultiFieldPageController extends PageController {
         return this.removeAtIndex(request, h);
       }
 
-      // Editing an existing entry: ?view=N where N is a row index.
+      // Editing an existing entry: ?view=N
       // Checked BEFORE the summary branch so a link carrying returnUrl
       // (e.g. from the main summary page) still routes to the edit view
       // instead of being hijacked into the repeat summary list.
@@ -131,22 +125,21 @@ export class RepeatedMultiFieldPageController extends PageController {
         const freshModels = this.components.getViewModel(formData);
 
         // Swap only the model onto the components the base handler already built
-        response.source.context.components &&= response.source.context.components.map(
-          (component) => {
+        const context = response.source?.context;
+        if (context?.components) {
+          context.components = context.components.map((component) => {
             const name = component.model?.name;
             if (!name) return component;
 
             const fresh = freshModels.find((c) => c.model?.name === name);
             return fresh ? { ...component, model: fresh.model } : component;
-          }
-        );
+          });
+        }
 
         return response;
       }
-
       // Summary view scenario: explicit ?view=summary only.
-      // Note: no longer triggered by the mere presence of returnUrl —
-      // returnUrl now keeps its normal meaning (where to go after editing).
+      // returnUrl which leads to main form summary
       if (view === "summary") {
         const { cacheService } = request.services([]);
         const state = await cacheService.getState(request);
