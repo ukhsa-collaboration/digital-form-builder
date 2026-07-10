@@ -585,7 +585,7 @@
             "required": true,
             "html": true,
             "customValidationMessages": {
-              "any.required": "<p class=\"govuk-body-m\">You must accept the <a href=\"https://www.ukhsa-protectionservices.org.uk/tc/privacy-policy\" target=\"_blank\">Privacy Policy</a> and <a href=\"https://www.ukhsa-protectionservices.org.uk/tc/terms-conditions\" target=\"_blank\">Terms and Conditions</a> before continuing</p>"
+              "any.required": "<p class=\"govuk-body-m\">You must accept the Privacy Policy and Terms and Conditions before continuing</p>"
             }
             
           }
