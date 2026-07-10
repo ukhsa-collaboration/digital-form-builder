@@ -388,8 +388,10 @@ const summaryConfigSchema = joi.object().keys({
           .object()
           .keys({
             field: joi.string().required(),
-            value: joi.string().required(),
+            value: joi.string().optional(),
+            isEmpty: joi.boolean().optional(),
           })
+          .or("value", "isEmpty")
           .required(),
         removeFields: joi.array().items(joi.string()).optional(),
         appendToLastSection: joi

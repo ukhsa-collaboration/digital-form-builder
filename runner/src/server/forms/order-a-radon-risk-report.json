@@ -1013,6 +1013,10 @@
           "value": "£3.90",
           "immutable": true
         }
+      },
+      {
+        "when": { "field": "emailAddress", "isEmpty": true },
+        "removeFields": ["emailAddress"]
       }
     ]
   },

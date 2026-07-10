@@ -182,7 +182,14 @@ export class SummaryViewModel {
               (item: any) => item.name === rule.when.field
             );
 
-            if (match?.rawValue === rule.when.value) {
+            const conditionMatches =
+              rule.when.isEmpty === true
+                ? match == null ||
+                  match.rawValue == null ||
+                  match.rawValue === ""
+                : match?.rawValue === rule.when.value;
+
+            if (conditionMatches) {
               if (rule.removeFields?.length) {
                 transformed = removeRows(transformed, rule.removeFields);
               }

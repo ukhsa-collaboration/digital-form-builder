@@ -245,7 +245,8 @@ export interface SummaryAppendSection {
 
 export interface SummaryConditionalRowCondition {
   field: string;
-  value: string;
+  value?: string;
+  isEmpty?: boolean;
 }
 
 export interface SummaryConditionalRow {
