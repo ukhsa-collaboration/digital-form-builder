@@ -498,7 +498,12 @@
         },
         {
           "name": "DZHYLU",
-          "options": {"hideTitle": true},
+          "options": {
+            "hideTitle": true,
+            "customValidationMessages": {
+              "any.required": "Select Yes if this is the address you want you kit to be delivered to"
+            }
+      },
           "type": "YesNoField",
           "title": "Is this the address you want the kit delivered to?"
         },
