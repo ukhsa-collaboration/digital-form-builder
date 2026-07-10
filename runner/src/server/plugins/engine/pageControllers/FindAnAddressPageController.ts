@@ -79,6 +79,12 @@ export class FindAnAddressPageController extends PageControllerBase {
 
       const payload = (request.payload || {}) as FormData;
 
+      const formResult = this.validateForm(payload);
+
+      if (formResult.errors) {
+        return response;
+      }
+
       const validation = this.validate<FormSubmission>(payload, formSchema);
 
       if (validation.errors) {

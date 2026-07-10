@@ -169,6 +169,12 @@ export class SelectAnAddressPageController extends PageControllerBase {
       const payload = (request.payload || {}) as Record<string, unknown>;
       const validation = this.validate<FormSubmission>(payload, formSchema);
 
+      const formResult = this.validateForm(payload);
+
+      if (formResult.errors) {
+        return response;
+      }
+
       if (validation.errors) {
         return response;
       }

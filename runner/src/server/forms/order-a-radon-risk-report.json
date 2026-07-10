@@ -71,13 +71,14 @@
         {
           "name": "reportAddress_buildingLookup",
           "options": {
+            "required": true,
             "customValidationMessages": {
               "string.empty": "Enter building number or name",
               "string.max": "Building name must be less than 100 characters"
             },
             "exposeToContext": true
           },
-          "schema": { "max": 100 },
+          "schema": { "min": 1, "max": 100 },
           "type": "TextField",
           "title": "Building number or name",
           "hint": "For example, 15 or Prospect Cottage."

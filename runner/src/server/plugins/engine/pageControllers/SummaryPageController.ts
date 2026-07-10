@@ -153,7 +153,10 @@ export class SummaryPageController extends PageController {
        * If a form is configured with a declaration, a checkbox will be rendered with the configured declaration text.
        * If the user does not agree to the declaration, the page will be rerendered with a warning.
        */
-      if (summaryViewModel.declaration && !summaryViewModel.skipSummary) {
+      if (
+        (summaryViewModel.declaration || summaryViewModel.declarationLabel) &&
+        !summaryViewModel.skipSummary
+      ) {
         const { declaration } = request.payload as {
           declaration?: any;
         };
