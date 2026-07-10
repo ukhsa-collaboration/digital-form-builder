@@ -1,4 +1,5 @@
 {
+  "formGroup": "radon",
   "metadata": {},
   "startPage": "/order-a-radon-risk-report-start-now",
   "name": "Order a radon risk report",
@@ -190,9 +191,7 @@
           "content": "<p class=\"govuk-body-m\"><a href=\"order-risk-report-find-an-address\">Change your search</a> or <a href=\"enter-address-manually\">enter address manually</a></p>"
         }
       ],
-      "next": [
-        { "path": "/order-risk-report-find-an-address" }
-      ]
+      "next": [{ "path": "/order-risk-report-find-an-address" }]
     },
     {
       "path": "/enter-address-manually",
@@ -292,9 +291,7 @@
           "content": "<p class=\"govuk-body-m\"><a href=\"order-risk-report-find-an-address\">Change your search</a> or <a href=\"enter-address-manually\">enter address manually</a></p>"
         }
       ],
-      "next": [
-        { "path": "/enter-address-manually" }
-      ]
+      "next": [{ "path": "/enter-address-manually" }]
     },
     {
       "title": "How would you like to receive your report?",
@@ -317,7 +314,10 @@
       ],
       "next": [
         { "path": "/enter-your-details", "condition": "xVvzYK" },
-        { "path": "/order-risk-report-enter-your-details-post", "condition": "ELgEeU" }
+        {
+          "path": "/order-risk-report-enter-your-details-post",
+          "condition": "ELgEeU"
+        }
       ]
     },
     {
@@ -440,9 +440,7 @@
           "content": "We will send your payment confirmation and the report to the email address provided."
         }
       ],
-      "next": [
-        { "path": "/order-risk-report-correct-delivery-address" }
-      ]
+      "next": [{ "path": "/order-risk-report-correct-delivery-address" }]
     },
     {
       "path": "/order-risk-report-correct-delivery-address",
@@ -545,7 +543,7 @@
               "case": "upper"
             }
           },
-          "schema": { 
+          "schema": {
             "max": 10,
             "regex": "^[\\s]*[A-z]{1,2}[0-9][A-z0-9]?[\\s]*[0-9]{1,2}[ABD-hJLNP-uW-z]{2}[\\s]*$"
           },
@@ -560,9 +558,7 @@
           "content": "You will receive the report to your delivery address within 3 to 5 working days"
         }
       ],
-      "next": [
-        { "path": "/summary" }
-      ]
+      "next": [{ "path": "/summary" }]
     },
     {
       "title": "Summary",
@@ -717,7 +713,7 @@
         ]
       }
     },
-        {
+    {
       "name": "isCorrectAddressYes2",
       "displayName": "Is Correct Address Yes",
       "value": {
