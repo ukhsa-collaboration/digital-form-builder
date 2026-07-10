@@ -1,6 +1,7 @@
 import fs from "fs";
 import path from "path";
 
+import { FormDefinition } from "@xgovformbuilder/model";
 import { idFromFilename } from "../helpers";
 import { FormDefinition } from "@xgovformbuilder/model";
 
