@@ -11,6 +11,7 @@ import { HapiRequest } from "src/server/types";
 import { InitialiseSessionOptions } from "server/plugins/initialiseSession/types";
 import { Outputs } from "server/plugins/engine/models/submission/Outputs";
 import { summaryDetailsTransformationMap } from "./SummaryViewModel.detailsTransformationMap";
+import nunjucks from "nunjucks";
 import { mergeRows } from "server/transforms/summaryDetails/mergeRows";
 import { removeRows } from "server/transforms/summaryDetails/removeRows";
 import { adjustRows } from "server/transforms/summaryDetails/adjustRows";
@@ -303,9 +304,18 @@ export class SummaryViewModel {
 
       sectionPages.forEach((page) => {
         for (const component of page.components.formItems) {
-          const item = Item(request, component, sectionState, page, model);
+          const item = Item(
+            request,
+            component,
+            sectionState,
+            page,
+            state,
+            model
+          );
+
           if (itemNames.has(item.name)) continue;
           itemNames.add(item.name);
+
           items.push(item);
           if (component.items) {
             const selectedValue = sectionState[component.name];
@@ -315,7 +325,14 @@ export class SummaryViewModel {
             if (selectedItem && selectedItem.conditionallyRevealedComponents) {
               for (const cc of selectedItem.conditionallyRevealedComponents
                 .formItems) {
-                const cItem = Item(request, cc, sectionState, page, model);
+                const cItem = Item(
+                  request,
+                  cc,
+                  sectionState,
+                  page,
+                  state,
+                  model
+                );
                 items.push(cItem);
               }
             }
@@ -445,6 +462,17 @@ function gatherRepeatPages(state) {
   });
 }
 
+function renderTemplate(str: string, context: object): string {
+  if (
+    !config.allowUserTemplates ||
+    typeof str !== "string" ||
+    !str.includes("{{")
+  ) {
+    return str;
+  }
+  return nunjucks.renderString(str, context);
+}
+
 /**
  * Creates an Item object for Details
  */
@@ -453,6 +481,7 @@ function Item(
   component,
   sectionState,
   page,
+  state,
   model: FormModel,
   params: { num?: number; returnUrl: string } = {
     returnUrl: redirectUrl(request, `/${model.basePath}/summary`),
@@ -467,7 +496,7 @@ function Item(
         (acc: {}, p: any) => ({ ...acc, ...p }),
         {}
       );
-      return Item(request, component, collated, page, model, {
+      return Item(request, component, collated, page, state, model, {
         ...params,
         num: i + 1,
       });
@@ -482,7 +511,10 @@ function Item(
   const item = {
     name: component.name,
     path: page.path,
-    label: component.localisedString(component.title),
+    label: renderTemplate(component.localisedString(component.title), {
+      ...state,
+      ...sectionState,
+    }),
     value: component.getDisplayStringFromState(sectionState),
     rawValue: sectionState[component.name],
     url: redirectUrl(request, `/${model.basePath}${changePath}`, params),

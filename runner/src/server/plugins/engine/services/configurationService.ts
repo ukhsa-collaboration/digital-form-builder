@@ -1,9 +1,9 @@
 import fs from "fs";
 import path from "path";
 
-import { idFromFilename } from "../helpers";
 import { resolvePlaceholders } from "../utils/resolvePlaceholders";
 import { FormDefinition } from "@xgovformbuilder/model";
+import { idFromFilename } from "../helpers";
 
 const FORMS_FOLDER = path.join(__dirname, "..", "..", "..", "forms");
 

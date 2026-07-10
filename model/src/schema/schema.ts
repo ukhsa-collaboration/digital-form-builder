@@ -412,6 +412,7 @@ export const Schema = joi
   .object()
   .required()
   .keys({
+    formGroup: localisedString.optional(),
     name: localisedString.optional(),
     feedback: feedbackSchema,
     startPage: joi.string().required(),
@@ -453,6 +454,7 @@ export const Schema = joi
     returnTo: joi.boolean().optional(),
     secureFormSubmissionConfig: secureFormSubmissionConfig.optional(),
     addressLookupConfig: addressLookupConfigSchema.optional(),
+    error500ContactEmail: joi.string().optional(),
     summaryConfig: summaryConfigSchema.optional(),
   });
 
