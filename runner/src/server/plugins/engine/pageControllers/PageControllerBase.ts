@@ -165,6 +165,7 @@ export class PageControllerBase {
     phaseTag?: string | undefined;
     details?: any;
     returnUrl?: string | undefined;
+    allowExit?: boolean;
   } {
     let showTitle = true;
     let pageTitle = this.title;
@@ -427,7 +428,7 @@ export class PageControllerBase {
    * @param value - user's answers
    * @param schema - which schema to validate against
    */
-  validate<T = any>(value, schema) {
+  validate<T = unknown>(value, schema) {
     const result = schema.validate(value, this.validationOptions);
     const errors = result.error ? this.getErrors(result) : null;
 
@@ -807,14 +808,6 @@ export class PageControllerBase {
     if (modifyUpdate) {
       update = modifyUpdate(update);
     }
-
-    // if (
-    //   this.path === "/is-this-the-correct-address" &&
-    //   update.isCorrectAddress === "Yes" &&
-    //   state.matchedAddress
-    // ) {
-    //   update.matchedAddress = state.matchedAddress.uprn;
-    // }
 
     await cacheService.mergeState(request, update, nullOverride, arrayMerge);
   }

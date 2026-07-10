@@ -62,15 +62,11 @@ Please use a config file instead. This will give you more control over each envi
 The defaults can be found in [config](./config/default.js). Place your config files in `runner/config`
 See [https://github.com/node-config/node-config#readme](https://github.com/node-config/node-config#readme) for more info.
 
-> Form JSON files in `src/server/forms` may contain `${VAR_NAME}` placeholders (for example
-> `addressLookupConfig` in `order-a-radon-risk-report.json`). These are normally substituted outside
-> of this repo before deployment. When running with `NODE_ENV=development`, the runner resolves
-> these placeholders itself from environment variables of the same name, so forms work locally
+> Form JSON files in `src/server/forms` may contain `${VAR_NAME}` placeholders.
+> When running with `NODE_ENV=development`, the runner resolves these placeholders
+> itself from environment variables of the same name, so forms work locally
 > without needing real secrets. See
-> [resolvePlaceholders.ts](./src/server/plugins/engine/utils/resolvePlaceholders.ts) and the
-> `environment` block in [docker-compose.dev.yml](../docker-compose.dev.yml) for an example.
-> Any `${VAR_NAME}` left without a matching environment variable is logged as a warning and left
-> unresolved.
+> [resolvePlaceholders.ts](./src/server/plugins/engine/utils/resolvePlaceholders.ts)
 
 | name                    | description                           |        required         | default      |            valid            |                                                                                       notes                                                                                        |
 | ----------------------- | ------------------------------------- | :---------------------: | ------------ | :-------------------------: | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: |
