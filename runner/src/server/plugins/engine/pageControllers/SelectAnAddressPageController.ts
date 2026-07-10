@@ -148,8 +148,10 @@ export class SelectAnAddressPageController extends PageControllerBase {
   }
 
   private updateMatchedAddressDisplay(viewModel: any): void {
-    const matchedDisplayIndex = this.components.items.findIndex((c: any) =>
-      c.name.includes(COMPONENT_MATCHED_ADDRESS_DISPLAY)
+    const matchedDisplayIndex = this.components.items.findIndex(
+      (c: any) =>
+        c.name ===
+        `${this.pageAddressType}_${COMPONENT_MATCHED_ADDRESS_DISPLAY}`
     );
 
     if (

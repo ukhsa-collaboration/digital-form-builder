@@ -273,6 +273,7 @@ export class SummaryViewModel {
 
     [undefined, ...model.sections].forEach((section) => {
       const items: any[] = [];
+      const itemNames = new Set<string>();
       let sectionState = section ? state[section.name] || {} : state;
 
       sectionState.originalFilenames = state.originalFilenames ?? {};
@@ -303,7 +304,8 @@ export class SummaryViewModel {
       sectionPages.forEach((page) => {
         for (const component of page.components.formItems) {
           const item = Item(request, component, sectionState, page, model);
-          if (items.find((cbItem) => cbItem.name === item.name)) continue;
+          if (itemNames.has(item.name)) continue;
+          itemNames.add(item.name);
           items.push(item);
           if (component.items) {
             const selectedValue = sectionState[component.name];
