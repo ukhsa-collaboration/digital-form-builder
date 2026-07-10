@@ -5,10 +5,10 @@ import Joi from "joi";
 import {
   addressTypeSchema,
   AddressType,
+  SelectedFieldName,
+  deriveSelectedFieldName,
   formatAddress,
 } from "../utils/addressUtils";
-
-type SelectedFieldName = "selectedReportAddress" | "selectedDeliveryAddress";
 
 type FormSubmission = {
   addressType: AddressType;
@@ -26,12 +26,6 @@ const formSchema = Joi.object({
   selectedReportAddress: Joi.string().allow(""),
   selectedDeliveryAddress: Joi.string().allow(""),
 }).unknown(true);
-
-function deriveSelectedFieldName(addressType: AddressType): SelectedFieldName {
-  return addressType === "deliveryAddress"
-    ? "selectedDeliveryAddress"
-    : "selectedReportAddress";
-}
 
 /**
  * Returns a `getDisplayStringFromState` implementation for the given address type.
@@ -211,7 +205,11 @@ export class SelectAnAddressPageController extends PageControllerBase {
           }),
         });
 
-        return this.proceed(request, h, savedState);
+        // Only a "Yes" answer is a genuine completion of the address
+        // sub-journey; "No" must continue on to select-an-address per the
+        // normal `next` config, even if a Change link's returnUrl is present.
+        const honourReturnUrl = isCorrectAddress === "true";
+        return this.proceed(request, h, savedState, honourReturnUrl);
       }
 
       const savedState = await cacheService.mergeState(request, {

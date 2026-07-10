@@ -7,6 +7,7 @@ import {
   addressTypeSchema,
   addressesToList,
   AddressType,
+  deriveSelectedFieldName,
 } from "../utils/addressUtils";
 
 const STREET_NUMBER_PATTERN = /(^|, )(\d+[A-Z]?([-\/]\d+)?[A-Z]?),/i;
@@ -145,14 +146,17 @@ export class FindAnAddressPageController extends PageControllerBase {
         [`${addressType}_addresses`]: addresses,
         [`${addressType}_numberOfAddresses`]: addresses.length,
         [`${addressType}_hasMatchedAddress`]: matchedAddress !== null,
-        ...(matchedAddress && {
-          [`${addressType}_matchedAddress`]: matchedAddress,
-        }),
+        [`${addressType}_matchedAddress`]: matchedAddress,
         [`${addressType}_isCorrectAddress`]: null,
+        // clear any selection made against a previous search's results
+        [`${addressType}_selectedAddress`]: null,
+        [deriveSelectedFieldName(addressType)]: null,
       });
 
-      // Navigate to the next page
-      return this.proceed(request, h, { ...savedState });
+      // This is always an intermediate step of the address-lookup
+      // sub-journey, never a completion, so it must never short-circuit
+      // straight to a Change link's returnUrl.
+      return this.proceed(request, h, { ...savedState }, false);
     };
   }
 }

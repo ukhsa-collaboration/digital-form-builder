@@ -474,14 +474,19 @@ function Item(
     });
   }
 
+  // Some pages (e.g. an address "close match" Yes/No confirmation) shouldn't
+  // be the target of the Change link even though they own the component -
+  // changePath lets the page declare where Change should send the user instead.
+  const changePath = page.pageDef?.options?.changePath ?? page.path;
+
   const item = {
     name: component.name,
     path: page.path,
     label: component.localisedString(component.title),
     value: component.getDisplayStringFromState(sectionState),
     rawValue: sectionState[component.name],
-    url: redirectUrl(request, `/${model.basePath}${page.path}`, params),
-    pageId: `/${model.basePath}${page.path}`,
+    url: redirectUrl(request, `/${model.basePath}${changePath}`, params),
+    pageId: `/${model.basePath}${changePath}`,
     type: component.type,
     title: component.title,
     dataType: component.dataType,

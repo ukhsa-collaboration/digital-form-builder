@@ -2,7 +2,12 @@ import { merge, reach } from "@hapi/hoek";
 import * as querystring from "querystring";
 import { validationOptions } from "server/plugins/engine/pageControllers/validationOptions";
 
-import { feedbackReturnInfoKey, proceed, redirectTo } from "../helpers";
+import {
+  feedbackReturnInfoKey,
+  getBackLink,
+  proceed,
+  redirectTo,
+} from "../helpers";
 import { ComponentCollection } from "../components/ComponentCollection";
 import {
   decodeFeedbackContextInfo,
@@ -672,8 +677,11 @@ export class PageControllerBase {
       if (this.disableBackLink) {
         viewModel.backLink = undefined;
       } else {
-        viewModel.backLink =
-          progress[progress.length - 2] ?? this.backLinkFallback;
+        viewModel.backLink = getBackLink(
+          request,
+          progress,
+          this.backLinkFallback
+        );
       }
 
       viewModel.allowExit = this.model.allowExit;
@@ -944,12 +952,17 @@ export class PageControllerBase {
   /**
    * TODO:- proceed is interfering with subclasses
    */
-  proceed(request: HapiRequest, h: HapiResponseToolkit, state) {
+  proceed(
+    request: HapiRequest,
+    h: HapiResponseToolkit,
+    state,
+    honourReturnUrl: boolean = true
+  ) {
     const nextPage = this.getNext(state);
     if (nextPage?.redirect) {
-      return proceed(request, h, nextPage?.redirect);
+      return proceed(request, h, nextPage?.redirect, honourReturnUrl);
     }
-    return proceed(request, h, nextPage);
+    return proceed(request, h, nextPage, honourReturnUrl);
   }
 
   getPartialMergeState(value) {
@@ -1034,8 +1047,11 @@ export class PageControllerBase {
     if (this.disableBackLink) {
       viewModel.backLink = undefined;
     } else {
-      viewModel.backLink =
-        progress[progress.length - 2] ?? this.backLinkFallback;
+      viewModel.backLink = getBackLink(
+        request,
+        progress,
+        this.backLinkFallback
+      );
     }
 
     this.setPhaseTag(viewModel);

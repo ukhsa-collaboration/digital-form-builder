@@ -6,10 +6,22 @@ import Joi from "joi";
 
 export type AddressType = "reportAddress" | "deliveryAddress";
 
+export type SelectedFieldName =
+  | "selectedReportAddress"
+  | "selectedDeliveryAddress";
+
 export const addressTypeSchema = Joi.string().valid(
   "reportAddress",
   "deliveryAddress"
 );
+
+export function deriveSelectedFieldName(
+  addressType: AddressType
+): SelectedFieldName {
+  return addressType === "deliveryAddress"
+    ? "selectedDeliveryAddress"
+    : "selectedReportAddress";
+}
 
 export const addressesToList = (addresses: Address[]): Item[] => {
   return addresses.map((address) => ({
