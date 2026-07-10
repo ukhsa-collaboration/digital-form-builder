@@ -27,6 +27,7 @@ export enum ComponentTypeEnum {
   ContextComponent = "ContextComponent",
   ContentWithState = "ContentWithState",
   DisplayAddress = "DisplayAddress",
+  HiddenField = "HiddenField",
 }
 
 export type ComponentType =
@@ -58,7 +59,8 @@ export type ComponentType =
   | "WebsiteField"
   | "ContextComponent"
   | "ContentWithState"
-  | "DisplayAddress";
+  | "DisplayAddress"
+  | "HiddenField";
 
 export type ComponentSubType = "field" | "content";
 
@@ -311,6 +313,16 @@ export interface DisplayAddressComponent extends ContentFieldBase {
   type: "DisplayAddress";
 }
 
+export interface HiddenFieldComponent {
+  type: "HiddenField";
+  name: string;
+  options: {
+    value?: string;
+    exposeToContext?: boolean;
+  };
+  schema?: {};
+}
+
 // List Fields
 export interface ListComponent extends ListFieldBase {
   type: "List";
@@ -337,7 +349,9 @@ export interface RadiosFieldComponent extends ListFieldBase {
 
 export interface SelectFieldComponent extends ListFieldBase {
   type: "SelectField";
-  options: ListFieldBase["options"] & { autocomplete?: string } & { preselected?: { text: string; value: string | number | boolean } };
+  options: ListFieldBase["options"] & { autocomplete?: string } & {
+    preselected?: { text: string; value: string | number | boolean };
+  };
   subType?: "listField";
 }
 
@@ -376,7 +390,8 @@ export type ComponentDef =
   | WebsiteFieldComponent
   | ContextComponent
   | ContentWithStateComponent
-  | DisplayAddressComponent;
+  | DisplayAddressComponent
+  | HiddenFieldComponent;
 
 // Components that render inputs.
 export type InputFieldsComponentsDef =

@@ -12,6 +12,10 @@ import { InitialiseSessionOptions } from "server/plugins/initialiseSession/types
 import { Outputs } from "server/plugins/engine/models/submission/Outputs";
 import { summaryDetailsTransformationMap } from "./SummaryViewModel.detailsTransformationMap";
 import nunjucks from "nunjucks";
+import { mergeRows } from "server/transforms/summaryDetails/mergeRows";
+import { removeRows } from "server/transforms/summaryDetails/removeRows";
+import { adjustRows } from "server/transforms/summaryDetails/adjustRows";
+import { transformValues } from "server/transforms/summaryDetails/transformValues";
 
 import pino from "pino";
 const logger = pino().child({ name: "SummaryViewModel" });
@@ -58,6 +62,11 @@ export class SummaryViewModel {
   callback?: InitialiseSessionOptions;
   showPaymentSkippedWarningPage: boolean = false;
   returnUrl: string;
+  backLink: string | undefined;
+  submitLabel: string | undefined;
+  declarationLabel: string | undefined;
+  hideDeclarationHeading: boolean | undefined;
+
   constructor(
     pageTitle: string,
     model: FormModel,
@@ -125,6 +134,93 @@ export class SummaryViewModel {
       }
     }
 
+    // summaryConfig provides a data-driven alternative to the per-form
+    // transformation functions in summaryDetailsTransformationMap. Transforms
+    // run after the legacy map so they can build on top of any existing
+    // per-form logic. Order matters: merge first (combines fields), then
+    // remove (drops fields), then relabel (renames), then value transform
+    // (replaces the displayed value), then conditional rules (which may
+    // remove or append based on a field value).
+    const summaryConfig = def.summaryConfig;
+
+    if (summaryConfig) {
+      try {
+        let transformed = clone(this.details);
+
+        if (summaryConfig.mergeFields?.length) {
+          transformed = mergeRows(transformed, summaryConfig.mergeFields);
+        }
+
+        if (summaryConfig.removeFields?.length) {
+          transformed = removeRows(transformed, summaryConfig.removeFields);
+        }
+
+        if (summaryConfig.relabelFields) {
+          const adjustments = Object.fromEntries(
+            Object.entries(summaryConfig.relabelFields).map(([k, v]) => [
+              k,
+              { label: v as string },
+            ])
+          );
+
+          transformed = adjustRows(transformed, adjustments);
+        }
+
+        if (summaryConfig.valueTransforms) {
+          transformed = transformValues(
+            transformed,
+            summaryConfig.valueTransforms
+          );
+        }
+
+        if (summaryConfig.conditionalRows?.length) {
+          // Snapshot all items before iterating so rule order doesn't affect
+          // which `when` conditions are evaluated.
+          const allItems = transformed.flatMap((d: any) => d.items);
+          const itemsByName = new Map(
+            allItems.map((item: any) => [item.name, item])
+          );
+
+          for (const rule of summaryConfig.conditionalRows) {
+            const match = itemsByName.get(rule.when.field);
+
+            const conditionMatches =
+              rule.when.isEmpty === true
+                ? match == null ||
+                  match.rawValue == null ||
+                  match.rawValue === ""
+                : match?.rawValue === rule.when.value;
+
+            if (conditionMatches) {
+              if (rule.removeFields?.length) {
+                transformed = removeRows(transformed, rule.removeFields);
+              }
+              if (rule.appendToLastSection) {
+                transformed = transformed.map((d: any, i: number) =>
+                  i === transformed.length - 1
+                    ? { ...d, items: [...d.items, rule.appendToLastSection] }
+                    : d
+                );
+              }
+            }
+          }
+        }
+
+        this.details = transformed;
+      } catch (err) {
+        logger.error({ err }, "Error applying summaryConfig transforms");
+      }
+
+      this.submitLabel = summaryConfig.submitLabel;
+
+      if (summaryConfig.declaration) {
+        this.declaration = undefined;
+        this.declarationLabel = summaryConfig.declaration.label;
+        this.hideDeclarationHeading =
+          summaryConfig.declaration.hideDeclarationHeading;
+      }
+    }
+
     this.result = result;
     this.state = state;
     this.value = result.value;
@@ -178,6 +274,7 @@ export class SummaryViewModel {
 
     [undefined, ...model.sections].forEach((section) => {
       const items: any[] = [];
+      const itemNames = new Set<string>();
       let sectionState = section ? state[section.name] || {} : state;
 
       sectionState.originalFilenames = state.originalFilenames ?? {};
@@ -215,7 +312,10 @@ export class SummaryViewModel {
             state,
             model
           );
-          if (items.find((cbItem) => cbItem.name === item.name)) return;
+
+          if (itemNames.has(item.name)) continue;
+          itemNames.add(item.name);
+
           items.push(item);
           if (component.items) {
             const selectedValue = sectionState[component.name];
@@ -403,6 +503,11 @@ function Item(
     });
   }
 
+  // Some pages (e.g. an address "close match" Yes/No confirmation) shouldn't
+  // be the target of the Change link even though they own the component -
+  // changePath lets the page declare where Change should send the user instead.
+  const changePath = page.pageDef?.options?.changePath ?? page.path;
+
   const item = {
     name: component.name,
     path: page.path,
@@ -412,12 +517,13 @@ function Item(
     }),
     value: component.getDisplayStringFromState(sectionState),
     rawValue: sectionState[component.name],
-    url: redirectUrl(request, `/${model.basePath}${page.path}`, params),
-    pageId: `/${model.basePath}${page.path}`,
+    url: redirectUrl(request, `/${model.basePath}${changePath}`, params),
+    pageId: `/${model.basePath}${changePath}`,
     type: component.type,
     title: component.title,
     dataType: component.dataType,
     immutable: component.options.disableChangingFromSummary,
+    filename: undefined,
   };
 
   if (
