@@ -522,7 +522,12 @@
         },
         {
           "name": "eWdxvJ",
-          "options": {"hideTitle": true},
+          "options": {
+            "hideTitle": true,
+            "customValidationMessages": {
+              "any.required": "Select Yes if this is is the address you want your radon gas test results to"
+            }
+        },
           "type": "YesNoField",
           "title": "Is this the address you want your radon gas test results to?"
         },
@@ -553,10 +558,10 @@
       "title": "Review your order",
       "components": [
         {
-          "name": "MMdxVl",
+          "name": "MMdxVt",
           "options": {},
           "type": "Para",
-          "content": "<table class=\"govuk-table\"><caption class=\"govuk-table__caption govuk-table__caption--m\">Order Summary</caption><tbody class=\"govuk-table__body\"><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\"><b>Which type of test kit do you need?</b></th><td class=\"govuk-table__cell\">Home radon  gas test kit</td><td class=\"govuk-table__cell\"></td></tr><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\"><b>Total</b></th><td class=\"govuk-table__cell\">£52.80 (icluding VAT)</td><td class=\"govuk-table__cell\"></td></tr></tbody></table>"
+          "content": "<table class=\"govuk-table\"><caption class=\"govuk-table__caption govuk-table__caption--m\">Order Summary</caption><tbody class=\"govuk-table__body\"><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\"><b>Which type of test kit do you need?</b></th><td class=\"govuk-table__cell\">Home radon  gas test kit</td><td class=\"govuk-table__cell\"></td></tr><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\"><b>Total</b></th><td class=\"govuk-table__cell\"><b>£52.80 (including VAT)</b></td><td class=\"govuk-table__cell\"></td></tr></tbody></table>"
         },
         {
           "name": "linebreaks",
@@ -568,7 +573,7 @@
           "name": "MMdxVl",
           "options": {},
           "type": "Para",
-          "content": "<table class=\"govuk-table\"><caption class=\"govuk-table__caption govuk-table__caption--m\">Contact Information</caption><tbody class=\"govuk-table__body\"><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\">Title</th><td class=\"govuk-table__cell\">{{ Title }}</td><td class=\"govuk-table__cell\"><a href=\"/gas-test-kit/enter-details\" \"target\"=\"_blank\">Change</a></td></tr><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\">Initials</th><td class=\"govuk-table__cell\">{{ Initials }}</td><td class=\"govuk-table__cell\"><a href=\"/gas-test-kit/enter-details\" \"target\"=\"_blank\">Change</a></td></tr><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\">Last name</th><td class=\"govuk-table__cell\">{{ LastName }}</td><td class=\"govuk-table__cell\"><a href=\"/gas-test-kit/enter-details\" \"target\"=\"_blank\">Change</a></td></tr><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\">Email</th><td class=\"govuk-table__cell\">{{ EmailAddress }}</td><td class=\"govuk-table__cell\"><a href=\"/gas-test-kit/enter-details\" \"target\"=\"_blank\">Change</a></td></tr><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\">Property address</th><td class=\"govuk-table__cell\">{{ PropertyAddress }}</td><td class=\"govuk-table__cell\"><a href=\"google.com\" \"target\"=\"_blank\">Change</a></td></tr><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\">Delivery recipient</th><td class=\"govuk-table__cell\">{{ DeliveryRecipient }}</td><td class=\"govuk-table__cell\"><a href=\"/gas-test-kit/enter-details\" \"target\"=\"_blank\">Change</a></td></tr><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\">Delivery address</th><td class=\"govuk-table__cell\">{{ DeliveryAddress }}</td><td class=\"govuk-table__cell\"><a href=\"google.com\" \"target\"=\"_blank\">Change</a></td></tr><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\">Results recipient</th><td class=\"govuk-table__cell\">{{ ResultsRecipient }}</td><td class=\"govuk-table__cell\"><a href=\"google.com\" \"target\"=\"_blank\">Change</a></td></tr><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\">Results address</th><td class=\"govuk-table__cell\">{{ ResultsAddress }}</td><td class=\"govuk-table__cell\"><a href=\"google.com\" \"target\"=\"_blank\">Change</a></td></tr></tbody></table>"
+          "content": "<table class=\"govuk-table\"><caption class=\"govuk-table__caption govuk-table__caption--m\">Contact Information</caption><tbody class=\"govuk-table__body\"><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\">Title</th><td class=\"govuk-table__cell\">{{ Title }}</td><td class=\"govuk-table__cell\"><a href=\"/gas-test-kit/enter-details\" \"target\"=\"_blank\">Change</a></td></tr><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\">Initials</th><td class=\"govuk-table__cell\">{{ Initials }}</td><td class=\"govuk-table__cell\"><a href=\"/gas-test-kit/enter-details\" \"target\"=\"_blank\">Change</a></td></tr><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\">Last name</th><td class=\"govuk-table__cell\">{{ LastName }}</td><td class=\"govuk-table__cell\"><a href=\"/gas-test-kit/enter-details\" \"target\"=\"_blank\">Change</a></td></tr><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\">Email Address</th><td class=\"govuk-table__cell\">{{ EmailAddress }}</td><td class=\"govuk-table__cell\"><a href=\"/gas-test-kit/enter-details\" \"target\"=\"_blank\">Change</a></td></tr><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\">Property address</th><td class=\"govuk-table__cell\">{{ PropertyAddress }}</td><td class=\"govuk-table__cell\"><a href=\"google.com\" \"target\"=\"_blank\">Change</a></td></tr><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\">Delivery recipient</th><td class=\"govuk-table__cell\">{{ DeliveryRecipient }}</td><td class=\"govuk-table__cell\"><a href=\"/gas-test-kit/enter-details\" \"target\"=\"_blank\">Change</a></td></tr><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\">Delivery address</th><td class=\"govuk-table__cell\">{{ DeliveryAddress }}</td><td class=\"govuk-table__cell\"><a href=\"google.com\" \"target\"=\"_blank\">Change</a></td></tr><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\">Results recipient</th><td class=\"govuk-table__cell\">{{ ResultsRecipient }}</td><td class=\"govuk-table__cell\"><a href=\"google.com\" \"target\"=\"_blank\">Change</a></td></tr><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\">Results address</th><td class=\"govuk-table__cell\">{{ ResultsAddress }}</td><td class=\"govuk-table__cell\"><a href=\"google.com\" \"target\"=\"_blank\">Change</a></td></tr></tbody></table>"
         },
 
         {
@@ -584,6 +589,116 @@
             }
             
           }
+        },
+        {
+          "path": "/who-is-the-recipient-of-radon-gas-test-results",
+          "title": "Who is the recipient of radon gas test results",
+          "components": [
+            {
+              "name": "Title",
+              "options": {
+                "exposeToContext": true,
+                "customValidationMessages":{
+                  "string.empty": "Enter the title of the recipient of the radon gas test results"
+                }
+              },
+              "type": "TextField",
+              "title": "Title",
+              "hint": "e.g. Mr, Mrs, Dr"
+            },
+            {
+              "name": "Initials",
+              "options": {
+                "customValidationMessages":{
+                  "string.empty": "Enter the initials of the recipient of the radon gas test results"
+                },
+                "exposeToContext": true
+              },
+              "type": "TextField",
+              "title": "Initials"
+            },
+            {
+              "name": "LastName",
+              "options": {
+                "customValidationMessages":{
+                  "string.empty": "Enter the last name of the recipient of the radon gas test results"
+                },
+                "exposeToContext": true 
+              },
+              "type": "TextField",
+              "title": "Last Name"
+            }
+          ],
+          "next": [{"path": "/gas-test-kit-enter-results-address-manually"}]
+        },
+        {
+          "path": "/gas-test-kit-enter-results-address-manually",
+          "title": "What address do you want your radon gas test results to be delivered to?",
+          "components": [
+            {
+              "name": "Address Line 1",
+              "options": {
+                "customValidationMessages":{
+                  "string.empty": "Enter address line 1, typically the building and street"
+                },
+                "exposeToContext": true
+              },
+              "type": "TextField",
+              "title": "Address Line 1"
+            },
+            {
+              "name": "Address Line 2",
+              "options": {
+                "required": false,
+                "exposeToContext": true
+              },
+              "type": "TextField",
+              "title": "Address Line 2"
+            },
+            {
+              "name": "Town or city",
+              "options": {
+                "customValidationMessages":{
+                  "string.empty": "Enter town or city"
+                },
+                "exposeToContext": true
+              },
+              "type": "TextField",
+              "title": "Town or city"
+            },
+            {
+              "name": "County",
+              "options": {
+                "required": false,
+                "exposeToContext": true
+              },
+              "type": "TextField",
+              "title": "County"
+            },
+            {
+              "name": "postcodeLookup",
+              "options": {
+                "customValidationMessages": {
+                  "string.empty": "Enter postcode",
+                  "string.pattern.base": "Enter a full UK postcode",
+                  "string.max": "Postcode must be less than 10 characters"
+                },
+                "autocomplete": "postal-code",
+                "exposeToContext": true,
+                "format": {
+                  "trim": true,
+                  "case": "upper"
+                }
+              },
+              "schema": {
+                "max": 10,
+                "regex": "^[\\s]*[A-z]{1,2}[0-9][A-z0-9]?[\\s]*[0-9]{1,2}[ABD-hJLNP-uW-z]{2}[\\s]*$"
+              },
+              "type": "TextField",
+              "title": "Postcode"
+            }
+          ],
+          "next": [{"path": "/gas-test-kit-check-your-answers"}]
         }
       ],
       "next": [{"path": "/payment"}]
