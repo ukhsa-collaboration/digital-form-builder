@@ -390,6 +390,7 @@ export const Schema = joi
     confirmationSessionTimeout: joi.number().optional(),
     returnTo: joi.boolean().optional(),
     secureFormSubmissionConfig: secureFormSubmissionConfig.optional(),
+    addressLookupConfig: addressLookupConfigSchema.optional(),
     error500ContactEmail: joi.string().optional(),
     addressLookupConfig: addressLookupConfigSchema.optional(),
   });
