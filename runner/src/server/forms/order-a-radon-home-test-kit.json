@@ -7,14 +7,34 @@
   "pages": [
     {
       "path": "/test-kit-start",
-      "title": "Order a radon home test kit",
+      "title": "Order a home radon gas test kit",
       "backLinkFallback": "https://www.ukhsa-protectionservices.org.uk/",
       "components": [
         {
           "name": "qwplwo",
           "options": {},
           "type": "Para",
-          "content": "Use this service to order a radon gas test kit for your home.\n</br></br>\nThis service costs £52.80 including VAT.\n</br></br>\nOrdering a kit takes around 5 minutes. It may take up to 10 working days after you order for the kit to be sent.\n</br></br>\nThe kit contains two detectors. one for the living area and one for the bedroom of a residential property.\n</br></br>\nIt doesn't matter how big the home is or how many rooms there are. The detectors just need to be placed in any regularly used living area and bedroom.\n</br></br>\nOnce your kit arrives, we'll send you instructions on how to carry out the test.\n</br></br>\nYou'll get the results and advice on what to do next within 20 working days after you return the kit.\n</br></br>\n<b>Important information before you continue</b>\n</br></br>\nThe test will not be valid if:</br>",
+          "content": "Use this service to order a radon gas test kit for a property in the UK and and the Isle of Man.\n</br></br>\nA test kit costs £52.80, including VAT. (appears later in page)\n</br></br>\nOrdering a kit takes around 5 minutes. It may take up to 10 working days for the kit to be delivered.\n</br></br>\nThe kit contains two detectors. one for the living area and one for the bedroom of a residential property.\n</br></br>\nIt doesn't matter how big the home is or how many rooms there are. The detectors just need to be placed in any regularly used living area and bedroom.\n</br></br>\nOnce your kit arrives, we will send you instructions on how to do the test.\n</br></br>\nAfter you return the kit, you will receive a report showing the radon level at your address and advice on whether you need to take action.\n</br></br>\n<b>Before you start</b>\n</br></br>\nThe test will not be valid if:</br>",
+          "schema": {}
+        },{
+          "name": "ppauyr",
+          "options": {},
+          "type": "Para",
+          "content": "The radon gas test kit measures the level of radon in your property over a period of 3 months. The results show if the radon level is above the Action Level advised by the UK Health Security Agency. If your result is above the Action Level, you should take steps to reduce it.",
+          "schema": {}
+        },
+        {
+          "name": "tqtivv",
+          "options": {},
+          "type":"InsetText",
+          "content":"The Action Level for radon in homes is 200 becquerels per cubic metre (Bq m-3). A becquerel is a measure of radioactivity. If the radon level in your property is higher than this, you should take steps to reduce it.",
+          "schema": {}
+        },
+        {
+          "name": "lbbcld",
+          "options": {},
+          "type":"InsetText",
+          "content":" If you or anyone living in your home is a current or ex-smoker, the risk to health is greater. In this case, the Action Level is lower, at 100 Bq m-3.",
           "schema": {}
         },
         {
@@ -31,7 +51,7 @@
           "name": "gkopdo",
           "options": {},
           "type": "Para",
-          "content": "\nThis is because the way people live in a home can affect the radon level. For example. how often they open windows and doors, or how they heat the house.\n</br></br>\n<b>Before you start</b>\n</br></br>\nYou'll need your:</br>",
+          "content": "\nThis is because how a home is used can affect radon levels. For example, how often windows and doors are opened, or how the home is heated.\n</br></br>\n<b>Before you start</b>\n</br></br>\nYou'll need your:</br>",
           "schema": {}
         },
         {
@@ -429,18 +449,16 @@
       "type": "string",
       "items": [
         {
-          "text": "there's building work going on that changes the structure of the property such as a kitchen fitting or room refurbishment",
-          "description": "",
-          "value": "there's building work going on that changes the structure of the property such as a kitchen fitting or room refurbishment"
+          "text": "any building work is planned during the testing period that disrupts normal living conditions, or changes the way air moves through the property",
+          "value": "any building work is planned during the testing period that disrupts normal living conditions, or changes the way air moves through the property"
         },
         {
-          "description": "",
-          "text": "the property is empty for more than two weeks of the test",
-          "value": "the property is empty for more than two weeks of the test"
+          "text": "the property is empty for more than 2 weeks during the test",
+          "value": "the property is empty for more than 2 weeks during the test"
         },
         {
-          "text": "the people living there change during the test",
-          "value": "the people living there change during the test"
+          "text": "the people living in the property change during the test",
+          "value": "the people living in the property change during the test"
         }
       ]
     },
@@ -449,12 +467,18 @@
       "name": "DjwCMK",
       "type": "string",
       "items": [
-        { "text": "email address", "value": "email address" },
-        {
-          "text": "delivery address for the kit",
-          "value": "delivery address for the kit"
+        { 
+          "text": "a valid email address ",
+          "value": "a valid email address "
         },
-        { "text": "payment details", "value": "payment details" }
+        {
+          "text": "a postal delivery address in the UK or Isle of Man",
+          "value": "a postal delivery address in the UK or Isle of Man"
+        },
+        { 
+          "text": "your payment details",
+          "value": "your payment details"
+        }
       ]
     },
     {
