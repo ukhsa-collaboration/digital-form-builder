@@ -392,7 +392,6 @@ export const Schema = joi
     secureFormSubmissionConfig: secureFormSubmissionConfig.optional(),
     addressLookupConfig: addressLookupConfigSchema.optional(),
     error500ContactEmail: joi.string().optional(),
-    addressLookupConfig: addressLookupConfigSchema.optional(),
   });
 
 /**
