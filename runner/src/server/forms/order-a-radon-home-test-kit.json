@@ -14,13 +14,7 @@
           "name": "qwplwo",
           "options": {},
           "type": "Para",
-          "content": "Use this service to order a radon gas test kit for a property in the UK and and the Isle of Man.\n</br></br>\nA test kit costs £52.80, including VAT. (appears later in page)\n</br></br>\nOrdering a kit takes around 5 minutes. It may take up to 10 working days for the kit to be delivered.\n</br></br>\nThe kit contains two detectors. one for the living area and one for the bedroom of a residential property.\n</br></br>\nIt doesn't matter how big the home is or how many rooms there are. The detectors just need to be placed in any regularly used living area and bedroom.\n</br></br>\nOnce your kit arrives, we will send you instructions on how to do the test.\n</br></br>\nAfter you return the kit, you will receive a report showing the radon level at your address and advice on whether you need to take action.\n</br></br>\n<b>Before you start</b>\n</br></br>\nThe test will not be valid if:</br>",
-          "schema": {}
-        },{
-          "name": "ppauyr",
-          "options": {},
-          "type": "Para",
-          "content": "The radon gas test kit measures the level of radon in your property over a period of 3 months. The results show if the radon level is above the Action Level advised by the UK Health Security Agency. If your result is above the Action Level, you should take steps to reduce it.",
+          "content": "Use this service to order a radon gas test kit for a property in the UK and and the Isle of Man.\n</br></br>The radon gas test kit measures the level of radon in your property over a period of 3 months. The results show if the radon level is above the Action Level advised by the UK Health Security Agency. If your result is above the Action Level, you should take steps to reduce it.",
           "schema": {}
         },
         {
@@ -38,6 +32,13 @@
           "schema": {}
         },
         {
+          "name": "ppauyr",
+          "options": {},
+          "type": "Para",
+          "content": "\nOnce your kit arrives, we will send you instructions on how to do the test.\n</br></br>\nAfter you return the kit, you will receive a report showing the radon level at your address and advice on whether you need to take action.\n</br></br>\nA test kit costs £52.80, including VAT.\n</br></br>\n<b>Before you start</b>\n</br></br>\nThe test will not be valid if:</br>",
+          "schema": {}
+        },
+        {
           "name": "VDzNQL",
           "options": {},
           "type": "List",
@@ -51,7 +52,7 @@
           "name": "gkopdo",
           "options": {},
           "type": "Para",
-          "content": "\nThis is because how a home is used can affect radon levels. For example, how often windows and doors are opened, or how the home is heated.\n</br></br>\n<b>Before you start</b>\n</br></br>\nYou'll need your:</br>",
+          "content": "\nThis is because how a home is used can affect radon levels. For example, how often windows and doors are opened, or how the home is heated.\n</br></br>\nYou'll need your:</br>",
           "schema": {}
         },
         {
