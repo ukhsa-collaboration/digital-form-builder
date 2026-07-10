@@ -8,6 +8,7 @@ import { StartPageController } from "./StartPageController";
 import { SummaryPageController } from "./SummaryPageController";
 import { PageControllerBase } from "./PageControllerBase";
 import { RepeatingFieldPageController } from "./RepeatingFieldPageController";
+
 import { MiniSummaryPageController } from "./MiniSummaryPageController";
 import { Page } from "@xgovformbuilder/model";
 import { UploadPageController } from "server/plugins/engine/pageControllers/UploadPageController";
@@ -21,6 +22,7 @@ import { MagicLinkStartPageController } from "./MagicLinkStartPageController";
 import { CustomSummaryPageController } from "./CustomSummaryPageController";
 import { DateComparisonPageController } from "./DateComparisonPageController";
 import { MagicLinkRedirectController } from "./MagicLinkRedirectController";
+import { RepeatedMultiFieldPageController } from "./RepeatedMultiFieldPageController";
 
 const PageControllers = {
   DobPageController,
@@ -31,6 +33,7 @@ const PageControllers = {
   SummaryPageController,
   PageControllerBase,
   RepeatingFieldPageController,
+  RepeatedMultiFieldPageController,
   MiniSummaryPageController,
   UploadPageController,
   MultiStartPageController,

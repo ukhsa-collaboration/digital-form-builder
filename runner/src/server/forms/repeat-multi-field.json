@@ -1,0 +1,217 @@
+{
+  "metadata": {},
+  "startPage": "/start",
+  "fullStartPage": "start",
+  "name": "Contact tracing",
+  "confirmationSessionTimeout": 2000,
+  "pages": [
+    {
+      "title": "Multi field Example walkthrough",
+      "path": "/start",
+      "components": [
+        {
+          "name": "para1",
+          "options": {},
+          "type": "Para",
+          "content": "To help us reduce the spread of bird (avian) flu, it's important for us to know who you live with and who you've been in close contact with.",
+          "schema": {}
+        },
+        {
+          "name": "disease_name",
+          "options": {
+            "allowPrePopulation": true,
+            "allowPrePopulationOverwrite": true,
+            "classes": "govuk-!-display-none",
+            "hideTitle": true,
+            "disableChangingFromSummary": true,
+            "required": false
+          },
+          "type": "TextField",
+          "title": "Disease",
+          "schema": {}
+        }
+      ],
+      "next": [{ "path": "/do-you-live-with-other-people" }],
+      "controller": "./pages/start.js"
+    },
+    {
+      "path": "/do-you-live-with-other-people",
+      "title": "Do you live with other people?",
+      "components": [
+        {
+          "name": "kjpRbq",
+          "options": {},
+          "type": "List",
+          "title": "This includes:",
+          "list": "you_live_with_others",
+          "values": { "type": "listRef" }
+        },
+        {
+          "name": "live_with_others",
+          "options": {
+            "hideTitle": true,
+            "customValidationMessages": {
+              "any.required": "Select 'yes' if you live with other people"
+            }
+          },
+          "type": "YesNoField",
+          "title": "Do you live with other people?",
+          "schema": {}
+        },
+        {
+          "name": "SUlWLU",
+          "options": {},
+          "type": "Details",
+          "title": "Why are we asking for this information?",
+          "content": "We ask this to identify people you live with and may have passed bird (avian) flu on to. This is so we can provide the right guidance to them or someone on their behalf, such as how to get tested and other health advice."
+        }
+      ],
+      "next": [
+        {
+          "path": "/multi-field"
+        }
+      ]
+    },
+    {
+      "path": "/multi-field",
+      "title": "Page 2 - Repeating field with multiple inputs example",
+      "controller": "RepeatedMultiFieldPageController",
+      "options": {
+        "sectionKey": "people_you_live_with",
+        "summaryDisplayMode": {
+          "samePage": false
+        }
+      },
+      "components": [
+        {
+          "name": "first_name",
+          "options": {
+            "customValidationMessages": {
+              "string.pattern.base": "Enter a valid first (given) name"
+            }
+          },
+          "type": "TextField",
+          "title": "Your first (given) name",
+          "schema": {
+            "regex": "(?=.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*)^[\\sA-Za-zÀ-ÖØ-öø-ÿ'\\-,.]*$"
+          }
+        },
+        {
+          "name": "last_name",
+          "options": {
+            "customValidationMessages": {
+              "string.pattern.base": "Enter a valid last (family) name"
+            }
+          },
+          "type": "TextField",
+          "title": "Your last (family) name",
+          "schema": {
+            "regex": "(?=.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*)^[\\sA-Za-zÀ-ÖØ-öø-ÿ'\\-,.]*$"
+          }
+        },
+        {
+          "name": "VnYxYja",
+          "options": {},
+          "type": "Html",
+          "content": "<br/><h2 class='govuk-heading-m'>Date of birth</h2>"
+        },
+        {
+          "name": "date_of_birth",
+          "options": { "hideTitle": true },
+          "type": "DatePartsField",
+          "title": "Your date of birth",
+          "hint": "For example, 27 3 2005"
+        }
+      ],
+      "next": [{ "path": "/last-page" }]
+    },
+    {
+      "title": "Last Page Example",
+      "path": "/last-page",
+      "components": [
+        {
+          "name": "para1",
+          "options": {},
+          "type": "Para",
+          "content": "To help us reduce the spread of bird (avian) flu, it's important for us to know who you live with and who you've been in close contact with.",
+          "schema": {}
+        }
+      ],
+      "next": [{ "path": "/summary" }]
+    },
+    {
+      "path": "/summary",
+      "title": "Check all details before submitting the form",
+      "components": [],
+      "next": [],
+      "controller": "./pages/summary.js"
+    }
+  ],
+  "lists": [
+    {
+      "title": "Start list",
+      "name": "yRnBmv",
+      "type": "string",
+      "items": [
+        {
+          "text": "the name and contact details of people you live with",
+          "value": "the name and contact details of people you live with"
+        },
+        {
+          "text": "the name and contact details of other people you were in close contact with in the last 14 days",
+          "value": "the name and contact details of other people you were in close contact with in the last 14 days"
+        }
+      ]
+    },
+    {
+      "title": "Do you live with other people?",
+      "name": "you_live_with_others",
+      "type": "string",
+      "items": [
+        {
+          "text": "usually live in the same address as you",
+          "value": "usually live in the same address as you"
+        },
+        {
+          "text": "people who have stayed overnight in the last 7 days",
+          "value": "people who have stayed overnight in the last 7 days"
+        },
+        {
+          "text": "you can provide contact details for, or receive communications on behalf of",
+          "value": "you can provide contact details for, or receive communications on behalf of"
+        }
+      ]
+    }
+  ],
+  "sections": [],
+  "conditions": [],
+  "declaration": "<p class=\"govuk-body\">By submitting this form you're confirming that, to the best of your knowledge, the answers you have provided are correct.</p>",
+  "fees": [],
+  "outputs": [
+    {
+      "name": "BsGFLT",
+      "title": "Execute API",
+      "type": "webhook",
+      "outputConfiguration": {
+        "url": "http://host.docker.internal:3000",
+        "allowRetry": true
+      }
+    }
+  ],
+  "version": 2,
+  "skipSummary": false,
+  "feeOptions": {
+    "allowSubmissionWithoutPayment": true,
+    "maxAttempts": 3,
+    "showPaymentSkippedWarningPage": false
+  },
+  "feedback": {},
+  "specialPages": {
+    "confirmationPage": {
+      "customText": {
+        "title": "Form submitted",
+        "referenceTitle": "Your reference number"
+      }
+    }
+  }
+}

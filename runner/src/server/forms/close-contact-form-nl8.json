@@ -244,7 +244,7 @@
     },
     {
       "path": "/person-live-with-1",
-      "title": "Details of a person {{ PersonalInformation.for }} live with",
+      "title": "Details of a person {{ PersonalInformation.for }} live with {{ PersonalInformation.first_name }},",
       "components": [
         {
           "name": "iulooA",
