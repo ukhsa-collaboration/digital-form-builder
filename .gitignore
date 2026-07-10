@@ -8,6 +8,7 @@ unit-test.html
 package-lock.json
 /.yarn/cache/
 */.env
+.env.local
 */test-results/*
 */test-coverage/*
 /runner/tmp.pdf

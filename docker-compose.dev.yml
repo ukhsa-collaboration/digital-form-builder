@@ -28,13 +28,13 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
     environment:
-      - SESSION_COOKIE_PASSWORD=604c565d2037e89c5fc3ed6bb20343148ccd2e5aa1abb93d
       # Forms can reference ${VAR_NAME} placeholders (e.g. addressLookupConfig in
       # order-a-radon-risk-report.json). In development these are resolved from
       # environment variables of the same name by resolvePlaceholders.ts.
-      - RPS_API_BASE_URL=http://localhost
-      - RPS_TENANT_ID=test
-      - RPS_CLIENT_ID=test-client
-      - RPS_CLIENT_SECRET=test-secret
-      - RPS_SCOPES=test-scope
-      - WEBHOOK_OUTPUT_URL=http://host.docker.internal:3000/h/xdaq71jj
+      - SESSION_COOKIE_PASSWORD
+      - RPS_API_BASE_URL
+      - RPS_TENANT_ID
+      - RPS_CLIENT_ID
+      - RPS_CLIENT_SECRET
+      - RPS_SCOPES
+      - WEBHOOK_OUTPUT_URL

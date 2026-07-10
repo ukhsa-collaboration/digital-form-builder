@@ -2,8 +2,12 @@ import { PageControllerBase } from "./PageControllerBase";
 import { FormModel } from "../models";
 import { HapiRequest, HapiResponseToolkit } from "server/types";
 import Joi from "joi";
+import {
+  addressTypeSchema,
+  AddressType,
+  formatAddress,
+} from "../utils/addressUtils";
 
-type AddressType = "reportAddress" | "deliveryAddress";
 type SelectedFieldName = "selectedReportAddress" | "selectedDeliveryAddress";
 
 type FormSubmission = {
@@ -18,7 +22,7 @@ const COMPONENT_ADDRESSES_HEADING = "addressesFoundHeading";
 const COMPONENT_MATCHED_ADDRESS_DISPLAY = "matchedAddressDisplay";
 
 const formSchema = Joi.object({
-  addressType: Joi.string().valid("reportAddress", "deliveryAddress"),
+  addressType: addressTypeSchema,
   selectedReportAddress: Joi.string().allow(""),
   selectedDeliveryAddress: Joi.string().allow(""),
 }).unknown(true);
@@ -27,10 +31,6 @@ function deriveSelectedFieldName(addressType: AddressType): SelectedFieldName {
   return addressType === "deliveryAddress"
     ? "selectedDeliveryAddress"
     : "selectedReportAddress";
-}
-
-function formatAddress(addr: { address: string; postcode?: string }): string {
-  return addr.postcode ? `${addr.address}, ${addr.postcode}` : addr.address;
 }
 
 /**

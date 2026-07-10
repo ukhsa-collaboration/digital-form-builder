@@ -1,63 +1,63 @@
 import { PageControllerBase } from "./PageControllerBase";
 import { HapiRequest, HapiResponseToolkit } from "server/types";
-import {
-  Address,
-  AddressLookupService,
-} from "../../../services/addressLookupService";
+import { AddressLookupService } from "../../../services/addressLookupService";
 import { getLocationServiceInstanceName } from "../helpers";
-import { Item } from "@xgovformbuilder/model/dist/module/data-model/types";
 import Joi from "joi";
+import {
+  addressTypeSchema,
+  addressesToList,
+  AddressType,
+} from "../utils/addressUtils";
+
+const STREET_NUMBER_PATTERN = /(^|, )(\d+[A-Z]?([-\/]\d+)?[A-Z]?),/i;
 
 const findMatchingAddress = (
   addresses: any[],
   building?: string,
   addressLine1?: string
 ): any | null => {
-  if (building) {
-    const normalized = building.trim().toUpperCase();
-    const match = addresses.find((address: any) => {
-      const firstPart = address.address.split(",")[0].trim().toUpperCase();
-      return (
-        firstPart.replace(/\s/g, "") === normalized.replace(/\s/g, "") ||
-        firstPart.startsWith(normalized + " ")
-      );
-    });
-    if (match) return match;
-  }
+  const normalizedBuilding = building?.trim().toUpperCase();
+  const addressLine1Pattern = addressLine1
+    ? new RegExp(`^${addressLine1.trim().toUpperCase()}( |,)`)
+    : null;
 
-  if (addressLine1) {
-    const pattern = new RegExp(`^${addressLine1.trim().toUpperCase()}( |,)`);
-    return (
-      addresses.find((address: any) =>
-        pattern.test(address.address.toUpperCase())
-      ) ?? null
-    );
+  for (const address of addresses) {
+    const firstPart = address.address.split(",")[0].trim().toUpperCase();
+
+    if (normalizedBuilding) {
+      if (
+        firstPart.replace(/\s/g, "") ===
+          normalizedBuilding.replace(/\s/g, "") ||
+        firstPart.startsWith(normalizedBuilding + " ")
+      ) {
+        return address;
+      }
+    }
+
+    if (
+      addressLine1Pattern &&
+      addressLine1Pattern.test(address.address.toUpperCase())
+    ) {
+      return address;
+    }
   }
 
   return null;
 };
 
 const cleanAddresses = (addresses: any[]): any[] => {
-  const streetNumberPattern = /(^|, )(\d+[A-Z]?([-\/]\d+)?[A-Z]?),/i;
   return addresses.map((address) => ({
     ...address,
-    address: address.address.replace(streetNumberPattern, "$1$2"),
-  }));
-};
-
-const addressesToList = (addresses: Address[]): Item[] => {
-  return addresses.map((address) => ({
-    text: address.address,
-    value: address.uprn,
+    address: address.address.replace(STREET_NUMBER_PATTERN, "$1$2"),
   }));
 };
 
 const formSchema = Joi.object({
-  addressType: Joi.string().valid("reportAddress", "deliveryAddress"),
+  addressType: addressTypeSchema,
 }).unknown(true);
 
 type FormSubmission = {
-  addressType: "reportAddress" | "deliveryAddress";
+  addressType: AddressType;
   [x: string]: string;
 };
 
@@ -88,10 +88,6 @@ export class FindAnAddressPageController extends PageControllerBase {
       const validation = this.validate<FormSubmission>(payload, formSchema);
 
       if (validation.errors) {
-        console.log(
-          "validation errors:",
-          JSON.stringify(validation.errors, null, 2)
-        );
         return response;
       }
 
@@ -105,7 +101,6 @@ export class FindAnAddressPageController extends PageControllerBase {
       const config = this.model.def?.addressLookupConfig;
 
       if (typeof config === "undefined") {
-        console.log("No config for address lookup error");
         return response;
       }
 
@@ -155,8 +150,6 @@ export class FindAnAddressPageController extends PageControllerBase {
         }),
         [`${addressType}_isCorrectAddress`]: null,
       });
-
-      console.log("savedState:", JSON.stringify(savedState, null, 2));
 
       // Navigate to the next page
       return this.proceed(request, h, { ...savedState });

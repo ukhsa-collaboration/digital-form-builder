@@ -176,11 +176,12 @@ export class SummaryViewModel {
           // Snapshot all items before iterating so rule order doesn't affect
           // which `when` conditions are evaluated.
           const allItems = transformed.flatMap((d: any) => d.items);
+          const itemsByName = new Map(
+            allItems.map((item: any) => [item.name, item])
+          );
 
           for (const rule of summaryConfig.conditionalRows) {
-            const match = allItems.find(
-              (item: any) => item.name === rule.when.field
-            );
+            const match = itemsByName.get(rule.when.field);
 
             const conditionMatches =
               rule.when.isEmpty === true

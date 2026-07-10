@@ -1,5 +1,10 @@
 import config from "../config";
 import pino from "hapi-pino";
+
+const logFilter = config.isDev
+  ? (request: any) => !request.path.startsWith("/assets")
+  : false;
+
 export default {
   plugin: pino,
   options: {
@@ -12,12 +17,8 @@ export default {
       },
     },
     debug: config.isDev,
-    logRequestStart: config.isDev
-      ? (request) => !request.path.startsWith("/assets")
-      : false,
-    logRequestComplete: config.isDev
-      ? (request) => !request.path.startsWith("/assets")
-      : false,
+    logRequestStart: logFilter,
+    logRequestComplete: logFilter,
     redact: {
       paths: config.logRedactPaths,
       censor: "REDACTED",
