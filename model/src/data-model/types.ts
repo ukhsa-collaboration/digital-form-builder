@@ -132,6 +132,7 @@ export type ConfirmationPage = {
     title: string;
     paymentSkipped: Toggleable<string>;
     nextSteps: Toggleable<string>;
+    generatedReferenceContent: string;
     referenceTitle: string;
     referenceContent: string;
     hidePanel?: boolean;
@@ -313,4 +314,5 @@ export type FormDefinition = {
   addressLookupConfig?: AddressLookupConfig;
   error500ContactEmail?: string | undefined;
   summaryConfig?: SummaryConfig;
+  generateReference?: boolean | undefined;
 };

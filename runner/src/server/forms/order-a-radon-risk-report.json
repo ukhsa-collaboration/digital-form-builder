@@ -789,6 +789,39 @@
       "next": []
     }
   ],
+  "specialPages": {
+    "confirmationPage": {
+      "customText": {
+        "title": "Risk report ready",
+        "nextSteps": false,
+        "generatedReferenceContent": "Your order number is",
+        "hidePanel": false
+      },
+      "components": [
+        {
+          "name": "introEmail",
+          "type": "Para",
+          "options": {
+            "condition": "isEmailDelivery"
+          },
+          "content": "<p class=\"govuk-body-m\">Your radon risk report has been sent to {{ emailAddress }}</p>"
+        },
+        {
+          "name": "introEmail",
+          "type": "Para",
+          "options": {
+            "condition": "isPostDelivery"
+          },
+          "content": "<p class=\"govuk-body-m\">Your radon risk report will be sent to {{ deliveryAddress_matchedAddress.address }} within 3 to 6 working days.</p>"
+        },
+        {
+          "name": "final links",
+          "type": "Para",
+          "content": "<p class=\"govuk-body-m\"><a href=\"https://www.gov.uk/health-protection-team\" target=”_blank”>What did you think of this service?</a> (takes 30 seconds)</p></br><p class=\"govuk-body-m\"><a href=\"https://www.gov.uk/health-protection-team\" target=”_blank”>Go to Radon services for homeowners or householders</a></p>"
+        }
+      ]
+    }
+  },
   "lists": [
     {
       "title": "How would you like to receive your report?",
@@ -1032,6 +1065,7 @@
       }
     ]
   },
+  "generateReference": true,
   "fees": [],
   "outputs": [
     {

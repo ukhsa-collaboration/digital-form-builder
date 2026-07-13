@@ -414,6 +414,21 @@ export class SummaryViewModel {
     });
   }
 
+  addReferenceToWebhook(reference: string) {
+    this._webhookData?.questions?.push({
+      category: null,
+      question: "Reference",
+      fields: [
+        {
+          key: "reference",
+          title: "Reference",
+          type: "string",
+          answer: reference,
+        },
+      ],
+    });
+  }
+
   private addFeedbackSourceDataToWebhook(
     webhookData,
     model: FormModel,

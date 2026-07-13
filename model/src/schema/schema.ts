@@ -157,6 +157,7 @@ const confirmationPageSchema = joi.object({
       nextSteps: toggleableString.default(
         "You will receive an email with details with the next steps."
       ),
+      generatedReferenceContent: joi.string().optional(),
       referenceTitle: joi.string(),
       referenceContent: joi.string(),
       hidePanel: joi.boolean().optional(),
@@ -456,6 +457,7 @@ export const Schema = joi
     addressLookupConfig: addressLookupConfigSchema.optional(),
     error500ContactEmail: joi.string().optional(),
     summaryConfig: summaryConfigSchema.optional(),
+    generateReference: joi.boolean().optional(),
   });
 
 /**
