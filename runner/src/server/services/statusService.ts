@@ -185,9 +185,14 @@ export class StatusService {
     const firstWebhook = outputs?.find((output) => output.type === "webhook");
     const otherOutputs = outputs?.filter((output) => output !== firstWebhook);
     if (firstWebhook) {
+      const payload = this.resolvePayload(
+        firstWebhook.outputData.payload,
+        formData,
+        state
+      );
       newReference = await this.webhookService.postRequest(
         firstWebhook.outputData.url,
-        { ...formData },
+        { ...formData, ...payload },
         "POST",
         firstWebhook.outputData.sendAdditionalPayMetadata,
         customSecurityHeaders
@@ -227,6 +232,14 @@ export class StatusService {
     };
   }
 
+  resolvePayload(payload: Record<string, string>, formData, state) {
+    return Object.fromEntries(
+      Object.entries(payload).map(([key, value]) => {
+        const resolved = formData[value] ?? state[value] ?? value;
+        return [key, resolved];
+      })
+    );
+  }
   /**
    * Appends `{paymentSkipped: true}` to the `metadata` property and drops the `fees` property if the user has chosen to skip payment
    */

@@ -266,6 +266,7 @@ const webhookSchema = joi.object().keys({
   url: joi.string(),
   sendAdditionalPayMetadata: joi.boolean().optional().default(false),
   allowRetry: joi.boolean().default(true),
+  payload: joi.object().unknown(true).optional(),
 });
 
 const outputSchema = joi.object().keys({
