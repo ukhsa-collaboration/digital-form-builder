@@ -11,7 +11,7 @@
       "backLinkFallback": "https://www.ukhsa-protectionservices.org.uk/",
       "components": [
         {
-          "name": "qwplwo",
+          "name": "serviceExplanation",
           "options": {},
           "type": "Para",
           "content": "Use this service to order a radon gas test kit for a property in the UK and and the Isle of Man.\n</br></br>The radon gas test kit measures the level of radon in your property over a period of 3 months. The results show if the radon level is above the Action Level advised by the UK Health Security Agency. If your result is above the Action Level, you should take steps to reduce it.",
@@ -25,43 +25,43 @@
           "schema": {}
         },
         {
-          "name": "lbbcld",
+          "name": "smokingRisk",
           "options": {},
           "type":"InsetText",
           "content":" If you or anyone living in your home is a current or ex-smoker, the risk to health is greater. In this case, the Action Level is lower, at 100 Bq m-3.",
           "schema": {}
         },
         {
-          "name": "ppauyr",
+          "name": "sendingAndReturningExplanation",
           "options": {},
           "type": "Para",
           "content": "\nOnce your kit arrives, we will send you instructions on how to do the test.\n</br></br>\nAfter you return the kit, you will receive a report showing the radon level at your address and advice on whether you need to take action.\n</br></br>\nA test kit costs £52.80, including VAT.\n</br></br>\n<b>Before you start</b>\n</br></br>\nThe test will not be valid if:</br>",
           "schema": {}
         },
         {
-          "name": "VDzNQL",
+          "name": "invalidListDisplay",
           "options": {},
           "type": "List",
           "hint": "",
-          "list": "wnGWzk",
+          "list": "invalidIfList",
           "title": "The test will not be valid if",
           "values": { "type": "listRef" },
           "schema": {}
         },
         {
-          "name": "gkopdo",
+          "name": "homeUseAffectsRadon",
           "options": {},
           "type": "Para",
           "content": "\nThis is because how a home is used can affect radon levels. For example, how often windows and doors are opened, or how the home is heated.\n</br></br>\nYou'll need your:</br>",
           "schema": {}
         },
         {
-          "name": "xOxwdQ",
+          "name": "whatYouWillNeedList",
           "options": {},
           "type": "List",
           "hint": "",
           "title": "You'll need your:",
-          "list": "DjwCMK",
+          "list": "youllNeedYourList",
           "schema": {}
         }
       ],
@@ -446,7 +446,7 @@
   "lists": [
     {
       "title": "The test will not be valid if:",
-      "name": "wnGWzk",
+      "name": "invalidIfList",
       "type": "string",
       "items": [
         {
@@ -465,7 +465,7 @@
     },
     {
       "title": "You'll need your:",
-      "name": "DjwCMK",
+      "name": "youllNeedYourList",
       "type": "string",
       "items": [
         { 
