@@ -7,46 +7,65 @@
   "pages": [
     {
       "path": "/test-kit-start",
-      "title": "Order a radon home test kit",
+      "title": "Order a home radon gas test kit",
       "backLinkFallback": "https://www.ukhsa-protectionservices.org.uk/",
       "components": [
         {
-          "name": "qwplwo",
+          "name": "serviceExplanation",
           "options": {},
           "type": "Para",
-          "content": "Use this service to order a radon gas test kit for your home.\n</br></br>\nThis service costs £52.80 including VAT.\n</br></br>\nOrdering a kit takes around 5 minutes. It may take up to 10 working days after you order for the kit to be sent.\n</br></br>\nThe kit contains two detectors. one for the living area and one for the bedroom of a residential property.\n</br></br>\nIt doesn't matter how big the home is or how many rooms there are. The detectors just need to be placed in any regularly used living area and bedroom.\n</br></br>\nOnce your kit arrives, we'll send you instructions on how to carry out the test.\n</br></br>\nYou'll get the results and advice on what to do next within 20 working days after you return the kit.\n</br></br>\n<b>Important information before you continue</b>\n</br></br>\nThe test will not be valid if:</br>",
+          "content": "Use this service to order a radon gas test kit for a property in the UK and and the Isle of Man.\n</br></br>The radon gas test kit measures the level of radon in your property over a period of 3 months. The results show if the radon level is above the Action Level advised by the UK Health Security Agency. If your result is above the Action Level, you should take steps to reduce it.",
           "schema": {}
         },
         {
-          "name": "VDzNQL",
+          "name": "tqtivv",
+          "options": {},
+          "type": "InsetText",
+          "content": "The Action Level for radon in homes is 200 becquerels per cubic metre (Bq m-3). A becquerel is a measure of radioactivity. If the radon level in your property is higher than this, you should take steps to reduce it.",
+          "schema": {}
+        },
+        {
+          "name": "smokingRisk",
+          "options": {},
+          "type": "InsetText",
+          "content": " If you or anyone living in your home is a current or ex-smoker, the risk to health is greater. In this case, the Action Level is lower, at 100 Bq m-3.",
+          "schema": {}
+        },
+        {
+          "name": "sendingAndReturningExplanation",
+          "options": {},
+          "type": "Para",
+          "content": "\nOnce your kit arrives, we will send you instructions on how to do the test.\n</br></br>\nAfter you return the kit, you will receive a report showing the radon level at your address and advice on whether you need to take action.\n</br></br>\nA test kit costs £52.80, including VAT.\n</br></br>\n<b>Before you start</b>\n</br></br>\nThe test will not be valid if:</br>",
+          "schema": {}
+        },
+        {
+          "name": "invalidListDisplay",
           "options": {},
           "type": "List",
           "hint": "",
-          "list": "wnGWzk",
+          "list": "invalidIfList",
           "title": "The test will not be valid if",
           "values": { "type": "listRef" },
           "schema": {}
         },
         {
-          "name": "gkopdo",
+          "name": "homeUseAffectsRadon",
           "options": {},
           "type": "Para",
-          "content": "\nThis is because the way people live in a home can affect the radon level. For example. how often they open windows and doors, or how they heat the house.\n</br></br>\n<b>Before you start</b>\n</br></br>\nYou'll need your:</br>",
+          "content": "\nThis is because how a home is used can affect radon levels. For example, how often windows and doors are opened, or how the home is heated.\n</br></br>\nYou'll need your:</br>",
           "schema": {}
         },
         {
-          "name": "xOxwdQ",
+          "name": "whatYouWillNeedList",
           "options": {},
           "type": "List",
           "hint": "",
           "title": "You'll need your:",
-          "list": "DjwCMK",
+          "list": "youllNeedYourList",
           "schema": {}
         }
       ],
-      "next": [
-        { "path": "/measurement-address-postcode" }
-      ],
+      "next": [{ "path": "/measurement-address-postcode" }],
       "controller": "./pages/start.js"
     },
     {
@@ -68,7 +87,7 @@
               "case": "upper"
             }
           },
-          "schema": { 
+          "schema": {
             "max": 10,
             "regex": "^[\\s]*[A-z]{1,2}[0-9][A-z0-9]?[\\s]*[0-9]{1,2}[ABD-hJLNP-uW-z]{2}[\\s]*$"
           },
@@ -182,7 +201,11 @@
           "content": "<br><a href=\"enter-report-address\">Enter address manually</a>"
         }
       ],
-      "next": [{ "path": "/have-you-tested-this-address-before-using-a-gas-test-kit-purchased-from-us" }]
+      "next": [
+        {
+          "path": "/have-you-tested-this-address-before-using-a-gas-test-kit-purchased-from-us"
+        }
+      ]
     },
     {
       "path": "/no-addresses-found",
@@ -201,9 +224,7 @@
           "content": "<p class=\"govuk-body-m\"><a href=\"order-risk-report-find-an-address\">Change your search</a> or <a href=\"enter-report-address\">enter address manually</a></p>"
         }
       ],
-      "next": [
-        { "path": "/order-risk-report-find-an-address" }
-      ]
+      "next": [{ "path": "/order-risk-report-find-an-address" }]
     },
     {
       "path": "/enter-report-address",
@@ -264,7 +285,7 @@
               "case": "upper"
             }
           },
-          "schema": { 
+          "schema": {
             "max": 10,
             "regex": "^[\\s]*[A-z]{1,2}[0-9][A-z0-9]?[\\s]*[0-9]{1,2}[ABD-hJLNP-uW-z]{2}[\\s]*$"
           },
@@ -303,11 +324,9 @@
           "content": "<p class=\"govuk-body-m\"><a href=\"order-risk-report-find-an-address\">Change your search</a> or <a href=\"enter-report-address\">enter address manually</a></p>"
         }
       ],
-      "next": [ 
-        { "path": "/enter-report-address" }
-      ]
+      "next": [{ "path": "/enter-report-address" }]
     },
-{
+    {
       "path": "/have-you-tested-this-address-before-using-a-gas-test-kit-purchased-from-us",
       "title": "Have you tested this address before using a gas test kit purchased from us?",
       "components": [
@@ -341,7 +360,7 @@
       "components": [
         {
           "name": "vLGkYq",
-         "options": {
+          "options": {
             "customValidationMessages": {
               "any.required": "Select yes if the level was above the action level of 200 Bq m⁻³"
             }
@@ -414,7 +433,7 @@
       "path": "/enter-your-personal-details-placeholder",
       "title": "Enter your personal details placeholder",
       "components": [],
-      "next": [{"path": "/summary"}]
+      "next": [{ "path": "/summary" }]
     },
     {
       "title": "Summary",
@@ -427,36 +446,40 @@
   "lists": [
     {
       "title": "The test will not be valid if:",
-      "name": "wnGWzk",
+      "name": "invalidIfList",
       "type": "string",
       "items": [
         {
-          "text": "there's building work going on that changes the structure of the property such as a kitchen fitting or room refurbishment",
-          "description": "",
-          "value": "there's building work going on that changes the structure of the property such as a kitchen fitting or room refurbishment"
+          "text": "any building work is planned during the testing period that disrupts normal living conditions, or changes the way air moves through the property",
+          "value": "any building work is planned during the testing period that disrupts normal living conditions, or changes the way air moves through the property"
         },
         {
-          "description": "",
-          "text": "the property is empty for more than two weeks of the test",
-          "value": "the property is empty for more than two weeks of the test"
+          "text": "the property is empty for more than 2 weeks during the test",
+          "value": "the property is empty for more than 2 weeks during the test"
         },
         {
-          "text": "the people living there change during the test",
-          "value": "the people living there change during the test"
+          "text": "the people living in the property change during the test",
+          "value": "the people living in the property change during the test"
         }
       ]
     },
     {
       "title": "You'll need your:",
-      "name": "DjwCMK",
+      "name": "youllNeedYourList",
       "type": "string",
       "items": [
-        { "text": "email address", "value": "email address" },
         {
-          "text": "delivery address for the kit",
-          "value": "delivery address for the kit"
+          "text": "a valid email address ",
+          "value": "a valid email address "
         },
-        { "text": "payment details", "value": "payment details" }
+        {
+          "text": "a postal delivery address in the UK or Isle of Man",
+          "value": "a postal delivery address in the UK or Isle of Man"
+        },
+        {
+          "text": "your payment details",
+          "value": "your payment details"
+        }
       ]
     },
     {
@@ -522,7 +545,7 @@
         ]
       }
     },
-{
+    {
       "displayName": "HasTested",
       "name": "jCTvKA",
       "value": {
@@ -651,11 +674,11 @@
     "url": ""
   },
   "addressLookupConfig": {
-    "apimBaseUrl": "${RPSapimBaseUrl}",
+    "apimBaseUrl": "${RPS_API_BASE_URL}",
     "callingApplication": "RPS",
-    "tenantId": "${RPStenantID}",
-    "clientId": "${RPSclientID}",
-    "clientSecret": "${RPSclientSecret}",
-    "scopes": ["${RPSscopes}"]
+    "tenantId": "${RPS_TENANT_ID}",
+    "clientId": "${RPS_CLIENT_ID}",
+    "clientSecret": "${RPS_CLIENT_SECRET}",
+    "scopes": ["${RPS_SCOPES}"]
   }
 }

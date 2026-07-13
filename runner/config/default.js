@@ -135,6 +135,14 @@ module.exports = {
   safelist: ["61bca17e-fe74-40e0-9c15-a901ad120eca.mock.pstmn.io"],
 
   /**
+   * Local development mocking
+   * When enabled, an in-process msw server intercepts outbound HTTP calls that
+   * match a handler in server/mocks/handlers, for local development only.
+   * This is blocked from being enabled when env is "production" (see configSchema.ts).
+   */
+  enableMockApi: false,
+
+  /**
    * Failure queue
    */
   enableQueueService: false,

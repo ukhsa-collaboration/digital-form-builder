@@ -25,5 +25,15 @@ services:
       - /usr/src/app/runner/dist
       - ./runner:/usr/src/app/runner
     command: yarn runner dev
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     environment:
-      - SESSION_COOKIE_PASSWORD=604c565d2037e89c5fc3ed6bb20343148ccd2e5aa1abb93d
+      # Forms can reference ${VAR_NAME} placeholders (e.g. addressLookupConfig in
+      # order-a-radon-risk-report.json). In development these are resolved from
+      # environment variables of the same name by resolvePlaceholders.ts.
+      - SESSION_COOKIE_PASSWORD
+      - RPS_API_BASE_URL
+      - RPS_TENANT_ID
+      - RPS_CLIENT_ID
+      - RPS_CLIENT_SECRET
+      - RPS_SCOPES

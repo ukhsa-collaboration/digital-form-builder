@@ -273,10 +273,20 @@
           "content": "<p class=\"govuk-body-m\">The <b>{{service}}</b> team will review your enquiry and aim to respond within 5 days. If your enquiry is urgent, please <a href=\"https://www.gov.uk/health-protection-team\" target=”_blank”>call us</a></p>"
         },
         {
-          "name": "table",
+          "name": "tableService",
           "type": "Para",
-          "options": {},
+          "options": {
+            "condition": "ojQCvt"
+          },
           "content": "<table class=\"govuk-table\"><caption class=\"govuk-table__caption govuk-table__caption--m\">Your enquiry details</caption><tbody class=\"govuk-table__body\"><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\">First name</th><td class=\"govuk-table__cell\">{{ firstname }}</td></tr><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\">Last Name</th><td class=\"govuk-table__cell\">{{ lastname }}</td></tr><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\">Organisation</th><td class=\"govuk-table__cell\">{{ organisation }}</td></tr><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\">Email</th><td class=\"govuk-table__cell\">{{ email }}</td></tr><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\">Category</th><td class=\"govuk-table__cell\">{{ supportType }}</td></tr><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\">Service</th><td class=\"govuk-table__cell\">{{ service }}</td></tr><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\">Request information</th><td class=\"govuk-table__cell\">{{ requestInformation }}</td></tr></tbody></table>"
+        },
+        {
+          "name": "tableNoService",
+          "type": "Para",
+          "options": {
+            "condition": "tvCQjo"
+          },
+          "content": "<table class=\"govuk-table\"><caption class=\"govuk-table__caption govuk-table__caption--m\">Your enquiry details</caption><tbody class=\"govuk-table__body\"><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\">First name</th><td class=\"govuk-table__cell\">{{ firstname }}</td></tr><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\">Last Name</th><td class=\"govuk-table__cell\">{{ lastname }}</td></tr><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\">Organisation</th><td class=\"govuk-table__cell\">{{ organisation }}</td></tr><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\">Email</th><td class=\"govuk-table__cell\">{{ email }}</td></tr><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\">Category</th><td class=\"govuk-table__cell\">{{ supportType }}</td></tr><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\">Request information</th><td class=\"govuk-table__cell\">{{ requestInformation }}</td></tr></tbody></table>"
         },
         {
           "name": "final links",
@@ -294,32 +304,32 @@
       "items": [
         {
           "text": "I need radiation measurements, testing, or dosimetry",
-          "value": "testing",
+          "value": "I need radiation measurements, testing, or dosimetry",
           "description": "Including personal dose monitoring, instrument calibration, dental X-ray equipment testing, laboratory analysis, radon measurement, chromosome dosimetry, or whole body monitoring"
         },
         {
           "text": "I work with radiation and need compliance or safety advice",
-          "value": "compliance",
+          "value": "I work with radiation and need compliance or safety advice",
           "description": "Including Radiation Protection Advisor support, dangerous goods, non-ionising radiation, medical exposures, dental or environmental radiological assessments"
         },
         {
           "text": "I want to enquire about training courses and facilities, or an existing course booking",
-          "value": "training",
+          "value": "I want to enquire about training courses and facilities, or an existing course booking",
           "description": "Including workplace radiation safety, specialist professional training, emergency preparedness, laser safety, non-ionising radiation courses, or hiring our training facilities"
         },
         {
           "text": "I need help with a software product or tool",
-          "value": "software",
+          "value": "I need help with a software product or tool",
           "description": "Including PACE, PC-CREAM, Taurus, IMBA, or other dosimetry and radiological impact assessment software"
         },
         {
-          "text": "I'm interested in research, collaboration, or specialist consultancy",
-          "value": "research",
+          "text": "I’m interested in research, collaboration, or specialist consultancy",
+          "value": "I’m interested in research, collaboration, or specialist consultancy",
           "description": "Including radiation effects research, medical dosimetry, emergency preparedness, and working with UKHSA"
         },
         {
-          "text": "I'm not sure, or my enquiry doesn't fit the above",
-          "value": "General",
+          "text": "I’m not sure, or my enquiry doesn’t fit the above",
+          "value": "I’m not sure, or my enquiry doesn’t fit the above",
           "description": "If your enquiry does not fit any of the above, tell us in more detail in the next step"
         }
       ]
@@ -487,7 +497,7 @@
         },
         {
           "text": "Taurus and IMBA Internal Dosimetry Software",
-          "value": "Taurus and IMBA Internal Dosimetry Softwar",
+          "value": "Taurus and IMBA Internal Dosimetry Software",
           "description": "Software for calculating internal radiation doses from intakes of radionuclides"
         },
         {
@@ -552,8 +562,8 @@
             "operator": "is",
             "value": {
               "type": "Value",
-              "value": "testing",
-              "display": "testing"
+              "value": "I need radiation measurements, testing, or dosimetry",
+              "display": "I need radiation measurements, testing, or dosimetry"
             }
           }
         ]
@@ -574,8 +584,8 @@
             "operator": "is",
             "value": {
               "type": "Value",
-              "value": "compliance",
-              "display": "compliance"
+              "value": "I work with radiation and need compliance or safety advice",
+              "display": "I work with radiation and need compliance or safety advice"
             }
           }
         ]
@@ -596,8 +606,8 @@
             "operator": "is",
             "value": {
               "type": "Value",
-              "value": "training",
-              "display": "training"
+              "value": "I want to enquire about training courses and facilities, or an existing course booking",
+              "display": "I want to enquire about training courses and facilities, or an existing course booking"
             }
           }
         ]
@@ -618,8 +628,8 @@
             "operator": "is",
             "value": {
               "type": "Value",
-              "value": "software",
-              "display": "software"
+              "value": "I need help with a software product or tool",
+              "display": "I need help with a software product or tool"
             }
           }
         ]
@@ -640,8 +650,8 @@
             "operator": "is",
             "value": {
               "type": "Value",
-              "value": "research",
-              "display": "research"
+              "value": "I’m interested in research, collaboration, or specialist consultancy",
+              "display": "I’m interested in research, collaboration, or specialist consultancy"
             }
           }
         ]
@@ -662,8 +672,8 @@
             "operator": "is",
             "value": {
               "type": "Value",
-              "value": "General",
-              "display": "General"
+              "value": "I’m not sure, or my enquiry doesn’t fit the above",
+              "display": "I’m not sure, or my enquiry doesn’t fit the above"
             }
           }
         ]
@@ -682,7 +692,11 @@
               "display": "type"
             },
             "operator": "is not",
-            "value": { "type": "Value", "value": "General", "display": "General" }
+            "value": {
+              "type": "Value",
+              "value": "I’m not sure, or my enquiry doesn’t fit the above",
+              "display": "I’m not sure, or my enquiry doesn’t fit the above"
+            }
           },
           {
             "coordinator": "and",
@@ -692,6 +706,42 @@
               "display": "service"
             },
             "operator": "is not",
+            "value": {
+              "type": "Value",
+              "value": "General",
+              "display": "General"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "displayName": "noService",
+      "name": "tvCQjo",
+      "value": {
+        "name": "noService",
+        "conditions": [
+          {
+            "field": {
+              "name": "supportType",
+              "type": "RadiosField",
+              "display": "type"
+            },
+            "operator": "is",
+            "value": {
+              "type": "Value",
+              "value": "I’m not sure, or my enquiry doesn’t fit the above",
+              "display": "I’m not sure, or my enquiry doesn’t fit the above"
+            }
+          },
+          {
+            "coordinator": "or",
+            "field": {
+              "name": "service",
+              "type": "RadiosField",
+              "display": "service"
+            },
+            "operator": "is",
             "value": {
               "type": "Value",
               "value": "General",

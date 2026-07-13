@@ -1,139 +1,162 @@
 import { PageControllerBase } from "./PageControllerBase";
 import { HapiRequest, HapiResponseToolkit } from "server/types";
-import { Address, AddressLookupService } from "../../../services/addressLookupService";
-import { getLocationServiceInstanceName, idFromFilename } from "../helpers";
-import Boom from "boom";
-import { List, Item } from "@xgovformbuilder/model/dist/module/data-model/types";
+import { AddressLookupService } from "../../../services/addressLookupService";
+import { getLocationServiceInstanceName } from "../helpers";
+import Joi from "joi";
+import {
+  addressTypeSchema,
+  addressesToList,
+  AddressType,
+  deriveSelectedFieldName,
+} from "../utils/addressUtils";
+
+const STREET_NUMBER_PATTERN = /(^|, )(\d+[A-Z]?([-\/]\d+)?[A-Z]?),/i;
+
+const findMatchingAddress = (
+  addresses: any[],
+  building?: string,
+  addressLine1?: string
+): any | null => {
+  const normalizedBuilding = building?.trim().toUpperCase();
+  const addressLine1Pattern = addressLine1
+    ? new RegExp(`^${addressLine1.trim().toUpperCase()}( |,)`)
+    : null;
+
+  for (const address of addresses) {
+    const firstPart = address.address.split(",")[0].trim().toUpperCase();
+
+    if (normalizedBuilding) {
+      if (
+        firstPart.replace(/\s/g, "") ===
+          normalizedBuilding.replace(/\s/g, "") ||
+        firstPart.startsWith(normalizedBuilding + " ")
+      ) {
+        return address;
+      }
+    }
+
+    if (
+      addressLine1Pattern &&
+      addressLine1Pattern.test(address.address.toUpperCase())
+    ) {
+      return address;
+    }
+  }
+
+  return null;
+};
+
+const cleanAddresses = (addresses: any[]): any[] => {
+  return addresses.map((address) => ({
+    ...address,
+    address: address.address.replace(STREET_NUMBER_PATTERN, "$1$2"),
+  }));
+};
+
+const formSchema = Joi.object({
+  addressType: addressTypeSchema,
+}).unknown(true);
+
+type FormSubmission = {
+  addressType: AddressType;
+  [x: string]: string;
+};
+
+const extractInputFromSubmission = (data: FormSubmission) => {
+  const { addressType, ...rest } = data;
+
+  return {
+    addressType,
+    postcodeLookup: rest[`${addressType}_postcodeLookup`],
+    addressLine1Lookup: rest[`${addressType}_addressLine1Lookup`],
+    buildingLookup: rest[`${addressType}_buildingLookup`],
+  };
+};
+
 export class FindAnAddressPageController extends PageControllerBase {
   makePostRouteHandler() {
     return async (request: HapiRequest, h: HapiResponseToolkit) => {
       const response = await this.handlePostRequest(request, h);
-      console.log("=== FindAnAddress POST ===");
-      console.log("Payload:", request.payload);
-      if (response) {
-        console.log("Response exists. Status:", response.statusCode);
-        if (response.source && response.source.context) {
-          console.log("Response errors:", response.source.context.errors);
-        }
+
+      const payload = (request.payload || {}) as FormData;
+
+      const formResult = this.validateForm(payload);
+
+      if (formResult.errors) {
         return response;
       }
 
-      const model = this.model;
-      const config = model?.def?.addressLookupConfig;
-      if (typeof config === 'undefined') {
-        console.log("No config for address lookup error");
+      const validation = this.validate<FormSubmission>(payload, formSchema);
+
+      if (validation.errors) {
+        return response;
+      }
+
+      const {
+        addressType,
+        postcodeLookup,
+        addressLine1Lookup,
+        buildingLookup,
+      } = extractInputFromSubmission(validation.value);
+
+      const config = this.model.def?.addressLookupConfig;
+
+      if (typeof config === "undefined") {
         return response;
       }
 
       const addressLookupInstanceName = getLocationServiceInstanceName(config);
 
-      // 2. Only pull cacheService from Hapi request services
       const { cacheService, ...rest } = request.services([]);
-      const addressLookupService = rest[addressLookupInstanceName] as AddressLookupService;
+
+      const addressLookupService = rest[
+        addressLookupInstanceName
+      ] as AddressLookupService;
+
       if (!addressLookupService) {
-        if (response.source && response.source.context) {
-          console.log("AddresLookupService not found:", response.source.context.errors);
-        }
         return response;
       }
-      let state = await cacheService.getState(request);
 
-      const postcode = state.postcodeLookup || "";
-      const building = state.buildingLookup || "";
-      const addressLine1 = state.addressLine1Lookup || "";
-
-      // 4. Call the method on your new local instance
-      let addressResponse;
-      try {
-        addressResponse = await addressLookupService.lookupByPostcode(postcode);
-      } catch (err) {
-        throw Boom.internal(err);
-      }
-
-      let addresses = addressResponse.addresses;
-      const numberOfAddresses = addresses.length;
-
-      let hasMatchedAddress = false;
-      let matchedAddress: any = null;
-      if (numberOfAddresses > 0) {
-        if (building) {
-          const houseNumber = building.trim();
-          const houseNumberLower = houseNumber.toUpperCase();
-          matchedAddress = addresses.find((address: any) => {
-            const firstPart = address.address.split(',')[0].trim();
-
-            // 1. Exact match (ignoring spaces/casing)
-            if (firstPart.replace(/\s/g, '') === houseNumberLower.replace(/\s/g, '')) {
-              return true;
-            }
-
-            // 2. First part starts with house name followed by a space (e.g. "Farm Cottage " when houseName is "Farm Cottage")
-            if (firstPart.startsWith(houseNumberLower + " ")) {
-              return true;
-            }
-
-            return false;
-          });
-
-          if (matchedAddress) {
-            hasMatchedAddress = true;
-          }
-        }
-
-        // Street number cleanup
-        const streetNumberPattern = /(^|, )(\d+[A-Z]?([-\/]\d+)?[A-Z]?),/i;
-        addresses = addresses.map((add) => {
-          add.address = add.address.replace(streetNumberPattern, '$1$2');
-          return add;
-        });
-
-        if (addressLine1) {
-          const addressLine1Upper = addressLine1.trim().toUpperCase();
-          const addressPattern = new RegExp(`^${addressLine1Upper}( |,)`);
-          matchedAddress = addresses.find((address: any) => {
-            return addressPattern.test(address.address.toUpperCase());
-          });
-
-          if (matchedAddress) {
-            hasMatchedAddress = true;
-          }
-        }
-      }
-
-      const list = this.model.lists.find((list) => list.name === "addressesList");
-      if (list) {
-        list.items = this.addressesToList(addresses);
-      }
-      const updateState = {
-        addresses,
-        hasMatchedAddress,
-        numberOfAddresses: numberOfAddresses,
-        ...(matchedAddress && { matchedAddress })
-      };
-
-      await cacheService.mergeState(request, updateState);
-      const savedState = await cacheService.getState(request);
-
-      let relevantState = this.getConditionEvaluationContext(
-        this.model,
-        savedState
+      const addressResponse = await addressLookupService.lookupByPostcode(
+        postcodeLookup
       );
 
-      // Navigate to the next page
-      return this.proceed(request, h, relevantState);
+      const addresses = cleanAddresses(addressResponse.addresses);
+
+      const matchedAddress = findMatchingAddress(
+        addresses,
+        buildingLookup,
+        addressLine1Lookup
+      );
+
+      const list = this.model.lists.find(
+        (list) => list.name === "addressesList"
+      );
+
+      if (list) {
+        list.items = addressesToList(addresses);
+      }
+
+      const savedState = await cacheService.mergeState(request, {
+        // save inputs
+        [`${addressType}_postcodeLookup`]: postcodeLookup,
+        [`${addressType}_buildingLookup`]: buildingLookup,
+        [`${addressType}_addressLine1Lookup`]: addressLine1Lookup,
+        // save data
+        [`${addressType}_addresses`]: addresses,
+        [`${addressType}_numberOfAddresses`]: addresses.length,
+        [`${addressType}_hasMatchedAddress`]: matchedAddress !== null,
+        [`${addressType}_matchedAddress`]: matchedAddress,
+        [`${addressType}_isCorrectAddress`]: null,
+        // clear any selection made against a previous search's results
+        [`${addressType}_selectedAddress`]: null,
+        [deriveSelectedFieldName(addressType)]: null,
+      });
+
+      // This is always an intermediate step of the address-lookup
+      // sub-journey, never a completion, so it must never short-circuit
+      // straight to a Change link's returnUrl.
+      return this.proceed(request, h, { ...savedState }, false);
     };
-  }
-
-  addressesToList(addresses: Address[]) {
-    let addressItems: Item[] = [];
-    addresses.forEach((address) => {
-      const item: Item = {
-        text: address.address,
-        value: address.uprn
-      };
-      addressItems.push(item);
-    });
-
-    return addressItems;
   }
 }

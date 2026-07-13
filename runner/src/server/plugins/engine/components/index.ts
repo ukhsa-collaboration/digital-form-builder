@@ -19,6 +19,7 @@ export { EmailAddressField } from "./EmailAddressField";
 export { FileUploadField } from "./FileUploadField";
 export { FlashCard } from "./FlashCard";
 export { FormComponent } from "./FormComponent";
+export { HiddenField } from "./HiddenField";
 export { Html } from "./Html";
 export { InsetText } from "./InsetText";
 export { List } from "./List";

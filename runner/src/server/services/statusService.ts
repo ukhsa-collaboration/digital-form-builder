@@ -354,7 +354,7 @@ export class StatusService {
     formModel: FormModel,
     newReference?: string
   ) {
-    const { reference, pay, callback } = state;
+    const { reference, pay, callback, generatedReference = null } = state;
     this.logger.info(
       ["StatusService", "getViewModel"],
       `generating viewModel for ${newReference ?? reference}`
@@ -366,6 +366,7 @@ export class StatusService {
     let model = {
       reference: referenceToDisplay,
       ...(pay && { paymentSkipped: pay.paymentSkipped }),
+      ...(generatedReference && { generatedReference }),
     };
 
     const confirmationPageDef = formModel.def.specialPages?.confirmationPage;

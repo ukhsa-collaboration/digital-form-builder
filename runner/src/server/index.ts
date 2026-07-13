@@ -37,7 +37,7 @@ import {
   FormSecurityService,
   SecureFormSubmissionService,
   getSecureFormSubmissionServiceInstance,
-  AddressLookupService
+  AddressLookupService,
 } from "./services";
 import { HapiRequest, HapiResponseToolkit, RouteConfig } from "./types";
 import getRequestInfo from "./utils/getRequestInfo";
@@ -96,6 +96,12 @@ async function createServer(routeConfig: RouteConfig) {
   const server = hapi.server(serverOptions());
   const { formFileName, formFilePath, options } = routeConfig;
 
+  if (config.enableMockApi) {
+    const { mockServer } = await import("./mocks/server");
+    mockServer.listen({ onUnhandledRequest: "bypass" });
+    server.events.on("stop", () => mockServer.close());
+  }
+
   if (config.rateLimit) {
     await server.register(configureRateLimitPlugin(routeConfig));
   }
@@ -122,7 +128,7 @@ async function createServer(routeConfig: RouteConfig) {
     WebhookService,
     AddressService,
     ExitService,
-    FormSecurityService
+    FormSecurityService,
   ]);
   if (!config.documentUploadApiUrl) {
     server.registerService([
@@ -204,11 +210,7 @@ async function createServer(routeConfig: RouteConfig) {
     }
   }
 
-  const forms = configureEnginePlugin(
-    formFileName,
-    formFilePath,
-    options
-  );
+  const forms = configureEnginePlugin(formFileName, formFilePath, options);
 
   await server.register(pluginLocale);
   await server.register(pluginViews);
@@ -226,10 +228,16 @@ async function createServer(routeConfig: RouteConfig) {
   const addressLookupServiceNames = new Set<string>();
   for (const form of forms.options.configs) {
     if (form.configuration.addressLookupConfig) {
-      const addressLookupInstanceName = getLocationServiceInstanceName(form.configuration.addressLookupConfig);
-      if(!addressLookupServiceNames.has(addressLookupInstanceName)) {
-        const addressLookupService = new AddressLookupService(form.configuration.addressLookupConfig);
-        await server.registerService(Schmervice.withName(addressLookupInstanceName, addressLookupService));
+      const addressLookupInstanceName = getLocationServiceInstanceName(
+        form.configuration.addressLookupConfig
+      );
+      if (!addressLookupServiceNames.has(addressLookupInstanceName)) {
+        const addressLookupService = new AddressLookupService(
+          form.configuration.addressLookupConfig
+        );
+        await server.registerService(
+          Schmervice.withName(addressLookupInstanceName, addressLookupService)
+        );
         addressLookupServiceNames.add(addressLookupInstanceName);
       }
     }

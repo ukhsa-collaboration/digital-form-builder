@@ -157,6 +157,7 @@ const confirmationPageSchema = joi.object({
       nextSteps: toggleableString.default(
         "You will receive an email with details with the next steps."
       ),
+      generatedReferenceContent: joi.string().optional(),
       referenceTitle: joi.string(),
       referenceContent: joi.string(),
       hidePanel: joi.boolean().optional(),
@@ -178,8 +179,7 @@ const specialPagesSchema = joi.object().keys({
   paymentSkippedWarningPage: paymentSkippedWarningPage.optional(),
 });
 
-const listItemSchema = joi.object().keys({
-  text: localisedString,
+const listItemBaseKeys = {
   value: joi.alternatives().try(joi.number(), joi.string()),
   checkpointDisplayValue: joi.alternatives().try(joi.number(), joi.string()),
   description: localisedString.optional(),
@@ -196,7 +196,17 @@ const listItemSchema = joi.object().keys({
     .allow(null)
     .optional(),
   condition: joi.string().allow(null, "").optional(),
-});
+};
+
+// Either `html` or `text` must be present, but not both — .oxor enforces this.
+const listItemSchema = joi
+  .object()
+  .keys({
+    ...listItemBaseKeys,
+    html: localisedString,
+    text: localisedString,
+  })
+  .oxor("html", "text");
 
 const listSchema = joi.object().keys({
   name: joi.string().required(),
@@ -345,6 +355,60 @@ const addressLookupConfigSchema = msalAuthorizeConfigSchema.concat(
   })
 );
 
+const summaryConfigSchema = joi.object().keys({
+  submitLabel: joi.string().optional(),
+  declaration: joi
+    .object()
+    .keys({
+      label: joi.string().required(),
+      errorMessage: joi.string().optional(),
+      hideDeclarationHeading: joi.boolean().optional(),
+    })
+    .optional(),
+  removeFields: joi.array().items(joi.string()).optional(),
+  mergeFields: joi
+    .array()
+    .items(
+      joi.object().keys({
+        names: joi.array().items(joi.string()).required(),
+        to: joi.string().required(),
+        joiner: joi.string().required(),
+      })
+    )
+    .optional(),
+  relabelFields: joi.object().pattern(joi.string(), joi.string()).optional(),
+  valueTransforms: joi
+    .object()
+    .pattern(joi.string(), joi.object().pattern(joi.string(), joi.string()))
+    .optional(),
+  conditionalRows: joi
+    .array()
+    .items(
+      joi.object().keys({
+        when: joi
+          .object()
+          .keys({
+            field: joi.string().required(),
+            value: joi.string().optional(),
+            isEmpty: joi.boolean().optional(),
+          })
+          .or("value", "isEmpty")
+          .required(),
+        removeFields: joi.array().items(joi.string()).optional(),
+        appendToLastSection: joi
+          .object()
+          .keys({
+            name: joi.string().required(),
+            label: joi.string().required(),
+            value: joi.string().required(),
+            immutable: joi.boolean().optional(),
+          })
+          .optional(),
+      })
+    )
+    .optional(),
+});
+
 export const Schema = joi
   .object()
   .required()
@@ -392,6 +456,8 @@ export const Schema = joi
     secureFormSubmissionConfig: secureFormSubmissionConfig.optional(),
     addressLookupConfig: addressLookupConfigSchema.optional(),
     error500ContactEmail: joi.string().optional(),
+    summaryConfig: summaryConfigSchema.optional(),
+    generateReference: joi.boolean().optional(),
   });
 
 /**
