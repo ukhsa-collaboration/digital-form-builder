@@ -10,6 +10,7 @@ import {
 import config from "server/config";
 import { FeesModel } from "server/plugins/engine/models/submission";
 import { isMultipleApiKey } from "@xgovformbuilder/model";
+import { nanoid } from "nanoid";
 
 export class SummaryPageController extends PageController {
   /**
@@ -171,6 +172,14 @@ export class SummaryPageController extends PageController {
         }
 
         summaryViewModel.addDeclarationAsQuestion();
+      }
+
+      if (model.def?.generateReference == true) {
+        const reference = nanoid();
+        summaryViewModel.addReferenceToWebhook(reference);
+        await cacheService.mergeState(request, {
+          generatedReference: reference,
+        });
       }
 
       await cacheService.mergeState(request, {
