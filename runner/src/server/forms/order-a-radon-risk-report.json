@@ -828,9 +828,12 @@
       "name": "deliveryMethodList",
       "type": "string",
       "items": [
-        { "text": "Email (£3.90) - delivered instantly", "value": "Email" },
         {
-          "text": "Post (£5.24) - delivered within 3 to 6 working days",
+          "text": "Digital report (£3.90) - delivered instantly",
+          "value": "Email"
+        },
+        {
+          "text": "Printed report (£5.24) - delivered within 3 to 6 working days",
           "value": "Post"
         }
       ]

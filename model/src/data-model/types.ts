@@ -113,6 +113,7 @@ export type WebhookOutputConfiguration = {
   url: string;
   sendAdditionalPayMetadata?: boolean;
   allowRetry?: boolean;
+  payload?: Record<string, unknown>;
 };
 
 export type OutputConfiguration =
