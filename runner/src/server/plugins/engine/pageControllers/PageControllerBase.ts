@@ -616,10 +616,6 @@ export class PageControllerBase {
         });
       }
       const viewModel = this.getViewModel(formData, num);
-      // DEBUG: dumps the full session state to the browser console on every
-      // page render, for every form - see layout.html bodyEnd block. Remove
-      // before shipping.
-      viewModel.debugSessionState = state;
       viewModel.startPage = startPage!.startsWith("http")
         ? redirectTo(request, h, startPage!)
         : redirectTo(request, h, `/${this.model.basePath}${startPage!}`);
@@ -985,16 +981,9 @@ export class PageControllerBase {
   ) {
     const nextPage = this.getNext(state);
     const nextUrl = nextPage?.redirect ?? nextPage;
-    /**
-     * When a controller doesn't know its own branching well enough to say
-     * whether honouring a Change link's returnUrl is safe, only honour it if
-     * the page we're actually about to visit next is the returnUrl itself -
-     * i.e. this really was the last step before getting back there. This
-     * stops pages with conditional `next` branches (e.g. a delivery method
-     * choice that can lead to a much longer sub-journey) from skipping
-     * required pages when reached via a Change link.
-     */
+
     const returnUrl = getReturnUrl(request);
+
     const shouldHonourReturnUrl =
       honourReturnUrl ??
       (typeof nextUrl === "string" &&
