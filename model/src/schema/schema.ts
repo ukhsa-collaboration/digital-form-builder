@@ -128,6 +128,7 @@ const pageSchema = joi.object().keys({
   backLinkFallback: joi.string().optional(),
   disableBackLink: joi.bool().optional(),
   customButtonText: joi.string().optional(),
+  hideContinueButton: joi.boolean().optional(),
 });
 
 const startNavigationLinkSchema = joi.object().keys({

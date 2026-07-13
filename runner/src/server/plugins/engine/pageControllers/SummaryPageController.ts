@@ -50,30 +50,44 @@ export class SummaryPageController extends PageController {
         const errorToFix = viewModel.errors[0];
         const { path } = errorToFix;
         const parts = path.split(".");
-        const section = parts[0];
-        const property = parts.length > 1 ? parts[parts.length - 1] : null;
+        const property = parts.length > 1 ? parts[parts.length - 1] : parts[0];
+
+        const sectionName = parts.length > 1 ? parts[0] : null;
+
         const iteration = parts.length === 3 ? Number(parts[1]) + 1 : null;
-        const pageWithError = model.pages.filter((page) => {
-          if (page.section && page.section.name === section) {
-            let propertyMatches = true;
-            let conditionMatches = true;
-            if (property) {
-              propertyMatches =
-                page.components.formItems.filter(
-                  (item) => item.name === property
-                ).length > 0;
-            }
-            if (
-              propertyMatches &&
-              page.condition &&
-              model.conditions[page.condition]
-            ) {
-              conditionMatches = model.conditions[page.condition].fn(state);
-            }
-            return propertyMatches && conditionMatches;
+
+        const candidatePages = model.pages.filter((page) => {
+          const sectionMatches = page.section
+            ? page.section.name === sectionName
+            : sectionName === null;
+
+          if (!sectionMatches) return false;
+
+          let propertyMatches = true;
+          let conditionMatches = true;
+          if (property) {
+            propertyMatches =
+              page.components.formItems.filter((item) => item.name === property)
+                .length > 0;
           }
-          return false;
-        })[0];
+
+          if (
+            propertyMatches &&
+            page.condition &&
+            model.conditions[page.condition]
+          ) {
+            conditionMatches = model.conditions[page.condition].fn(state);
+          }
+
+          return propertyMatches && conditionMatches;
+        });
+
+        const pageWithError =
+          candidatePages.find(
+            (page) =>
+              page.condition && model.conditions[page.condition]?.fn(state)
+          ) ?? candidatePages[0];
+
         if (pageWithError) {
           const params = {
             returnUrl: redirectUrl(request, `/${model.basePath}/summary`),
@@ -186,12 +200,6 @@ export class SummaryPageController extends PageController {
         outputs: summaryViewModel.outputs,
         userCompletedSummary: true,
       });
-
-      // Commented out due to potential for logging PII
-      // request.logger.info(
-      //   ["Webhook data", "before send", request.yar.id],
-      //   JSON.stringify(summaryViewModel.validatedWebhookData)
-      // );
 
       await cacheService.mergeState(request, {
         webhookData: summaryViewModel.validatedWebhookData,
@@ -320,11 +328,11 @@ export class SummaryPageController extends PageController {
 
   get payApiKey(): string {
     const modelDef = this.model.def;
-    const payApiKey = modelDef.feeOptions?.payApiKey ?? def.payApiKey;
+    const payApiKey = modelDef.feeOptions?.payApiKey ?? modelDef.payApiKey;
 
     if (isMultipleApiKey(payApiKey)) {
       return payApiKey[config.apiEnv] ?? payApiKey.test ?? payApiKey.production;
     }
-    return payApiKey;
+    return payApiKey ?? "";
   }
 }

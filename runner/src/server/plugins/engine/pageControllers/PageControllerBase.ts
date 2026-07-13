@@ -5,6 +5,7 @@ import { validationOptions } from "server/plugins/engine/pageControllers/validat
 import {
   feedbackReturnInfoKey,
   getBackLink,
+  getReturnUrl,
   proceed,
   redirectTo,
 } from "../helpers";
@@ -74,6 +75,7 @@ export class PageControllerBase {
   disableBackLink?: boolean;
   returnUrl?: string;
   buttonText?: string;
+  hideContinueButton?: boolean;
 
   // TODO: pageDef type
   constructor(model: FormModel, pageDef: { [prop: string]: any } = {}) {
@@ -94,6 +96,7 @@ export class PageControllerBase {
     this.disableSingleComponentAsHeading =
       pageDef.disableSingleComponentAsHeading;
     this.buttonText = pageDef.customButtonText ?? this.defaultButtonText;
+    this.hideContinueButton = pageDef.options?.hideContinueButton ?? false;
 
     // Resolve section
     this.section = model.sections?.find(
@@ -378,7 +381,23 @@ export class PageControllerBase {
         ),
       };
     } else {
+      // get component names
+      const ownFieldNames = new Set(
+        this.components.formItems.map((item) => item.name)
+      );
+
+      // extract state values matching component state names
+      const rawState = Object.fromEntries(
+        Object.entries(pageState || {}).filter(
+          ([key, v]) =>
+            ownFieldNames.has(key) &&
+            (typeof v === "string" ||
+              typeof v === "number" ||
+              typeof v === "boolean")
+        )
+      );
       formData = {
+        ...rawState,
         ...this.components.getFormDataFromState(pageState || {}),
         ...this.model.getContextState(state),
       };
@@ -472,7 +491,7 @@ export class PageControllerBase {
     let nextPage = model.startPage;
 
     //While the current page isn't null
-    const checkedPages: any[] = [];
+    const checkedPages = new Set<any>();
     while (nextPage != null) {
       //Either get the current state or the current state of the section if this page belongs to a section
       const currentState =
@@ -509,10 +528,10 @@ export class PageControllerBase {
       }
 
       //If a nextPage is returned, we must have taken that route through the form so continue our iteration with the new page
-      if (checkedPages.includes(nextPage)) {
+      if (checkedPages.has(nextPage)) {
         nextPage = null;
       } else {
-        checkedPages.push(nextPage);
+        checkedPages.add(nextPage);
       }
     }
 
@@ -584,6 +603,7 @@ export class PageControllerBase {
       }
 
       formData.lang = lang;
+      formData.returnUrl = getReturnUrl(request);
       /**
        * We store the original filename for the user in a separate object (`originalFileNames`), however they are not used for any of the outputs. The S3 url is stored in the state.
        */
@@ -596,6 +616,10 @@ export class PageControllerBase {
         });
       }
       const viewModel = this.getViewModel(formData, num);
+      // DEBUG: dumps the full session state to the browser console on every
+      // page render, for every form - see layout.html bodyEnd block. Remove
+      // before shipping.
+      viewModel.debugSessionState = state;
       viewModel.startPage = startPage!.startsWith("http")
         ? redirectTo(request, h, startPage!)
         : redirectTo(request, h, `/${this.model.basePath}${startPage!}`);
@@ -720,6 +744,7 @@ export class PageControllerBase {
     const { num } = request.query;
     const formData = this.getFormDataFromState(state, num - 1);
     const combined = { ...formData, ...payload } as FormData;
+    combined.returnUrl = getReturnUrl(request);
 
     // TODO:- Refactor this into a validation method
     if (hasFilesizeError) {
@@ -956,13 +981,27 @@ export class PageControllerBase {
     request: HapiRequest,
     h: HapiResponseToolkit,
     state,
-    honourReturnUrl: boolean = true
+    honourReturnUrl?: boolean
   ) {
     const nextPage = this.getNext(state);
-    if (nextPage?.redirect) {
-      return proceed(request, h, nextPage?.redirect, honourReturnUrl);
-    }
-    return proceed(request, h, nextPage, honourReturnUrl);
+    const nextUrl = nextPage?.redirect ?? nextPage;
+    /**
+     * When a controller doesn't know its own branching well enough to say
+     * whether honouring a Change link's returnUrl is safe, only honour it if
+     * the page we're actually about to visit next is the returnUrl itself -
+     * i.e. this really was the last step before getting back there. This
+     * stops pages with conditional `next` branches (e.g. a delivery method
+     * choice that can lead to a much longer sub-journey) from skipping
+     * required pages when reached via a Change link.
+     */
+    const returnUrl = getReturnUrl(request);
+    const shouldHonourReturnUrl =
+      honourReturnUrl ??
+      (typeof nextUrl === "string" &&
+        returnUrl !== undefined &&
+        nextUrl.split("?")[0] === returnUrl.split("?")[0]);
+
+    return proceed(request, h, nextUrl, shouldHonourReturnUrl);
   }
 
   getPartialMergeState(value) {

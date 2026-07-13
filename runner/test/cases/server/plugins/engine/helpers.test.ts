@@ -6,11 +6,16 @@ import {
   redirectUrl,
   nonRelativeRedirectUrl,
   getValidStateFromQueryParameters,
+  getReturnUrl,
+  getBackLink,
 } from "src/server/plugins/engine/helpers";
 import sinon from "sinon";
 import Joi from "joi";
+
 const lab = Lab.script();
+
 exports.lab = lab;
+
 const { expect } = Code;
 const { beforeEach, describe, suite, test } = lab;
 
@@ -92,6 +97,42 @@ suite("Helpers", () => {
 
       expect(h.redirect.callCount).to.equal(1);
       expect(h.redirect.firstCall.args[0]).to.equal(`${nextUrl}`);
+      expect(returned).to.equal(returnValue);
+    });
+
+    test("Should redirect to next url (not returnUrl) when honourReturnUrl is false, carrying returnUrl forward for a later step to honour", () => {
+      const returnUrl = "/my-return-url";
+      const request = {
+        query: {
+          returnUrl: returnUrl,
+        },
+      };
+      const nextUrl = "badgers/monkeys";
+      const returned = proceed(request, h, nextUrl, false);
+
+      expect(h.redirect.callCount).to.equal(1);
+      expect(h.redirect.firstCall.args[0]).to.equal(
+        `${nextUrl}?returnUrl=%2Fmy-return-url`
+      );
+      expect(returned).to.equal(returnValue);
+    });
+
+    test("Should not redirect to a protocol-relative returnUrl (open redirect)", () => {
+      const request = {
+        query: {
+          returnUrl: "//evil.example.com",
+        },
+      };
+      const nextUrl = "badgers/monkeys";
+      const returned = proceed(request, h, nextUrl);
+
+      expect(h.redirect.callCount).to.equal(1);
+      // Not honoured as an immediate redirect target - falls through to
+      // redirectTo, which carries the (still-unsafe) value forward as a
+      // query param rather than ever passing it to h.redirect directly.
+      expect(h.redirect.firstCall.args[0]).to.equal(
+        `${nextUrl}?returnUrl=%2F%2Fevil.example.com`
+      );
       expect(returned).to.equal(returnValue);
     });
   });
@@ -388,6 +429,42 @@ suite("Helpers", () => {
         Object.keys(getValidStateFromQueryParameters(prePopFields, query))
           .length
       ).to.equal(0);
+    });
+  });
+
+  describe("getReturnUrl", () => {
+    test("Should return the returnUrl when it is present and internal", () => {
+      const request = { query: { returnUrl: "/summary" } };
+      expect(getReturnUrl(request)).to.equal("/summary");
+    });
+
+    test("Should return undefined when returnUrl is missing", () => {
+      const request = { query: {} };
+      expect(getReturnUrl(request)).to.equal(undefined);
+    });
+
+    test("Should return undefined when returnUrl does not start with /", () => {
+      const request = { query: { returnUrl: "https://evil.example.com" } };
+      expect(getReturnUrl(request)).to.equal(undefined);
+    });
+
+    test("Should return undefined when returnUrl is protocol-relative (open redirect)", () => {
+      const request = { query: { returnUrl: "//evil.example.com" } };
+      expect(getReturnUrl(request)).to.equal(undefined);
+    });
+  });
+
+  describe("getBackLink", () => {
+    test("Should use returnUrl when it is present and internal", () => {
+      const request = { query: { returnUrl: "/summary" } };
+      expect(getBackLink(request, ["/a", "/b"], "/fallback")).to.equal(
+        "/summary"
+      );
+    });
+
+    test("Should fall back to progress history when returnUrl is protocol-relative (open redirect)", () => {
+      const request = { query: { returnUrl: "//evil.example.com" } };
+      expect(getBackLink(request, ["/a", "/b"], "/fallback")).to.equal("/a");
     });
   });
 });
