@@ -37,6 +37,7 @@ type WebhookOutputData = {
     url: string;
     sendAdditionalPayMetadata?: boolean;
     allowRetry?: boolean;
+    payload?: Record<string, string>;
   };
 };
 

@@ -52,6 +52,7 @@ export class Outputs {
               sendAdditionalPayMetadata:
                 webhookOutputConfiguration.sendAdditionalPayMetadata,
               allowRetry: webhookOutputConfiguration.allowRetry,
+              payload: webhookOutputConfiguration.payload,
             },
           };
         default:

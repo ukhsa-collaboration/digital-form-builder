@@ -164,7 +164,7 @@
       "title": "Your enquiry details",
       "components": [
         {
-          "name": "firstname",
+          "name": "firstName",
           "options": {
             "customValidationMessages": {
               "any.required": "Enter your first name",
@@ -178,7 +178,7 @@
           "title": "Your first name"
         },
         {
-          "name": "lastname",
+          "name": "lastName",
           "options": {
             "customValidationMessages": {
               "any.required": "Enter your last name",
@@ -278,7 +278,7 @@
           "options": {
             "condition": "ojQCvt"
           },
-          "content": "<table class=\"govuk-table\"><caption class=\"govuk-table__caption govuk-table__caption--m\">Your enquiry details</caption><tbody class=\"govuk-table__body\"><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\">First name</th><td class=\"govuk-table__cell\">{{ firstname }}</td></tr><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\">Last Name</th><td class=\"govuk-table__cell\">{{ lastname }}</td></tr><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\">Organisation</th><td class=\"govuk-table__cell\">{{ organisation }}</td></tr><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\">Email</th><td class=\"govuk-table__cell\">{{ email }}</td></tr><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\">Category</th><td class=\"govuk-table__cell\">{{ supportType }}</td></tr><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\">Service</th><td class=\"govuk-table__cell\">{{ service }}</td></tr><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\">Request information</th><td class=\"govuk-table__cell\">{{ requestInformation }}</td></tr></tbody></table>"
+          "content": "<table class=\"govuk-table\"><caption class=\"govuk-table__caption govuk-table__caption--m\">Your enquiry details</caption><tbody class=\"govuk-table__body\"><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\">First name</th><td class=\"govuk-table__cell\">{{ firstName }}</td></tr><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\">Last Name</th><td class=\"govuk-table__cell\">{{ lastName }}</td></tr><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\">Organisation</th><td class=\"govuk-table__cell\">{{ organisation }}</td></tr><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\">Email</th><td class=\"govuk-table__cell\">{{ email }}</td></tr><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\">Category</th><td class=\"govuk-table__cell\">{{ supportType }}</td></tr><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\">Service</th><td class=\"govuk-table__cell\">{{ service }}</td></tr><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\">Request information</th><td class=\"govuk-table__cell\">{{ requestInformation }}</td></tr></tbody></table>"
         },
         {
           "name": "tableNoService",
@@ -286,7 +286,7 @@
           "options": {
             "condition": "tvCQjo"
           },
-          "content": "<table class=\"govuk-table\"><caption class=\"govuk-table__caption govuk-table__caption--m\">Your enquiry details</caption><tbody class=\"govuk-table__body\"><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\">First name</th><td class=\"govuk-table__cell\">{{ firstname }}</td></tr><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\">Last Name</th><td class=\"govuk-table__cell\">{{ lastname }}</td></tr><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\">Organisation</th><td class=\"govuk-table__cell\">{{ organisation }}</td></tr><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\">Email</th><td class=\"govuk-table__cell\">{{ email }}</td></tr><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\">Category</th><td class=\"govuk-table__cell\">{{ supportType }}</td></tr><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\">Request information</th><td class=\"govuk-table__cell\">{{ requestInformation }}</td></tr></tbody></table>"
+          "content": "<table class=\"govuk-table\"><caption class=\"govuk-table__caption govuk-table__caption--m\">Your enquiry details</caption><tbody class=\"govuk-table__body\"><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\">First name</th><td class=\"govuk-table__cell\">{{ firstName }}</td></tr><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\">Last Name</th><td class=\"govuk-table__cell\">{{ lastName }}</td></tr><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\">Organisation</th><td class=\"govuk-table__cell\">{{ organisation }}</td></tr><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\">Email</th><td class=\"govuk-table__cell\">{{ email }}</td></tr><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\">Category</th><td class=\"govuk-table__cell\">{{ supportType }}</td></tr><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\">Request information</th><td class=\"govuk-table__cell\">{{ requestInformation }}</td></tr></tbody></table>"
         },
         {
           "name": "final links",
@@ -753,14 +753,31 @@
     }
   ],
   "fees": [],
+  "secureFormSubmissionConfig": {
+    "tenantId": "${RPS_TENANT_ID}",
+    "clientId": "${RPS_CLIENT_ID}",
+    "clientSecret": "${RPS_CLIENT_SECRET}",
+    "scopes": ["${RPS_SCOPES}"],
+    "useAwsWafUserAgentWorkaround": true
+  },
   "outputs": [
     {
       "name": "AgHhXn",
       "title": "webhookOutput",
       "type": "webhook",
       "outputConfiguration": {
-        "url": "https://webho.ok",
-        "allowRetry": true
+        "url": "${RPS_RADON_ENQUIRY_URL}",
+        "allowRetry": true,
+        "payload": {
+          "uuid": "generatedReference",
+          "firstName": "firstName",
+          "lastName": "lastName",
+          "email": "email",
+          "organisation": "organisation",
+          "subject": "supportType",
+          "description": "requestInformation",
+          "service": "RPS"
+        }
       }
     }
   ],
@@ -768,6 +785,7 @@
     "feedbackForm": false,
     "url": ""
   },
+  "generateReference": true,
   "version": 2,
   "skipSummary": true,
   "feeOptions": {}
