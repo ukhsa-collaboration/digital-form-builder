@@ -105,7 +105,7 @@ export class FindAnAddressPageController extends PageControllerBase {
         // save data
         [`${addressType}_addresses`]: addresses,
         [`${addressType}_numberOfAddresses`]: addresses.length,
-        [`${addressType}_hasMatchedAddress`]: matchedAddress !== null,
+        [`${addressType}_hasMatchedAddress`]: matchedAddress !== undefined,
         [`${addressType}_matchedAddress`]: matchedAddress,
         [`${addressType}_isCorrectAddress`]: null,
         // clear any selection made against a previous search's results
