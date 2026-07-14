@@ -264,7 +264,8 @@
       "customText": {
         "title": "Enquiry request submitted",
         "nextSteps": "We have sent a confirmation email to <b>{{ email }}</b>.",
-        "hidePanel": false
+        "hidePanel": false,
+        "generatedReferenceContent": "Your enquiry number is"
       },
       "components": [
         {

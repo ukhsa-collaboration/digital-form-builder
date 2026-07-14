@@ -30,12 +30,12 @@
           "content": "<p class=\"govuk-body-m\">The report does not tell you the radon level inside the property. To find this out, you need to do a 3‑month test using a <a href=\"/order-a-radon-home-test-kit\">radon gas test pack</a>.</p><p class=\"govuk-body-m\">Basements and cellar rooms are at a higher risk of radon. If a room you use frequently is below ground level, such as a kitchen or office, you should do a radon test, even if the property is not in a radon Affected Area.</p><p class=\"govuk-body-m\">Each report costs £3.90 and will be sent to an email address you provide. Alternatively, you can request a physical report to be sent by post for an additional fee.</p><p class=\"govuk-body-m\"><a href=\"https://www.ukradon.org/cms/assets/gfx/content/resource_5095cs45be58330c.pdf\">Read a sample report</a></p><h3 class=\"govuk-heading-m\">Before you start</h3><p class=\"govuk-body-m\">This service is for buildings up to 25 metres in any direction.</p><p class=\"govuk-body-m\">This report is not suitable for larger buildings. In this case, contact the <a href=\"http://shop.bgs.ac.uk/georeports\">British Geological Survey (BGS)</a>.</p><p class=\"govuk-body-m\">You'll need:</p><p class=\"govuk-body-m\"><ul class=\"govuk-list govuk-list--bullet\"><li>a valid UK address for the risk report</li><li>a valid email address or a UK postal delivery address</li><li>your payment details</li></ul></p>"
         }
       ],
-      "next": [{ "path": "/order-risk-report-find-an-address" }],
+      "next": [{ "path": "/order-risk-report-find-a-report-address" }],
       "controller": "./pages/start.js"
     },
 
     {
-      "path": "/order-risk-report-find-an-address",
+      "path": "/order-risk-report-find-a-report-address",
       "title": "What address are you ordering a risk report for?",
       "components": [
         {
@@ -95,24 +95,24 @@
           "name": "enterManuallyLink",
           "options": {},
           "type": "Html",
-          "content": "<br><a href=\"enter-address-manually\">Enter address manually</a>"
+          "content": "<br><a href=\"order-risk-report-enter-report-address-manually{% if returnUrl %}?returnUrl={{ returnUrl | urlencode }}{% endif %}\">Enter address manually</a>"
         }
       ],
       "controller": "FindAnAddressPageController",
       "next": [
         {
-          "path": "/is-this-the-correct-address",
+          "path": "/order-risk-report-is-this-the-correct-report-address",
           "condition": "hasMatchedReportAddressCondition"
         },
-        { "path": "/select-an-address" },
+        { "path": "/order-risk-report-select-a-report-address" },
         {
-          "path": "/no-addresses-found",
+          "path": "/order-risk-report-no-report-addresses-found",
           "condition": "noReportAddressesCondition"
         }
       ]
     },
     {
-      "path": "/is-this-the-correct-address",
+      "path": "/order-risk-report-is-this-the-correct-report-address",
       "title": "Is this the correct address?",
       "components": [
         {
@@ -149,14 +149,14 @@
       ],
       "controller": "SelectAnAddressPageController",
       "options": {
-        "changePath": "/order-risk-report-find-an-address"
+        "changePath": "/order-risk-report-find-a-report-address"
       },
       "componentsAfter": [
         {
           "name": "enterManuallyLink",
           "options": {},
           "type": "Html",
-          "content": "<br><a href=\"enter-address-manually\">Enter address manually</a>"
+          "content": "<br><a href=\"order-risk-report-enter-report-address-manually{% if returnUrl %}?returnUrl={{ returnUrl | urlencode }}{% endif %}\">Enter address manually</a>"
         }
       ],
       "next": [
@@ -164,11 +164,15 @@
           "path": "/how-would-you-like-to-receive-your-report",
           "condition": "isCorrectReportAddress"
         },
-        { "path": "/select-an-address" }
+        {
+          "path": "/order-risk-report-no-report-addresses-found",
+          "condition": "reportAddressOnlyOneAddressCondition"
+        },
+        { "path": "/order-risk-report-select-a-report-address" }
       ]
     },
     {
-      "path": "/select-an-address",
+      "path": "/order-risk-report-select-a-report-address",
       "title": "Select an address",
       "components": [
         {
@@ -181,7 +185,7 @@
           "name": "searchAgain",
           "options": {},
           "type": "Html",
-          "content": "<p class=\"govuk-body-m\"><a href=\"order-risk-report-find-an-address\">Change your search</a> if the address you're looking for is not listed.</p>"
+          "content": "<p class=\"govuk-body-m\"><a href=\"order-risk-report-find-a-report-address{% if returnUrl %}?returnUrl={{ returnUrl | urlencode }}{% endif %}\">Change your search</a> if the address you're looking for is not listed.</p>"
         },
         {
           "name": "addressType",
@@ -206,41 +210,60 @@
       ],
       "controller": "SelectAnAddressPageController",
       "options": {
-        "changePath": "/order-risk-report-find-an-address"
+        "changePath": "/order-risk-report-find-a-report-address"
       },
-      "next": [{ "path": "/how-would-you-like-to-receive-your-report" }],
+      "next": [
+        { "path": "/order-risk-report-is-this-the-correct-report-address" }
+      ],
       "componentsAfter": [
         {
           "name": "enterManuallyLink",
           "options": {},
           "type": "Html",
-          "content": "<br><a href=\"enter-address-manually\">Enter address manually</a>"
+          "content": "<br><a href=\"order-risk-report-enter-report-address-manually{% if returnUrl %}?returnUrl={{ returnUrl | urlencode }}{% endif %}\">Enter address manually</a>"
         }
       ]
     },
     {
-      "path": "/no-addresses-found",
-      "title": "No addresses found for {{ reportAddress_postcodeLookup }} and {{ reportAddress_buildingLookup }}",
+      "path": "/order-risk-report-no-report-addresses-found",
+      "title": "No addresses found for ‘{{ reportAddress_postcodeLookup }}’ and ‘{{ reportAddress_buildingLookup }}’",
+      "options": {
+        "hideContinueButton": true
+      },
       "components": [
         {
           "name": "noAddressesFoundMessage",
           "options": {},
           "type": "Para",
-          "content": "Check your address for mistakes, then try again.<br><br>Check you have entered the address correctly, then try again."
+          "content": "Check your postcode and building number or name for mistakes, then try again.<br><br>Check you have entered the postcode and building number or name correctly, then try again."
         },
         {
           "name": "searchAgain",
           "options": {},
           "type": "Html",
-          "content": "<p class=\"govuk-body-m\"><a href=\"order-risk-report-find-an-address\">Change your search</a> or <a href=\"enter-address-manually\">enter address manually</a></p>"
+          "content": "<p class=\"govuk-body-m\"><a href=\"order-risk-report-find-a-report-address{% if returnUrl %}?returnUrl={{ returnUrl | urlencode }}{% endif %}\">Change your search</a> or <a href=\"order-risk-report-enter-report-address-manually{% if returnUrl %}?returnUrl={{ returnUrl | urlencode }}{% endif %}\">enter address manually</a></p>"
         }
       ],
-      "next": [{ "path": "/order-risk-report-find-an-address" }]
+      "next": [
+        { "path": "/order-risk-report-find-a-report-address" },
+        {
+          "path": "/order-risk-report-enter-report-address-manually",
+          "condition": "reportAddressEnteredManuallyCondition"
+        }
+      ]
     },
     {
-      "path": "/enter-address-manually",
+      "path": "/order-risk-report-enter-report-address-manually",
       "title": "What is the address you want a risk report for?",
       "components": [
+        {
+          "name": "addressType",
+          "options": {
+            "exposeToContext": true,
+            "value": "reportAddress"
+          },
+          "type": "HiddenField"
+        },
         {
           "name": "reportAddress_addressLine1Lookup",
           "options": {
@@ -307,34 +330,37 @@
       "controller": "FindAnAddressPageController",
       "next": [
         {
-          "path": "/is-this-the-correct-address",
+          "path": "/order-risk-report-is-this-the-correct-report-address",
           "condition": "hasMatchedReportAddressCondition"
         },
-        { "path": "/select-an-address" },
+        { "path": "/order-risk-report-select-a-report-address" },
         {
-          "path": "/cannot-find-address",
+          "path": "/order-risk-report-cannot-find-report-address",
           "condition": "noReportAddressesCondition"
         }
       ]
     },
     {
-      "path": "/cannot-find-address",
+      "path": "/order-risk-report-cannot-find-report-address",
       "title": "We cannot find your address",
+      "options": {
+        "hideContinueButton": true
+      },
       "components": [
         {
           "name": "noAddressesFoundMessage",
           "options": {},
           "type": "Para",
-          "content": "No addresses found for {{ addressLine1Lookup }}, {{ postcodeLookup }}<br><br>Check your address for mistakes, then try again.<br><br>Check you have entered the address correctly, then try again."
+          "content": "No address found for {{ reportAddress_addressLine1Lookup }}{% if reportAddress_addressLine2Lookup %}, {{ reportAddress_addressLine2Lookup }}{% endif %}{% if reportAddress_townLookup %}, {{ reportAddress_townLookup }}{% endif %}{% if reportAddress_countyLookup %}, {{ reportAddress_countyLookup }}{% endif %}{% if reportAddress_postcodeLookup %}, {{ reportAddress_postcodeLookup }}{% endif %}<br><br>Check your address for mistakes, then try again.<br><br>Check you have entered the address correctly, then try again."
         },
         {
           "name": "searchAgain",
           "options": {},
           "type": "Html",
-          "content": "<p class=\"govuk-body-m\"><a href=\"order-risk-report-find-an-address\">Change your search</a> or <a href=\"enter-address-manually\">enter address manually</a></p>"
+          "content": "<p class=\"govuk-body-m\"><a href=\"order-risk-report-find-a-report-address{% if returnUrl %}?returnUrl={{ returnUrl | urlencode }}{% endif %}\">Change your search</a> or <a href=\"order-risk-report-enter-report-address-manually{% if returnUrl %}?returnUrl={{ returnUrl | urlencode }}{% endif %}\">enter address manually</a></p>"
         }
       ],
-      "next": [{ "path": "/enter-address-manually" }]
+      "next": [{ "path": "/order-risk-report-enter-report-address-manually" }]
     },
 
     {
@@ -490,12 +516,60 @@
           "content": "We will send your payment confirmation and the report to the email address provided."
         }
       ],
-      "next": [{ "path": "/find-a-delivery-address" }]
+      "next": [
+        {
+          "path": "/order-risk-report-is-delivery-address-same-as-report-address"
+        }
+      ]
     },
     {
-      "path": "/order-risk-report-enter-delivery-address-manual",
+      "path": "/order-risk-report-is-delivery-address-same-as-report-address",
+      "title": "Is this the correct delivery address?",
+      "components": [
+        {
+          "name": "deliveryAddressSameAsReportDisplay",
+          "type": "DisplayAddress",
+          "content": "{{ deliveryAddressSameAsReportDisplay }}"
+        },
+        {
+          "name": "deliveryAddressSameAsReport",
+          "options": {
+            "hideTitle": true,
+            "customValidationMessages": {
+              "any.required": "Select yes if your delivery address is the same as your risk report address"
+            }
+          },
+          "type": "YesNoField",
+          "title": "Is this the correct delivery address?"
+        },
+        {
+          "name": "deliveryAddressSameAsReportDisplay",
+          "options": {},
+          "type": "HiddenField",
+          "title": "Delivery address"
+        }
+      ],
+      "controller": "DeliveryAddressSameAsReportPageController",
+      "next": [
+        {
+          "path": "/summary",
+          "condition": "isDeliveryAddressSameAsReport"
+        },
+        { "path": "/order-risk-report-find-a-delivery-address" }
+      ]
+    },
+    {
+      "path": "/order-risk-report-enter-delivery-address-manually",
       "title": "Enter the delivery address for the risk report",
       "components": [
+        {
+          "name": "addressType",
+          "options": {
+            "exposeToContext": true,
+            "value": "deliveryAddress"
+          },
+          "type": "HiddenField"
+        },
         {
           "name": "postalCostNote",
           "type": "Para",
@@ -572,10 +646,21 @@
           "content": "You will receive the report to your delivery address within 3 to 5 working days."
         }
       ],
-      "next": [{ "path": "/summary" }]
+      "controller": "FindAnAddressPageController",
+      "next": [
+        {
+          "path": "/order-risk-report-is-this-the-correct-delivery-address",
+          "condition": "hasMatchedDeliveryAddressCondition"
+        },
+        { "path": "/order-risk-report-select-a-delivery-address" },
+        {
+          "path": "/order-risk-report-no-delivery-addresses-found",
+          "condition": "noDeliveryAddressesCondition"
+        }
+      ]
     },
     {
-      "path": "/find-a-delivery-address",
+      "path": "/order-risk-report-find-a-delivery-address",
       "title": "What is the delivery address for your risk report?",
       "components": [
         {
@@ -634,24 +719,24 @@
           "name": "enterManuallyLink",
           "options": {},
           "type": "Html",
-          "content": "<br><a href=\"order-risk-report-enter-delivery-address-manual\">Enter address manually</a>"
+          "content": "<br><a href=\"order-risk-report-enter-delivery-address-manually{% if returnUrl %}?returnUrl={{ returnUrl | urlencode }}{% endif %}\">Enter address manually</a>"
         }
       ],
       "controller": "FindAnAddressPageController",
       "next": [
         {
-          "path": "/is-this-the-correct-delivery-address",
+          "path": "/order-risk-report-is-this-the-correct-delivery-address",
           "condition": "hasMatchedDeliveryAddressCondition"
         },
         {
-          "path": "/no-delivery-addresses-found",
+          "path": "/order-risk-report-no-delivery-addresses-found",
           "condition": "noDeliveryAddressesCondition"
         },
-        { "path": "/select-a-delivery-address" }
+        { "path": "/order-risk-report-select-a-delivery-address" }
       ]
     },
     {
-      "path": "/is-this-the-correct-delivery-address",
+      "path": "/order-risk-report-is-this-the-correct-delivery-address",
       "title": "Is this the correct address?",
       "components": [
         {
@@ -694,14 +779,14 @@
       ],
       "controller": "SelectAnAddressPageController",
       "options": {
-        "changePath": "/find-a-delivery-address"
+        "changePath": "/order-risk-report-find-a-delivery-address"
       },
       "componentsAfter": [
         {
           "name": "enterManuallyLink",
           "options": {},
           "type": "Html",
-          "content": "<br><a href=\"order-risk-report-enter-delivery-address-manual\">Enter address manually</a>"
+          "content": "<br><a href=\"order-risk-report-enter-delivery-address-manually{% if returnUrl %}?returnUrl={{ returnUrl | urlencode }}{% endif %}\">Enter address manually</a>"
         }
       ],
       "next": [
@@ -709,11 +794,15 @@
           "path": "/summary",
           "condition": "isCorrectDeliveryAddress"
         },
-        { "path": "/select-a-delivery-address" }
+        {
+          "path": "/order-risk-report-no-delivery-addresses-found",
+          "condition": "deliveryAddressOnlyOneAddressCondition"
+        },
+        { "path": "/order-risk-report-select-a-delivery-address" }
       ]
     },
     {
-      "path": "/select-a-delivery-address",
+      "path": "/order-risk-report-select-a-delivery-address",
       "title": "Select a delivery address",
       "components": [
         {
@@ -726,7 +815,7 @@
           "name": "searchAgain",
           "options": {},
           "type": "Html",
-          "content": "<p class=\"govuk-body-m\"><a href=\"find-a-delivery-address\">Change your search</a> if the address you're looking for is not listed.</p>"
+          "content": "<p class=\"govuk-body-m\"><a href=\"order-risk-report-find-a-delivery-address{% if returnUrl %}?returnUrl={{ returnUrl | urlencode }}{% endif %}\">Change your search</a> if the address you're looking for is not listed.</p>"
         },
         {
           "name": "addressType",
@@ -751,21 +840,26 @@
       ],
       "controller": "SelectAnAddressPageController",
       "options": {
-        "changePath": "/find-a-delivery-address"
+        "changePath": "/order-risk-report-find-a-delivery-address"
       },
-      "next": [{ "path": "/summary" }],
+      "next": [
+        { "path": "/order-risk-report-is-this-the-correct-delivery-address" }
+      ],
       "componentsAfter": [
         {
           "name": "enterManuallyLink",
           "options": {},
           "type": "Html",
-          "content": "<br><a href=\"order-risk-report-enter-delivery-address-manual\">Enter address manually</a>"
+          "content": "<br><a href=\"order-risk-report-enter-delivery-address-manually{% if returnUrl %}?returnUrl={{ returnUrl | urlencode }}{% endif %}\">Enter address manually</a>"
         }
       ]
     },
     {
-      "path": "/no-delivery-addresses-found",
-      "title": "No addresses found for {{ deliveryAddress_postcodeLookup }} and {{ deliveryAddress_buildingLookup }}",
+      "path": "/order-risk-report-no-delivery-addresses-found",
+      "title": "No addresses found for ‘{{ deliveryAddress_postcodeLookup }}’ and ‘{{ deliveryAddress_buildingLookup }}’",
+      "options": {
+        "hideContinueButton": true
+      },
       "components": [
         {
           "name": "noAddressesFoundMessage",
@@ -777,10 +871,16 @@
           "name": "searchAgain",
           "options": {},
           "type": "Html",
-          "content": "<p class=\"govuk-body-m\"><a href=\"find-a-delivery-address\">Change your search</a> or <a href=\"order-risk-report-enter-delivery-address-manual\">enter address manually</a></p>"
+          "content": "<p class=\"govuk-body-m\"><a href=\"order-risk-report-find-a-delivery-address{% if returnUrl %}?returnUrl={{ returnUrl | urlencode }}{% endif %}\">Change your search</a> or <a href=\"order-risk-report-enter-delivery-address-manually{% if returnUrl %}?returnUrl={{ returnUrl | urlencode }}{% endif %}\">enter address manually</a></p>"
         }
       ],
-      "next": [{ "path": "/find-a-delivery-address" }]
+      "next": [
+        { "path": "/order-risk-report-find-a-delivery-address" },
+        {
+          "path": "/order-risk-report-enter-delivery-address-manually",
+          "condition": "deliveryAddressEnteredManuallyCondition"
+        }
+      ]
     },
     {
       "title": "Check your answers",
@@ -921,6 +1021,24 @@
       }
     },
     {
+      "name": "reportAddressOnlyOneAddressCondition",
+      "displayName": "Report Address Only One Address Found",
+      "value": {
+        "name": "reportAddressOnlyOneAddressCondition",
+        "conditions": [
+          {
+            "field": {
+              "name": "reportAddress_numberOfAddresses",
+              "type": "NumberField",
+              "display": "numberOfAddresses"
+            },
+            "operator": "is",
+            "value": { "type": "Value", "value": "1", "display": "1" }
+          }
+        ]
+      }
+    },
+    {
       "name": "hasMatchedDeliveryAddressCondition",
       "displayName": "Has Matched Delivery Address",
       "value": {
@@ -939,6 +1057,42 @@
       }
     },
     {
+      "name": "reportAddressEnteredManuallyCondition",
+      "displayName": "Report Address Entered Manually",
+      "value": {
+        "name": "reportAddressEnteredManuallyCondition",
+        "conditions": [
+          {
+            "field": {
+              "name": "reportAddress_addressLine1Lookup",
+              "type": "TextField",
+              "display": "reportAddressEnteredManually"
+            },
+            "operator": "is longer than",
+            "value": { "type": "Value", "value": "0", "display": "0" }
+          }
+        ]
+      }
+    },
+    {
+      "name": "deliveryAddressEnteredManuallyCondition",
+      "displayName": "Delivery Address Entered Manually",
+      "value": {
+        "name": "deliveryAddressEnteredManuallyCondition",
+        "conditions": [
+          {
+            "field": {
+              "name": "deliveryAddress_addressLine1Lookup",
+              "type": "TextField",
+              "display": "deliveryAddressEnteredManually"
+            },
+            "operator": "is longer than",
+            "value": { "type": "Value", "value": "0", "display": "0" }
+          }
+        ]
+      }
+    },
+    {
       "name": "noDeliveryAddressesCondition",
       "displayName": "No Addresses Found",
       "value": {
@@ -952,6 +1106,24 @@
             },
             "operator": "is",
             "value": { "type": "Value", "value": "0", "display": "0" }
+          }
+        ]
+      }
+    },
+    {
+      "name": "deliveryAddressOnlyOneAddressCondition",
+      "displayName": "Delivery Address Only One Address Found",
+      "value": {
+        "name": "deliveryAddressOnlyOneAddressCondition",
+        "conditions": [
+          {
+            "field": {
+              "name": "deliveryAddress_numberOfAddresses",
+              "type": "NumberField",
+              "display": "numberOfAddresses"
+            },
+            "operator": "is",
+            "value": { "type": "Value", "value": "1", "display": "1" }
           }
         ]
       }
@@ -991,6 +1163,24 @@
           }
         ]
       }
+    },
+    {
+      "displayName": "Delivery Address Same As Report Address",
+      "name": "isDeliveryAddressSameAsReport",
+      "value": {
+        "name": "isDeliveryAddressSameAsReport",
+        "conditions": [
+          {
+            "field": {
+              "name": "deliveryAddressSameAsReport",
+              "type": "YesNoField",
+              "display": "deliveryAddressSameAsReport"
+            },
+            "operator": "is",
+            "value": { "type": "Value", "value": "true", "display": "true" }
+          }
+        ]
+      }
     }
   ],
   "summaryConfig": {
@@ -1001,6 +1191,17 @@
       "errorMessage": "You must accept the Privacy Policy and Terms and Conditions before continuing"
     },
     "mergeFields": [
+      {
+        "names": [
+          "reportAddress_addressLine1Lookup",
+          "reportAddress_addressLine2Lookup",
+          "reportAddress_townLookup",
+          "reportAddress_countyLookup",
+          "reportAddress_postcodeLookup"
+        ],
+        "to": "Risk report address",
+        "joiner": ", "
+      },
       {
         "names": [
           "deliveryAddress_addressLine1Lookup",
@@ -1030,7 +1231,8 @@
       "deliveryAddress_countyLookup",
       "deliveryAddress_isCorrectAddress",
 
-      "addressType"
+      "addressType",
+      "deliveryAddressSameAsReport"
     ],
     "relabelFields": {
       "deliveryMethod": "Delivery method",
@@ -1066,6 +1268,13 @@
       {
         "when": { "field": "emailAddress", "isEmpty": true },
         "removeFields": ["emailAddress"]
+      },
+      {
+        "when": {
+          "field": "deliveryAddressSameAsReportDisplay",
+          "isEmpty": true
+        },
+        "removeFields": ["deliveryAddressSameAsReportDisplay"]
       }
     ]
   },

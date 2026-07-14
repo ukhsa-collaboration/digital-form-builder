@@ -8,6 +8,7 @@ import {
   SelectedFieldName,
   deriveSelectedFieldName,
   formatAddress,
+  resolveAddressByUprn,
 } from "../utils/addressUtils";
 
 type FormSubmission = {
@@ -188,6 +189,7 @@ export class SelectAnAddressPageController extends PageControllerBase {
       const currentState = await cacheService.getState(request);
 
       if (isCorrectAddress) {
+        // TODO:- "Address check in DB" integration point
         const resolvedSelectedAddress =
           isCorrectAddress === "true"
             ? currentState[`${addressType}_matchedAddress`]
@@ -205,19 +207,24 @@ export class SelectAnAddressPageController extends PageControllerBase {
           }),
         });
 
-        // Only a "Yes" answer is a genuine completion of the address
-        // sub-journey; "No" must continue on to select-an-address per the
-        // normal `next` config, even if a Change link's returnUrl is present.
         const honourReturnUrl = isCorrectAddress === "true";
         return this.proceed(request, h, savedState, honourReturnUrl);
       }
 
+      const addresses: any[] = currentState[`${addressType}_addresses`] || [];
+
+      const resolvedMatchedAddress = resolveAddressByUprn(
+        addresses,
+        selectedAddress
+      );
+
       const savedState = await cacheService.mergeState(request, {
-        [`${addressType}_isCorrectAddress`]: false,
+        [`${addressType}_isCorrectAddress`]: null,
         [`${addressType}_selectedAddress`]: selectedAddress,
+        [`${addressType}_matchedAddress`]: resolvedMatchedAddress,
       });
 
-      return this.proceed(request, h, savedState);
+      return this.proceed(request, h, savedState, false);
     };
   }
 }

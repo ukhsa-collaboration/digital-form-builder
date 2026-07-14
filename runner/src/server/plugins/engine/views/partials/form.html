@@ -15,7 +15,7 @@
     {{ govukSummaryList(details) }}
   {% endif %}
 
-  {% if not (components[0].type == "FlashCard") %}
+  {% if not (components[0].type == "FlashCard") and not page.hideContinueButton %}
     {% if page.isRepeatingFieldPageController and page.isSamePageDisplayMode %}
     {% if details.rows.length %}
     {{ govukButton({ attributes: { id: "submit" }, text: page.buttonText if page.buttonText else "Continue", name: "next", value: "continue"}) }}

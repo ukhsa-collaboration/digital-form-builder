@@ -8,6 +8,12 @@ export const feedbackReturnInfoKey = "f_t";
 
 const paramsToCopy = [feedbackReturnInfoKey, "returnUrl"];
 
+/**
+ * Checks if the url is internal
+ */
+const isSafeInternalUrl = (url: string): boolean =>
+  url.startsWith("/") && !url.startsWith("//");
+
 export function proceed(
   request: HapiRequest,
   h: HapiResponseToolkit,
@@ -19,7 +25,7 @@ export function proceed(
   if (
     honourReturnUrl &&
     typeof returnUrl === "string" &&
-    returnUrl.startsWith("/")
+    isSafeInternalUrl(returnUrl)
   ) {
     return h.redirect(returnUrl);
   } else {
@@ -40,11 +46,22 @@ export function getBackLink(
 ) {
   const returnUrl = request.query.returnUrl;
 
-  if (typeof returnUrl === "string" && returnUrl.startsWith("/")) {
+  if (typeof returnUrl === "string" && isSafeInternalUrl(returnUrl)) {
     return returnUrl;
   }
 
   return progress[progress.length - 2] ?? backLinkFallback;
+}
+
+/**
+ * Returns the current request's `returnUrl` query param if it's present.
+ */
+export function getReturnUrl(request: HapiRequest): string | undefined {
+  const returnUrl = request.query.returnUrl;
+
+  return typeof returnUrl === "string" && isSafeInternalUrl(returnUrl)
+    ? returnUrl
+    : undefined;
 }
 
 type Params = { num?: number; returnUrl: string } | {};
