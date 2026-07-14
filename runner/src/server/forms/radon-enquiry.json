@@ -755,10 +755,10 @@
   ],
   "fees": [],
   "secureFormSubmissionConfig": {
-    "tenantId": "${RPS_TENANT_ID}",
-    "clientId": "${RPS_CLIENT_ID}",
-    "clientSecret": "${RPS_CLIENT_SECRET}",
-    "scopes": ["${RPS_SCOPES}"],
+    "tenantId": "${RPS_SUBMIT_TENANT_ID}",
+    "clientId": "${RPS_SUBMIT_CLIENT_ID}",
+    "clientSecret": "${RPS_SUBMIT_CLIENT_SECRET}",
+    "scopes": ["${RPS_SUBMIT_SCOPES}"],
     "useAwsWafUserAgentWorkaround": true
   },
   "outputs": [

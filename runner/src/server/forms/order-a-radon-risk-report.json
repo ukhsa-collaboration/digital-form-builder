@@ -1299,11 +1299,11 @@
     "url": ""
   },
   "addressLookupConfig": {
-    "apimBaseUrl": "${RPS_API_BASE_URL}",
+    "apimBaseUrl": "${RPS_LOCATION_API_BASE_URL}",
     "callingApplication": "RPS",
-    "tenantId": "${RPS_TENANT_ID}",
-    "clientId": "${RPS_CLIENT_ID}",
-    "clientSecret": "${RPS_CLIENT_SECRET}",
-    "scopes": ["${RPS_SCOPES}"]
+    "tenantId": "${RPS_LOCATION_TENANT_ID}",
+    "clientId": "${RPS_LOCATION_CLIENT_ID}",
+    "clientSecret": "${RPS_LOCATION_CLIENT_SECRET}",
+    "scopes": ["${RPS_LOCATION_SCOPES}"]
   }
 }
