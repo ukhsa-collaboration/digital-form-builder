@@ -60,12 +60,15 @@ export class AddressLookupService {
     }
 
     const jsonRes = await res.json();
+
     return {
-      addresses: jsonRes.matchedAddresses.map((item: any): Address => ({
-        address: item.addressString,
-        postcode: item.postcode,
-        uprn: item.uprn,
-      }))
+      addresses: jsonRes.matchedAddresses.map(
+        (item: any): Address => ({
+          address: item.addressString,
+          postcode: item.postcode,
+          uprn: item.uprn,
+        })
+      ),
     };
   }
 }

@@ -8,50 +8,9 @@ import {
   addressesToList,
   AddressType,
   deriveSelectedFieldName,
+  findMatchingAddress,
+  cleanAddresses,
 } from "../utils/addressUtils";
-
-const STREET_NUMBER_PATTERN = /(^|, )(\d+[A-Z]?([-\/]\d+)?[A-Z]?),/i;
-
-const findMatchingAddress = (
-  addresses: any[],
-  building?: string,
-  addressLine1?: string
-): any | null => {
-  const normalizedBuilding = building?.trim().toUpperCase();
-  const addressLine1Pattern = addressLine1
-    ? new RegExp(`^${addressLine1.trim().toUpperCase()}( |,)`)
-    : null;
-
-  for (const address of addresses) {
-    const firstPart = address.address.split(",")[0].trim().toUpperCase();
-
-    if (normalizedBuilding) {
-      if (
-        firstPart.replace(/\s/g, "") ===
-          normalizedBuilding.replace(/\s/g, "") ||
-        firstPart.startsWith(normalizedBuilding + " ")
-      ) {
-        return address;
-      }
-    }
-
-    if (
-      addressLine1Pattern &&
-      addressLine1Pattern.test(address.address.toUpperCase())
-    ) {
-      return address;
-    }
-  }
-
-  return null;
-};
-
-const cleanAddresses = (addresses: any[]): any[] => {
-  return addresses.map((address) => ({
-    ...address,
-    address: address.address.replace(STREET_NUMBER_PATTERN, "$1$2"),
-  }));
-};
 
 const formSchema = Joi.object({
   addressType: addressTypeSchema,
@@ -123,6 +82,7 @@ export class FindAnAddressPageController extends PageControllerBase {
 
       const addresses = cleanAddresses(addressResponse.addresses);
 
+      // TODO:- "Fuzzy check full address" integration point
       const matchedAddress = findMatchingAddress(
         addresses,
         buildingLookup,
@@ -145,7 +105,7 @@ export class FindAnAddressPageController extends PageControllerBase {
         // save data
         [`${addressType}_addresses`]: addresses,
         [`${addressType}_numberOfAddresses`]: addresses.length,
-        [`${addressType}_hasMatchedAddress`]: matchedAddress !== null,
+        [`${addressType}_hasMatchedAddress`]: matchedAddress !== undefined,
         [`${addressType}_matchedAddress`]: matchedAddress,
         [`${addressType}_isCorrectAddress`]: null,
         // clear any selection made against a previous search's results
@@ -155,7 +115,7 @@ export class FindAnAddressPageController extends PageControllerBase {
 
       // This is always an intermediate step of the address-lookup
       // sub-journey, never a completion, so it must never short-circuit
-      // straight to a Change link's returnUrl.
+      // straight to a Change link's returnUrl so honourReturnUrl is false.
       return this.proceed(request, h, { ...savedState }, false);
     };
   }

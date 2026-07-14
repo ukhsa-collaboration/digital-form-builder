@@ -65,17 +65,13 @@ export class TextField extends FormComponent {
   }
 
   format(options: any, value: string) {
-    console.log("formatting value: ", value, " with options: ", options);
-    if (options?.trim === true) {
-      console.log("trimming content: ", value);
+    if (options?.trim) {
       value = value.trim();
     }
 
     if (options?.case === "upper") {
-      console.log("converting content to upper case: ", value);
       value = value.toUpperCase();
     } else if (options?.case === "lower") {
-      console.log("converting content to lower case: ", value);
       value = value.toLowerCase();
     }
 
@@ -90,7 +86,7 @@ export class TextField extends FormComponent {
     let value;
     if (payload) {
       value = this.getStateValueFromValidForm(payload);
-      if(value) {    
+      if (value) {
         if (options.format) {
           value = this.format(options.format, value);
           payload[this.name] = value;

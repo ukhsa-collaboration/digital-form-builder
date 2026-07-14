@@ -103,8 +103,6 @@ export class FormModel {
     this.name = def.name;
     this.serviceStartPage =
       def.fullStartPage || config.serviceStartPage || config.serviceName || "#";
-    this.serviceStartPage =
-      def.fullStartPage || config.serviceStartPage || config.serviceName || "#";
     this.returnTo = def.returnTo || false;
     this.values = result.value;
 
