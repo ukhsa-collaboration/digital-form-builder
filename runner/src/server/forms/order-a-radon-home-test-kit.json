@@ -20,15 +20,15 @@
         {
           "name": "tqtivv",
           "options": {},
-          "type":"InsetText",
-          "content":"The Action Level for radon in homes is 200 becquerels per cubic metre (Bq m-3). A becquerel is a measure of radioactivity. If the radon level in your property is higher than this, you should take steps to reduce it.",
+          "type": "InsetText",
+          "content": "The Action Level for radon in homes is 200 becquerels per cubic metre (Bq m-3). A becquerel is a measure of radioactivity. If the radon level in your property is higher than this, you should take steps to reduce it.",
           "schema": {}
         },
         {
           "name": "smokingRisk",
           "options": {},
-          "type":"InsetText",
-          "content":" If you or anyone living in your home is a current or ex-smoker, the risk to health is greater. In this case, the Action Level is lower, at 100 Bq m-3.",
+          "type": "InsetText",
+          "content": " If you or anyone living in your home is a current or ex-smoker, the risk to health is greater. In this case, the Action Level is lower, at 100 Bq m-3.",
           "schema": {}
         },
         {
@@ -468,7 +468,7 @@
       "name": "youllNeedYourList",
       "type": "string",
       "items": [
-        { 
+        {
           "text": "a valid email address ",
           "value": "a valid email address "
         },
@@ -476,7 +476,7 @@
           "text": "a postal delivery address in the UK or Isle of Man",
           "value": "a postal delivery address in the UK or Isle of Man"
         },
-        { 
+        {
           "text": "your payment details",
           "value": "your payment details"
         }
