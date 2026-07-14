@@ -32,8 +32,8 @@ services:
       # order-a-radon-risk-report.json). In development these are resolved from
       # environment variables of the same name by resolvePlaceholders.ts.
       - SESSION_COOKIE_PASSWORD
-      - RPS_API_BASE_URL
-      - RPS_TENANT_ID
-      - RPS_CLIENT_ID
-      - RPS_CLIENT_SECRET
-      - RPS_SCOPES
+      - RPS_LOCATION_API_BASE_URL
+      - RPS_LOCATION_TENANT_ID
+      - RPS_LOCATION_CLIENT_ID
+      - RPS_LOCATION_CLIENT_SECRET
+      - RPS_LOCATION_SCOPES
