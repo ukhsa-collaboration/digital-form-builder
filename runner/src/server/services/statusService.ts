@@ -232,6 +232,16 @@ export class StatusService {
     };
   }
 
+  /**
+   * Injects values from `formData` and `state` into the payload structure
+   * If a value is not found in `formData` or `state`, it defaults to the value
+   * in the payload structure
+   *
+   * @param payload
+   * @param formData
+   * @param state
+   * @returns
+   */
   resolvePayload(payload: Record<string, string>, formData, state) {
     return Object.fromEntries(
       Object.entries(payload).map(([key, value]) => {
