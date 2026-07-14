@@ -659,6 +659,17 @@
       "title": "addressesList",
       "type": "string",
       "items": []
+    },
+    {
+      "title": "terms and conditions",
+      "name": "TermsAndConditions",
+      "type": "string",
+      "items": [
+        {
+          "html": "<p class=\"govuk-body-m\">I agree to the <a href=\"https://www.ukhsa-protectionservices.org.uk/tc/privacy-policy\" target=\"_blank\">Privacy Policy</a> and <a href=\"https://www.ukhsa-protectionservices.org.uk/tc/terms-conditions\" target=\"_blank\">Terms and Conditions</a> for this order.</p>",
+          "value": "accept"
+        }
+      ]
     }
   ],
   "sections": [],
