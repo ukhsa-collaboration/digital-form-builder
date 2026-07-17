@@ -1,6 +1,7 @@
 {
   "metadata": {},
   "startPage": "/type-of-support",
+  "fullStartPage": "type-of-support",
   "name": "Contact us",
   "serviceName": "Contact us",
   "confirmationSessionTimeout": 2000,
@@ -409,7 +410,7 @@
         },
         {
           "text": "Radiation Protection Services Facilities",
-          "value": "Radiation Protection Services Facilitiesn",
+          "value": "Radiation Protection Services Facilities",
           "description": "Hire of specialist training facilities at UKHSA sites. Suitable for organisations delivering their own radiation protection or related training courses"
         },
         {
@@ -770,14 +771,14 @@
         "url": "${RPS_RADON_ENQUIRY_URL}",
         "allowRetry": true,
         "payload": {
-          "uuid": "generatedReference",
-          "firstName": "firstName",
-          "lastName": "lastName",
-          "email": "email",
-          "organisation": "organisation",
-          "subject": "supportType",
-          "description": "requestInformation",
-          "service": "RPS"
+          "uuid": { "field": "generatedReference" },
+          "firstName": { "field": "firstName" },
+          "lastName": { "field": "lastName" },
+          "email": { "field": "email" },
+          "organisation": { "field": "organisation", "required": false },
+          "subject": { "field": "supportType" },
+          "description": { "field": "requestInformation" },
+          "service": { "field": "service", "fallback": "General Enquiry" }
         }
       }
     }

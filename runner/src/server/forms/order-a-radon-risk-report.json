@@ -2,6 +2,7 @@
   "formGroup": "radon",
   "metadata": {},
   "startPage": "/order-a-radon-risk-report-start-now",
+  "fullStartPage": "order-a-radon-risk-report-start-now",
   "name": "Order a radon risk report",
   "serviceName": "Order a radon risk report",
   "confirmationSessionTimeout": 2000,

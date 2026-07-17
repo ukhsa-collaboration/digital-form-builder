@@ -8,7 +8,10 @@ import {
   WebhookService,
 } from "server/services";
 import { SendNotificationArgs } from "server/services/notifyService";
-import { WebhookOutputConfiguration } from "@xgovformbuilder/model";
+import {
+  WebhookOutputConfiguration,
+  PayloadValueConfig,
+} from "@xgovformbuilder/model";
 import { ComponentCollection } from "server/plugins/engine/components/ComponentCollection";
 import { FormSubmissionState } from "server/plugins/engine/types";
 import { FormModel } from "server/plugins/engine/models";
@@ -242,13 +245,21 @@ export class StatusService {
    * @param state
    * @returns
    */
-  resolvePayload(payload: Record<string, string>, formData, state) {
-    return Object.fromEntries(
-      Object.entries(payload).map(([key, value]) => {
-        const resolved = formData[value] ?? state[value] ?? value;
-        return [key, resolved];
-      })
-    );
+  resolvePayload(payload: Record<string, PayloadValueConfig>, formData, state) {
+    const output: Record<string, string> = {};
+    for (const [key, config] of Object.entries(payload)) {
+      const resolved =
+        config.string ??
+        formData[config.field] ??
+        state[config.field] ??
+        config.fallback ??
+        "";
+
+      if (resolved !== "" || config.required !== false) {
+        output[key] = resolved;
+      }
+    }
+    return output;
   }
   /**
    * Appends `{paymentSkipped: true}` to the `metadata` property and drops the `fees` property if the user has chosen to skip payment
