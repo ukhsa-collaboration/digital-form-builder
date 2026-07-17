@@ -2,7 +2,7 @@ import { Item } from "@xgovformbuilder/model/dist/module/data-model/types";
 import Joi from "joi";
 import { Address } from "src/server/services/addressLookupService";
 
-export type AddressType = "reportAddress" | "deliveryAddress";
+export type AddressType = "reportAddress" | "deliveryAddress" | "measurementAddress";
 
 export type SelectedFieldName =
   | "selectedReportAddress"
@@ -10,7 +10,8 @@ export type SelectedFieldName =
 
 export const addressTypeSchema = Joi.string().valid(
   "reportAddress",
-  "deliveryAddress"
+  "deliveryAddress",
+  "measurementAddress"
 );
 
 /**
