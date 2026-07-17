@@ -189,7 +189,18 @@ export class SelectAnAddressPageController extends PageControllerBase {
       const currentState = await cacheService.getState(request);
 
       if (isCorrectAddress) {
-        // TODO:- "Address check in DB" integration point
+        // TODO: "Address check in DB" integration point
+
+        // TODO: Error to throw on invalid DB check
+
+        // throw new ControllerError(
+        //   error instanceof Error ? error.message : JSON.stringify(error),
+        //   {
+        //     code: 500,
+        //     page: "500-database-check-error",
+        //   }
+        // );
+
         const resolvedSelectedAddress =
           isCorrectAddress === "true"
             ? currentState[`${addressType}_matchedAddress`]
