@@ -108,12 +108,18 @@ export type NotifyOutputConfiguration = {
   }[];
   escapeURLs?: boolean;
 };
+export type PayloadValueConfig = {
+  field?: string;
+  fallback?: string;
+  string?: string;
+  required?: boolean;
+};
 
 export type WebhookOutputConfiguration = {
   url: string;
   sendAdditionalPayMetadata?: boolean;
   allowRetry?: boolean;
-  payload?: Record<string, string>;
+  payload?: Record<string, PayloadValueConfig>;
 };
 
 export type OutputConfiguration =
