@@ -73,7 +73,7 @@
       "title": "Enter the address you want to measure the radon level",
       "components": [
         {
-          "name": "postcodeLookup",
+          "name": "measurementAddress_postcodeLookup",
           "options": {
             "customValidationMessages": {
               "string.empty": "Enter postcode",
@@ -96,7 +96,7 @@
           "hint": "For example, AA3 1AB"
         },
         {
-          "name": "buildingLookup",
+          "name": "measurementAddress_buildingLookup",
           "options": {
             "customValidationMessages": {
               "string.empty": "Enter building number or name",
@@ -108,6 +108,14 @@
           "type": "TextField",
           "title": "Building number or name",
           "hint": "For example, 15 or Prospect cottage"
+        },
+        {
+          "name": "addressType",
+          "options": {
+            "exposeToContext": true,
+            "value": "measurementAddress"
+          },
+          "type": "HiddenField"
         }
       ],
       "customButtonText": "Find address",
@@ -119,6 +127,10 @@
           "content": "<br><a href=\"enter-report-address\">Enter address manually</a>"
         }
       ],
+      "options": {
+        "hiddenFields": ["addressType"],
+        "disabledChangeFields": ["addressType"]
+      },
       "controller": "FindAnAddressPageController",
       "next": [
         {
