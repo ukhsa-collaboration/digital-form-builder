@@ -243,7 +243,15 @@
       "title": "Enter the address you want to measure the radon level",
       "components": [
         {
-          "name": "addressLine1Lookup",
+          "name": "addressType",
+          "options": {
+            "exposeToContext": true,
+            "value": "reportAddress"
+          },
+          "type": "HiddenField"
+        },
+        {
+          "name": "reportAddress_addressLine1Lookup",
           "options": {
             "customValidationMessages": {
               "any.required": "Enter address line 1, typically the building and street",
@@ -256,7 +264,7 @@
           "title": "Address Line 1"
         },
         {
-          "name": "addressLine2Lookup",
+          "name": "reportAddress_addressLine2Lookup",
           "options": {
             "required": false
           },
@@ -264,7 +272,7 @@
           "title": "Address Line 2"
         },
         {
-          "name": "townLookup",
+          "name": "reportAddress_townLookup",
           "options": {
             "customValidationMessages": {
               "any.required": "Enter town or city",
@@ -276,7 +284,7 @@
           "title": "Town or city"
         },
         {
-          "name": "countyLookup",
+          "name": "reportAddress_countyLookup",
           "options": {
             "required": false
           },
@@ -284,7 +292,7 @@
           "title": "County"
         },
         {
-          "name": "postcodeLookup",
+          "name": "reportAddress_postcodeLookup",
           "options": {
             "customValidationMessages": {
               "string.empty": "Enter postcode",
