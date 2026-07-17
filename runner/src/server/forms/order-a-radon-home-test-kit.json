@@ -379,7 +379,7 @@
       "title": "Was the level above the action level 200 Bq m⁻³",
       "components": [
         {
-          "name": "200BqmYesNo",
+          "name": "bqmYesNo",
           "options": {
             "customValidationMessages": {
               "any.required": "Select yes if the level was above the action level of 200 Bq m⁻³"
@@ -774,7 +774,7 @@
         "conditions": [
           {
             "field": {
-              "name": "200BqmYesNo",
+              "name": "bqmYesNo",
               "type": "YesNoField",
               "display": "Was the level above the action level 200 Bqm-3"
             },
@@ -828,7 +828,7 @@
         "conditions": [
           {
             "field": {
-              "name": "200BqmYesNo",
+              "name": "bqmYesNo",
               "type": "YesNoField",
               "display": "Was the level above the action level 200 Bqm-3"
             },
