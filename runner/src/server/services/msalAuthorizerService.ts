@@ -20,7 +20,9 @@ export class MsalAuthorizer {
     const token = await this.msal.acquireTokenByClientCredential({
       scopes: this.scopes,
     });
+
     if (!token?.accessToken) throw new Error("Failed to acquire access token");
+
     return token.accessToken;
   }
 }

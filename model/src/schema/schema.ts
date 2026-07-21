@@ -357,6 +357,12 @@ const addressLookupConfigSchema = msalAuthorizeConfigSchema.concat(
   })
 );
 
+const dynamicServiceConfigSchema = joi.object().keys({
+  name: joi.string().required(),
+  service: joi.string().required(),
+  parameters: joi.object().unknown(true).required(),
+});
+
 const summaryConfigSchema = joi.object().keys({
   submitLabel: joi.string().optional(),
   declaration: joi
@@ -460,6 +466,7 @@ export const Schema = joi
     error500ContactEmail: joi.string().optional(),
     summaryConfig: summaryConfigSchema.optional(),
     generateReference: joi.boolean().optional(),
+    services: joi.array().items(dynamicServiceConfigSchema).optional(),
   });
 
 /**

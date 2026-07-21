@@ -223,6 +223,12 @@ export interface AddressLookupConfig extends MsalAuthorizerConfig {
   subscriptionKey?: string;
 }
 
+export interface DynamicServiceConfig {
+  name: string;
+  service: string;
+  parameters: Record<string, any>;
+}
+
 export interface SummaryDeclaration {
   /** Checkbox label rendered on the summary page. */
   label: string;
@@ -322,4 +328,5 @@ export type FormDefinition = {
   error500ContactEmail?: string | undefined;
   summaryConfig?: SummaryConfig;
   generateReference?: boolean | undefined;
+  services?: DynamicServiceConfig[];
 };

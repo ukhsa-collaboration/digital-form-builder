@@ -14,6 +14,7 @@ import { configureCrumbPlugin } from "./plugins/crumb";
 import { configureInitialiseSessionPlugin } from "server/plugins/initialiseSession/configurePlugin";
 
 import pluginLocale from "./plugins/locale";
+import pluginServiceHelper from "./plugins/serviceHelper";
 import pluginSession from "./plugins/session";
 import pluginAuth from "./plugins/auth";
 import pluginViews from "./plugins/views";
@@ -37,7 +38,6 @@ import {
   FormSecurityService,
   SecureFormSubmissionService,
   getSecureFormSubmissionServiceInstance,
-  AddressLookupService,
 } from "./services";
 import { HapiRequest, HapiResponseToolkit, RouteConfig } from "./types";
 import getRequestInfo from "./utils/getRequestInfo";
@@ -46,7 +46,7 @@ import { QueueStatusService } from "server/services/queueStatusService";
 import { MySqlQueueService } from "server/services/mySqlQueueService";
 import { PgBossQueueService } from "server/services/pgBossQueueService";
 import { isValidSecureFormSubmissionConfig } from "./utils/isValidSecureFormSubmissionConfig";
-import { getLocationServiceInstanceName } from "./plugins/engine/helpers";
+import { DynamicServices } from "./services/dynamicServices";
 
 const serverOptions = (): ServerOptions => {
   const hasCertificate = config.sslKey && config.sslCert;
@@ -118,6 +118,7 @@ async function createServer(routeConfig: RouteConfig) {
   await server.register(configureBlankiePlugin(config));
   await server.register(configureCrumbPlugin(config, routeConfig));
   await server.register(Schmervice);
+  await server.register(pluginServiceHelper);
   await server.register(pluginAuth);
 
   server.registerService([
@@ -225,22 +226,17 @@ async function createServer(routeConfig: RouteConfig) {
   });
 
   await server.register(pluginQueue);
-  const addressLookupServiceNames = new Set<string>();
+
+  const dynamicServices = new DynamicServices();
+  const dynamicServiceNames = new Set<string>();
+
   for (const form of forms.options.configs) {
-    if (form.configuration.addressLookupConfig) {
-      const addressLookupInstanceName = getLocationServiceInstanceName(
-        form.configuration.addressLookupConfig
-      );
-      if (!addressLookupServiceNames.has(addressLookupInstanceName)) {
-        const addressLookupService = new AddressLookupService(
-          form.configuration.addressLookupConfig
-        );
-        await server.registerService(
-          Schmervice.withName(addressLookupInstanceName, addressLookupService)
-        );
-        addressLookupServiceNames.add(addressLookupInstanceName);
-      }
-    }
+    await dynamicServices.registerServices(
+      server,
+      form.id,
+      form.configuration.services,
+      dynamicServiceNames
+    );
   }
 
   return server;

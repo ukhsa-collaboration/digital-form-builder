@@ -8,8 +8,11 @@ import {
   SelectedFieldName,
   deriveSelectedFieldName,
   formatAddress,
-  resolveAddressByUprn,
+  resolveAddressByUdprn,
 } from "../utils/addressUtils";
+import { ControllerError } from "../errors";
+import { v4 as uuidv4 } from "uuid";
+import { JsonApiIntegrationWithMsal } from "src/server/services/jsonApiIntegrationWithMsal";
 
 type FormSubmission = {
   addressType: AddressType;
@@ -21,6 +24,7 @@ type FormSubmission = {
 const COMPONENT_ADDRESS_TYPE = "addressType";
 const COMPONENT_ADDRESSES_HEADING = "addressesFoundHeading";
 const COMPONENT_MATCHED_ADDRESS_DISPLAY = "matchedAddressDisplay";
+const CHECK_UDPRN_FOR_ADDRESS_TYPES = ["reportAddress"];
 
 const formSchema = Joi.object({
   addressType: addressTypeSchema,
@@ -32,7 +36,7 @@ const formSchema = Joi.object({
  * Returns a `getDisplayStringFromState` implementation for the given address type.
  * State keys are namespaced by address type (e.g. `reportAddress_selectedAddress`)
  * so that report and delivery addresses coexist without collision.
- * When the stored value is a UPRN string, it resolves the full address from the
+ * When the stored value is a UDPRN string, it resolves the full address from the
  * cached `${addressType}_addresses` list.
  */
 function buildDisplayStringFromState(
@@ -43,7 +47,9 @@ function buildDisplayStringFromState(
     if (!value) return "";
     if (typeof value === "object" && value.address) return formatAddress(value);
     const addresses: any[] = state[`${pageAddressType}_addresses`] || [];
-    const match = addresses.find((addr) => String(addr.uprn) === String(value));
+    const match = addresses.find(
+      (addr) => String(addr.udprn) === String(value)
+    );
     return match ? formatAddress(match) : String(value);
   };
 }
@@ -57,6 +63,63 @@ const extractInputFromSubmission = (data: FormSubmission) => {
     selectedDeliveryAddress: rest["selectedDeliveryAddress"],
     isCorrectAddress: rest[`${addressType}_isCorrectAddress`],
   };
+};
+
+/**
+ * Calls the RPS backend service to see if a UDPRN is valid for a risk report
+ * @param rpsBackendService - The backend service to check UDPRNs in the database
+ * @param parameters - udprn & a back link url for the error pages
+ * @returns a session ID if successful
+ */
+const lookupUdprnInDatabase = async (
+  rpsBackendService: JsonApiIntegrationWithMsal,
+  { udprn, backLinkUrl }: { udprn: string; backLinkUrl: string }
+) => {
+  try {
+    const sessionId = uuidv4();
+
+    const checkUdprn = await rpsBackendService.request("/lookup", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        UDPRN: udprn.padStart(8, "0"),
+        SessionId: sessionId,
+      }),
+    });
+
+    const response = await checkUdprn.json();
+
+    if (response.error) {
+      throw new ControllerError("database check not successful", {
+        code: 500,
+        page: "500-database-check-error",
+        backUrl: backLinkUrl,
+      });
+    }
+
+    if (!response.found) {
+      throw new ControllerError("address is not in database", {
+        code: 404,
+        page: "404-address-not-in-db",
+        backUrl: backLinkUrl,
+      });
+    }
+
+    return sessionId;
+  } catch (error) {
+    if (error instanceof ControllerError) throw error;
+
+    throw new ControllerError(
+      error instanceof Error ? error.message : "unknown error",
+      {
+        code: 500,
+        backUrl: backLinkUrl,
+        originalStack: error instanceof Error ? error.stack : undefined,
+      }
+    );
+  }
 };
 
 export class SelectAnAddressPageController extends PageControllerBase {
@@ -122,8 +185,8 @@ export class SelectAnAddressPageController extends PageControllerBase {
     viewModel.components[radiosIndex].model.items = addresses.map(
       (addr: any) => ({
         text: addr.address,
-        value: addr.uprn,
-        checked: `${addr.uprn}` === `${formData[this.selectedFieldName]}`,
+        value: addr.udprn,
+        checked: `${addr.udprn}` === `${formData[this.selectedFieldName]}`,
       })
     );
   }
@@ -155,9 +218,7 @@ export class SelectAnAddressPageController extends PageControllerBase {
     )
       return;
 
-    viewModel.components[
-      matchedDisplayIndex
-    ].model.content = `${this.address}, ${this.postcodeLookup}`;
+    viewModel.components[matchedDisplayIndex].model.content = `${this.address}`;
   }
 
   makePostRouteHandler() {
@@ -185,26 +246,49 @@ export class SelectAnAddressPageController extends PageControllerBase {
 
       const selectedAddress = selectedReportAddress || selectedDeliveryAddress;
 
-      const { cacheService } = request.services([]);
+      const rpsBackendServiceName = request.service.getName(
+        "rpsBackendService"
+      );
+
+      const { cacheService, ...rest } = request.services([]);
       const currentState = await cacheService.getState(request);
 
+      if (rpsBackendServiceName in rest === false) {
+        throw new ControllerError("cannot find rps backend service", {
+          code: 500,
+        });
+      }
+
+      const rpsBackendService = rest[
+        rpsBackendServiceName
+      ] as JsonApiIntegrationWithMsal;
+
       if (isCorrectAddress) {
-        // TODO: "Address check in DB" integration point
-
-        // TODO: Error to throw on invalid DB check
-
-        // throw new ControllerError(
-        //   error instanceof Error ? error.message : JSON.stringify(error),
-        //   {
-        //     code: 500,
-        //     page: "500-database-check-error",
-        //   }
-        // );
-
         const resolvedSelectedAddress =
           isCorrectAddress === "true"
             ? currentState[`${addressType}_matchedAddress`]
             : null;
+
+        const userSelectedYes = isCorrectAddress === "true";
+
+        if (userSelectedYes && !resolvedSelectedAddress) {
+          // throw error invalid data
+          throw new ControllerError("cannot find matched report address", {
+            code: 500,
+          });
+        }
+
+        const checkUdprn = CHECK_UDPRN_FOR_ADDRESS_TYPES.includes(addressType);
+
+        if (userSelectedYes && checkUdprn) {
+          const progress = currentState.progress || [];
+          const backLinkUrl = progress[progress.length - 1];
+
+          await lookupUdprnInDatabase(rpsBackendService, {
+            backLinkUrl,
+            udprn: resolvedSelectedAddress?.udprn,
+          });
+        }
 
         const savedState = await cacheService.mergeState(request, {
           [`${addressType}_isCorrectAddress`]: isCorrectAddress === "true",
@@ -224,7 +308,7 @@ export class SelectAnAddressPageController extends PageControllerBase {
 
       const addresses: any[] = currentState[`${addressType}_addresses`] || [];
 
-      const resolvedMatchedAddress = resolveAddressByUprn(
+      const resolvedMatchedAddress = resolveAddressByUdprn(
         addresses,
         selectedAddress
       );

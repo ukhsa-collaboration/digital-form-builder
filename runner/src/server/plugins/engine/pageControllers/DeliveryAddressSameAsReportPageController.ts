@@ -11,7 +11,7 @@ export class DeliveryAddressSameAsReportPageController extends PageControllerBas
   async getRouteHandlerHook(request: HapiRequest) {
     const { cacheService } = request.services([]);
     const currentState = await cacheService.getState(request);
-    this.displayAddress = `${currentState.reportAddress_selectedAddress.address}, ${currentState.reportAddress_selectedAddress.postcode}`;
+    this.displayAddress = `${currentState.reportAddress_selectedAddress.address}`;
   }
 
   getViewModel(formData: any, iteration?: any, errors?: any) {
