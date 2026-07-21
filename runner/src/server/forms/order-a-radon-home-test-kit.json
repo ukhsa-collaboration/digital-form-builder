@@ -586,7 +586,7 @@
       "title": "Who is the recipient of radon gas test results",
       "components": [
         {
-          "name": "Title",
+          "name": "ResultsTitle",
           "options": {
             "exposeToContext": true,
             "customValidationMessages":{
@@ -598,7 +598,7 @@
           "hint": "e.g. Mr, Mrs, Dr"
         },
         {
-          "name": "Initials",
+          "name": "ResultsInitials",
           "options": {
             "customValidationMessages":{
               "string.empty": "Enter the initials of the recipient of the radon gas test results"
@@ -609,7 +609,7 @@
           "title": "Initials"
         },
         {
-          "name": "LastName",
+          "name": "ResultsLastName",
           "options": {
             "customValidationMessages":{
               "string.empty": "Enter the last name of the recipient of the radon gas test results"
@@ -622,7 +622,6 @@
       ],
       "next": [{"path": "/gas-test-kit-enter-results-address-manually"}]
     },
-
     {
         "path": "/gas-test-kit-enter-results-address-manually",
         "title": "What address do you want your radon gas test results to be delivered to?",
@@ -692,11 +691,115 @@
         ],
         "next": [{"path": "/gas-test-kit-check-your-answers"}]
       },
+      {
+        "path": "/who-is-the-recipient-of-the-kit",
+        "title": "Who is the recipient of the kit?",
+        "components": [
+          {
+            "name": "KitTitle",
+            "options": {
+              "exposeToContext": true,
+              "customValidationMessages":{
+                "string.empty": "Enter the title of the recipient of the kit"
+              }
+            },
+            "type": "TextField",
+            "title": "Title",
+            "hint": "e.g. Mr, Mrs, Dr"
+          },
+          {
+            "name": "KitInitials",
+            "options": {
+              "customValidationMessages":{
+                "string.empty": "Enter the initials of the recipient of the kit"
+              },
+              "exposeToContext": true
+            },
+            "type": "TextField",
+            "title": "Initials"
+          },
+          {
+            "name": "KitLastName",
+            "options": {
+              "customValidationMessages":{
+                "string.empty": "Enter the last name of the recipient of the kit"
+              },
+              "exposeToContext": true 
+            },
+            "type": "TextField",
+            "title": "Last Name"
+          }
+        ],
+      "next": [{"path": "/gas-test-kit-enter-delivery-address-manually"}]
+    },
     {
-      "path": "/who-is-the-recipient-of-the-kit",
-      "title": "Who is the recipient of the kit",
-      "components": [],
-      "next": []
+      "path": "/gas-test-kit-enter-delivery-address-manually",
+      "title": "What address do you want your kit to be delivered to?",
+      "components": [
+        {
+          "name": "KitAddressLine1",
+          "options": {
+            "customValidationMessages":{
+              "string.empty": "Enter address line 1, typically the building and street"
+            },
+            "exposeToContext": true
+          },
+          "type": "TextField",
+          "title": "Address Line 1"
+        },
+        {
+          "name": "KitAddressLine2",
+          "options": {
+            "required": false,
+            "exposeToContext": true
+          },
+          "type": "TextField",
+          "title": "Address Line 2"
+        },
+        {
+          "name": "KitTown",
+          "options": {
+            "customValidationMessages":{
+              "string.empty": "Enter town or city"
+            },
+            "exposeToContext": true
+          },
+          "type": "TextField",
+          "title": "Town or city"
+        },
+        {
+          "name": "KitCounty",
+          "options": {
+            "required": false,
+            "exposeToContext": true
+          },
+          "type": "TextField",
+          "title": "County"
+        },
+        {
+          "name": "postcodeLookup",
+          "options": {
+            "customValidationMessages": {
+              "string.empty": "Enter postcode",
+              "string.pattern.base": "Enter a full UK postcode",
+              "string.max": "Postcode must be less than 10 characters"
+            },
+            "autocomplete": "postal-code",
+            "exposeToContext": true,
+            "format": {
+              "trim": true,
+              "case": "upper"
+            }
+          },
+          "schema": {
+            "max": 10,
+            "regex": "^[\\s]*[A-z]{1,2}[0-9][A-z0-9]?[\\s]*[0-9]{1,2}[ABD-hJLNP-uW-z]{2}[\\s]*$"
+          },
+          "type": "TextField",
+          "title": "Postcode"
+        }
+      ],
+      "next": [{"path": "/gas-test-kit-check-your-answers"}]
     },
     {
       "path": "/gas-test-kit-check-your-answers",
