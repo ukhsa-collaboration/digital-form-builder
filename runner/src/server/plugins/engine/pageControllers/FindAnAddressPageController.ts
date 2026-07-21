@@ -1,7 +1,6 @@
 import { PageControllerBase } from "./PageControllerBase";
 import { HapiRequest, HapiResponseToolkit } from "server/types";
 import { AddressLookupService } from "../../../services/addressLookupService";
-import { getLocationServiceInstanceName } from "../helpers";
 import Joi from "joi";
 import {
   addressTypeSchema,
@@ -59,22 +58,20 @@ export class FindAnAddressPageController extends PageControllerBase {
         buildingLookup,
       } = extractInputFromSubmission(validation.value);
 
-      const config = this.model.def?.addressLookupConfig;
-
-      if (typeof config === "undefined") {
-        return response;
-      }
-
-      const addressLookupInstanceName = getLocationServiceInstanceName(config);
-
       const { cacheService, ...rest } = request.services([]);
+
+      const addressLookupInstanceName = request.service.getName(
+        "addressLookupService"
+      );
 
       const addressLookupService = rest[
         addressLookupInstanceName
       ] as AddressLookupService;
 
       if (!addressLookupService) {
-        return response;
+        throw new ControllerError("cannot find address lookup service", {
+          code: 500,
+        });
       }
 
       try {

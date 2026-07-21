@@ -55,6 +55,9 @@ declare module "@hapi/hapi" {
   // props from plugins which doesn't export @types
   interface Request {
     services: Services; // plugin schmervice
+    service: {
+      getName(name: string): string;
+    };
     i18n: {
       // plugin locale
       setLocale(lang: string): void;
