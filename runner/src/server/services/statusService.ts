@@ -252,14 +252,15 @@ export class StatusService {
   ): Record<string, string> {
     if (!payload) return {};
 
+    const resolveFieldValue = (field: string | undefined) =>
+      field ? formData[field] ?? state[field] : undefined;
+
     const resolveValue = ({
       string,
       field,
       fallback,
     }: PayloadValueConfig): string =>
-      String(
-        string ?? formData[field ?? ""] ?? state[field ?? ""] ?? fallback ?? ""
-      );
+      String(string ?? resolveFieldValue(field) ?? fallback ?? "");
 
     const output: Record<string, string> = {};
     for (const [key, config] of Object.entries(payload)) {
