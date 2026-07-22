@@ -627,7 +627,7 @@
         "title": "What address do you want your radon gas test results to be delivered to?",
         "components": [
           {
-            "name": "Address Line 1",
+            "name": "AddressLine1",
             "options": {
               "customValidationMessages":{
                 "string.empty": "Enter address line 1, typically the building and street"
@@ -638,7 +638,7 @@
             "title": "Address Line 1"
           },
           {
-            "name": "Address Line 2",
+            "name": "AddressLine2",
             "options": {
               "required": false,
               "exposeToContext": true
@@ -647,7 +647,7 @@
             "title": "Address Line 2"
           },
           {
-            "name": "Town or city",
+            "name": "TownOrCity",
             "options": {
               "customValidationMessages":{
                 "string.empty": "Enter town or city"
@@ -667,7 +667,7 @@
             "title": "County"
           },
           {
-            "name": "postcodeLookup",
+            "name": "Postcode",
             "options": {
               "customValidationMessages": {
                 "string.empty": "Enter postcode",
@@ -777,7 +777,7 @@
           "title": "County"
         },
         {
-          "name": "postcodeLookup",
+          "name": "KitPostcode",
           "options": {
             "customValidationMessages": {
               "string.empty": "Enter postcode",
@@ -799,7 +799,44 @@
           "title": "Postcode"
         }
       ],
-      "next": [{"path": "/gas-test-kit-check-your-answers"}]
+      "next": [
+        {"path": "/gas-test-kit-delivery-address-same-as-results", "condition": "incorrectKitAddressIncorrectResultsAddress"},
+        {"path": "/gas-test-kit-check-your-answers"}
+    ]
+    },
+    {
+      "path": "/gas-test-kit-delivery-address-same-as-results",
+      "title": "Delivery Details",
+      "components":[
+        {
+          "name": "deliveryAddress",
+          "options": {},
+          "type": "Html",
+          "content": "<div class=\"govuk-inset-text\">{{ KitAddressLine1 }}</br>{% if KitAddressLine2 %} {{ KitAddressLine2 }}</br>{% endif %}{{ KitTown }}<br>{% if KitCounty %}{{ KitCounty }}</br>{% endif %}{{ KitPostcode }}</div>",
+          "schema": {}
+        },
+        {
+          "name": "ResultsDeliveryQuestion",
+          "options": {},
+          "type": "Para",
+          "content": "<p class=\"govuk-body-m\"><h2 class=\"govuk-heading-m\">Is this the address you want your radon gas test results delivered to?</h2></p>"
+        },
+        {
+          "name": "deliveryResultsConfirmation",
+          "options": {
+            "customValidationMessages": {
+              "any.required": "Select yes if this is the address you want your radon gas test results delivered to"
+            }
+          },
+          "type": "YesNoField",
+          "title": "Is this the address you want your radon gas test results delivered to?",
+          "schema": {}
+        }
+      ],
+      "next": [
+        {"path":"/who-is-the-recipient-of-radon-gas-test-results", "condition": "DeliveryDetailsIncorrectResultsAddress"},
+        {"path": "/gas-test-kit-check-your-answers"}
+      ]
     },
     {
       "path": "/gas-test-kit-check-your-answers",
@@ -823,7 +860,6 @@
           "type": "Para",
           "content": "<table class=\"govuk-table\"><caption class=\"govuk-table__caption govuk-table__caption--m\">Contact Information</caption><tbody class=\"govuk-table__body\"><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\">Title</th><td class=\"govuk-table__cell\">{{ Title }}</td><td class=\"govuk-table__cell\"><a href=\"/gas-test-kit/enter-details\" \"target\"=\"_blank\">Change</a></td></tr><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\">Initials</th><td class=\"govuk-table__cell\">{{ Initials }}</td><td class=\"govuk-table__cell\"><a href=\"/gas-test-kit/enter-details\" \"target\"=\"_blank\">Change</a></td></tr><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\">Last name</th><td class=\"govuk-table__cell\">{{ LastName }}</td><td class=\"govuk-table__cell\"><a href=\"/gas-test-kit/enter-details\" \"target\"=\"_blank\">Change</a></td></tr><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\">Email</th><td class=\"govuk-table__cell\">{{ EmailAddress }}</td><td class=\"govuk-table__cell\"><a href=\"/gas-test-kit/enter-details\" \"target\"=\"_blank\">Change</a></td></tr><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\">Property address</th><td class=\"govuk-table__cell\">{{ PropertyAddress }}</td><td class=\"govuk-table__cell\"><a href=\"google.com\" \"target\"=\"_blank\">Change</a></td></tr><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\">Delivery recipient</th><td class=\"govuk-table__cell\">{{ DeliveryRecipient }}</td><td class=\"govuk-table__cell\"><a href=\"/gas-test-kit/enter-details\" \"target\"=\"_blank\">Change</a></td></tr><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\">Delivery address</th><td class=\"govuk-table__cell\">{{ DeliveryAddress }}</td><td class=\"govuk-table__cell\"><a href=\"google.com\" \"target\"=\"_blank\">Change</a></td></tr><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\">Results recipient</th><td class=\"govuk-table__cell\">{{ ResultsRecipient }}</td><td class=\"govuk-table__cell\"><a href=\"google.com\" \"target\"=\"_blank\">Change</a></td></tr><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\">Results address</th><td class=\"govuk-table__cell\">{{ ResultsAddress }}</td><td class=\"govuk-table__cell\"><a href=\"google.com\" \"target\"=\"_blank\">Change</a></td></tr></tbody></table>"
         },
-
         {
           "name": "checkbox",
           "type": "CheckboxesField",
@@ -1143,7 +1179,54 @@
           }
         ]
       }
+    },
+    {
+      "displayName": "incorrectKitAddressIncorrectResultsAddress",
+      "name": "incorrectKitAddressIncorrectResultsAddress",
+      "value": {
+        "name": "incorrectKitAddressIncorrectResultsAddress",
+        "conditions": [
+          {
+            "field": {
+              "name": "deliveryAddressConfirmation",
+              "type": "YesNoField",
+              "display": "Is this the address you want the kit delivered to?"
+            },
+            "operator": "is",
+            "value": { "type": "Value", "value": "false", "display": "false" }
+          },
+          {
+            "coordinator": "and",
+            "field": {
+              "name": "resultsAddressConfirmation",
+              "type": "YesNoField",
+              "display": "Is this the address you want your radon gas test results to?"
+            },
+            "operator": "is",
+            "value": { "type": "Value", "value": "false", "display": "false" }
+          }
+        ]
+      }
+    },{
+      "displayName": "DeliveryDetailsIncorrectResultsAddress",
+      "name": "DeliveryDetailsIncorrectResultsAddress",
+      "value": {
+        "name": "DeliveryDetailsIncorrectResultsAddress",
+        "conditions": [
+          {
+            "field": {
+              "name": "deliveryResultsConfirmation",
+              "type": "YesNoField",
+              "display": "Is this the address you want the kit delivered to?"
+            },
+            "operator": "is",
+            "value": { "type": "Value", "value": "false", "display": "false" }
+          }
+        ]
+      }
     }
+
+    
   ],
   "fees": [],
   "outputs": [
