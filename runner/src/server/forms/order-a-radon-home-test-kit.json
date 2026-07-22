@@ -463,7 +463,7 @@
           "name": "Title",
           "options": {
             "exposeToContext": true,
-            "customValidationMessages":{
+            "customValidationMessages": {
               "string.empty": "Enter your Title"
             }
           },
@@ -474,7 +474,7 @@
         {
           "name": "Initials",
           "options": {
-            "customValidationMessages":{
+            "customValidationMessages": {
               "string.empty": "Enter your Initials"
             },
             "exposeToContext": true
@@ -537,7 +537,7 @@
         },
         {
           "name": "deliveryAddressConfirmation",
-          "options": {"hideTitle": true},
+          "options": { "hideTitle": true },
           "type": "YesNoField",
           "title": "Is this the address you want the kit delivered to?"
         },
@@ -561,7 +561,7 @@
         },
         {
           "name": "resultsAddressConfirmation",
-          "options": {"hideTitle": true},
+          "options": { "hideTitle": true },
           "type": "YesNoField",
           "title": "Is this the address you want your radon gas test results to?"
         },
@@ -573,8 +573,14 @@
         }
       ],
       "next": [
-        { "path": "/gas-test-kit-check-your-answers", "condition": "ReadyToReview" },
-        { "path": "/who-is-the-recipient-of-the-kit", "condition": "DeliveryAddressIncorrect" },
+        {
+          "path": "/gas-test-kit-check-your-answers",
+          "condition": "ReadyToReview"
+        },
+        {
+          "path": "/who-is-the-recipient-of-the-kit",
+          "condition": "DeliveryAddressIncorrect"
+        },
         {
           "path": "/who-is-the-recipient-of-radon-gas-test-results",
           "condition": "correctKitAddressIncorrectResultsAddress"
@@ -589,7 +595,7 @@
           "name": "ResultsTitle",
           "options": {
             "exposeToContext": true,
-            "customValidationMessages":{
+            "customValidationMessages": {
               "string.empty": "Enter the title of the recipient of the radon gas test results"
             }
           },
@@ -600,7 +606,7 @@
         {
           "name": "ResultsInitials",
           "options": {
-            "customValidationMessages":{
+            "customValidationMessages": {
               "string.empty": "Enter the initials of the recipient of the radon gas test results"
             },
             "exposeToContext": true
@@ -611,16 +617,16 @@
         {
           "name": "ResultsLastName",
           "options": {
-            "customValidationMessages":{
+            "customValidationMessages": {
               "string.empty": "Enter the last name of the recipient of the radon gas test results"
             },
-            "exposeToContext": true 
+            "exposeToContext": true
           },
           "type": "TextField",
           "title": "Last Name"
         }
       ],
-      "next": [{"path": "/gas-test-kit-enter-results-address-manually"}]
+      "next": [{ "path": "/gas-test-kit-enter-results-address-manually" }]
     },
     {
         "path": "/gas-test-kit-enter-results-address-manually",
@@ -634,8 +640,7 @@
               },
               "exposeToContext": true
             },
-            "type": "TextField",
-            "title": "Address Line 1"
+            "exposeToContext": true
           },
           {
             "name": "AddressLine2",
@@ -654,17 +659,16 @@
               },
               "exposeToContext": true
             },
-            "type": "TextField",
-            "title": "Town or city"
+            "exposeToContext": true
           },
-          {
-            "name": "County",
-            "options": {
-              "required": false,
-              "exposeToContext": true
-            },
-            "type": "TextField",
-            "title": "County"
+          "type": "TextField",
+          "title": "Town or city"
+        },
+        {
+          "name": "County",
+          "options": {
+            "required": false,
+            "exposeToContext": true
           },
           {
             "name": "Postcode",
@@ -703,34 +707,63 @@
                 "string.empty": "Enter the title of the recipient of the kit"
               }
             },
-            "type": "TextField",
-            "title": "Title",
-            "hint": "e.g. Mr, Mrs, Dr"
+            "autocomplete": "postal-code",
+            "exposeToContext": true,
+            "format": {
+              "trim": true,
+              "case": "upper"
+            }
           },
-          {
-            "name": "KitInitials",
-            "options": {
-              "customValidationMessages":{
-                "string.empty": "Enter the initials of the recipient of the kit"
-              },
-              "exposeToContext": true
-            },
-            "type": "TextField",
-            "title": "Initials"
+          "schema": {
+            "max": 10,
+            "regex": "^[\\s]*[A-z]{1,2}[0-9][A-z0-9]?[\\s]*[0-9]{1,2}[ABD-hJLNP-uW-z]{2}[\\s]*$"
           },
-          {
-            "name": "KitLastName",
-            "options": {
-              "customValidationMessages":{
-                "string.empty": "Enter the last name of the recipient of the kit"
-              },
-              "exposeToContext": true 
+          "type": "TextField",
+          "title": "Postcode"
+        }
+      ],
+      "next": [{ "path": "/gas-test-kit-check-your-answers" }]
+    },
+    {
+      "path": "/who-is-the-recipient-of-the-kit",
+      "title": "Who is the recipient of the kit?",
+      "components": [
+        {
+          "name": "KitTitle",
+          "options": {
+            "exposeToContext": true,
+            "customValidationMessages": {
+              "string.empty": "Enter the title of the recipient of the kit"
+            }
+          },
+          "type": "TextField",
+          "title": "Title",
+          "hint": "e.g. Mr, Mrs, Dr"
+        },
+        {
+          "name": "KitInitials",
+          "options": {
+            "customValidationMessages": {
+              "string.empty": "Enter the initials of the recipient of the kit"
             },
-            "type": "TextField",
-            "title": "Last Name"
-          }
-        ],
-      "next": [{"path": "/gas-test-kit-enter-delivery-address-manually"}]
+            "exposeToContext": true
+          },
+          "type": "TextField",
+          "title": "Initials"
+        },
+        {
+          "name": "KitLastName",
+          "options": {
+            "customValidationMessages": {
+              "string.empty": "Enter the last name of the recipient of the kit"
+            },
+            "exposeToContext": true
+          },
+          "type": "TextField",
+          "title": "Last Name"
+        }
+      ],
+      "next": [{ "path": "/gas-test-kit-enter-delivery-address-manually" }]
     },
     {
       "path": "/gas-test-kit-enter-delivery-address-manually",
@@ -739,7 +772,7 @@
         {
           "name": "KitAddressLine1",
           "options": {
-            "customValidationMessages":{
+            "customValidationMessages": {
               "string.empty": "Enter address line 1, typically the building and street"
             },
             "exposeToContext": true
@@ -759,7 +792,7 @@
         {
           "name": "KitTown",
           "options": {
-            "customValidationMessages":{
+            "customValidationMessages": {
               "string.empty": "Enter town or city"
             },
             "exposeToContext": true
@@ -871,11 +904,10 @@
             "customValidationMessages": {
               "any.required": "<p class=\"govuk-body-m\">You must accept the <a href=\"https://www.ukhsa-protectionservices.org.uk/tc/privacy-policy\" target=\"_blank\">Privacy Policy</a> and <a href=\"https://www.ukhsa-protectionservices.org.uk/tc/terms-conditions\" target=\"_blank\">Terms and Conditions</a> before continuing</p>"
             }
-            
           }
         }
       ],
-      "next": [{"path": "/payment"}]
+      "next": [{ "path": "/payment" }]
     },
     {
       "title": "Summary",
@@ -1247,12 +1279,18 @@
     "feedbackForm": false,
     "url": ""
   },
-  "addressLookupConfig": {
-    "apimBaseUrl": "${RPS_LOCATION_API_BASE_URL}",
-    "callingApplication": "RPS",
-    "tenantId": "${RPS_LOCATION_TENANT_ID}",
-    "clientId": "${RPS_LOCATION_CLIENT_ID}",
-    "clientSecret": "${RPS_LOCATION_CLIENT_SECRET}",
-    "scopes": ["${RPS_LOCATION_SCOPES}"]
-  }
+  "services": [
+    {
+      "name": "addressLookupService",
+      "service": "addressLookupService",
+      "parameters": {
+        "apimBaseUrl": "${RPS_LOCATION_SERVICES_API_BASE_URL}",
+        "callingApplication": "RPS",
+        "tenantId": "${RPS_LOCATION_SERVICES_API_TENANT_ID}",
+        "clientId": "${RPS_LOCATION_SERVICES_API_CLIENT_ID}",
+        "clientSecret": "${RPS_LOCATION_SERVICES_API_CLIENT_SECRET}",
+        "scopes": ["${RPS_LOCATION_SERVICES_API_SCOPES}"]
+      }
+    }
+  ]
 }

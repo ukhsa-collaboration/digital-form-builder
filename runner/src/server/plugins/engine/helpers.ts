@@ -151,9 +151,3 @@ export function getValidStateFromQueryParameters(
     {}
   );
 }
-
-export const getLocationServiceInstanceName = (
-  addressLookupConfig: AddressLookupConfig
-) => {
-  return `locationServiceInstance:${addressLookupConfig.callingApplication}`;
-};

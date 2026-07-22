@@ -5,11 +5,17 @@ export type ControllerErrorMetadata = {
   page?: string;
   /** The HTTP status code for the error */
   code: number;
+  /** An optional URL for a back link rendered on the error page */
+  backUrl?: string;
+  /** The stack of error that caused the controller error */
+  originalStack?: string;
 };
 
 export type RenderingErrorMetadata = {
   /** The HTTP status code for the error */
   code: number;
+  /** An optional URL for a back link rendered on the error page */
+  backUrl?: string;
 };
 
 export type ApplicationErrorMetadata =
@@ -42,6 +48,14 @@ export class ControllerError extends Boom {
       data,
       statusCode: data.code,
     });
+
+    Object.setPrototypeOf(this, ControllerError.prototype);
+
+    this.name = "ControllerError";
+
+    if (data.originalStack) {
+      this.stack = data.originalStack;
+    }
   }
 }
 
@@ -69,5 +83,9 @@ export class RenderingError extends Boom {
       data,
       statusCode: data.code,
     });
+
+    this.name = "RenderingError";
+
+    Object.setPrototypeOf(this, RenderingError.prototype);
   }
 }

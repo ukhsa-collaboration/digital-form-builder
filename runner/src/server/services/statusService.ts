@@ -245,18 +245,28 @@ export class StatusService {
    * @param state
    * @returns
    */
-  resolvePayload(payload: Record<string, PayloadValueConfig>, formData, state) {
+  resolvePayload(
+    payload: Record<string, PayloadValueConfig> | undefined | null,
+    formData: Record<string, unknown>,
+    state: Record<string, unknown>
+  ): Record<string, string> {
+    if (!payload) return {};
+
+    const resolveFieldValue = (field: string | undefined) =>
+      field ? formData[field] ?? state[field] : undefined;
+
+    const resolveValue = ({
+      string,
+      field,
+      fallback,
+    }: PayloadValueConfig): string =>
+      String(string ?? resolveFieldValue(field) ?? fallback ?? "");
+
     const output: Record<string, string> = {};
     for (const [key, config] of Object.entries(payload)) {
-      const resolved =
-        config.string ??
-        formData[config.field] ??
-        state[config.field] ??
-        config.fallback ??
-        "";
-
-      if (resolved !== "" || config.required !== false) {
-        output[key] = resolved;
+      const value = resolveValue(config);
+      if (value !== "" || config.required !== false) {
+        output[key] = value;
       }
     }
     return output;

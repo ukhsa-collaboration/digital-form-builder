@@ -31,9 +31,54 @@ services:
       # Forms can reference ${VAR_NAME} placeholders (e.g. addressLookupConfig in
       # order-a-radon-risk-report.json). In development these are resolved from
       # environment variables of the same name by resolvePlaceholders.ts.
+
+      # ==============================
+      # ====== Common Variables ======
+      # ==============================
+
       - SESSION_COOKIE_PASSWORD
-      - RPS_LOCATION_API_BASE_URL
-      - RPS_LOCATION_TENANT_ID
-      - RPS_LOCATION_CLIENT_ID
-      - RPS_LOCATION_CLIENT_SECRET
-      - RPS_LOCATION_SCOPES
+
+      # ------ Location services via UKHSA Azure ------
+
+      - RPS_LOCATION_SERVICES_API_BASE_URL
+      - RPS_LOCATION_SERVICES_API_TENANT_ID
+      - RPS_LOCATION_SERVICES_API_CLIENT_ID
+      - RPS_LOCATION_SERVICES_API_CLIENT_SECRET
+      - RPS_LOCATION_SERVICES_API_SCOPES
+
+      # ------ Trust Payments Service ------
+
+      - RPS_TRUST_PAYMENTS_SITE_REFERENCE
+      - RPS_TRUST_PAYMENTS_USER_ID
+      - RPS_TRUST_PAYMENTS_USER_PASSWORD
+      - RPS_TRUST_PAYMENTS_JWT_USER_ID
+      - RPS_TRUST_PAYMENTS_JWT_SECRET_KEY
+      - RPS_TRUST_PAYMENTS_HASH_PASSWORD
+
+      # ====================================
+      # ====== App Specific Variables ======
+      # ====================================
+
+      # ------ Radon Enquiry ------
+
+      - RPS_RADON_ENQUIRY_API_BASE_URL
+      - RPS_RADON_ENQUIRY_API_TENANT_ID
+      - RPS_RADON_ENQUIRY_API_CLIENT_ID
+      - RPS_RADON_ENQUIRY_API_CLIENT_SECRET
+      - RPS_RADON_ENQUIRY_API_SCOPES
+
+      # ------ Radon Test Kit ------
+
+      - RPS_RADON_TEST_KIT_API_BASE_URL
+      - RPS_RADON_TEST_KIT_API_TENANT_ID
+      - RPS_RADON_TEST_KIT_API_CLIENT_ID
+      - RPS_RADON_TEST_KIT_API_CLIENT_SECRET
+      - RPS_RADON_TEST_KIT_API_SCOPES
+
+      # ------ Radon Risk Report ------
+
+      - RPS_RADON_RISK_REPORT_API_BASE_URL
+      - RPS_RADON_RISK_REPORT_API_TENANT_ID
+      - RPS_RADON_RISK_REPORT_API_CLIENT_ID
+      - RPS_RADON_RISK_REPORT_API_CLIENT_SECRET
+      - RPS_RADON_RISK_REPORT_API_SCOPES

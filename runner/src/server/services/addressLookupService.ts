@@ -10,7 +10,7 @@ export interface AddressLookupOptions {
 export interface Address {
   address: string;
   postcode: string;
-  uprn: string;
+  udprn: string;
 }
 
 export interface AddressLookupResponse {
@@ -66,7 +66,7 @@ export class AddressLookupService {
         (item: any): Address => ({
           address: item.addressString,
           postcode: item.postcode,
-          uprn: item.uprn,
+          udprn: item.udprn,
         })
       ),
     };
