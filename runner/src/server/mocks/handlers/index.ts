@@ -1,9 +1,9 @@
 import { msalAuthHandlers } from "./msalAuth";
 import { addressLookupHandlers } from "./addressLookup";
-import { rpsBackendLookupHandlers } from "./rpsBackendLookup";
+import { rpsRiskReportBackendHandlers } from "./rpsRiskReportBackend";
 
 export const handlers = [
   ...msalAuthHandlers,
   ...addressLookupHandlers,
-  ...rpsBackendLookupHandlers,
+  ...rpsRiskReportBackendHandlers,
 ];
