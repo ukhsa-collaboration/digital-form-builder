@@ -460,6 +460,7 @@ export const Schema = joi
     error500ContactEmail: joi.string().optional(),
     summaryConfig: summaryConfigSchema.optional(),
     generateReference: joi.boolean().optional(),
+    provider: joi.string().valid("GOV.UK Pay", "Trust Payments").optional(),
   });
 
 /**

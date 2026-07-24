@@ -544,10 +544,20 @@
           "title": "Is this the correct delivery address?"
         },
         {
-          "name": "deliveryAddressSameAsReportDisplay",
-          "options": {},
-          "type": "HiddenField",
-          "title": "Delivery address"
+          "name": "targetType",
+          "options": {
+            "exposeToContext": true,
+            "value": "deliveryAddress"
+          },
+          "type": "HiddenField"
+        },
+        {
+          "name": "sourceType",
+          "options": {
+            "exposeToContext": true,
+            "value": "reportAddress"
+          },
+          "type": "HiddenField"
         }
       ],
       "controller": "DeliveryAddressSameAsReportPageController",
@@ -1294,7 +1304,7 @@
   ],
   "version": 2,
   "skipSummary": false,
-  "feeOptions": {},
+  "provider": "Trust Payments",
   "feedback": {
     "feedbackForm": false,
     "url": ""

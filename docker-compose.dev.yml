@@ -3,17 +3,6 @@
 #    docker-compose -f docker-compose.yml -f docker-compose.dev.yml up
 version: "3.9"
 services:
-  designer:
-    volumes:
-      - /usr/src/app/node_modules
-      - /usr/src/app/model/node_modules
-      - /usr/src/app/model/dist
-      - /usr/src/app/designer/node_modules
-      - /usr/src/app/designer/dist
-      - /usr/src/app/runner/node_modules
-      - /usr/src/app/runner/dist
-      - ./designer:/usr/src/app/designer:delegated
-    command: yarn designer dev
   runner:
     volumes:
       - /usr/src/app/node_modules
@@ -31,9 +20,22 @@ services:
       # Forms can reference ${VAR_NAME} placeholders (e.g. addressLookupConfig in
       # order-a-radon-risk-report.json). In development these are resolved from
       # environment variables of the same name by resolvePlaceholders.ts.
-      - SESSION_COOKIE_PASSWORD
       - RPS_LOCATION_API_BASE_URL
       - RPS_LOCATION_TENANT_ID
       - RPS_LOCATION_CLIENT_ID
       - RPS_LOCATION_CLIENT_SECRET
       - RPS_LOCATION_SCOPES
+      - RPS_RADON_ENQUIRY_URL
+      - RPS_RISK_REPORT_URL
+      - RPS_RISK_REPORT_PAYMENT_URL
+      - RPS_RISK_REPORT_DATABASE
+      - RPS_SUBMIT_TENANT_ID
+      - RPS_SUBMIT_CLIENT_ID
+      - RPS_SUBMIT_CLIENT_SECRET
+      - RPS_SUBMIT_SCOPES
+      - RPS_TRUST_PAYMENTS_SITE_REFERENCE
+      - RPS_TRUST_PAYMENTS_USER_ID
+      - RPS_TRUST_PAYMENTS_USER_PASSWORD
+      - RPS_TRUST_PAYMENTS_JWT_USER_ID
+      - RPS_TRUST_PAYMENTS_JWT_SECRET_KEY
+      - RPS_TRUST_PAYMENTS_HASH_PASSWORD

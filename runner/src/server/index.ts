@@ -38,6 +38,8 @@ import {
   SecureFormSubmissionService,
   getSecureFormSubmissionServiceInstance,
   AddressLookupService,
+  DatabaseService,
+  TrustPaymentsService,
 } from "./services";
 import { HapiRequest, HapiResponseToolkit, RouteConfig } from "./types";
 import getRequestInfo from "./utils/getRequestInfo";
@@ -46,7 +48,10 @@ import { QueueStatusService } from "server/services/queueStatusService";
 import { MySqlQueueService } from "server/services/mySqlQueueService";
 import { PgBossQueueService } from "server/services/pgBossQueueService";
 import { isValidSecureFormSubmissionConfig } from "./utils/isValidSecureFormSubmissionConfig";
-import { getLocationServiceInstanceName } from "./plugins/engine/helpers";
+import {
+  getLocationServiceInstanceName,
+  getDatabaseServiceInstanceName,
+} from "./plugins/engine/helpers";
 
 const serverOptions = (): ServerOptions => {
   const hasCertificate = config.sslKey && config.sslCert;
@@ -129,6 +134,7 @@ async function createServer(routeConfig: RouteConfig) {
     AddressService,
     ExitService,
     FormSecurityService,
+    TrustPaymentsService,
   ]);
   if (!config.documentUploadApiUrl) {
     server.registerService([
@@ -239,6 +245,24 @@ async function createServer(routeConfig: RouteConfig) {
           Schmervice.withName(addressLookupInstanceName, addressLookupService)
         );
         addressLookupServiceNames.add(addressLookupInstanceName);
+      }
+    }
+  }
+
+  const databaseServiceNames = new Set<string>();
+  for (const form of forms.options.configs) {
+    if (form.configuration.addressLookupConfig) {
+      const databaseInstanceName = getDatabaseServiceInstanceName(
+        form.configuration.addressLookupConfig
+      );
+      if (!databaseServiceNames.has(databaseInstanceName)) {
+        const databaseService = new AddressLookupService(
+          form.configuration.addressLookupConfig
+        );
+        await server.registerService(
+          Schmervice.withName(databaseInstanceName, databaseService)
+        );
+        databaseServiceNames.add(databaseInstanceName);
       }
     }
   }

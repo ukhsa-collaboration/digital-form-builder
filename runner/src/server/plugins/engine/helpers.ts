@@ -157,3 +157,9 @@ export const getLocationServiceInstanceName = (
 ) => {
   return `locationServiceInstance:${addressLookupConfig.callingApplication}`;
 };
+
+export const getDatabaseServiceInstanceName = (
+  addressLookupConfig: AddressLookupConfig
+) => {
+  return `databaseServiceInstance:${addressLookupConfig.callingApplication}`;
+};

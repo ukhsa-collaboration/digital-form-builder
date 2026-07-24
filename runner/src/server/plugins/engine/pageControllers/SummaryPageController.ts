@@ -24,7 +24,7 @@ export class SummaryPageController extends PageController {
     return async (request: HapiRequest, h: HapiResponseToolkit) => {
       this.langFromRequest(request);
 
-      const { cacheService } = request.services([]);
+      const { cacheService, trustPaymentsService } = request.services([]);
       const model = this.model;
 
       // @ts-ignore - ignoring so docs can be generated. Remove when properly typed
@@ -112,6 +112,12 @@ export class SummaryPageController extends PageController {
       if (declarationError.length) {
         viewModel.declarationError = declarationError[0];
       }
+      if (model.def?.provider === "Trust Payments") {
+        const html = await trustPaymentsService.postToTrustPayments();
+        viewModel.trustPaymentsHtml = html;
+        return h.view("summmary-trust-payments", viewModel);
+      }
+
       return h.view("summary", viewModel);
     };
   }
@@ -122,7 +128,11 @@ export class SummaryPageController extends PageController {
    */
   makePostRouteHandler() {
     return async (request: HapiRequest, h: HapiResponseToolkit) => {
-      const { payService, cacheService } = request.services([]);
+      const {
+        payService,
+        trustPaymentsService,
+        cacheService,
+      } = request.services([]);
       const model = this.model;
       const state = await cacheService.getState(request);
       const summaryViewModel = new SummaryViewModel(
@@ -207,6 +217,10 @@ export class SummaryPageController extends PageController {
 
       const feesModel = FeesModel(model, state);
 
+      if (model.def?.provider === "Trust Payments") {
+        const tpres = await trustPaymentsService.postToTrustPayments();
+        debugger;
+      }
       /**
        * If a user does not need to pay, redirect them to /status
        */

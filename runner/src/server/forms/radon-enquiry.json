@@ -783,12 +783,13 @@
       }
     }
   ],
+  "provider": "Trust Payments",
   "feedback": {
     "feedbackForm": false,
     "url": ""
   },
   "generateReference": true,
   "version": 2,
-  "skipSummary": true,
+  "skipSummary": false,
   "feeOptions": {}
 }

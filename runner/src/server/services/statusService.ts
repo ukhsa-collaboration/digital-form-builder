@@ -193,6 +193,7 @@ export class StatusService {
         formData,
         state
       );
+      console.log("payload is: ", JSON.stringify(payload));
       newReference = await this.webhookService.postRequest(
         firstWebhook.outputData.url,
         { ...formData, ...payload },

@@ -21,6 +21,8 @@ import {
   StatusService,
   UploadService,
   WebhookService,
+  DatabaseService,
+  TrustPaymentsService
 } from "./services";
 import { QueueStatusService } from "server/services/queueStatusService";
 import { QueueService } from "./services/QueueService";
@@ -41,6 +43,8 @@ type Services = (
   exitService: ExitService;
   formSecurityService: FormSecurityService;
   addressLookupService: AddressLookupService;
+  databaseService: DatabaseService;
+  trustPaymentsService: TrustPaymentsService;
 };
 
 export type RouteConfig = {

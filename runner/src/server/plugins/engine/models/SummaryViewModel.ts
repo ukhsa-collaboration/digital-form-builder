@@ -66,6 +66,7 @@ export class SummaryViewModel {
   submitLabel: string | undefined;
   declarationLabel: string | undefined;
   hideDeclarationHeading: boolean | undefined;
+  trustPaymentsHtml?: string | undefined;
 
   constructor(
     pageTitle: string,

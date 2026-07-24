@@ -322,4 +322,5 @@ export type FormDefinition = {
   error500ContactEmail?: string | undefined;
   summaryConfig?: SummaryConfig;
   generateReference?: boolean | undefined;
+  provider?: string;
 };
