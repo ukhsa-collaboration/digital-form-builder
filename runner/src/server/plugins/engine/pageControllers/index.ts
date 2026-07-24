@@ -16,3 +16,4 @@ export { DateComparisonPageController } from "./DateComparisonPageController";
 export { MagicLinkRedirectController } from "./MagicLinkRedirectController";
 export { FindAnAddressPageController } from "./FindAnAddressPageController";
 export { SelectAnAddressPageController } from "./SelectAnAddressPageController";
+export { TrustPaymentsPageController } from "./TrustPaymentsPageController";

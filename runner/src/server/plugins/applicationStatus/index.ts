@@ -111,11 +111,7 @@ const index = {
         method: "post",
         path: "/{id}/status",
         handler: async (request: HapiRequest, h: HapiResponseToolkit) => {
-          const {
-            payService,
-            trustPaymentsService,
-            cacheService,
-          } = request.services([]);
+          const { payService, cacheService } = request.services([]);
 
           const { pay } = await cacheService.getState(request);
           const { meta } = pay;

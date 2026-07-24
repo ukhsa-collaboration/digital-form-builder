@@ -899,6 +899,13 @@
       "controller": "./pages/summary.js",
       "components": [],
       "next": []
+    },
+    {
+      "title": "Confirmation",
+      "path": "/confirmation",
+      "controller": "TrustPaymentsPageController",
+      "components": [],
+      "next": []
     }
   ],
   "specialPages": {
@@ -1290,7 +1297,18 @@
     ]
   },
   "generateReference": true,
-  "fees": [],
+  "provider": "Trust Payments",
+  "trustPaymentConfig": {
+    "siteReference": "${RPS_TRUST_PAYMENTS_SITE_REFERENCE}",
+    "hashPassword": "${RPS_TRUST_PAYMENTS_HASH_PASSWORD}",
+    "onValidRedirect": "rspRiskReportUpdatePayment"
+  },
+  "fees": [
+    {
+      "description": "Report Fee",
+      "amount": "10.50"
+    }
+  ],
   "outputs": [
     {
       "name": "webhookOutput",
@@ -1304,17 +1322,16 @@
   ],
   "version": 2,
   "skipSummary": false,
-  "provider": "Trust Payments",
   "feedback": {
     "feedbackForm": false,
     "url": ""
   },
   "addressLookupConfig": {
-    "apimBaseUrl": "${RPS_LOCATION_API_BASE_URL}",
+    "apimBaseUrl": "${RPS_LOCATION_SERVICES_API_BASE_URL}",
     "callingApplication": "RPS",
-    "tenantId": "${RPS_LOCATION_TENANT_ID}",
-    "clientId": "${RPS_LOCATION_CLIENT_ID}",
-    "clientSecret": "${RPS_LOCATION_CLIENT_SECRET}",
-    "scopes": ["${RPS_LOCATION_SCOPES}"]
+    "tenantId": "${RPS_LOCATION_SERVICES_API_TENANT_ID}",
+    "clientId": "${RPS_LOCATION_SERVICES_API_CLIENT_ID}",
+    "clientSecret": "${RPS_LOCATION_SERVICES_API_CLIENT_SECRET}",
+    "scopes": ["${RPS_LOCATION_SERVICES_API_SCOPES}"]
   }
 }

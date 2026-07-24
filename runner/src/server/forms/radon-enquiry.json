@@ -257,6 +257,17 @@
       "path": "/summary",
       "controller": "./pages/summary.js",
       "components": [],
+      "next": [{ "path": "/payment" }]
+    },
+    {
+      "title": "Payment",
+      "path": "/payment",
+      "controller": "TrustPaymentsPageController",
+      "options": {
+        "billingfirstname": "firstName",
+        "billinglastname": "lastName"
+      },
+      "components": [],
       "next": []
     }
   ],

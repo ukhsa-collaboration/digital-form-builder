@@ -136,6 +136,7 @@ async function createServer(routeConfig: RouteConfig) {
     FormSecurityService,
     TrustPaymentsService,
   ]);
+
   if (!config.documentUploadApiUrl) {
     server.registerService([
       Schmervice.withName("uploadService", MockUploadService),

@@ -223,6 +223,18 @@ export interface AddressLookupConfig extends MsalAuthorizerConfig {
   subscriptionKey?: string;
 }
 
+export interface TrustPaymentsConfig {
+  siteReference: string;
+  hashPassword: string;
+}
+
+export interface TrustPaymentsDetails {
+  billingFirstName: string;
+  billingLastName: string;
+  mainAmount: string;
+  redirectUrl: string;
+}
+
 export interface SummaryDeclaration {
   /** Checkbox label rendered on the summary page. */
   label: string;
@@ -323,4 +335,5 @@ export type FormDefinition = {
   summaryConfig?: SummaryConfig;
   generateReference?: boolean | undefined;
   provider?: string;
+  trustPayementsConfig?: TrustPaymentsConfig;
 };

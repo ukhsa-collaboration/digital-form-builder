@@ -437,6 +437,7 @@ export class StatusService {
       componentDefsToRender,
       formModel
     );
+
     model.components = componentCollection.getViewModel(
       state,
       undefined,

@@ -1,0 +1,28 @@
+{% from "partials/summary-detail.html" import summaryDetail %}
+{% from "partials/summary-card.html" import summaryCard %}
+{% from "components/checkboxes/macro.njk" import govukCheckboxes %}
+{% extends 'layout.html' %}
+
+{% block content %}
+  <div id="tp-form-container">
+    {{ trustPaymentsHtml | safe }}
+  </div>
+
+  <script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', function () {
+      const button = document.querySelector('button[data-prevent-double-click="true"]');
+      if (button) {
+        button.addEventListener('click', function (e) {
+          e.preventDefault();
+          button.disabled = true;
+
+          const payment = document.querySelector('#tp-form-container form');
+          if (payment) {
+            payment.submit();
+          }
+        });
+      }
+    });
+  </script>
+
+{% endblock %}

@@ -24,7 +24,8 @@ import { MagicLinkRedirectController } from "./MagicLinkRedirectController";
 import { FindAnAddressPageController } from "./FindAnAddressPageController";
 import { SelectAnAddressPageController } from "./SelectAnAddressPageController";
 import { DeliveryAddressSameAsReportPageController } from "./DeliveryAddressSameAsReportPageController";
-import { SameAddressPageController } from "./SameAddressController";
+import { TrustPaymentsPageController } from "./TrustPaymentsPageController";
+
 const PageControllers = {
   DobPageController,
   HomePageController,
@@ -49,7 +50,7 @@ const PageControllers = {
   FindAnAddressPageController,
   SelectAnAddressPageController,
   DeliveryAddressSameAsReportPageController,
-  SameAddressPageController,
+  TrustPaymentsPageController,
 };
 
 export const controllerNameFromPath = (filePath: string) => {

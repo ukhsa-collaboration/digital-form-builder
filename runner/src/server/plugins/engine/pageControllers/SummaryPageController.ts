@@ -9,7 +9,7 @@ import {
 } from "../feedback";
 import config from "server/config";
 import { FeesModel } from "server/plugins/engine/models/submission";
-import { isMultipleApiKey } from "@xgovformbuilder/model";
+import { isMultipleApiKey, TrustPaymentsDetails } from "@xgovformbuilder/model";
 import { v4 as uuidv4 } from "uuid";
 
 export class SummaryPageController extends PageController {
@@ -24,7 +24,7 @@ export class SummaryPageController extends PageController {
     return async (request: HapiRequest, h: HapiResponseToolkit) => {
       this.langFromRequest(request);
 
-      const { cacheService, trustPaymentsService } = request.services([]);
+      const { cacheService } = request.services([]);
       const model = this.model;
 
       // @ts-ignore - ignoring so docs can be generated. Remove when properly typed
@@ -112,11 +112,6 @@ export class SummaryPageController extends PageController {
       if (declarationError.length) {
         viewModel.declarationError = declarationError[0];
       }
-      if (model.def?.provider === "Trust Payments") {
-        const html = await trustPaymentsService.postToTrustPayments();
-        viewModel.trustPaymentsHtml = html;
-        return h.view("summmary-trust-payments", viewModel);
-      }
 
       return h.view("summary", viewModel);
     };
@@ -198,6 +193,8 @@ export class SummaryPageController extends PageController {
         summaryViewModel.addDeclarationAsQuestion();
       }
 
+      // onSubmitAction
+
       if (model.def?.generateReference == true) {
         const reference = uuidv4();
         summaryViewModel.addReferenceToWebhook(reference);
@@ -218,9 +215,27 @@ export class SummaryPageController extends PageController {
       const feesModel = FeesModel(model, state);
 
       if (model.def?.provider === "Trust Payments") {
-        const tpres = await trustPaymentsService.postToTrustPayments();
-        debugger;
+        const url = new URL(request.url);
+
+        // extract payment details from cache
+        const paymentDetails: TrustPaymentsDetails = {
+          billingFirstName: "FirstNAme",
+          billingLastName: "LastName",
+          mainAmount: "10.5",
+          redirectUrl: `${url.origin}/${request.params.id}/confirmation`,
+        };
+
+        const html = await trustPaymentsService.createTrustPaymentsForm(
+          paymentDetails,
+          {
+            hashPassword: "fPsUGQvx9QduHtWKGABs2VRr",
+            siteReference: "test_healthpa33354",
+          }
+        );
+
+        return h.response(html).type("text/html");
       }
+
       /**
        * If a user does not need to pay, redirect them to /status
        */

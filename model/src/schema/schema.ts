@@ -411,6 +411,12 @@ const summaryConfigSchema = joi.object().keys({
     .optional(),
 });
 
+export const trustPaymentConfigSchema = joi.object({
+  hashPassword: joi.string().required(),
+  siteReference: joi.string().required(),
+  onValidRedirect: joi.string().optional(),
+});
+
 export const Schema = joi
   .object()
   .required()
@@ -461,6 +467,7 @@ export const Schema = joi
     summaryConfig: summaryConfigSchema.optional(),
     generateReference: joi.boolean().optional(),
     provider: joi.string().valid("GOV.UK Pay", "Trust Payments").optional(),
+    trustPaymentConfig: trustPaymentConfigSchema.optional(),
   });
 
 /**
