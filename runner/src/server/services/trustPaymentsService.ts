@@ -6,6 +6,48 @@ import {
 import { HapiRequest } from "../types";
 import { ControllerError } from "../plugins/engine/errors";
 
+type ServiceEventFunctions = Record<string, (request: HapiRequest) => void>;
+
+const onInvalidPaymentFunctions: ServiceEventFunctions = {
+  rpsRiskReportInvalidPayment: async (request: HapiRequest) => {
+    const { cacheService, rpsBackendService } = request.service.getServices(
+      "cacheService",
+      "rpsBackendService"
+    );
+
+    const currentState = await cacheService.getState(request);
+
+    await rpsBackendService.request("/storepayment", {
+      method: "POST",
+      body: JSON.stringify({
+        uuid: currentState["sessionId"],
+        transactionId: "txn-789",
+        settle_status: "NOT_SETTLED",
+      }),
+    });
+  },
+};
+
+const onValidPaymentFunctions: ServiceEventFunctions = {
+  rpsRiskReportValidPayment: async (request: HapiRequest) => {
+    const { cacheService, rpsBackendService } = request.service.getServices(
+      "cacheService",
+      "rpsBackendService"
+    );
+
+    const currentState = await cacheService.getState(request);
+
+    await rpsBackendService.request("/storepayment", {
+      method: "POST",
+      body: JSON.stringify({
+        uuid: currentState["sessionId"],
+        transactionId: "txn-789",
+        settle_status: "SETTLED",
+      }),
+    });
+  },
+};
+
 export class TrustPaymentsService {
   private config: TrustPaymentsConfig;
 
@@ -13,9 +55,39 @@ export class TrustPaymentsService {
     this.config = config;
   }
 
+  async onInvalidPayment(request: HapiRequest) {
+    if (!this.config.onInvalidPaymentFunction) return;
+
+    const onInvalidPaymentFunction =
+      onInvalidPaymentFunctions[this.config.onInvalidPaymentFunction];
+
+    if (!onInvalidPaymentFunction && this.config.onInvalidPaymentFunction) {
+      throw new ControllerError("cannot find onInvalidPayment function", {
+        code: 500,
+      });
+    }
+
+    await onInvalidPaymentFunction(request);
+  }
+
+  async onValidPayment(request: HapiRequest) {
+    if (!this.config.onValidPaymentFunction) return;
+
+    const onValidPaymentFunction =
+      onValidPaymentFunctions[this.config.onValidPaymentFunction];
+
+    if (!onValidPaymentFunction && this.config.onValidPaymentFunction) {
+      throw new ControllerError("cannot find onValidPayment function", {
+        code: 500,
+      });
+    }
+
+    await onValidPaymentFunction(request);
+  }
+
   async createTrustPaymentsForm(details: TrustPaymentsDetails) {
     const currencyIso3a = "GBP";
-    const mainAmount = details.mainAmount;
+    const amount = details.amount / 100;
     const siteReference = this.config.siteReference;
     const version = 2;
     const billingFirstName = details.billingFirstName;
@@ -32,7 +104,7 @@ export class TrustPaymentsService {
 
     const stringToHash =
       currencyIso3a +
-      mainAmount +
+      amount +
       siteReference +
       version +
       siteSecurityTimestamp +
@@ -47,7 +119,7 @@ export class TrustPaymentsService {
             <form id="payform" method="POST" action="https://payments.securetrading.net/process/payments/details">
               <input type="hidden" name="sitereference" value="${siteReference}">
               <input type="hidden" name="currencyiso3a" value="${currencyIso3a}">
-              <input type="hidden" name="mainamount" value="${mainAmount}">
+              <input type="hidden" name="mainamount" value="${amount}">
               <input type="hidden" name="billingfirstname" value="${billingFirstName}">
               <input type="hidden" name="billinglastname" value="${billingLastName}">
               <input type="hidden" name="strequiredfields" value="billingfirstname">

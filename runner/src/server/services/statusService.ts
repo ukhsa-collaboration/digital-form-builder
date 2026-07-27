@@ -74,28 +74,8 @@ export class StatusService {
   async shouldShowPayErrorPage(request: HapiRequest): Promise<boolean> {
     const { pay } = await this.cacheService.getState(request);
 
-    // TODO: put trust payments error logic in here
-    // verify redirect for trust payments
-
-    const trustPaymentsServiceName = request.service.getName(
-      "trustPaymentsService"
-    );
-
-    const services = request.services([]);
-
-    const trustPaymentsService = services[trustPaymentsServiceName];
-
-    if (!trustPaymentsService) {
-      throw new ControllerError("cannot find trust payments service", {
-        code: 500,
-      });
-    }
-
-    if (trustPaymentsService.verifyRedirect(request)) {
-      return false;
-    }
-
-    // call rps backend if payment has failed
+    if (/* we are in trust payments flow*/ true)
+      await this.verifyTrustPaymentRedirect(request);
 
     if (!pay) {
       this.logger.info(
@@ -155,6 +135,29 @@ export class StatusService {
     );
 
     return shouldRetry;
+  }
+
+  async verifyTrustPaymentRedirect(request: HapiRequest) {
+    this.logger.info("CALLING VERIFY TRUST PAYMENT REDIRECT");
+
+    // verify redirect for trust payments
+    const { trustPaymentsService } = request.service.getServices(
+      "trustPaymentsService"
+    );
+
+    const paymentErrorStatus = request.query["errorcode"];
+
+    if (
+      trustPaymentsService.verifyRedirect(request) ||
+      (paymentErrorStatus && paymentErrorStatus !== "0")
+    ) {
+      // call service event on invalid payment
+      await trustPaymentsService.onInvalidPayment(request);
+
+      // throw payment page error
+    }
+
+    await trustPaymentsService.onValidPayment(request);
   }
 
   async outputRequests(request: HapiRequest) {

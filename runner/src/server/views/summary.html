@@ -46,14 +46,16 @@
         {% endfor %}
 
         {% if fees and fees.details|length %}
-          <h2 class="govuk-heading-m">Fees</h2>
-          <ul class="govuk-list govuk-list--bullet">
-            {% for fee in fees.details %}
-              <li>{{ fee.description }}: £{{fee.amount / 100}}</li>
-            {% endfor %}
-          </ul>
-          <p class="govuk-body">Total cost: £{{fees.total / 100 }}</p>
-          <p class="govuk-body">You should not be charged an exchange fee if you pay with a UK credit or debit card.</p>
+          {% if not feesInSummaryTable %}
+            <h2 class="govuk-heading-m">Fees</h2>
+            <ul class="govuk-list govuk-list--bullet">
+              {% for fee in fees.details %}
+                <li>{{ fee.description }}: £{{fee.amount / 100}}</li>
+              {% endfor %}
+            </ul>
+            <p class="govuk-body">Total cost: £{{fees.total / 100 }}</p>
+            <p class="govuk-body">You should not be charged an exchange fee if you pay with a UK credit or debit card.</p>
+          {% endif %}
         {% endif %}
 
         {% if not result.error  %}

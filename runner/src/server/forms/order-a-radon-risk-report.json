@@ -1205,7 +1205,7 @@
     "submitLabel": "Confirm and go to payment",
 
     "onSubmit": {
-      "action": "saveRiskReportDetailsUnknown"
+      "action": "saveRiskReportDetails"
     },
 
     "declaration": {
@@ -1213,6 +1213,12 @@
       "label": "I agree to the <a href=\"https://www.ukhsa-protectionservices.org.uk/tc/privacy-policy\" target=\"_blank\">Privacy Policy</a> and <a href=\"https://www.ukhsa-protectionservices.org.uk/tc/terms-conditions\" target=\"_blank\">Terms and Conditions</a> for this order.",
       "errorMessage": "You must accept the Privacy Policy and Terms and Conditions before continuing"
     },
+
+    "feesRow": {
+      "enabled": true,
+      "label": "Amount"
+    },
+
     "mergeFields": [
       {
         "names": [
@@ -1238,6 +1244,9 @@
       }
     ],
     "removeFields": [
+      "addressType",
+
+      "reportAddress_addressType",
       "reportAddress_postcodeLookup",
       "reportAddress_buildingLookup",
       "reportAddress_addressLine1Lookup",
@@ -1254,8 +1263,11 @@
       "deliveryAddress_countyLookup",
       "deliveryAddress_isCorrectAddress",
 
-      "addressType",
-      "deliveryAddressSameAsReport"
+      "deliveryAddress_addressType",
+      "deliveryAddressSameAsReport",
+
+      "targetType",
+      "sourceType"
     ],
     "relabelFields": {
       "deliveryMethod": "Delivery method",
@@ -1269,25 +1281,6 @@
       }
     },
     "conditionalRows": [
-      {
-        "when": { "field": "deliveryMethod", "value": "Post" },
-        "appendToLastSection": {
-          "name": "amount",
-          "label": "Amount",
-          "value": "£5.24",
-          "immutable": true
-        }
-      },
-      {
-        "when": { "field": "deliveryMethod", "value": "Email" },
-        "removeFields": ["delivery_address"],
-        "appendToLastSection": {
-          "name": "amount",
-          "label": "Amount",
-          "value": "£3.90",
-          "immutable": true
-        }
-      },
       {
         "when": { "field": "emailAddress", "isEmpty": true },
         "removeFields": ["emailAddress"]
@@ -1320,6 +1313,18 @@
     "feedbackForm": false,
     "url": ""
   },
+  "fees": [
+    {
+      "description": "Email delivery",
+      "amount": 390,
+      "condition": "isEmailDelivery"
+    },
+    {
+      "description": "Post delivery",
+      "amount": 524,
+      "condition": "isPostDelivery"
+    }
+  ],
   "services": [
     {
       "name": "addressLookupService",
@@ -1351,7 +1356,8 @@
       "parameters": {
         "siteReference": "${RPS_TRUST_PAYMENTS_SITE_REFERENCE}",
         "hashPassword": "${RPS_TRUST_PAYMENTS_HASH_PASSWORD}",
-        "onValidRedirect": "rspRiskReportUpdatePayment"
+        "onInvalidPaymentFunction": "rpsRiskReportInvalidPayment",
+        "onValidPaymentFunction": "rpsRiskReportValidPayment"
       }
     }
   ]

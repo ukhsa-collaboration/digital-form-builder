@@ -232,12 +232,14 @@ export interface DynamicServiceConfig {
 export interface TrustPaymentsConfig {
   siteReference: string;
   hashPassword: string;
+  onInvalidPaymentFunction?: string;
+  onValidPaymentFunction?: string;
 }
 
 export interface TrustPaymentsDetails {
   billingFirstName: string;
   billingLastName: string;
-  mainAmount: string;
+  amount: number;
   redirectUrl: string;
 }
 
@@ -267,6 +269,13 @@ export interface SummaryAppendSection {
   value: string;
   /** When true the user cannot return to change this value from the summary. */
   immutable?: boolean;
+}
+
+/** Configures rendering the fees total as the final row of the main summary table, instead of the separate Fees section. */
+export interface SummaryFeesRowConfig {
+  enabled: boolean;
+  /** Overrides the default "Fees" row label. */
+  label?: string;
 }
 
 export interface SummaryConditionalRowCondition {
@@ -308,6 +317,7 @@ export interface SummaryConfig {
   /** Map of field name → { rawValue → replacement display value }. */
   valueTransforms?: Record<string, Record<string, string>>;
   conditionalRows?: Array<SummaryConditionalRow>;
+  feesRow?: SummaryFeesRowConfig;
   onSubmit?: SubmitActionConfig;
 }
 

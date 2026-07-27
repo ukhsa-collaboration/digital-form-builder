@@ -45,6 +45,7 @@ export class SummaryViewModel {
   state: any;
   value: any;
   fees: FeesModel | undefined;
+  feesInSummaryTable: boolean = false;
   name: string | undefined;
   feedbackLink: string | undefined;
   phaseTag: string | undefined;
@@ -206,12 +207,41 @@ export class SummaryViewModel {
           }
         }
 
+        if (
+          summaryConfig.feesRow?.enabled &&
+          this.fees?.details?.length &&
+          transformed.length
+        ) {
+          const totalAmount = new Intl.NumberFormat("en-GB", {
+            style: "currency",
+            currency: "GBP",
+          }).format(this.fees?.total / 100);
+
+          transformed = transformed.map((d: any, i: number) =>
+            i === transformed.length - 1
+              ? {
+                  ...d,
+                  items: [
+                    ...d.items,
+                    {
+                      name: "fees",
+                      label: summaryConfig.feesRow?.label ?? "Fees",
+                      value: totalAmount,
+                      immutable: true,
+                    },
+                  ],
+                }
+              : d
+          );
+        }
+
         this.details = transformed;
       } catch (err) {
         logger.error({ err }, "Error applying summaryConfig transforms");
       }
 
       this.submitLabel = summaryConfig.submitLabel;
+      this.feesInSummaryTable = Boolean(summaryConfig.feesRow?.enabled);
 
       if (summaryConfig.declaration) {
         this.declaration = undefined;

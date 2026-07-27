@@ -415,6 +415,13 @@ const summaryConfigSchema = joi.object().keys({
       })
     )
     .optional(),
+  feesRow: joi
+    .object()
+    .keys({
+      enabled: joi.boolean().required(),
+      label: joi.string().optional(),
+    })
+    .optional(),
   onSubmit: joi
     .object()
     .keys({

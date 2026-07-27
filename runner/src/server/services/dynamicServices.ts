@@ -8,7 +8,7 @@ import { TrustPaymentsService } from "./trustPaymentsService";
 
 type ServiceConstructor = new (parameters: any) => unknown;
 
-const serviceRegistry: Record<string, ServiceConstructor> = {
+export const serviceRegistry: Record<string, ServiceConstructor> = {
   jsonApiIntegrationWithMsal: JsonApiIntegrationWithMsal,
   addressLookupService: AddressLookupService,
   trustPaymentsService: TrustPaymentsService,

@@ -12,11 +12,11 @@ export const lookupAddressRequestSchema = joi.object({
 });
 
 export interface RiskReportLookupResponse {
+  requestId: string;
   success: boolean;
   UDPRN: string;
   TemplateId?: string;
   found: boolean;
-  requestId: string;
 }
 
 export const storeReportRequestSchema = joi.object({
@@ -72,6 +72,18 @@ export interface StoreReportResponse {
   uuid: string;
 }
 
+export const storePaymentDetailsRequestSchema = joi.object({
+  uuid: joi.string().required(),
+  transactionId: joi.string().required(),
+  settle_status: joi.string().valid("SETTLED", "NOT_SETTLED"),
+});
+
+export interface StorePaymentDetailsResponse {
+  uuid: string;
+  transactionId: string;
+  message: string;
+}
+
 /**
  * Post request to store customer details & delivery address (if delivery method is `Post`).
  */
@@ -96,6 +108,7 @@ export const storeReportDetailsEndpoint = http.post(
     return HttpResponse.json(response);
   }
 );
+
 /**
  * Post request to store risk report address details. Stores UDPRN and Country Code
  */
@@ -139,7 +152,33 @@ export const storeRiskReportAddressEndpoint = http.post(
   }
 );
 
+export const storePaymentDetailsEndpoint = http.post(
+  "*/storepayment",
+  async ({ request }) => {
+    const validated = storePaymentDetailsRequestSchema.validate(
+      await request.json()
+    );
+
+    if (validated.error) {
+      logger.error(
+        { err: validated.error },
+        "Mock /storepayment request failed validation"
+      );
+      return HttpResponse.json(validated.error, { status: 500 });
+    }
+
+    const { uuid, transactionId } = validated.value;
+
+    return HttpResponse.json({
+      message: "Payment stored",
+      uuid,
+      transactionId,
+    });
+  }
+);
+
 export const rpsRiskReportBackendHandlers = [
   storeRiskReportAddressEndpoint,
   storeReportDetailsEndpoint,
+  storePaymentDetailsEndpoint,
 ];
