@@ -1,0 +1,51 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+  <div class="govuk-width-container">
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-two-thirds">
+        <h1 class="govuk-heading-l">We cannot make a report for this address</h1>
+
+        <div class="govuk-!-padding-bottom-9">
+            <p class="govuk-body">We do not have any data for this property yet. This could be due to:</p>
+
+            <ul class="govuk-list govuk-list--bullet">
+                <li>this address may have been recently built</li>
+                <li>this address may be on a site marked for redevelopment</li>
+            </ul>
+
+            <p class="govuk-body">Instead, you can try the address of a neighbouring property which may give a similar result.</p>
+
+            <p class="govuk-body govuk-!-margin-bottom-0">
+                <a class="govuk-link" href="./order-risk-report-find-a-report-address" class="govuk-body">Go back to try a different address</a>
+            </p>
+        </div>
+        
+        <div>
+            <h2 class="govuk-heading-m">Alternative options for getting information for properties radon levels</h2>
+        
+            <div>
+                <p class="govuk-body">You can request a radon search based on geographical co-ordinates from the British Geological Survey. This is called a GeoReport. Cost for this report in £72.00 (inc VAT).</p>
+                <p class="govuk-body">
+                    <a class="govuk-link" href="#" class="govuk-body">Request a GeoReport</a>
+                </p>
+            </div>
+            
+            <div>
+                <p class="govuk-body">Free map of the radon prone areas in United Kingdom and the Isle of Man. The map is less accurate than a radon risk report. This is because it shows the highest radon risk found within a 1 kilometre square, rather than the risk for a specific property.</p>
+                <p class="govuk-body">
+                    <a class="govuk-link" href="#" class="govuk-body">UK Radon map</a>
+                </p>
+            </div>
+            
+            <div>
+                <p class="govuk-body">Contact the Radon team. They can help you with options for getting information on radon levels at a property.</p>
+                <p class="govuk-body">
+                    <a class="govuk-link" href="#" class="govuk-body">Contact Radon team</a>
+                </p>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

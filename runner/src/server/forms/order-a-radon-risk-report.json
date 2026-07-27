@@ -1298,11 +1298,6 @@
   },
   "generateReference": true,
   "provider": "Trust Payments",
-  "trustPaymentConfig": {
-    "siteReference": "${RPS_TRUST_PAYMENTS_SITE_REFERENCE}",
-    "hashPassword": "${RPS_TRUST_PAYMENTS_HASH_PASSWORD}",
-    "onValidRedirect": "rspRiskReportUpdatePayment"
-  },
   "fees": [
     {
       "description": "Report Fee",
@@ -1326,12 +1321,39 @@
     "feedbackForm": false,
     "url": ""
   },
-  "addressLookupConfig": {
-    "apimBaseUrl": "${RPS_LOCATION_SERVICES_API_BASE_URL}",
-    "callingApplication": "RPS",
-    "tenantId": "${RPS_LOCATION_SERVICES_API_TENANT_ID}",
-    "clientId": "${RPS_LOCATION_SERVICES_API_CLIENT_ID}",
-    "clientSecret": "${RPS_LOCATION_SERVICES_API_CLIENT_SECRET}",
-    "scopes": ["${RPS_LOCATION_SERVICES_API_SCOPES}"]
-  }
+  "services": [
+    {
+      "name": "addressLookupService",
+      "service": "addressLookupService",
+      "parameters": {
+        "apimBaseUrl": "${RPS_LOCATION_SERVICES_API_BASE_URL}",
+        "callingApplication": "RPS",
+        "tenantId": "${RPS_LOCATION_SERVICES_API_TENANT_ID}",
+        "clientId": "${RPS_LOCATION_SERVICES_API_CLIENT_ID}",
+        "clientSecret": "${RPS_LOCATION_SERVICES_API_CLIENT_SECRET}",
+        "scopes": ["${RPS_LOCATION_SERVICES_API_SCOPES}"]
+      }
+    },
+    {
+      "name": "rpsBackendService",
+      "service": "jsonApiIntegrationWithMsal",
+      "parameters": {
+        "apimBaseUrl": "${RPS_RADON_RISK_REPORT_API_BASE_URL}",
+        "callingApplication": "RPS",
+        "tenantId": "${RPS_RADON_RISK_REPORT_API_TENANT_ID}",
+        "clientId": "${RPS_RADON_RISK_REPORT_API_CLIENT_ID}",
+        "clientSecret": "${RPS_RADON_RISK_REPORT_API_CLIENT_SECRET}",
+        "scopes": ["${RPS_RADON_RISK_REPORT_API_SCOPES}"]
+      }
+    },
+    {
+      "name": "trustPaymentsService",
+      "service": "trustPaymentsService",
+      "parameters": {
+        "siteReference": "${RPS_TRUST_PAYMENTS_SITE_REFERENCE}",
+        "hashPassword": "${RPS_TRUST_PAYMENTS_HASH_PASSWORD}",
+        "onValidRedirect": "rspRiskReportUpdatePayment"
+      }
+    }
+  ]
 }

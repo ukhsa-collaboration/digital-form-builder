@@ -7,19 +7,16 @@ import { HapiRequest } from "../types";
 import { ControllerError } from "../plugins/engine/errors";
 
 export class TrustPaymentsService {
-  // private config: TrustPaymentsConfig;
+  private config: TrustPaymentsConfig;
 
-  // constructor(config: TrustPaymentsConfig) {
-  //   // this.config = config;
-  // }
+  constructor(config: TrustPaymentsConfig) {
+    this.config = config;
+  }
 
-  async createTrustPaymentsForm(
-    details: TrustPaymentsDetails,
-    config: TrustPaymentsConfig
-  ) {
+  async createTrustPaymentsForm(details: TrustPaymentsDetails) {
     const currencyIso3a = "GBP";
     const mainAmount = details.mainAmount;
-    const siteReference = config.siteReference;
+    const siteReference = this.config.siteReference;
     const version = 2;
     const billingFirstName = details.billingFirstName;
     const billingLastName = details.billingLastName;
@@ -39,13 +36,10 @@ export class TrustPaymentsService {
       siteReference +
       version +
       siteSecurityTimestamp +
-      config.hashPassword;
+      this.config.hashPassword;
 
     const hash =
       "h" + createHash("sha256").update(stringToHash, "utf8").digest("hex");
-
-    console.log("siteSecurityTimestamp ::", siteSecurityTimestamp);
-    console.log("hash ::", hash);
 
     const html = `
         <html>
@@ -74,8 +68,6 @@ export class TrustPaymentsService {
         </html>
     `;
 
-    console.log("html:", html);
-
     return html;
   }
 
@@ -99,7 +91,7 @@ export class TrustPaymentsService {
       .sort();
 
     // join all the params in a single string
-    const paramString = paramsInAlphabeticalOrder
+    const paramString = [...paramsInAlphabeticalOrder, this.config.hashPassword]
       .map(([, paramValue]) => paramValue)
       .join("");
 

@@ -1,7 +1,6 @@
 import { PageControllerBase } from "./PageControllerBase";
 import { HapiRequest, HapiResponseToolkit } from "server/types";
 import { AddressLookupService } from "../../../services/addressLookupService";
-import { getLocationServiceInstanceName } from "../helpers";
 import Joi from "joi";
 import {
   addressTypeSchema,
@@ -11,6 +10,7 @@ import {
   findMatchingAddress,
   cleanAddresses,
 } from "../utils/addressUtils";
+import { ControllerError } from "../errors";
 
 const formSchema = Joi.object({
   addressType: addressTypeSchema,
@@ -58,65 +58,73 @@ export class FindAnAddressPageController extends PageControllerBase {
         buildingLookup,
       } = extractInputFromSubmission(validation.value);
 
-      const config = this.model.def?.addressLookupConfig;
-
-      if (typeof config === "undefined") {
-        return response;
-      }
-
-      const addressLookupInstanceName = getLocationServiceInstanceName(config);
-
       const { cacheService, ...rest } = request.services([]);
+
+      const addressLookupInstanceName = request.service.getName(
+        "addressLookupService"
+      );
 
       const addressLookupService = rest[
         addressLookupInstanceName
       ] as AddressLookupService;
 
       if (!addressLookupService) {
-        return response;
+        throw new ControllerError("cannot find address lookup service", {
+          code: 500,
+        });
       }
 
-      const addressResponse = await addressLookupService.lookupByPostcode(
-        postcodeLookup
-      );
+      try {
+        const addressResponse = await addressLookupService.lookupByPostcode(
+          postcodeLookup
+        );
 
-      const addresses = cleanAddresses(addressResponse.addresses);
+        const addresses = cleanAddresses(addressResponse.addresses);
 
-      // TODO:- "Fuzzy check full address" integration point
-      const matchedAddress = findMatchingAddress(
-        addresses,
-        buildingLookup,
-        addressLine1Lookup
-      );
+        // TODO:- "Fuzzy check full address" integration point
+        const matchedAddress = findMatchingAddress(
+          addresses,
+          buildingLookup,
+          addressLine1Lookup
+        );
 
-      const list = this.model.lists.find(
-        (list) => list.name === "addressesList"
-      );
+        const list = this.model.lists.find(
+          (list) => list.name === "addressesList"
+        );
 
-      if (list) {
-        list.items = addressesToList(addresses);
+        if (list) {
+          list.items = addressesToList(addresses);
+        }
+
+        const savedState = await cacheService.mergeState(request, {
+          // save inputs
+          [`${addressType}_postcodeLookup`]: postcodeLookup,
+          [`${addressType}_buildingLookup`]: buildingLookup,
+          [`${addressType}_addressLine1Lookup`]: addressLine1Lookup,
+          // save data
+          [`${addressType}_addresses`]: addresses,
+          [`${addressType}_numberOfAddresses`]: addresses.length,
+          [`${addressType}_hasMatchedAddress`]: matchedAddress !== undefined,
+          [`${addressType}_matchedAddress`]: matchedAddress,
+          [`${addressType}_isCorrectAddress`]: null,
+          // clear any selection made against a previous search's results
+          [`${addressType}_selectedAddress`]: null,
+          [deriveSelectedFieldName(addressType)]: null,
+        });
+
+        // This is always an intermediate step of the address-lookup
+        // sub-journey, never a completion, so it must never short-circuit
+        // straight to a Change link's returnUrl so honourReturnUrl is false.
+        return this.proceed(request, h, { ...savedState }, false);
+      } catch (error) {
+        throw new ControllerError(
+          error instanceof Error ? error.message : JSON.stringify(error),
+          {
+            code: 500,
+            page: "500-address-service-error",
+          }
+        );
       }
-
-      const savedState = await cacheService.mergeState(request, {
-        // save inputs
-        [`${addressType}_postcodeLookup`]: postcodeLookup,
-        [`${addressType}_buildingLookup`]: buildingLookup,
-        [`${addressType}_addressLine1Lookup`]: addressLine1Lookup,
-        // save data
-        [`${addressType}_addresses`]: addresses,
-        [`${addressType}_numberOfAddresses`]: addresses.length,
-        [`${addressType}_hasMatchedAddress`]: matchedAddress !== undefined,
-        [`${addressType}_matchedAddress`]: matchedAddress,
-        [`${addressType}_isCorrectAddress`]: null,
-        // clear any selection made against a previous search's results
-        [`${addressType}_selectedAddress`]: null,
-        [deriveSelectedFieldName(addressType)]: null,
-      });
-
-      // This is always an intermediate step of the address-lookup
-      // sub-journey, never a completion, so it must never short-circuit
-      // straight to a Change link's returnUrl so honourReturnUrl is false.
-      return this.proceed(request, h, { ...savedState }, false);
     };
   }
 }

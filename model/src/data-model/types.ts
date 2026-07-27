@@ -223,6 +223,12 @@ export interface AddressLookupConfig extends MsalAuthorizerConfig {
   subscriptionKey?: string;
 }
 
+export interface DynamicServiceConfig {
+  name: string;
+  service: string;
+  parameters: Record<string, any>;
+}
+
 export interface TrustPaymentsConfig {
   siteReference: string;
   hashPassword: string;
@@ -334,6 +340,7 @@ export type FormDefinition = {
   error500ContactEmail?: string | undefined;
   summaryConfig?: SummaryConfig;
   generateReference?: boolean | undefined;
+  services?: DynamicServiceConfig[];
   provider?: string;
   trustPayementsConfig?: TrustPaymentsConfig;
 };

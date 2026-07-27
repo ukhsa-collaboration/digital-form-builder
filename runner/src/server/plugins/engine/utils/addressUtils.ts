@@ -2,7 +2,10 @@ import { Item } from "@xgovformbuilder/model/dist/module/data-model/types";
 import Joi from "joi";
 import { Address } from "src/server/services/addressLookupService";
 
-export type AddressType = "reportAddress" | "deliveryAddress";
+export type AddressType =
+  | "reportAddress"
+  | "deliveryAddress"
+  | "measurementAddress";
 
 export type SelectedFieldName =
   | "selectedReportAddress"
@@ -10,7 +13,8 @@ export type SelectedFieldName =
 
 export const addressTypeSchema = Joi.string().valid(
   "reportAddress",
-  "deliveryAddress"
+  "deliveryAddress",
+  "measurementAddress"
 );
 
 /**
@@ -39,7 +43,7 @@ export function deriveSelectedFieldName(
 export const addressesToList = (addresses: Address[]): Item[] => {
   return addresses.map((address) => ({
     text: address.address,
-    value: address.uprn,
+    value: address.udprn,
   }));
 };
 
@@ -58,16 +62,16 @@ export const formatAddress = (address: {
 };
 
 /**
- * Finds an address by UPRN
+ * Finds an address by UDPRN
  * @param addresses - a list of addresses
- * @param uprn - the uprn
+ * @param udprn - the udprn
  * @returns an address or undefined
  */
-export const resolveAddressByUprn = (
+export const resolveAddressByUdprn = (
   addresses: Address[],
-  uprn: Address["uprn"]
+  udprn: Address["udprn"]
 ): Address | undefined => {
-  return addresses.find((addr) => String(addr.uprn) === uprn);
+  return addresses.find((addr) => String(addr.udprn) === udprn);
 };
 
 const STREET_NUMBER_PATTERN = /(^|, )(\d+[A-Z]?([-\/]\d+)?[A-Z]?),/i;

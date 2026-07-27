@@ -11,6 +11,7 @@ import config from "server/config";
 import { FeesModel } from "server/plugins/engine/models/submission";
 import { isMultipleApiKey, TrustPaymentsDetails } from "@xgovformbuilder/model";
 import { v4 as uuidv4 } from "uuid";
+import { ControllerError } from "../errors";
 
 export class SummaryPageController extends PageController {
   /**
@@ -123,11 +124,20 @@ export class SummaryPageController extends PageController {
    */
   makePostRouteHandler() {
     return async (request: HapiRequest, h: HapiResponseToolkit) => {
-      const {
-        payService,
-        trustPaymentsService,
-        cacheService,
-      } = request.services([]);
+      const trustPaymentsServiceName = request.service.getName(
+        "trustPaymentsService"
+      );
+
+      const { payService, cacheService, ...rest } = request.services([]);
+
+      const trustPaymentsService = rest[trustPaymentsServiceName];
+
+      if (!trustPaymentsService) {
+        throw new ControllerError("cannot find trust payments service", {
+          code: 500,
+        });
+      }
+
       const model = this.model;
       const state = await cacheService.getState(request);
       const summaryViewModel = new SummaryViewModel(
@@ -226,11 +236,7 @@ export class SummaryPageController extends PageController {
         };
 
         const html = await trustPaymentsService.createTrustPaymentsForm(
-          paymentDetails,
-          {
-            hashPassword: "fPsUGQvx9QduHtWKGABs2VRr",
-            siteReference: "test_healthpa33354",
-          }
+          paymentDetails
         );
 
         return h.response(html).type("text/html");
