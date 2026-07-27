@@ -4630,10 +4630,10 @@
     }
   },
   "secureFormSubmissionConfig": {
-    "tenantId": "${SRSNL8CoreAipmTenantId}",
-    "clientId": "${SRSNL8CoreAipmClientId}",
-    "clientSecret": "${SRSNL8CoreAipmClientSecret}",
-    "scopes": ["${SRSNL8CoreAipmScope1}"],
+    "tenantId": "${SRSNL8CoreApimTenantId}",
+    "clientId": "${SRSNL8CoreApimClientId}",
+    "clientSecret": "${SRSNL8CoreApimClientSecret}",
+    "scopes": ["${SRSNL8CoreApimScope1}"],
     "useAwsWafUserAgentWorkaround": true
   }
 }
