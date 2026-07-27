@@ -35,6 +35,8 @@ Features and configuration options for the runner.
   - Submit data to a queue after the user has completed the form
 - [summary details transforms](runner/summary-details-transforms.md)
   - Modify the details on summary pages before they are displayed to the user
+- [summary page onSubmit actions](runner/summary-on-submit.md)
+  - Run a server-side action when the summary page is submitted, before the normal outputs/payment flow
 - [templating](runner/templating.md)
   - Allow njks templating within html components and add previous answers to the render context
 

@@ -11,6 +11,8 @@ export interface Address {
   address: string;
   postcode: string;
   udprn: string;
+  uprn: string;
+  countryCode: string;
 }
 
 export interface AddressLookupResponse {
@@ -67,6 +69,8 @@ export class AddressLookupService {
           address: item.addressString,
           postcode: item.postcode,
           udprn: item.udprn,
+          uprn: item.uprn,
+          countryCode: item.countryCode,
         })
       ),
     };

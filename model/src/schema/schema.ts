@@ -415,6 +415,13 @@ const summaryConfigSchema = joi.object().keys({
       })
     )
     .optional(),
+  onSubmit: joi
+    .object()
+    .keys({
+      action: joi.string().required(),
+      parameters: joi.object().unknown(true).optional(),
+    })
+    .optional(),
 });
 
 export const Schema = joi
