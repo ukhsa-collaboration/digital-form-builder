@@ -949,11 +949,11 @@
       "items": [
         {
           "text": "Digital report (£3.90) - delivered instantly",
-          "value": "Email"
+          "value": "email"
         },
         {
           "text": "Printed report (£5.24) - delivered within 3 to 6 working days",
-          "value": "Post"
+          "value": "post"
         }
       ]
     },
@@ -1159,7 +1159,7 @@
               "display": "How would you like to receive your report"
             },
             "operator": "is",
-            "value": { "type": "Value", "value": "Email", "display": "Email" }
+            "value": { "type": "Value", "value": "email", "display": "Email" }
           }
         ]
       }
@@ -1177,7 +1177,7 @@
               "display": "How would you like to receive your report"
             },
             "operator": "is",
-            "value": { "type": "Value", "value": "Post", "display": "Post" }
+            "value": { "type": "Value", "value": "post", "display": "Post" }
           }
         ]
       }
@@ -1203,6 +1203,11 @@
   ],
   "summaryConfig": {
     "submitLabel": "Confirm and go to payment",
+
+    "onSubmit": {
+      "action": "saveRiskReportDetailsUnknown"
+    },
+
     "declaration": {
       "hideDeclarationHeading": true,
       "label": "I agree to the <a href=\"https://www.ukhsa-protectionservices.org.uk/tc/privacy-policy\" target=\"_blank\">Privacy Policy</a> and <a href=\"https://www.ukhsa-protectionservices.org.uk/tc/terms-conditions\" target=\"_blank\">Terms and Conditions</a> for this order.",
@@ -1259,8 +1264,8 @@
     },
     "valueTransforms": {
       "deliveryMethod": {
-        "Email": "Email",
-        "Post": "Post"
+        "email": "Email",
+        "post": "Post"
       }
     },
     "conditionalRows": [

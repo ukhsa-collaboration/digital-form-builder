@@ -180,16 +180,21 @@ export class CustomSummaryPageController extends PageController {
         summaryViewModel.addDeclarationAsQuestion();
       }
 
+      // run onSubmit hook after declaration has been checked
+      const onSubmitResult = await this.runOnSubmitAction(
+        request,
+        h,
+        summaryViewModel
+      );
+
+      if (onSubmitResult) {
+        return onSubmitResult;
+      }
+
       await cacheService.mergeState(request, {
         outputs: summaryViewModel.outputs,
         userCompletedSummary: true,
       });
-
-      // Commented out due to potential for logging PII
-      // request.logger.info(
-      //   ["Webhook data", "before send", request.yar.id],
-      //   JSON.stringify(summaryViewModel.validatedWebhookData)
-      // );
 
       await cacheService.mergeState(request, {
         webhookData: summaryViewModel.validatedWebhookData,

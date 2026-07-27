@@ -282,6 +282,17 @@ export interface SummaryConditionalRow {
 }
 
 /**
+ * Names a function registered in the runner's `submitActionRegistry` to run when the
+ * summary page's submit button is clicked, after the declaration check passes and before
+ * outputs/webhookData are merged into state.
+ */
+export interface SubmitActionConfig {
+  /** Key into the runner's `submitActionRegistry`. */
+  action: string;
+  parameters?: Record<string, any>;
+}
+
+/**
  * Data-driven configuration for the summary page, set at the form-definition level.
  * Transforms are applied in order: merge → remove → relabel → value transform → conditional rules.
  */
@@ -297,6 +308,7 @@ export interface SummaryConfig {
   /** Map of field name → { rawValue → replacement display value }. */
   valueTransforms?: Record<string, Record<string, string>>;
   conditionalRows?: Array<SummaryConditionalRow>;
+  onSubmit?: SubmitActionConfig;
 }
 
 /**

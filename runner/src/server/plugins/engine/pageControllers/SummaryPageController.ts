@@ -203,7 +203,15 @@ export class SummaryPageController extends PageController {
         summaryViewModel.addDeclarationAsQuestion();
       }
 
-      // onSubmitAction
+      const onSubmitResult = await this.runOnSubmitAction(
+        request,
+        h,
+        summaryViewModel
+      );
+
+      if (onSubmitResult) {
+        return onSubmitResult;
+      }
 
       if (model.def?.generateReference == true) {
         const reference = uuidv4();

@@ -73,10 +73,20 @@ const extractInputFromSubmission = (data: FormSubmission) => {
  */
 const lookupUdprnInDatabase = async (
   rpsBackendService: JsonApiIntegrationWithMsal,
-  { udprn, backLinkUrl }: { udprn: string; backLinkUrl: string }
+  {
+    udprn,
+    uprn,
+    countryCode,
+    backLinkUrl,
+  }: {
+    udprn: string;
+    uprn: string;
+    countryCode: "E" | "W" | "N" | "S";
+    backLinkUrl: string;
+  }
 ) => {
   try {
-    const sessionId = uuidv4();
+    const uuid = uuidv4();
 
     const checkUdprn = await rpsBackendService.request("/lookup", {
       method: "POST",
@@ -84,8 +94,10 @@ const lookupUdprnInDatabase = async (
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        UDPRN: udprn.padStart(8, "0"),
-        SessionId: sessionId,
+        udprn: udprn.padStart(8, "0"),
+        uprn,
+        uuid,
+        countryCode,
       }),
     });
 
@@ -107,7 +119,7 @@ const lookupUdprnInDatabase = async (
       });
     }
 
-    return sessionId;
+    return uuid;
   } catch (error) {
     if (error instanceof ControllerError) throw error;
 
@@ -284,9 +296,15 @@ export class SelectAnAddressPageController extends PageControllerBase {
           const progress = currentState.progress || [];
           const backLinkUrl = progress[progress.length - 1];
 
-          await lookupUdprnInDatabase(rpsBackendService, {
+          const sessionId = await lookupUdprnInDatabase(rpsBackendService, {
             backLinkUrl,
             udprn: resolvedSelectedAddress?.udprn,
+            uprn: resolvedSelectedAddress?.uprn,
+            countryCode: resolvedSelectedAddress?.countryCode,
+          });
+
+          await cacheService.mergeState(request, {
+            sessionId,
           });
         }
 
