@@ -22,6 +22,7 @@ import {
   OutputData,
   TNotifyModel,
 } from "../plugins/engine/models/submission/types";
+import { ControllerError } from "../plugins/engine/errors";
 
 type WebhookModel = WebhookOutputConfiguration & {
   formData: object;
@@ -75,6 +76,25 @@ export class StatusService {
 
     // TODO: put trust payments error logic in here
     // verify redirect for trust payments
+
+    const trustPaymentsServiceName = request.service.getName(
+      "trustPaymentsService"
+    );
+
+    const services = request.services([]);
+
+    const trustPaymentsService = services[trustPaymentsServiceName];
+
+    if (!trustPaymentsService) {
+      throw new ControllerError("cannot find trust payments service", {
+        code: 500,
+      });
+    }
+
+    if (trustPaymentsService.verifyRedirect(request)) {
+      return false;
+    }
+
     // call rps backend if payment has failed
 
     if (!pay) {

@@ -96,6 +96,8 @@ export class TrustPaymentsService {
     // hash the param string
     const hash = createHash("sha256").update(paramString, "utf8").digest("hex");
 
+    // Make sure the comparison is timing safe
+
     return true; //hash === hashedReference;
   }
 }
