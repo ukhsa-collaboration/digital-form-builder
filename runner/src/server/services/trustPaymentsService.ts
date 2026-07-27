@@ -72,9 +72,7 @@ export class TrustPaymentsService {
   }
 
   verifyRedirect(request: HapiRequest): boolean {
-    console.log("REQUEST PARAMS ::", JSON.stringify(request.params));
-
-    const hashedReference = request.params["responsesitesecurity"];
+    const hashedReference = request.query["responsesitesecurity"];
 
     if (!hashedReference)
       throw new ControllerError(
@@ -85,7 +83,7 @@ export class TrustPaymentsService {
       );
 
     // validate hash with our password
-    const paramsInAlphabeticalOrder = Object.entries(request.params)
+    const paramsInAlphabeticalOrder = Object.entries(request.query)
       // filter out the response site security value
       .filter(([paramKey]) => paramKey === "responsesitesecurity")
       .sort();

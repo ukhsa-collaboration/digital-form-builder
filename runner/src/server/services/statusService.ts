@@ -69,18 +69,27 @@ export class StatusService {
     this.payService = payService;
     this.formSecurityService = formSecurityService;
   }
+
   async shouldShowPayErrorPage(request: HapiRequest): Promise<boolean> {
     const { pay } = await this.cacheService.getState(request);
+
+    // TODO: put trust payments error logic in here
+    // verify redirect for trust payments
+    // call rps backend if payment has failed
+
     if (!pay) {
       this.logger.info(
         ["StatusService", "shouldShowPayErrorPage"],
         "No pay state detected, skipping"
       );
+
       return false;
     }
+
     const { self, meta } = pay;
     const { query } = request;
     const { state } = await this.payService.payStatus(self, meta.payApiKey);
+
     pay.state = state;
 
     if (state.status === "success") {
@@ -171,6 +180,7 @@ export class StatusService {
         ["StatusService", "outputRequests"],
         `Callback detected for ${request.yar.id} - PUT to ${callback.callbackUrl}`
       );
+
       try {
         newReference = await this.webhookService.postRequest(
           callback.callbackUrl,
@@ -187,13 +197,14 @@ export class StatusService {
 
     const firstWebhook = outputs?.find((output) => output.type === "webhook");
     const otherOutputs = outputs?.filter((output) => output !== firstWebhook);
+
     if (firstWebhook) {
       const payload = this.resolvePayload(
         firstWebhook.outputData.payload,
         formData,
         state
       );
-      console.log("payload is: ", JSON.stringify(payload));
+
       newReference = await this.webhookService.postRequest(
         firstWebhook.outputData.url,
         { ...formData, ...payload },
@@ -201,6 +212,7 @@ export class StatusService {
         firstWebhook.outputData.sendAdditionalPayMetadata,
         customSecurityHeaders
       );
+
       await this.cacheService.mergeState(request, {
         reference: newReference,
       });
@@ -272,6 +284,7 @@ export class StatusService {
     }
     return output;
   }
+
   /**
    * Appends `{paymentSkipped: true}` to the `metadata` property and drops the `fees` property if the user has chosen to skip payment
    */

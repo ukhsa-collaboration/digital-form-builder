@@ -232,12 +232,15 @@ export class SummaryPageController extends PageController {
           billingFirstName: "FirstNAme",
           billingLastName: "LastName",
           mainAmount: "10.5",
-          redirectUrl: `${url.origin}/${request.params.id}/confirmation`,
+          redirectUrl: `${url.origin}/${request.params.id}/status`,
         };
 
         const html = await trustPaymentsService.createTrustPaymentsForm(
           paymentDetails
         );
+
+        // feeze state when payment process begins
+        // await cacheService.freezeState(request);
 
         return h.response(html).type("text/html");
       }

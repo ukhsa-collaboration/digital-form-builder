@@ -48,19 +48,26 @@ const index = {
 
             const state = await cacheService.getState(request);
 
+            console.log("CURRENT STATE ::", JSON.stringify(state, null, 2));
+
             const {
               reference: newReference,
             } = await statusService.outputRequests(request);
 
+            console.log("AFTER outputRequests");
+
             if (state.callback?.skipSummary?.redirectUrl) {
               const { redirectUrl } = state.callback?.skipSummary;
+
               request.logger.info(
                 ["applicationStatus"],
                 `Callback skipSummary detected, redirecting ${request.yar.id} to ${redirectUrl} and clearing state`
               );
+
               await cacheService.setConfirmationState(request, {
                 redirectUrl,
               });
+
               await cacheService.clearState(request);
 
               return h.redirect(redirectUrl);

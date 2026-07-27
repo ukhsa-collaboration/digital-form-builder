@@ -17,19 +17,15 @@ export class TrustPaymentsPageController extends PageController {
       cacheService,
     } = request.services([]);
 
-    console.log("IS THIS RUNNING???");
-
     if (!trustPaymentsService.verifyRedirect(request)) {
       throw new ControllerError("invalid redirect from trust payments", {
         code: 500,
       });
     }
 
-    const state = cacheService.getState(request);
+    const state = await cacheService.getState(request);
 
-    console.log("MODEL ::", JSON.stringify(this.model));
-
-    const viewModel = statusService.getViewModel(state, this.model, "?????");
+    const viewModel = statusService.getViewModel(state, this.model);
     viewModel.name = this.model.name;
     viewModel.feedbackLink = "http://feedback.example";
 
@@ -41,6 +37,7 @@ export class TrustPaymentsPageController extends PageController {
       confirmationTimeout
     );
 
+    // Should we do this???
     await cacheService.clearState(request);
 
     this.viewModel = viewModel;
@@ -52,7 +49,8 @@ export class TrustPaymentsPageController extends PageController {
   }
 
   makeGetRouteHandler() {
-    return async (_: HapiRequest, h: HapiResponseToolkit) => {
+    return async (request: HapiRequest, h: HapiResponseToolkit) => {
+      await this.getRouteHandlerHook(request);
       return h.view("confirmation", this.viewModel);
     };
   }
