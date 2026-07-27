@@ -11,7 +11,6 @@ export async function handleUserWithConfirmationViewModel(
   );
 
   if (!confirmationViewModel) {
-    console.log("RETURNING NULL in handleUserWithConfirmationViewModel");
     return null;
   }
 

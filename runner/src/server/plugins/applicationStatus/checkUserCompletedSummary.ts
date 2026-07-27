@@ -8,8 +8,6 @@ export async function checkUserCompletedSummary(
 
   const state = await cacheService.getState(request);
 
-  console.log("USER COMPLETED SUMMARY ::", state?.userCompletedSummary);
-
   if (state?.userCompletedSummary !== true) {
     request.logger.error(
       [`/${request.params.id}/status`],

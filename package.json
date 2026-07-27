@@ -70,7 +70,6 @@
     "hmpo-components": "^5.2.1"
   },
   "resolutions": {
-    "@types/node": "^20.4.6",
     "@babel/core": "^7.23.3",
     "@babel/traverse": "^7.23.3",
     "braces": "2.3.1",

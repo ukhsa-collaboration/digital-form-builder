@@ -230,7 +230,7 @@ export class SummaryPageController extends PageController {
 
       const feesModel = FeesModel(model, state);
 
-      if (model.def?.provider === "Trust Payments") {
+      if (model.def?.provider === "trust-payments") {
         const url = new URL(request.url);
 
         if (!feesModel)

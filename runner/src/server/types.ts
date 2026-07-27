@@ -20,7 +20,6 @@ import {
   StatusService,
   UploadService,
   WebhookService,
-  DatabaseService,
   TrustPaymentsService,
 } from "./services";
 import { QueueStatusService } from "server/services/queueStatusService";
@@ -43,7 +42,6 @@ type Services = (
   exitService: ExitService;
   formSecurityService: FormSecurityService;
   addressLookupService: AddressLookupService;
-  databaseService: DatabaseService;
   trustPaymentsService: TrustPaymentsService;
 };
 

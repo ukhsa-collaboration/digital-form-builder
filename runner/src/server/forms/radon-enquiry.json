@@ -794,12 +794,12 @@
       }
     }
   ],
-  "provider": "Trust Payments",
   "feedback": {
     "feedbackForm": false,
     "url": ""
   },
   "generateReference": true,
+  "provider": "trust-payments",
   "version": 2,
   "skipSummary": false,
   "feeOptions": {}

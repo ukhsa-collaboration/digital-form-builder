@@ -899,13 +899,6 @@
       "controller": "./pages/summary.js",
       "components": [],
       "next": []
-    },
-    {
-      "title": "Confirmation",
-      "path": "/confirmation",
-      "controller": "TrustPaymentsPageController",
-      "components": [],
-      "next": []
     }
   ],
   "specialPages": {
@@ -1295,7 +1288,7 @@
     ]
   },
   "generateReference": true,
-  "provider": "Trust Payments",
+  "provider": "trust-payments",
   "outputs": [
     {
       "name": "webhookOutput",

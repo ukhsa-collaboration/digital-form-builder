@@ -487,7 +487,7 @@ export const Schema = joi
     summaryConfig: summaryConfigSchema.optional(),
     generateReference: joi.boolean().optional(),
     services: joi.array().items(dynamicServiceConfigSchema).optional(),
-    provider: joi.string().valid("GOV.UK Pay", "Trust Payments").optional(),
+    provider: joi.string().valid("govuk-pay", "trust-payments").optional(),
   });
 
 /**

@@ -15,5 +15,4 @@ export {
   getSecureFormSubmissionServiceInstance,
 } from "./secureFormSubmissionService";
 export { AddressLookupService } from "./addressLookupService";
-export { DatabaseService } from "./databaseService";
 export { TrustPaymentsService } from "./trustPaymentsService";
