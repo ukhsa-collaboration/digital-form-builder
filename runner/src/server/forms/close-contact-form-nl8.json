@@ -6,7 +6,7 @@
   "confirmationSessionTimeout": 2000,
   "pages": [
     {
-      "title": "Tell us about people you've been in close contact with",
+      "title": "Test change to title for deployment check",
       "path": "/start",
       "components": [
         {
