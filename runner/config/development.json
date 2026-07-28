@@ -3,6 +3,5 @@
   "previewMode": true,
   "enforceCsrf": false,
   "httpsCookieSecureAttribute": true,
-  "env": "development",
-  "enableMockApi": true
+  "env": "development"
 }
