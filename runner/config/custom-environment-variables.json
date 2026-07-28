@@ -61,5 +61,9 @@
   "queueServicePollingTimeout": "QUEUE_SERVICE_POLLING_TIMEOUT",
   "allowUserTemplates": "ALLOW_USER_TEMPLATES",
   "maxClientFileSize": "MAX_CLIENT_FILE_SIZE",
-  "maxFileSizeStringInMb": "MAX_FILE_SIZE_STRING_IN_MB"
+  "maxFileSizeStringInMb": "MAX_FILE_SIZE_STRING_IN_MB",
+  "httpsCookieSecureAttribute": {
+    "__name": "HTTPS_COOKIE_SECURE_ATTRIBUTE",
+    "__format": "boolean"
+  }
 }

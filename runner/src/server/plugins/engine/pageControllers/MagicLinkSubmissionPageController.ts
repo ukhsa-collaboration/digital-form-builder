@@ -101,6 +101,7 @@ export class MagicLinkSubmissionPageController extends PageController {
       );
       this.setFeedbackDetails(summaryViewModel, request);
 
+
       // redirect user to start page if there are incomplete form errors
       if (summaryViewModel.result.error) {
         request.logger.error(
@@ -149,6 +150,7 @@ export class MagicLinkSubmissionPageController extends PageController {
         ]);
         return redirectTo(request, h, InvalidDomainRedirectPage);
       }
+
 
       const hmacKey = this.model.def.outputs[0].outputConfiguration.hmacKey;
       const currentTime = Math.floor(Date.now() / 1000);
