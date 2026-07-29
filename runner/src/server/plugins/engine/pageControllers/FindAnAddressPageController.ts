@@ -118,7 +118,9 @@ export class FindAnAddressPageController extends PageControllerBase {
         return this.proceed(request, h, { ...savedState }, false);
       } catch (error) {
         throw new ControllerError(
-          error instanceof Error ? error.message : JSON.stringify(error),
+          `Error in FindAnAddressPageController: ${
+            error instanceof Error ? error.message : JSON.stringify(error)
+          }`,
           {
             code: 500,
             page: "500-address-service-error",
