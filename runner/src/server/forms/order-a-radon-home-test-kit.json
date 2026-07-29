@@ -849,6 +849,11 @@
       "title": "Review your order",
       "components": [
         {
+          "name": "reminderToCheck",
+          "type": "Para",
+          "content": "Check that everything is correct before you confirm your order."
+        },
+        {
           "name": "orderSummary",
           "options": {},
           "type": "Para",
