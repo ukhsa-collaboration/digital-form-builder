@@ -2,7 +2,7 @@ import { createHash } from "crypto";
 import * as Code from "@hapi/code";
 import * as Lab from "@hapi/lab";
 import { HapiRequest } from "../../../../src/server/types";
-import { TrustPaymentsService } from "../../../../src/server/services";
+import { TrustPaymentsService } from "../../../../src/server/services/trustPaymentsService";
 
 const { expect } = Code;
 const lab = Lab.script();
