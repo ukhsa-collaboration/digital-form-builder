@@ -37,6 +37,7 @@ services:
       # ==============================
 
       - SESSION_COOKIE_PASSWORD
+      - ENABLE_MOCK_API=true
 
       # ------ Location services via UKHSA Azure ------
 
