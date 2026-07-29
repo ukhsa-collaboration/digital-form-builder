@@ -1,4 +1,4 @@
-import { createHash } from "crypto";
+import { createHash, timingSafeEqual } from "crypto";
 import {
   TrustPaymentsDetails,
   TrustPaymentsConfig,
@@ -157,19 +157,23 @@ export class TrustPaymentsService {
     // validate hash with our password
     const paramsInAlphabeticalOrder = Object.entries(request.query)
       // filter out the response site security value
-      .filter(([paramKey]) => paramKey === "responsesitesecurity")
-      .sort();
+      .filter(([paramKey]) => paramKey !== "responsesitesecurity")
+      .sort(([a], [b]) => a.localeCompare(b));
 
     // join all the params in a single string
-    const paramString = [...paramsInAlphabeticalOrder, this.config.hashPassword]
-      .map(([, paramValue]) => paramValue)
-      .join("");
+    const paramString =
+      paramsInAlphabeticalOrder.map(([, paramValue]) => paramValue).join("") +
+      this.config.hashPassword;
 
     // hash the param string
     const hash = createHash("sha256").update(paramString, "utf8").digest("hex");
 
     // Make sure the comparison is timing safe
+    const hashBuffer = new Uint8Array(Buffer.from(hash));
+    const hashedReferenceBuffer = new Uint8Array(Buffer.from(hashedReference));
 
-    return true; //hash === hashedReference;
+    if (hashBuffer.length !== hashedReferenceBuffer.length) return false;
+
+    return timingSafeEqual(hashBuffer, hashedReferenceBuffer);
   }
 }

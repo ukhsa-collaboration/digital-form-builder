@@ -26,7 +26,7 @@ function validHashFor(query: Record<string, string>): string {
   return createHash("sha256").update(paramString, "utf8").digest("hex");
 }
 
-suite.skip("Server TrustPaymentsService Service", () => {
+suite("Server TrustPaymentsService Service", () => {
   test("returns true when responsesitesecurity matches the computed hash", () => {
     const service = new TrustPaymentsService({
       siteReference: "site1234",
