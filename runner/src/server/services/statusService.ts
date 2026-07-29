@@ -72,9 +72,9 @@ export class StatusService {
   }
 
   async shouldShowPayErrorPage(request: HapiRequest): Promise<boolean> {
-    const { pay } = await this.cacheService.getState(request);
+    const { pay, paymentProvider } = await this.cacheService.getState(request);
 
-    if (/* we are in trust payments flow*/ true)
+    if (paymentProvider === "trust-payments")
       await this.verifyTrustPaymentRedirect(request);
 
     if (!pay) {
@@ -138,8 +138,6 @@ export class StatusService {
   }
 
   async verifyTrustPaymentRedirect(request: HapiRequest) {
-    this.logger.info("CALLING VERIFY TRUST PAYMENT REDIRECT");
-
     // verify redirect for trust payments
     const { trustPaymentsService } = request.service.getServices(
       "trustPaymentsService"

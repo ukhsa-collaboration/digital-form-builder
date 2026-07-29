@@ -124,17 +124,7 @@ export class SummaryPageController extends PageController {
    */
   makePostRouteHandler() {
     return async (request: HapiRequest, h: HapiResponseToolkit) => {
-      const { trustPaymentsService } = request.service.getServices(
-        "trustPaymentsService"
-      );
-
       const { payService, cacheService } = request.services([]);
-
-      if (!trustPaymentsService) {
-        throw new ControllerError("cannot find trust payments service", {
-          code: 500,
-        });
-      }
 
       const model = this.model;
       const state = await cacheService.getState(request);
@@ -231,6 +221,16 @@ export class SummaryPageController extends PageController {
       const feesModel = FeesModel(model, state);
 
       if (model.def?.provider === "trust-payments") {
+        const { trustPaymentsService } = request.service.getServices(
+          "trustPaymentsService"
+        );
+
+        if (!trustPaymentsService) {
+          throw new ControllerError("cannot find trust payments service", {
+            code: 500,
+          });
+        }
+
         const url = new URL(request.url);
 
         if (!feesModel)
