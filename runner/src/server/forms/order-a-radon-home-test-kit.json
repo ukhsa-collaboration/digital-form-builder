@@ -460,7 +460,7 @@
           "content": "<p class=\"govuk-body-m\"><h2 class=\"govuk-heading-m\">Enter your personal details</h2></p>"
         },
         {
-          "name": "Title",
+          "name": "BothTitle",
           "options": {
             "exposeToContext": true,
             "customValidationMessages":{
@@ -472,7 +472,7 @@
           "hint": "e.g. Mr, Mrs, Dr"
         },
         {
-          "name": "Initials",
+          "name": "BothInitials",
           "options": {
             "customValidationMessages":{
               "string.empty": "Enter your Initials"
@@ -483,7 +483,7 @@
           "title": "Initials"
         },
         {
-          "name": "LastName",
+          "name": "BothLastName",
           "options": { "required": false, "exposeToContext": true },
           "type": "TextField",
           "title": "Last Name"
@@ -495,7 +495,7 @@
           "content": "<p class=\"govuk-body-m\"><h2 class=\"govuk-heading-m\">Enter your email address</h2></p>"
         },
         {
-          "name": "EmailAddress",
+          "name": "BothEmailAddress",
           "options": {
             "exposeToContext": true,
             "customValidationMessages": {
@@ -574,16 +574,20 @@
       ],
       "next": [
         {
-          "path": "/gas-test-kit-check-your-answers",
-          "condition": "ReadyToReview"
+          "path": "/summary",
+          "condition": "CorrectKitAddressCorrectResultsAddress"
         },
         {
           "path": "/who-is-the-recipient-of-the-kit",
-          "condition": "DeliveryAddressIncorrect"
+          "condition": "IncorrectKitAddressCorrectResultsAddress"
+        },
+        {
+          "path": "/who-is-the-recipient-of-the-kit",
+          "condition": "IncorrectKitAddressIncorrectResultsAddress"
         },
         {
           "path": "/who-is-the-recipient-of-radon-gas-test-results",
-          "condition": "correctKitAddressIncorrectResultsAddress"
+          "condition": "CorrectKitAddressIncorrectResultsAddress"
         }
       ]
     },
@@ -695,7 +699,7 @@
             "title": "Postcode"
           }
         ],
-        "next": [{"path": "/gas-test-kit-check-your-answers"}]
+        "next": [{"path": "/summary"}]
       },
       {
         "path": "/who-is-the-recipient-of-the-kit",
@@ -806,8 +810,8 @@
         }
       ],
       "next": [
-        {"path": "/gas-test-kit-delivery-address-same-as-results", "condition": "incorrectKitAddressIncorrectResultsAddress"},
-        {"path": "/gas-test-kit-check-your-answers"}
+        {"path": "/gas-test-kit-delivery-address-same-as-results", "condition": "IncorrectKitAddressIncorrectResultsAddress"},
+        {"path": "/summary"}
     ]
     },
     {
@@ -841,7 +845,7 @@
       ],
       "next": [
         {"path":"/who-is-the-recipient-of-radon-gas-test-results", "condition": "DeliveryDetailsIncorrectResultsAddress"},
-        {"path": "/gas-test-kit-check-your-answers"}
+        {"path": "/summary"}
       ]
     },
     {
@@ -861,10 +865,10 @@
           "content": "</br>"
         },
         {
-          "name": "contactInfoTable",
+          "name": "contactInfoTableYESYES",
           "options": {},
           "type": "Para",
-          "content": "<table class=\"govuk-table\"><caption class=\"govuk-table__caption govuk-table__caption--m\">Contact Information</caption><tbody class=\"govuk-table__body\"><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\">Title</th><td class=\"govuk-table__cell\">{{ Title }}</td><td class=\"govuk-table__cell\"><a href=\"/gas-test-kit/enter-details\" \"target\"=\"_blank\">Change</a></td></tr><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\">Initials</th><td class=\"govuk-table__cell\">{{ Initials }}</td><td class=\"govuk-table__cell\"><a href=\"/gas-test-kit/enter-details\" \"target\"=\"_blank\">Change</a></td></tr><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\">Last name</th><td class=\"govuk-table__cell\">{{ LastName }}</td><td class=\"govuk-table__cell\"><a href=\"/gas-test-kit/enter-details\" \"target\"=\"_blank\">Change</a></td></tr><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\">Email</th><td class=\"govuk-table__cell\">{{ EmailAddress }}</td><td class=\"govuk-table__cell\"><a href=\"/gas-test-kit/enter-details\" \"target\"=\"_blank\">Change</a></td></tr><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\">Property address</th><td class=\"govuk-table__cell\">{{ PropertyAddress }}</td><td class=\"govuk-table__cell\"><a href=\"google.com\" \"target\"=\"_blank\">Change</a></td></tr><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\">Delivery recipient</th><td class=\"govuk-table__cell\">{{ DeliveryRecipient }}</td><td class=\"govuk-table__cell\"><a href=\"/gas-test-kit/enter-details\" \"target\"=\"_blank\">Change</a></td></tr><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\">Delivery address</th><td class=\"govuk-table__cell\">{{ DeliveryAddress }}</td><td class=\"govuk-table__cell\"><a href=\"google.com\" \"target\"=\"_blank\">Change</a></td></tr><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\">Results recipient</th><td class=\"govuk-table__cell\">{{ ResultsRecipient }}</td><td class=\"govuk-table__cell\"><a href=\"google.com\" \"target\"=\"_blank\">Change</a></td></tr><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\">Results address</th><td class=\"govuk-table__cell\">{{ ResultsAddress }}</td><td class=\"govuk-table__cell\"><a href=\"google.com\" \"target\"=\"_blank\">Change</a></td></tr></tbody></table>"
+          "content": "<<table class=\"govuk-table\"><caption class=\"govuk-table__caption govuk-table__caption--m\">Contact Information</caption><tbody class=\"govuk-table__body\"><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\">Title</th><td class=\"govuk-table__cell\">{{ BothTitle }}</td><td class=\"govuk-table__cell\"><a href=\"/gas-test-kit/enter-details\" \"target\"=\"_blank\">Change</a></td></tr><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\">Initials</th><td class=\"govuk-table__cell\">{{ BothInitials }}</td><td class=\"govuk-table__cell\"><a href=\"/gas-test-kit/enter-details\" \"target\"=\"_blank\">Change</a></td></tr><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\">Last name</th><td class=\"govuk-table__cell\">{{ BothLastName }}</td><td class=\"govuk-table__cell\"><a href=\"/gas-test-kit/enter-details\" \"target\"=\"_blank\">Change</a></td></tr><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\">Email</th><td class=\"govuk-table__cell\">{{ EmailAddress }}</td><td class=\"govuk-table__cell\"><a href=\"/gas-test-kit/enter-details\" \"target\"=\"_blank\">Change</a></td></tr><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\">Property address</th><td class=\"govuk-table__cell\">{{ PropertyAddress }}</td><td class=\"govuk-table__cell\"><a href=\"google.com\" \"target\"=\"_blank\">Change</a></td></tr><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\">Delivery recipient</th><td class=\"govuk-table__cell\">{{ BothTitle }} {{ BothInitials }} {{ BothLastName }}</td><td class=\"govuk-table__cell\"><a href=\"/gas-test-kit/enter-details\" \"target\"=\"_blank\">Change</a></td></tr><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\">Delivery address</th><td class=\"govuk-table__cell\">{{ DeliveryAddress }}</td><td class=\"govuk-table__cell\"><a href=\"google.com\" \"target\"=\"_blank\">Change</a></td></tr><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\">Results recipient</th><td class=\"govuk-table__cell\">{{ BothTitle }} {{ BothInitials }} {{ BothLastName }}</td><td class=\"govuk-table__cell\"><a href=\"google.com\" \"target\"=\"_blank\">Change</a></td></tr><tr class=\"govuk-table__row\"><th scope=\"row\" class=\"govuk-table__header\">Results address</th><td class=\"govuk-table__cell\">{{ ResultsAddress }}</td><td class=\"govuk-table__cell\"><a href=\"google.com\" \"target\"=\"_blank\">Change</a></td></tr></tbody></table>"
         },
         {
           "name": "checkbox",
@@ -1113,28 +1117,10 @@
       }
     },
     {
-      "displayName": "DeliveryAddressIncorrect",
-      "name": "DeliveryAddressIncorrect",
+      "displayName": "CorrectKitAddressCorrectResultsAddress",
+      "name": "CorrectKitAddressCorrectResultsAddress",
       "value": {
-        "name": "DeliveryAddressIncorrect",
-        "conditions": [
-          {
-            "field": {
-              "name": "deliveryAddressConfirmation",
-              "type": "YesNoField",
-              "display": "Is this the address you want the kit delivered to?"
-            },
-            "operator": "is",
-            "value": { "type": "Value", "value": "false", "display": "false" }
-          }
-        ]
-      }
-    },
-    {
-      "displayName": "ReadyToReview",
-      "name": "ReadyToReview",
-      "value": {
-        "name": "ReadyToReview",
+        "name": "CorrectKitAddressCorrectResultsAddress",
         "conditions": [
           {
             "field": {
@@ -1159,10 +1145,10 @@
       }
     },
     {
-      "displayName": "correctKitAddressIncorrectResultsAddress",
-      "name": "correctKitAddressIncorrectResultsAddress",
+      "displayName": "CorrectKitAddressIncorrectResultsAddress",
+      "name": "CorrectKitAddressIncorrectResultsAddress",
       "value": {
-        "name": "correctKitAddressIncorrectResultsAddress",
+        "name": "CorrectKitAddressIncorrectResultsAddress",
         "conditions": [
           {
             "field": {
@@ -1187,10 +1173,38 @@
       }
     },
     {
-      "displayName": "incorrectKitAddressIncorrectResultsAddress",
-      "name": "incorrectKitAddressIncorrectResultsAddress",
+      "displayName": "IncorrectKitAddressCorrectResultsAddress",
+      "name": "IncorrectKitAddressCorrectResultsAddress",
       "value": {
-        "name": "incorrectKitAddressIncorrectResultsAddress",
+        "name": "IncorrectKitAddressCorrectResultsAddress",
+        "conditions": [
+          {
+            "field": {
+              "name": "deliveryAddressConfirmation",
+              "type": "YesNoField",
+              "display": "Is this the address you want the kit delivered to?"
+            },
+            "operator": "is",
+            "value": { "type": "Value", "value": "false", "display": "false" }
+          },
+          {
+            "coordinator": "and",
+            "field": {
+              "name": "resultsAddressConfirmation",
+              "type": "YesNoField",
+              "display": "Is this the address you want your radon gas test results to?"
+            },
+            "operator": "is",
+            "value": { "type": "Value", "value": "true", "display": "true" }
+          }
+        ]
+      }
+    },
+    {
+      "displayName": "IncorrectKitAddressIncorrectResultsAddress",
+      "name": "IncorrectKitAddressIncorrectResultsAddress",
+      "value": {
+        "name": "IncorrectKitAddressIncorrectResultsAddress",
         "conditions": [
           {
             "field": {
