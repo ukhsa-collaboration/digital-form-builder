@@ -16,7 +16,7 @@ import { mergeRows } from "server/transforms/summaryDetails/mergeRows";
 import { removeRows } from "server/transforms/summaryDetails/removeRows";
 import { adjustRows } from "server/transforms/summaryDetails/adjustRows";
 import { transformValues } from "server/transforms/summaryDetails/transformValues";
-
+import { createCards } from "src/server/transforms/createCards";
 import pino from "pino";
 const logger = pino().child({ name: "SummaryViewModel" });
 
@@ -37,6 +37,8 @@ export class SummaryViewModel {
    */
 
   pageTitle: string;
+  subTitleText: string;
+  subButtonText: string;
   declaration: any; // TODO
   skipSummary: boolean;
   endPage: any; // TODO
@@ -45,6 +47,7 @@ export class SummaryViewModel {
   state: any;
   value: any;
   fees: FeesModel | undefined;
+  feesInSummaryTable: boolean = false;
   name: string | undefined;
   feedbackLink: string | undefined;
   phaseTag: string | undefined;
@@ -66,7 +69,7 @@ export class SummaryViewModel {
   submitLabel: string | undefined;
   declarationLabel: string | undefined;
   hideDeclarationHeading: boolean | undefined;
-
+  customCards?: boolean | undefined;
   constructor(
     pageTitle: string,
     model: FormModel,
@@ -86,7 +89,9 @@ export class SummaryViewModel {
       def.feedback?.url ??
       ((def.feedback?.emailAddress && `mailto:${def.feedback?.emailAddress}`) ||
         config.feedbackLink);
-
+    this.customCards = def.summaryConfig?.cards ? true : false;
+    this.subTitleText = def.summaryConfig?.subTitleText;
+    this.subButtonText = def.summaryConfig?.subButtonText;
     const schema = model.makeFilteredSchema(state, relevantPages);
     const collatedRepeatPagesState = gatherRepeatPages(state);
 
@@ -206,12 +211,43 @@ export class SummaryViewModel {
           }
         }
 
+        if (
+          summaryConfig.feesRow?.enabled &&
+          this.fees?.details?.length &&
+          transformed.length
+        ) {
+          const totalAmount = new Intl.NumberFormat("en-GB", {
+            style: "currency",
+            currency: "GBP",
+          }).format(this.fees?.total / 100);
+
+          transformed = transformed.map((d: any, i: number) =>
+            i === transformed.length - 1
+              ? {
+                  ...d,
+                  items: [
+                    ...d.items,
+                    {
+                      name: "fees",
+                      label: summaryConfig.feesRow?.label ?? "Fees",
+                      value: totalAmount,
+                      immutable: true,
+                    },
+                  ],
+                }
+              : d
+          );
+        }
+        if (summaryConfig.cards) {
+          transformed = createCards(transformed, summaryConfig.cards);
+        }
         this.details = transformed;
       } catch (err) {
         logger.error({ err }, "Error applying summaryConfig transforms");
       }
 
       this.submitLabel = summaryConfig.submitLabel;
+      this.feesInSummaryTable = Boolean(summaryConfig.feesRow?.enabled);
 
       if (summaryConfig.declaration) {
         this.declaration = undefined;

@@ -297,6 +297,9 @@ export interface SummaryConfig {
   valueTransforms?: Record<string, Record<string, string>>;
   conditionalRows?: Array<SummaryConditionalRow>;
   onSubmit?: SubmitActionConfig;
+  cards?: Records<string, string[]>;
+  subTitleText?: string;
+  subButtonText?: string;
 }
 
 /**

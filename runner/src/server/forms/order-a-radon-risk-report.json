@@ -1186,7 +1186,8 @@
   ],
   "summaryConfig": {
     "submitLabel": "Confirm and go to payment",
-
+    "subTitleText": "Check that everything is correct before you confirm your order.",
+    "subButtonText": "You will be redirected to Trust Payments, UKHSA approved payment system.",
     "onSubmit": {
       "action": "saveRiskReportDetailsUnknown"
     },
@@ -1282,7 +1283,16 @@
         },
         "removeFields": ["deliveryAddressSameAsReportDisplay"]
       }
-    ]
+    ],
+    "cards": {
+      "Addresses": [
+        "selectedReportAddress",
+        "deliveryMethod",
+        "selectedDeliveryAddress"
+      ],
+      "Details": ["firstName", "lastName", "emailAddress"],
+      "Amount": ["fees"]
+    }
   },
   "generateReference": true,
   "fees": [],

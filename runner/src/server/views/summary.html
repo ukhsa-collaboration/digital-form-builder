@@ -14,6 +14,10 @@
           {% endif %}
         </h1>
 
+        {% if subTitleText %}
+          <p class="govuk-body">{{ subTitleText }}</h2>
+        {% endif %}
+
         {% if callback and callback.message %}
           <div class="govuk-inset-text">
             {{ callback.message }}
@@ -25,7 +29,29 @@
         {% endif %}
 
         {% for detail in details %}
-          {% if detail.card %}
+          {% if customCards %}
+          <div class="govuk-summary-card">
+            <style>
+              .govuk-summary-card__content .govuk-summary-list__actions {
+                display: table-cell;
+              }
+              @media (max-width: 40.0625em) {
+                .govuk-summary-card__content .govuk-summary-list__actions {
+                  display: block;
+                }
+              }
+            </style>
+            <div class="govuk-summary-card__title-wrapper">
+              <h2 class="govuk-summary-card__title">
+                {{ detail.cardTitle }}
+              </h2>
+            </div>
+            <div class="govuk-summary-card__content">
+              {{ summaryDetail(detail) }}
+            </div>
+          </div>
+
+          {% elif detail.card %}
             {{ summaryCard(detail, true) }}
             {% if not details[loop.index].card %}
               {% set splitDash = detail.items[0].pageId.split("-") %}
@@ -46,14 +72,16 @@
         {% endfor %}
 
         {% if fees and fees.details|length %}
-          <h2 class="govuk-heading-m">Fees</h2>
-          <ul class="govuk-list govuk-list--bullet">
-            {% for fee in fees.details %}
-              <li>{{ fee.description }}: £{{fee.amount / 100}}</li>
-            {% endfor %}
-          </ul>
-          <p class="govuk-body">Total cost: £{{fees.total / 100 }}</p>
-          <p class="govuk-body">You should not be charged an exchange fee if you pay with a UK credit or debit card.</p>
+          {% if not feesInSummaryTable %}
+            <h2 class="govuk-heading-m">Fees</h2>
+            <ul class="govuk-list govuk-list--bullet">
+              {% for fee in fees.details %}
+                <li>{{ fee.description }}: £{{fee.amount / 100}}</li>
+              {% endfor %}
+            </ul>
+            <p class="govuk-body">Total cost: £{{fees.total / 100 }}</p>
+            <p class="govuk-body">You should not be charged an exchange fee if you pay with a UK credit or debit card.</p>
+          {% endif %}
         {% endif %}
 
         {% if not result.error  %}
@@ -97,6 +125,9 @@
                         Submit
                     {% endif %}
                 </button>
+                {% if subButtonText %}
+                  <p class="govuk-body">{{ subButtonText }}</p>
+                {% endif %}
 
                 {% if showPaymentSkippedWarningPage %}
                 <div class="govuk-body">
@@ -129,3 +160,4 @@
   </script>
 
 {% endblock %}
+

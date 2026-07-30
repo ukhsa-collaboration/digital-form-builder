@@ -422,6 +422,12 @@ const summaryConfigSchema = joi.object().keys({
       parameters: joi.object().unknown(true).optional(),
     })
     .optional(),
+  cards: joi
+    .object()
+    .pattern(joi.string(), joi.array().items(joi.string()))
+    .optional(),
+  subTitleText: joi.string().optional(),
+  subButtonText: joi.string().optional(),
 });
 
 export const Schema = joi
