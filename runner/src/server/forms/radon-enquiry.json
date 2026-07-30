@@ -767,7 +767,7 @@
       "title": "webhookOutput",
       "type": "webhook",
       "outputConfiguration": {
-        "url": "${RPS_RADON_ENQUIRY_API_BASE_URL}",
+        "url": "${RPS_RADON_ENQUIRY_URL}/case",
         "allowRetry": true,
         "payload": {
           "uuid": { "field": "generatedReference" },
