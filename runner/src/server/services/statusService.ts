@@ -153,6 +153,9 @@ export class StatusService {
       await trustPaymentsService.onInvalidPayment(request);
 
       // throw payment page error
+      throw new ControllerError("cannot verify trust payment redirect", {
+        code: 500,
+      });
     }
 
     await trustPaymentsService.onValidPayment(request);

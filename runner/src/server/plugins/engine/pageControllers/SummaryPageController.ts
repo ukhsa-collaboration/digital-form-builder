@@ -250,9 +250,6 @@ export class SummaryPageController extends PageController {
           paymentDetails
         );
 
-        // feeze state when payment process begins
-        // await cacheService.freezeState(request);
-
         return h.response(html).type("text/html");
       }
 
