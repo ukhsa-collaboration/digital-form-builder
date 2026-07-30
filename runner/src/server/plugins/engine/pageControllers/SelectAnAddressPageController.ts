@@ -86,7 +86,7 @@ const lookupUdprnInDatabase = async (
   }
 ) => {
   try {
-    const uuid = uuidv4();
+    const sessionId = uuidv4();
 
     const checkUdprn = await rpsBackendService.request("/lookup", {
       method: "POST",
@@ -96,7 +96,7 @@ const lookupUdprnInDatabase = async (
       body: JSON.stringify({
         udprn: udprn.padStart(8, "0"),
         uprn,
-        uuid,
+        sessionId,
         countryCode,
       }),
     });
@@ -119,7 +119,7 @@ const lookupUdprnInDatabase = async (
       });
     }
 
-    return uuid;
+    return sessionId;
   } catch (error) {
     if (error instanceof ControllerError) throw error;
 

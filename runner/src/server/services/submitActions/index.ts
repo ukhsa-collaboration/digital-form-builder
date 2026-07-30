@@ -13,7 +13,7 @@ import { saveRiskReportDetailsSchema } from "./saveRiskReportDetailsSchema";
  *   };
  */
 export const submitActionRegistry: Record<string, SubmitAction> = {
-  saveRiskReportDetails: async (request, h, context) => {
+  saveRiskReportDetails: async (request) => {
     const rpsBackendServiceName = request.service.getName("rpsBackendService");
 
     const { cacheService, ...rest } = request.services([]);
@@ -30,7 +30,7 @@ export const submitActionRegistry: Record<string, SubmitAction> = {
     ] as JsonApiIntegrationWithMsal;
 
     const { error, value: requestBody } = saveRiskReportDetailsSchema.validate(
-      currentState,
+      { ...currentState, telephone: "dummy-telephone" },
       {
         abortEarly: false,
       }
@@ -42,6 +42,8 @@ export const submitActionRegistry: Record<string, SubmitAction> = {
         { code: 500 }
       );
     }
+
+    console.log("REQUEST BODY ::", JSON.stringify(requestBody, null, 2));
 
     await rpsBackendService.request("/storereport", {
       method: "POST",

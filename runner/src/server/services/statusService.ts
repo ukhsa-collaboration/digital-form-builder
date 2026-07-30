@@ -146,7 +146,7 @@ export class StatusService {
     const paymentErrorStatus = request.query["errorcode"];
 
     if (
-      trustPaymentsService.verifyRedirect(request) ||
+      !trustPaymentsService.verifyRedirect(request) ||
       (paymentErrorStatus && paymentErrorStatus !== "0")
     ) {
       // call service event on invalid payment

@@ -1,7 +1,7 @@
 import Joi from "joi";
 
 export const saveRiskReportDetailsSchema = Joi.object({
-  uuid: Joi.string().required(),
+  sessionId: Joi.string().required(),
   firstName: Joi.string().required(),
   lastName: Joi.string().required(),
   deliveryMethod: Joi.string().valid("email", "post").required(),
@@ -12,13 +12,13 @@ export const saveRiskReportDetailsSchema = Joi.object({
       then: Joi.optional().allow("", null),
       otherwise: Joi.required(),
     }),
-  address: Joi.when("deliveryMethod", {
+  telephone: Joi.string(),
+  fullAddress: Joi.when("deliveryMethod", {
     is: "post",
     then: Joi.alternatives().try(Joi.string(), Joi.object()).required(),
     otherwise: Joi.optional().allow(null),
   }),
 })
-  .rename("sessionId", "uuid")
   .rename("emailAddress", "email")
-  .rename("deliveryAddress_selectedAddress", "address")
+  .rename("deliveryAddress_selectedAddress", "fullAddress")
   .options({ stripUnknown: true });
