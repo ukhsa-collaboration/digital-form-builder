@@ -768,7 +768,7 @@
       "title": "webhookOutput",
       "type": "webhook",
       "outputConfiguration": {
-        "url": "${RPS_RADON_ENQUIRY_API_BASE_URL}/case",
+        "url": "https://ra28sx0f27.execute-api.eu-west-2.amazonaws.com/test/case",
         "allowRetry": true,
         "payload": {
           "uuid": { "field": "generatedReference" },
