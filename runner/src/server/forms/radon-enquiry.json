@@ -788,6 +788,6 @@
   },
   "generateReference": true,
   "version": 2,
-  "skipSummary": false,
+  "skipSummary": true,
   "feeOptions": {}
 }

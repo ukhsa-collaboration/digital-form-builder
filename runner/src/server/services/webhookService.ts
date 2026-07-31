@@ -39,7 +39,7 @@ export class WebhookService {
 
     let request = method === "POST" ? post : put;
     this.logger.warn(`Request url: ${url}`);
-    this.logger.warn(`Request auth headers: ${authHeaders}`);
+    this.logger.warn(`Request auth headers: ${JSON.stringify(authHeaders)}`);
     this.logger.warn(`Request data: ${JSON.stringify(data)}`);
     try {
       if (!sendAdditionalPayMetadata) {
