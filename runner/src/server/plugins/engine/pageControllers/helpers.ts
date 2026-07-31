@@ -3,8 +3,6 @@ import { camelCase, upperFirst } from "lodash";
 import { DobPageController } from "./DobPageController";
 import { HomePageController } from "./HomePageController";
 import { PageController } from "./PageController";
-import { CrossFormRedirectController } from "./CrossFormRedirectController";
-import { CrossFormSubmitController } from "./CrossFormSubmitController";
 import { StartDatePageController } from "./StartDatePageController";
 import { StartPageController } from "./StartPageController";
 import { SummaryPageController } from "./SummaryPageController";
@@ -23,6 +21,9 @@ import { MagicLinkStartPageController } from "./MagicLinkStartPageController";
 import { CustomSummaryPageController } from "./CustomSummaryPageController";
 import { DateComparisonPageController } from "./DateComparisonPageController";
 import { MagicLinkRedirectController } from "./MagicLinkRedirectController";
+import { CrossFormReturnController } from "./CrossFormReturnController";
+import { CrossFormRedirectController } from "./CrossFormRedirectController";
+import { CrossFormSubmitController } from "./CrossFormSubmitController";
 
 const PageControllers = {
   DobPageController,
@@ -47,6 +48,7 @@ const PageControllers = {
   MagicLinkRedirectController,
   CrossFormRedirectController, // Add the CrossFormRedirectController here
   CrossFormSubmitController, // Add the CrossFormSubmitController here
+  CrossFormReturnController, // Add the CrossFormSubmitController here
 };
 
 export const controllerNameFromPath = (filePath: string) => {

@@ -4,11 +4,8 @@ import { PageController } from "./PageController";
 import { v4 as uuidv4 } from "uuid";
 
 export class CrossFormSubmitController extends PageController {
-  RETRY_TIMEOUT_SECONDS: number;
-
   constructor(model, pageDef) {
     super(model, pageDef);
-    this.RETRY_TIMEOUT_SECONDS = this.model.def.retryTimeoutSeconds ?? 300;
   }
 
   makeGetRouteHandler() {
@@ -23,8 +20,6 @@ export class CrossFormSubmitController extends PageController {
       const { cacheService, crossFormCacheService } = request.services([]);
       const state = await cacheService.getState(request);
 
-      console.log("Current form 2 state:", state);
-
       const transferId = uuidv4();
 
       await crossFormCacheService.saveInformationToAllowCrossFormResume(
@@ -37,7 +32,7 @@ export class CrossFormSubmitController extends PageController {
       return redirectTo(
         request,
         h,
-        `/${this.model.values.toggleRedirect}/redirect-check-your-details?transferId=${transferId}`
+        `/${this.model.values.toggleRedirect}/return?transferId=${transferId}`
       );
     };
   }

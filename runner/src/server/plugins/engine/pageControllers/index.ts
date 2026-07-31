@@ -16,3 +16,4 @@ export { DateComparisonPageController } from "./DateComparisonPageController";
 export { MagicLinkRedirectController } from "./MagicLinkRedirectController";
 export { CrossFormRedirectController } from "./CrossFormRedirectController";
 export { CrossFormSubmitController } from "./CrossFormSubmitController";
+export { CrossFormReturnController } from "./CrossFormReturnController";
