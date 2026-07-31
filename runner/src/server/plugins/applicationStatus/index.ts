@@ -54,13 +54,16 @@ const index = {
 
             if (state.callback?.skipSummary?.redirectUrl) {
               const { redirectUrl } = state.callback?.skipSummary;
+
               request.logger.info(
                 ["applicationStatus"],
                 `Callback skipSummary detected, redirecting ${request.yar.id} to ${redirectUrl} and clearing state`
               );
+
               await cacheService.setConfirmationState(request, {
                 redirectUrl,
               });
+
               await cacheService.clearState(request);
 
               return h.redirect(redirectUrl);
@@ -112,6 +115,7 @@ const index = {
         path: "/{id}/status",
         handler: async (request: HapiRequest, h: HapiResponseToolkit) => {
           const { payService, cacheService } = request.services([]);
+
           const { pay } = await cacheService.getState(request);
           const { meta } = pay;
           meta.attempts++;

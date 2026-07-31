@@ -76,28 +76,25 @@ const lookupUdprnInDatabase = async (
   {
     udprn,
     uprn,
-    countryCode,
+    sessionId,
     backLinkUrl,
   }: {
     udprn: string;
     uprn: string;
-    countryCode: "E" | "W" | "N" | "S";
+    sessionId: string;
     backLinkUrl: string;
   }
 ) => {
   try {
-    const uuid = uuidv4();
-
     const checkUdprn = await rpsBackendService.request("/lookup", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
+        sessionId,
         udprn: udprn.padStart(8, "0"),
         uprn,
-        uuid,
-        countryCode,
       }),
     });
 
@@ -119,7 +116,7 @@ const lookupUdprnInDatabase = async (
       });
     }
 
-    return uuid;
+    return sessionId;
   } catch (error) {
     if (error instanceof ControllerError) throw error;
 
@@ -132,6 +129,27 @@ const lookupUdprnInDatabase = async (
       }
     );
   }
+};
+
+/**
+ * Create a new session ID if one does not exist
+ * @param request - the request object
+ * @returns a session ID
+ */
+const getOrCreateSessionId = async (request: HapiRequest) => {
+  const { cacheService } = request.service.getServices("cacheService");
+
+  const currentState = await cacheService.getState(request);
+
+  if (currentState["sessionId"]) return currentState["sessionId"];
+
+  const sessionId = uuidv4();
+
+  await cacheService.mergeState(request, {
+    sessionId,
+  });
+
+  return sessionId;
 };
 
 export class SelectAnAddressPageController extends PageControllerBase {
@@ -275,6 +293,8 @@ export class SelectAnAddressPageController extends PageControllerBase {
         rpsBackendServiceName
       ] as JsonApiIntegrationWithMsal;
 
+      const sessionId = await getOrCreateSessionId(request);
+
       if (isCorrectAddress) {
         const resolvedSelectedAddress =
           isCorrectAddress === "true"
@@ -296,15 +316,11 @@ export class SelectAnAddressPageController extends PageControllerBase {
           const progress = currentState.progress || [];
           const backLinkUrl = progress[progress.length - 1];
 
-          const sessionId = await lookupUdprnInDatabase(rpsBackendService, {
+          await lookupUdprnInDatabase(rpsBackendService, {
+            sessionId,
             backLinkUrl,
             udprn: resolvedSelectedAddress?.udprn,
             uprn: resolvedSelectedAddress?.uprn,
-            countryCode: resolvedSelectedAddress?.countryCode,
-          });
-
-          await cacheService.mergeState(request, {
-            sessionId,
           });
         }
 

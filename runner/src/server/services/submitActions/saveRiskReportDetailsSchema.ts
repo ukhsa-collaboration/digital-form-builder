@@ -12,13 +12,14 @@ export const saveRiskReportDetailsSchema = Joi.object({
       then: Joi.optional().allow("", null),
       otherwise: Joi.required(),
     }),
-  address: Joi.when("deliveryMethod", {
+  telephone: Joi.string(),
+  countryCode: Joi.string(),
+  fullAddress: Joi.when("deliveryMethod", {
     is: "post",
     then: Joi.alternatives().try(Joi.string(), Joi.object()).required(),
     otherwise: Joi.optional().allow(null),
   }),
 })
-  .rename("sessionId", "uuid")
   .rename("emailAddress", "email")
-  .rename("deliveryAddress_selectedAddress", "address")
+  .rename("deliveryAddress_selectedAddress", "fullAddress")
   .options({ stripUnknown: true });

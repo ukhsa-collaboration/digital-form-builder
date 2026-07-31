@@ -4,12 +4,14 @@ import { DynamicServiceConfig } from "@xgovformbuilder/model";
 import { HapiServer } from "../types";
 import { JsonApiIntegrationWithMsal } from "./jsonApiIntegrationWithMsal";
 import { AddressLookupService } from "./addressLookupService";
+import { TrustPaymentsService } from "./trustPaymentsService";
 
 type ServiceConstructor = new (parameters: any) => unknown;
 
-const serviceRegistry: Record<string, ServiceConstructor> = {
+export const serviceRegistry: Record<string, ServiceConstructor> = {
   jsonApiIntegrationWithMsal: JsonApiIntegrationWithMsal,
   addressLookupService: AddressLookupService,
+  trustPaymentsService: TrustPaymentsService,
 };
 
 export const getDynamicServiceInstanceName = (formId: string, name: string) =>

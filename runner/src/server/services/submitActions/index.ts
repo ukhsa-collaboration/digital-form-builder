@@ -13,7 +13,7 @@ import { saveRiskReportDetailsSchema } from "./saveRiskReportDetailsSchema";
  *   };
  */
 export const submitActionRegistry: Record<string, SubmitAction> = {
-  saveRiskReportDetails: async (request, h, context) => {
+  saveRiskReportDetails: async (request) => {
     const rpsBackendServiceName = request.service.getName("rpsBackendService");
 
     const { cacheService, ...rest } = request.services([]);
@@ -29,8 +29,26 @@ export const submitActionRegistry: Record<string, SubmitAction> = {
       rpsBackendServiceName
     ] as JsonApiIntegrationWithMsal;
 
+    const selectedRiskReportAddress =
+      currentState["reportAddress_selectedAddress"];
+
+    if (!selectedRiskReportAddress)
+      throw new ControllerError("cannot find risk report address", {
+        code: 500,
+      });
+
     const { error, value: requestBody } = saveRiskReportDetailsSchema.validate(
-      currentState,
+      {
+        uuid: currentState["sessionId"],
+        deliveryMethod: currentState["deliveryMethod"],
+        countryCode: selectedRiskReportAddress["countryCode"],
+        uprn: selectedRiskReportAddress["uprn"],
+        udprn: selectedRiskReportAddress["udprn"],
+        // customer details
+        firstName: currentState["firstName"],
+        lastName: currentState["lastName"],
+        emailAddress: currentState["emailAddress"],
+      },
       {
         abortEarly: false,
       }

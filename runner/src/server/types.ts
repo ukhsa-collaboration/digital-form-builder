@@ -5,7 +5,6 @@ import {
   Server,
   ResponseObject,
   Lifecycle,
-  ServerApplicationState,
 } from "@hapi/hapi";
 import { Logger } from "pino";
 
@@ -21,10 +20,12 @@ import {
   StatusService,
   UploadService,
   WebhookService,
+  TrustPaymentsService,
 } from "./services";
 import { QueueStatusService } from "server/services/queueStatusService";
 import { QueueService } from "./services/QueueService";
 import { FormModel } from "server/plugins/engine/models";
+import { JsonApiIntegrationWithMsal } from "./services/jsonApiIntegrationWithMsal";
 
 type Services = (
   services: string[]
@@ -41,6 +42,12 @@ type Services = (
   exitService: ExitService;
   formSecurityService: FormSecurityService;
   addressLookupService: AddressLookupService;
+  trustPaymentsService: TrustPaymentsService;
+};
+
+type KnownServicesMap = ReturnType<Services> & {
+  jsonApiIntegrationWithMsal: JsonApiIntegrationWithMsal;
+  rpsBackendService: JsonApiIntegrationWithMsal;
 };
 
 export type RouteConfig = {
@@ -57,6 +64,9 @@ declare module "@hapi/hapi" {
     services: Services; // plugin schmervice
     service: {
       getName(name: string): string;
+      getServices<K extends keyof KnownServicesMap>(
+        ...services: K[]
+      ): Pick<KnownServicesMap, K>;
     };
     i18n: {
       // plugin locale

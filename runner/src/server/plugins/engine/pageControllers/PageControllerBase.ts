@@ -692,7 +692,12 @@ export class PageControllerBase {
         }
       }
 
-      await cacheService.mergeState(request, { progress });
+      await cacheService.mergeState(request, {
+        progress,
+        ...(this.model.def.provider && {
+          paymentProvider: this.model.def.provider,
+        }),
+      });
 
       if (this.disableBackLink) {
         viewModel.backLink = undefined;

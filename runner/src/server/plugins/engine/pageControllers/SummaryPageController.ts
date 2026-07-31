@@ -9,8 +9,9 @@ import {
 } from "../feedback";
 import config from "server/config";
 import { FeesModel } from "server/plugins/engine/models/submission";
-import { isMultipleApiKey } from "@xgovformbuilder/model";
+import { isMultipleApiKey, TrustPaymentsDetails } from "@xgovformbuilder/model";
 import { v4 as uuidv4 } from "uuid";
+import { ControllerError } from "../errors";
 
 export class SummaryPageController extends PageController {
   /**
@@ -112,6 +113,7 @@ export class SummaryPageController extends PageController {
       if (declarationError.length) {
         viewModel.declarationError = declarationError[0];
       }
+
       return h.view("summary", viewModel);
     };
   }
@@ -123,6 +125,7 @@ export class SummaryPageController extends PageController {
   makePostRouteHandler() {
     return async (request: HapiRequest, h: HapiResponseToolkit) => {
       const { payService, cacheService } = request.services([]);
+
       const model = this.model;
       const state = await cacheService.getState(request);
       const summaryViewModel = new SummaryViewModel(
@@ -216,6 +219,39 @@ export class SummaryPageController extends PageController {
       });
 
       const feesModel = FeesModel(model, state);
+
+      if (model.def?.provider === "trust-payments") {
+        const { trustPaymentsService } = request.service.getServices(
+          "trustPaymentsService"
+        );
+
+        if (!trustPaymentsService) {
+          throw new ControllerError("cannot find trust payments service", {
+            code: 500,
+          });
+        }
+
+        const url = new URL(request.url);
+
+        if (!feesModel)
+          throw new ControllerError("feesModel is undefined", {
+            code: 500,
+          });
+
+        // extract payment details from cache
+        const paymentDetails: TrustPaymentsDetails = {
+          billingFirstName: "FirstNAme",
+          billingLastName: "LastName",
+          amount: feesModel.total,
+          redirectUrl: `${url.origin}/${request.params.id}/status`,
+        };
+
+        const html = await trustPaymentsService.createTrustPaymentsForm(
+          paymentDetails
+        );
+
+        return h.response(html).type("text/html");
+      }
 
       /**
        * If a user does not need to pay, redirect them to /status

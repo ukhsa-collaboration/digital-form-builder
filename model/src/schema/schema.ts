@@ -415,6 +415,13 @@ const summaryConfigSchema = joi.object().keys({
       })
     )
     .optional(),
+  feesRow: joi
+    .object()
+    .keys({
+      enabled: joi.boolean().required(),
+      label: joi.string().optional(),
+    })
+    .optional(),
   onSubmit: joi
     .object()
     .keys({
@@ -422,6 +429,12 @@ const summaryConfigSchema = joi.object().keys({
       parameters: joi.object().unknown(true).optional(),
     })
     .optional(),
+});
+
+export const trustPaymentConfigSchema = joi.object({
+  hashPassword: joi.string().required(),
+  siteReference: joi.string().required(),
+  onValidRedirect: joi.string().optional(),
 });
 
 export const Schema = joi
@@ -474,6 +487,7 @@ export const Schema = joi
     summaryConfig: summaryConfigSchema.optional(),
     generateReference: joi.boolean().optional(),
     services: joi.array().items(dynamicServiceConfigSchema).optional(),
+    provider: joi.string().valid("govuk-pay", "trust-payments").optional(),
   });
 
 /**

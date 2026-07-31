@@ -81,4 +81,5 @@ RUN yarn runner build
 
 USER 1001
 EXPOSE 3009
+EXPOSE 9229
 CMD [ "yarn", "runner", "start" ]

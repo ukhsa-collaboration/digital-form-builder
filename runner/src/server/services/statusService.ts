@@ -22,6 +22,7 @@ import {
   OutputData,
   TNotifyModel,
 } from "../plugins/engine/models/submission/types";
+import { ControllerError } from "../plugins/engine/errors";
 
 type WebhookModel = WebhookOutputConfiguration & {
   formData: object;
@@ -69,18 +70,26 @@ export class StatusService {
     this.payService = payService;
     this.formSecurityService = formSecurityService;
   }
+
   async shouldShowPayErrorPage(request: HapiRequest): Promise<boolean> {
-    const { pay } = await this.cacheService.getState(request);
+    const { pay, paymentProvider } = await this.cacheService.getState(request);
+
+    if (paymentProvider === "trust-payments")
+      await this.verifyTrustPaymentRedirect(request);
+
     if (!pay) {
       this.logger.info(
         ["StatusService", "shouldShowPayErrorPage"],
         "No pay state detected, skipping"
       );
+
       return false;
     }
+
     const { self, meta } = pay;
     const { query } = request;
     const { state } = await this.payService.payStatus(self, meta.payApiKey);
+
     pay.state = state;
 
     if (state.status === "success") {
@@ -128,6 +137,30 @@ export class StatusService {
     return shouldRetry;
   }
 
+  async verifyTrustPaymentRedirect(request: HapiRequest) {
+    // verify redirect for trust payments
+    const { trustPaymentsService } = request.service.getServices(
+      "trustPaymentsService"
+    );
+
+    const paymentErrorStatus = request.query["errorcode"];
+
+    if (
+      !trustPaymentsService.verifyRedirect(request) ||
+      (paymentErrorStatus && paymentErrorStatus !== "0")
+    ) {
+      // call service event on invalid payment
+      await trustPaymentsService.onInvalidPayment(request);
+
+      // throw payment page error
+      throw new ControllerError("cannot verify trust payment redirect", {
+        code: 500,
+      });
+    }
+
+    await trustPaymentsService.onValidPayment(request);
+  }
+
   async outputRequests(request: HapiRequest) {
     const state = await this.cacheService.getState(request);
     let formData = this.webhookArgsFromState(state);
@@ -171,6 +204,7 @@ export class StatusService {
         ["StatusService", "outputRequests"],
         `Callback detected for ${request.yar.id} - PUT to ${callback.callbackUrl}`
       );
+
       try {
         newReference = await this.webhookService.postRequest(
           callback.callbackUrl,
@@ -187,12 +221,14 @@ export class StatusService {
 
     const firstWebhook = outputs?.find((output) => output.type === "webhook");
     const otherOutputs = outputs?.filter((output) => output !== firstWebhook);
+
     if (firstWebhook) {
       const payload = this.resolvePayload(
         firstWebhook.outputData.payload,
         formData,
         state
       );
+
       newReference = await this.webhookService.postRequest(
         firstWebhook.outputData.url,
         { ...formData, ...payload },
@@ -200,6 +236,7 @@ export class StatusService {
         firstWebhook.outputData.sendAdditionalPayMetadata,
         customSecurityHeaders
       );
+
       await this.cacheService.mergeState(request, {
         reference: newReference,
       });
@@ -271,6 +308,7 @@ export class StatusService {
     }
     return output;
   }
+
   /**
    * Appends `{paymentSkipped: true}` to the `metadata` property and drops the `fees` property if the user has chosen to skip payment
    */
@@ -446,6 +484,7 @@ export class StatusService {
       componentDefsToRender,
       formModel
     );
+
     model.components = componentCollection.getViewModel(
       state,
       undefined,

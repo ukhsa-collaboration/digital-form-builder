@@ -56,9 +56,7 @@ export const formatAddress = (address: {
   address: string;
   postcode?: string;
 }): string => {
-  return address.postcode
-    ? `${address.address}, ${address.postcode}`
-    : address.address;
+  return address.address;
 };
 
 /**
