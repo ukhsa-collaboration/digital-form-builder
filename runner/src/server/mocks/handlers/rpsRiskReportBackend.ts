@@ -8,7 +8,6 @@ export const lookupAddressRequestSchema = joi.object({
   uuid: joi.string().uuid().required(),
   uprn: joi.string().required(),
   udprn: joi.string().required(),
-  countryCode: joi.string().valid("N", "E", "S", "W").required(),
 });
 
 export interface RiskReportLookupResponse {
@@ -26,13 +25,13 @@ export const storeReportRequestSchema = joi.object({
   email: joi
     .string()
     .email({ tlds: { allow: false } })
-    .required(),
-  country: joi.string().required(),
-  addressLine1: joi.string().required(),
+    .optional(),
+  fullAddress: joi.string().optional(),
+  addressLine1: joi.string().optional(),
   addressLine2: joi.string().optional(),
-  townCity: joi.string().required(),
-  postcode: joi.string().required(),
-  BuildingRegs: joi.string().required(),
+  townCity: joi.string().optional(),
+  postcode: joi.string().optional(),
+  countryCode: joi.string().valid("N", "E", "S", "W").required(),
 });
 
 export type StoreReportAddressRequest = {

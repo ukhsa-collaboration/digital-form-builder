@@ -1,7 +1,7 @@
 import Joi from "joi";
 
 export const saveRiskReportDetailsSchema = Joi.object({
-  sessionId: Joi.string().required(),
+  uuid: Joi.string().required(),
   firstName: Joi.string().required(),
   lastName: Joi.string().required(),
   deliveryMethod: Joi.string().valid("email", "post").required(),
@@ -13,6 +13,7 @@ export const saveRiskReportDetailsSchema = Joi.object({
       otherwise: Joi.required(),
     }),
   telephone: Joi.string(),
+  countryCode: Joi.string(),
   fullAddress: Joi.when("deliveryMethod", {
     is: "post",
     then: Joi.alternatives().try(Joi.string(), Joi.object()).required(),

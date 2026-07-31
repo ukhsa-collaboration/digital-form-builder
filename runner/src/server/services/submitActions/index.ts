@@ -29,8 +29,26 @@ export const submitActionRegistry: Record<string, SubmitAction> = {
       rpsBackendServiceName
     ] as JsonApiIntegrationWithMsal;
 
+    const selectedRiskReportAddress =
+      currentState["reportAddress_selectedAddress"];
+
+    if (!selectedRiskReportAddress)
+      throw new ControllerError("cannot find risk report address", {
+        code: 500,
+      });
+
     const { error, value: requestBody } = saveRiskReportDetailsSchema.validate(
-      { ...currentState, telephone: "dummy-telephone" },
+      {
+        uuid: currentState["sessionId"],
+        deliveryMethod: currentState["deliveryMethod"],
+        countryCode: selectedRiskReportAddress["countryCode"],
+        uprn: selectedRiskReportAddress["uprn"],
+        udprn: selectedRiskReportAddress["udprn"],
+        // customer details
+        firstName: currentState["firstName"],
+        lastName: currentState["lastName"],
+        emailAddress: currentState["emailAddress"],
+      },
       {
         abortEarly: false,
       }
@@ -42,8 +60,6 @@ export const submitActionRegistry: Record<string, SubmitAction> = {
         { code: 500 }
       );
     }
-
-    console.log("REQUEST BODY ::", JSON.stringify(requestBody, null, 2));
 
     await rpsBackendService.request("/storereport", {
       method: "POST",
