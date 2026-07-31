@@ -31,20 +31,25 @@ export class WebhookService {
     sendAdditionalPayMetadata: boolean = false,
     authHeaders?: Record<string, string>
   ): Promise<string> {
-    // Commented out due to potential for logging PII
-    // this.logger.info(
-    //   ["WebhookService", "postRequest body"],
-    //   JSON.stringify(data)
-    // );
-
     let request = method === "POST" ? post : put;
-    this.logger.warn(`Request url: ${url}`);
-    this.logger.warn(`Request auth headers: ${JSON.stringify(authHeaders)}`);
-    this.logger.warn(`Request data: ${JSON.stringify(data)}`);
+
+    this.logger.warn(`WEBHOOK_SERVICE - REQUEST URL: ${url}`);
+
+    const headers = {
+      ...DEFAULT_OPTIONS.headers,
+      ...(authHeaders || {}),
+    };
+
+    this.logger.warn(`WEBHOOK_SERVICE - HEADERS :: ${headers}`);
+    this.logger.warn(
+      `WEBHOOK_SERVICE - OPTIONS :: ${JSON.stringify(DEFAULT_OPTIONS)}`
+    );
+
     try {
       if (!sendAdditionalPayMetadata) {
         delete data?.metadata?.pay;
       }
+
       const { payload, res } = await request(url, {
         ...DEFAULT_OPTIONS,
         headers: {
@@ -72,11 +77,7 @@ export class WebhookService {
         ["WebhookService", "postRequest"],
         `Webhook request to ${url} submitted OK`
       );
-      // Commented out due to potential for logging PII
-      // this.logger.debug(
-      //   ["WebhookService", "postRequest", `REF: ${reference}`],
-      //   JSON.stringify(payload)
-      // );
+
       return reference;
     } catch (error: any) {
       this.logger.error(["WebhookService", "postRequest"], error);
