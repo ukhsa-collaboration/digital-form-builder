@@ -3,6 +3,8 @@ import { camelCase, upperFirst } from "lodash";
 import { DobPageController } from "./DobPageController";
 import { HomePageController } from "./HomePageController";
 import { PageController } from "./PageController";
+import { CrossFormRedirectController } from "./CrossFormRedirectController";
+import { CrossFormSubmitController } from "./CrossFormSubmitController";
 import { StartDatePageController } from "./StartDatePageController";
 import { StartPageController } from "./StartPageController";
 import { SummaryPageController } from "./SummaryPageController";
@@ -43,6 +45,8 @@ const PageControllers = {
   CustomSummaryPageController,
   DateComparisonPageController,
   MagicLinkRedirectController,
+  CrossFormRedirectController, // Add the CrossFormRedirectController here
+  CrossFormSubmitController, // Add the CrossFormSubmitController here
 };
 
 export const controllerNameFromPath = (filePath: string) => {

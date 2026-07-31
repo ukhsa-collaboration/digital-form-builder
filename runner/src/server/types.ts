@@ -20,6 +20,7 @@ import {
   StatusService,
   UploadService,
   WebhookService,
+  CrossFormCacheService,
 } from "./services";
 import { QueueStatusService } from "server/services/queueStatusService";
 import { QueueService } from "./services/QueueService";
@@ -29,6 +30,7 @@ type Services = (
   services: string[]
 ) => {
   cacheService: CacheService;
+  crossFormCacheService: CrossFormCacheService; // Add the crossFormCacheService here
   magicLinkCacheService: MagicLinkCacheService;
   notifyService: NotifyService;
   payService: PayService;

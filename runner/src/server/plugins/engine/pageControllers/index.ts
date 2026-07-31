@@ -14,3 +14,5 @@ export { MagicLinkStartPageController } from "./MagicLinkStartPageController";
 export { CustomSummaryPageController } from "./CustomSummaryPageController";
 export { DateComparisonPageController } from "./DateComparisonPageController";
 export { MagicLinkRedirectController } from "./MagicLinkRedirectController";
+export { CrossFormRedirectController } from "./CrossFormRedirectController";
+export { CrossFormSubmitController } from "./CrossFormSubmitController";
