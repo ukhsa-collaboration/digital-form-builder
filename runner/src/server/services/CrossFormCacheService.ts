@@ -80,7 +80,7 @@ export class CrossFormCacheService {
       getFormIdBySessionIdKey(sessionId)
     );
 
-    const key = getFormIdBySessionIdKey(sessionId);
+    const key = getFormIdBySessionIdKey(sessionId); // Currently NULL 😱
 
     console.log("STEP 2 KEY", key);
 
@@ -93,7 +93,7 @@ export class CrossFormCacheService {
         previousFormEntry,
       });
 
-      return;
+      return; // Currently returning here because previousFormEntry is NULL 😱
     }
 
     /* Save information required to populate state from previous session */
@@ -126,13 +126,13 @@ export class CrossFormCacheService {
       Retrieve the session id and form id from the cache using the transfer id, to allow repopulation of state in the original form flow
     */
     const crossDataRestoreEntry = await this.crossFormReturnDataByTransferId.get(
-      getReturnDataByTransferId(transferId)
+      getReturnDataByTransferId(transferId) // Currently NULL 😱
     );
     if (!crossDataRestoreEntry) {
       request.logger.error(
         "Cross Form Redirect: Missing data in step 3 (crossDataRestoreEntry undefined)"
       );
-      return;
+      return; // Returning here because crossDataRestoreEntry is NULL 😱
     }
     const currentSessionId = request.yar.id;
     const crossFormFormId = request.params.id as string;

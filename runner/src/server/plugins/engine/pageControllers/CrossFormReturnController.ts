@@ -10,7 +10,7 @@ export class CrossFormReturnController extends PageController {
       console.log("CROSS FORM RETURN CONTROLLER HIT");
       const previousState = await request
         .services([])
-        .cacheService.getState(request);
+        .cacheService.getState(request); // Currently {} 😱
       console.log("Previous state", previousState);
       return this.makePostRouteHandler()(request, h);
     };
@@ -20,7 +20,7 @@ export class CrossFormReturnController extends PageController {
     return async (request: HapiRequest, h: HapiResponseToolkit) => {
       console.log("CROSS FORM RETURN POST HIT");
       const transferId = request.query?.transferId;
-      console.log("transferId", transferId);
+      console.log("transferId", transferId); // this is successfully being passed ✅
       const { crossFormCacheService } = request.services([]);
       await crossFormCacheService.restoreInformationFromCrossFormResume(
         request,
@@ -28,7 +28,7 @@ export class CrossFormReturnController extends PageController {
       );
       console.log(
         "Merged state",
-        await request.services([]).cacheService.getState(request)
+        await request.services([]).cacheService.getState(request) // Currently {} 😱
       );
       return h.redirect(`/${this.model.basePath}/check-your-details`).code(302);
     };
