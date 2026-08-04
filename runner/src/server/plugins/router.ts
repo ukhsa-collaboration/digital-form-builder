@@ -10,6 +10,7 @@ import { FeedbackContextInfo, RelativeUrl } from "./engine/feedback";
 
 import fs from "fs";
 import path from "path";
+import { Server } from "@hapi/hapi";
 
 const routes = [...publicRoutes, healthCheckRoute];
 
@@ -30,7 +31,7 @@ interface CookiePayload {
 export default {
   plugin: {
     name: "router",
-    register: (server) => {
+    register: (server: Server) => {
       server.route(routes);
       server.route([
         {
@@ -68,7 +69,8 @@ export default {
               name: form.name,
               serviceName: form.def.serviceName,
               serviceStartPage: form.serviceStartPage,
-              feedbackLink: feedbackUrlFromRequest(_request, form, title)
+              feedbackLink: feedbackUrlFromRequest(_request, form, title),
+              returnTo: form.returnTo,
             });
           },
         },
@@ -112,11 +114,12 @@ export default {
               name: form.name,
               serviceName: form.def.serviceName,
               serviceStartPage: form.serviceStartPage,
+              returnTo: form.returnTo,
               feedbackLink: feedbackUrlFromRequest(request, form, title),
               matomoUrl: form.def.analytics.matomoUrl,
               matomoId: form.def.analytics.matomoId,
               gtmId1: form.def.analytics.gtmId1,
-              gtmId2: form.def.analytics.gtmId2
+              gtmId2: form.def.analytics.gtmId2,
             });
           },
         },
@@ -176,7 +179,7 @@ export default {
             if (referrer) {
               redirectPath = new URL(referrer).pathname;
             }
-            
+
             const cookieName = form?.name || `${url}Page`;
 
             return h.redirect(redirectPath).state(
@@ -229,7 +232,7 @@ export default {
             name: form.name,
             serviceName: form.def.serviceName,
             serviceStartPage: form.serviceStartPage,
-            feedbackLink: feedbackUrlFromRequest(_request, form, title)
+            feedbackLink: feedbackUrlFromRequest(_request, form, title),
           });
         },
       });
@@ -270,7 +273,8 @@ export default {
             name: form.name,
             serviceName: form.serviceName,
             serviceStartPage: form.serviceStartPage,
-            feedbackLink: feedbackUrlFromRequest(_request, form, title)
+            feedbackLink: feedbackUrlFromRequest(_request, form, title),
+            returnTo: form.returnTo,
           });
         },
       });
@@ -289,25 +293,24 @@ export default {
 
       server.route({
         method: "get",
-        path: "/timeout",
+        path: "/{url}/timeout",
         handler: async (request: HapiRequest, h: HapiResponseToolkit) => {
           if (request.yar) {
             request.yar.reset();
           }
 
-          let startPage = "/";
+          const { url } = request.params;
+          const form = server.app.forms[url];
+          let startPage = `/${url}`;
 
-          const { referer } = request.headers;
-
-          if (referer) {
-            const match = referer.match(/https?:\/\/[^/]+\/([^/]+).*/);
-            if (match && match.length > 1) {
-              startPage = `/${match[1]}`;
-            }
-          }
-
-          return h.view("timeout", {
-            startPage,
+          const title = "timeout";
+          return h.view(title, {
+            name: form?.name,
+            serviceName: form?.serviceName,
+            serviceStartPage: form.serviceStartPage,
+            startPage: startPage,
+            feedbackLink: feedbackUrlFromRequest(request, form, title),
+            returnTo: form.returnTo,
           });
         },
       });
@@ -315,8 +318,12 @@ export default {
   },
 };
 
-function feedbackUrlFromRequest(request: HapiRequest, form: FormModel, title: string): string | void {
-  const feedbackUrl = (form.def.feedback?.url as any);
+function feedbackUrlFromRequest(
+  request: HapiRequest,
+  form: FormModel,
+  title: string
+): string | void {
+  const feedbackUrl = form.def.feedback?.url as any;
   if (feedbackUrl) {
     if (feedbackUrl.startsWith("http")) {
       return feedbackUrl;
@@ -328,10 +335,7 @@ function feedbackUrlFromRequest(request: HapiRequest, form: FormModel, title: st
       title,
       `${request.url.pathname}${request.url.search}`
     );
-    relativeFeedbackUrl.setParam(
-      feedbackReturnInfoKey,
-      returnInfo.toString()
-    );
+    relativeFeedbackUrl.setParam(feedbackReturnInfoKey, returnInfo.toString());
     return relativeFeedbackUrl.toString();
   }
 

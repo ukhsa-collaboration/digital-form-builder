@@ -2,9 +2,10 @@
   "metadata": {},
   "startPage": "/feedback",
   "fullStartPage": "/close-contact-feedback",
+  "confirmationSessionTimeout": 2000,
   "pages": [
     {
-      "title": "Give feedback on contact tracing",
+      "title": "Give feedback on this service",
       "path": "/feedback",
       "components": [
         {
@@ -122,7 +123,7 @@
     "maxAttempts": 3,
     "showPaymentSkippedWarningPage": false
   },
-  "name": "Contact tracing feedback",
+  "name": "Feedback",
   "feedback": {
     "feedbackForm": false,
     "url": "/close-contact-feedback"

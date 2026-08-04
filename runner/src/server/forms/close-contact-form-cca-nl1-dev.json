@@ -3,6 +3,7 @@
   "startPage": "/start",
   "fullStartPage": "start",
   "name": "Contact tracing CCA",
+  "confirmationSessionTimeout": 2000,
   "pages": [
     {
       "title": "Record close contact details for a member of the public",
@@ -156,7 +157,7 @@
           "type": "TextField",
           "title": "Your first (given) name",
           "schema": {
-            "regex": "^[\\w'\\-,.][^0-9_!¡?÷?¿/\\+=@#$%^&*(){}|~<>;:[\\]]{2,}$"
+            "regex": "(?=.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*)^[\\sA-Za-zÀ-ÖØ-öø-ÿ'\\-,.]*$"
           }
         },
         {
@@ -169,7 +170,7 @@
           "type": "TextField",
           "title": "Your last (family) name",
           "schema": {
-            "regex": "^[\\w'\\-,.][^0-9_!¡?÷?¿/\\+=@#$%^&*(){}|~<>;:[\\]]{2,}$"
+            "regex": "(?=.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*)^[\\sA-Za-zÀ-ÖØ-öø-ÿ'\\-,.]*$"
           }
         },
         {
@@ -261,7 +262,7 @@
           "type": "TextField",
           "title": "Their first (given) name",
           "schema": {
-            "regex": "^[\\w'\\-,.][^0-9_!¡?÷?¿/\\+=@#$%^&*(){}|~<>;:[\\]]{2,}$"
+            "regex": "(?=.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*)^[\\sA-Za-zÀ-ÖØ-öø-ÿ'\\-,.]*$"
           }
         },
         {
@@ -274,7 +275,7 @@
           "type": "TextField",
           "title": "Their last (family) name",
           "schema": {
-            "regex": "^[\\w'\\-,.][^0-9_!¡?÷?¿/\\+=@#$%^&*(){}|~<>;:[\\]]{2,}$"
+            "regex": "(?=.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*)^[\\sA-Za-zÀ-ÖØ-öø-ÿ'\\-,.]*$"
           }
         },
         {
@@ -507,7 +508,7 @@
           "type": "TextField",
           "title": "First (given) name",
           "schema": {
-            "regex": "^[\\w'\\-,.][^0-9_!¡?÷?¿/\\+=@#$%^&*(){}|~<>;:[\\]]{2,}$"
+            "regex": "(?=.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*)^[\\sA-Za-zÀ-ÖØ-öø-ÿ'\\-,.]*$"
           }
         },
         {
@@ -520,7 +521,7 @@
           "type": "TextField",
           "title": "Last (family) name",
           "schema": {
-            "regex": "^[\\w'\\-,.][^0-9_!¡?÷?¿/\\+=@#$%^&*(){}|~<>;:[\\]]{2,}$"
+            "regex": "(?=.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*)^[\\sA-Za-zÀ-ÖØ-öø-ÿ'\\-,.]*$"
           }
         },
         {
@@ -667,7 +668,7 @@
           "type": "TextField",
           "title": "First (given) name",
           "schema": {
-            "regex": "^[\\w'\\-,.][^0-9_!¡?÷?¿/\\+=@#$%^&*(){}|~<>;:[\\]]{2,}$"
+            "regex": "(?=.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*)^[\\sA-Za-zÀ-ÖØ-öø-ÿ'\\-,.]*$"
           }
         },
         {
@@ -680,7 +681,7 @@
           "type": "TextField",
           "title": "Last (family) name",
           "schema": {
-            "regex": "^[\\w'\\-,.][^0-9_!¡?÷?¿/\\+=@#$%^&*(){}|~<>;:[\\]]{2,}$"
+            "regex": "(?=.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*)^[\\sA-Za-zÀ-ÖØ-öø-ÿ'\\-,.]*$"
           }
         },
         {
@@ -827,7 +828,7 @@
           "type": "TextField",
           "title": "First (given) name",
           "schema": {
-            "regex": "^[\\w'\\-,.][^0-9_!¡?÷?¿/\\+=@#$%^&*(){}|~<>;:[\\]]{2,}$"
+            "regex": "(?=.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*)^[\\sA-Za-zÀ-ÖØ-öø-ÿ'\\-,.]*$"
           }
         },
         {
@@ -840,7 +841,7 @@
           "type": "TextField",
           "title": "Last (family) name",
           "schema": {
-            "regex": "^[\\w'\\-,.][^0-9_!¡?÷?¿/\\+=@#$%^&*(){}|~<>;:[\\]]{2,}$"
+            "regex": "(?=.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*)^[\\sA-Za-zÀ-ÖØ-öø-ÿ'\\-,.]*$"
           }
         },
         {
@@ -987,7 +988,7 @@
           "type": "TextField",
           "title": "First (given) name",
           "schema": {
-            "regex": "^[\\w'\\-,.][^0-9_!¡?÷?¿/\\+=@#$%^&*(){}|~<>;:[\\]]{2,}$"
+            "regex": "(?=.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*)^[\\sA-Za-zÀ-ÖØ-öø-ÿ'\\-,.]*$"
           }
         },
         {
@@ -1000,7 +1001,7 @@
           "type": "TextField",
           "title": "Last (family) name",
           "schema": {
-            "regex": "^[\\w'\\-,.][^0-9_!¡?÷?¿/\\+=@#$%^&*(){}|~<>;:[\\]]{2,}$"
+            "regex": "(?=.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*)^[\\sA-Za-zÀ-ÖØ-öø-ÿ'\\-,.]*$"
           }
         },
         {
@@ -1147,7 +1148,7 @@
           "type": "TextField",
           "title": "First (given) name",
           "schema": {
-            "regex": "^[\\w'\\-,.][^0-9_!¡?÷?¿/\\+=@#$%^&*(){}|~<>;:[\\]]{2,}$"
+            "regex": "(?=.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*)^[\\sA-Za-zÀ-ÖØ-öø-ÿ'\\-,.]*$"
           }
         },
         {
@@ -1160,7 +1161,7 @@
           "type": "TextField",
           "title": "Last (family) name",
           "schema": {
-            "regex": "^[\\w'\\-,.][^0-9_!¡?÷?¿/\\+=@#$%^&*(){}|~<>;:[\\]]{2,}$"
+            "regex": "(?=.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*)^[\\sA-Za-zÀ-ÖØ-öø-ÿ'\\-,.]*$"
           }
         },
         {
@@ -1307,7 +1308,7 @@
           "type": "TextField",
           "title": "First (given) name",
           "schema": {
-            "regex": "^[\\w'\\-,.][^0-9_!¡?÷?¿/\\+=@#$%^&*(){}|~<>;:[\\]]{2,}$"
+            "regex": "(?=.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*)^[\\sA-Za-zÀ-ÖØ-öø-ÿ'\\-,.]*$"
           }
         },
         {
@@ -1320,7 +1321,7 @@
           "type": "TextField",
           "title": "Last (family) name",
           "schema": {
-            "regex": "^[\\w'\\-,.][^0-9_!¡?÷?¿/\\+=@#$%^&*(){}|~<>;:[\\]]{2,}$"
+            "regex": "(?=.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*)^[\\sA-Za-zÀ-ÖØ-öø-ÿ'\\-,.]*$"
           }
         },
         {
@@ -1467,7 +1468,7 @@
           "type": "TextField",
           "title": "First (given) name",
           "schema": {
-            "regex": "^[\\w'\\-,.][^0-9_!¡?÷?¿/\\+=@#$%^&*(){}|~<>;:[\\]]{2,}$"
+            "regex": "(?=.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*)^[\\sA-Za-zÀ-ÖØ-öø-ÿ'\\-,.]*$"
           }
         },
         {
@@ -1480,7 +1481,7 @@
           "type": "TextField",
           "title": "Last (family) name",
           "schema": {
-            "regex": "^[\\w'\\-,.][^0-9_!¡?÷?¿/\\+=@#$%^&*(){}|~<>;:[\\]]{2,}$"
+            "regex": "(?=.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*)^[\\sA-Za-zÀ-ÖØ-öø-ÿ'\\-,.]*$"
           }
         },
         {
@@ -1627,7 +1628,7 @@
           "type": "TextField",
           "title": "First (given) name",
           "schema": {
-            "regex": "^[\\w'\\-,.][^0-9_!¡?÷?¿/\\+=@#$%^&*(){}|~<>;:[\\]]{2,}$"
+            "regex": "(?=.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*)^[\\sA-Za-zÀ-ÖØ-öø-ÿ'\\-,.]*$"
           }
         },
         {
@@ -1640,7 +1641,7 @@
           "type": "TextField",
           "title": "Last (family) name",
           "schema": {
-            "regex": "^[\\w'\\-,.][^0-9_!¡?÷?¿/\\+=@#$%^&*(){}|~<>;:[\\]]{2,}$"
+            "regex": "(?=.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*)^[\\sA-Za-zÀ-ÖØ-öø-ÿ'\\-,.]*$"
           }
         },
         {
@@ -1787,7 +1788,7 @@
           "type": "TextField",
           "title": "First (given) name",
           "schema": {
-            "regex": "^[\\w'\\-,.][^0-9_!¡?÷?¿/\\+=@#$%^&*(){}|~<>;:[\\]]{2,}$"
+            "regex": "(?=.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*)^[\\sA-Za-zÀ-ÖØ-öø-ÿ'\\-,.]*$"
           }
         },
         {
@@ -1800,7 +1801,7 @@
           "type": "TextField",
           "title": "Last (family) name",
           "schema": {
-            "regex": "^[\\w'\\-,.][^0-9_!¡?÷?¿/\\+=@#$%^&*(){}|~<>;:[\\]]{2,}$"
+            "regex": "(?=.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*)^[\\sA-Za-zÀ-ÖØ-öø-ÿ'\\-,.]*$"
           }
         },
         {
@@ -1947,7 +1948,7 @@
           "type": "TextField",
           "title": "First (given) name",
           "schema": {
-            "regex": "^[\\w'\\-,.][^0-9_!¡?÷?¿/\\+=@#$%^&*(){}|~<>;:[\\]]{2,}$"
+            "regex": "(?=.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*)^[\\sA-Za-zÀ-ÖØ-öø-ÿ'\\-,.]*$"
           }
         },
         {
@@ -1960,7 +1961,7 @@
           "type": "TextField",
           "title": "Last (family) name",
           "schema": {
-            "regex": "^[\\w'\\-,.][^0-9_!¡?÷?¿/\\+=@#$%^&*(){}|~<>;:[\\]]{2,}$"
+            "regex": "(?=.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*)^[\\sA-Za-zÀ-ÖØ-öø-ÿ'\\-,.]*$"
           }
         },
         {
@@ -2119,7 +2120,7 @@
           "type": "TextField",
           "title": "Close contact first (given) name",
           "schema": {
-            "regex": "^[\\w'\\-,.][^0-9_!¡?÷?¿/\\+=@#$%^&*(){}|~<>;:[\\]]{2,}$"
+            "regex": "(?=.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*)^[\\sA-Za-zÀ-ÖØ-öø-ÿ'\\-,.]*$"
           }
         },
         {
@@ -2132,7 +2133,7 @@
           "type": "TextField",
           "title": "Close contact last (family) name",
           "schema": {
-            "regex": "^[\\w'\\-,.][^0-9_!¡?÷?¿/\\+=@#$%^&*(){}|~<>;:[\\]]{2,}$"
+            "regex": "(?=.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*)^[\\sA-Za-zÀ-ÖØ-öø-ÿ'\\-,.]*$"
           }
         },
         {
@@ -2276,7 +2277,7 @@
           "type": "TextField",
           "title": "Close contact first (given) name",
           "schema": {
-            "regex": "^[\\w'\\-,.][^0-9_!¡?÷?¿/\\+=@#$%^&*(){}|~<>;:[\\]]{2,}$"
+            "regex": "(?=.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*)^[\\sA-Za-zÀ-ÖØ-öø-ÿ'\\-,.]*$"
           }
         },
         {
@@ -2289,7 +2290,7 @@
           "type": "TextField",
           "title": "Close contact last (family) name",
           "schema": {
-            "regex": "^[\\w'\\-,.][^0-9_!¡?÷?¿/\\+=@#$%^&*(){}|~<>;:[\\]]{2,}$"
+            "regex": "(?=.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*)^[\\sA-Za-zÀ-ÖØ-öø-ÿ'\\-,.]*$"
           }
         },
         {
@@ -2433,7 +2434,7 @@
           "type": "TextField",
           "title": "Close contact first (given) name",
           "schema": {
-            "regex": "^[\\w'\\-,.][^0-9_!¡?÷?¿/\\+=@#$%^&*(){}|~<>;:[\\]]{2,}$"
+            "regex": "(?=.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*)^[\\sA-Za-zÀ-ÖØ-öø-ÿ'\\-,.]*$"
           }
         },
         {
@@ -2446,7 +2447,7 @@
           "type": "TextField",
           "title": "Close contact last (family) name",
           "schema": {
-            "regex": "^[\\w'\\-,.][^0-9_!¡?÷?¿/\\+=@#$%^&*(){}|~<>;:[\\]]{2,}$"
+            "regex": "(?=.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*)^[\\sA-Za-zÀ-ÖØ-öø-ÿ'\\-,.]*$"
           }
         },
         {
@@ -2590,7 +2591,7 @@
           "type": "TextField",
           "title": "Close contact first (given) name",
           "schema": {
-            "regex": "^[\\w'\\-,.][^0-9_!¡?÷?¿/\\+=@#$%^&*(){}|~<>;:[\\]]{2,}$"
+            "regex": "(?=.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*)^[\\sA-Za-zÀ-ÖØ-öø-ÿ'\\-,.]*$"
           }
         },
         {
@@ -2603,7 +2604,7 @@
           "type": "TextField",
           "title": "Close contact last (family) name",
           "schema": {
-            "regex": "^[\\w'\\-,.][^0-9_!¡?÷?¿/\\+=@#$%^&*(){}|~<>;:[\\]]{2,}$"
+            "regex": "(?=.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*)^[\\sA-Za-zÀ-ÖØ-öø-ÿ'\\-,.]*$"
           }
         },
         {
@@ -2747,7 +2748,7 @@
           "type": "TextField",
           "title": "Close contact first (given) name",
           "schema": {
-            "regex": "^[\\w'\\-,.][^0-9_!¡?÷?¿/\\+=@#$%^&*(){}|~<>;:[\\]]{2,}$"
+            "regex": "(?=.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*)^[\\sA-Za-zÀ-ÖØ-öø-ÿ'\\-,.]*$"
           }
         },
         {
@@ -2760,7 +2761,7 @@
           "type": "TextField",
           "title": "Close contact last (family) name",
           "schema": {
-            "regex": "^[\\w'\\-,.][^0-9_!¡?÷?¿/\\+=@#$%^&*(){}|~<>;:[\\]]{2,}$"
+            "regex": "(?=.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*)^[\\sA-Za-zÀ-ÖØ-öø-ÿ'\\-,.]*$"
           }
         },
         {
@@ -2904,7 +2905,7 @@
           "type": "TextField",
           "title": "Close contact first (given) name",
           "schema": {
-            "regex": "^[\\w'\\-,.][^0-9_!¡?÷?¿/\\+=@#$%^&*(){}|~<>;:[\\]]{2,}$"
+            "regex": "(?=.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*)^[\\sA-Za-zÀ-ÖØ-öø-ÿ'\\-,.]*$"
           }
         },
         {
@@ -2917,7 +2918,7 @@
           "type": "TextField",
           "title": "Close contact last (family) name",
           "schema": {
-            "regex": "^[\\w'\\-,.][^0-9_!¡?÷?¿/\\+=@#$%^&*(){}|~<>;:[\\]]{2,}$"
+            "regex": "(?=.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*)^[\\sA-Za-zÀ-ÖØ-öø-ÿ'\\-,.]*$"
           }
         },
         {
@@ -3061,7 +3062,7 @@
           "type": "TextField",
           "title": "Close contact first (given) name",
           "schema": {
-            "regex": "^[\\w'\\-,.][^0-9_!¡?÷?¿/\\+=@#$%^&*(){}|~<>;:[\\]]{2,}$"
+            "regex": "(?=.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*)^[\\sA-Za-zÀ-ÖØ-öø-ÿ'\\-,.]*$"
           }
         },
         {
@@ -3074,7 +3075,7 @@
           "type": "TextField",
           "title": "Close contact last (family) name",
           "schema": {
-            "regex": "^[\\w'\\-,.][^0-9_!¡?÷?¿/\\+=@#$%^&*(){}|~<>;:[\\]]{2,}$"
+            "regex": "(?=.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*)^[\\sA-Za-zÀ-ÖØ-öø-ÿ'\\-,.]*$"
           }
         },
         {
@@ -3218,7 +3219,7 @@
           "type": "TextField",
           "title": "Close contact first (given) name",
           "schema": {
-            "regex": "^[\\w'\\-,.][^0-9_!¡?÷?¿/\\+=@#$%^&*(){}|~<>;:[\\]]{2,}$"
+            "regex": "(?=.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*)^[\\sA-Za-zÀ-ÖØ-öø-ÿ'\\-,.]*$"
           }
         },
         {
@@ -3231,7 +3232,7 @@
           "type": "TextField",
           "title": "Close contact last (family) name",
           "schema": {
-            "regex": "^[\\w'\\-,.][^0-9_!¡?÷?¿/\\+=@#$%^&*(){}|~<>;:[\\]]{2,}$"
+            "regex": "(?=.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*)^[\\sA-Za-zÀ-ÖØ-öø-ÿ'\\-,.]*$"
           }
         },
         {
@@ -3375,7 +3376,7 @@
           "type": "TextField",
           "title": "Close contact first (given) name",
           "schema": {
-            "regex": "^[\\w'\\-,.][^0-9_!¡?÷?¿/\\+=@#$%^&*(){}|~<>;:[\\]]{2,}$"
+            "regex": "(?=.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*)^[\\sA-Za-zÀ-ÖØ-öø-ÿ'\\-,.]*$"
           }
         },
         {
@@ -3388,7 +3389,7 @@
           "type": "TextField",
           "title": "Close contact last (family) name",
           "schema": {
-            "regex": "^[\\w'\\-,.][^0-9_!¡?÷?¿/\\+=@#$%^&*(){}|~<>;:[\\]]{2,}$"
+            "regex": "(?=.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*)^[\\sA-Za-zÀ-ÖØ-öø-ÿ'\\-,.]*$"
           }
         },
         {
@@ -3532,7 +3533,7 @@
           "type": "TextField",
           "title": "Close contact first (given) name",
           "schema": {
-            "regex": "^[\\w'\\-,.][^0-9_!¡?÷?¿/\\+=@#$%^&*(){}|~<>;:[\\]]{2,}$"
+            "regex": "(?=.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*)^[\\sA-Za-zÀ-ÖØ-öø-ÿ'\\-,.]*$"
           }
         },
         {
@@ -3545,7 +3546,7 @@
           "type": "TextField",
           "title": "Close contact last (family) name",
           "schema": {
-            "regex": "^[\\w'\\-,.][^0-9_!¡?÷?¿/\\+=@#$%^&*(){}|~<>;:[\\]]{2,}$"
+            "regex": "(?=.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*)^[\\sA-Za-zÀ-ÖØ-öø-ÿ'\\-,.]*$"
           }
         },
         {
@@ -4644,7 +4645,7 @@
   "specialPages": {
     "confirmationPage": {
       "customText": {
-        "nextSteps": "<h2 class='govuk-heading-m'>What happens next</h2><p class='govuk-body'>We may contact the close contacts listed to ask for more information and to give them advice on what to do next.</p><h2 class='govuk-heading-m'>More information on bird (avian) flu</h2><p class='govuk-body'>If anyone they know develops symptoms of bird (avian) flu, ask them to order a test kit. For urgent medical advice, they can call NHS 111 or visit 111.nhs.uk. For life-threatening emergencies, call 999.</p><p class='govuk-body'>For more advice and information on the virus visit the NHS website.</p><h2 class='govuk-heading-m'>If they need to contact us</h2><p class='govuk-body'>If they have any concerns or questions they can contact us at <a class='govuk-link' href='mailto:surgeresponse@ukhsa.gov.uk'>surgeresponse@ukhsa.gov.uk</a>.</p>",
+        "nextSteps": "<h2 class='govuk-heading-m'>What happens next</h2><p class='govuk-body'>We may contact the close contacts listed to ask for more information and to give them advice on what to do next.</p><h2 class='govuk-heading-m'>More information on avian flu</h2><p class='govuk-body'>If anyone they know develops symptoms of bird (avian) flu, ask them to order a test kit. For urgent medical advice, they can call NHS 111 or visit 111.nhs.uk. For life-threatening emergencies, call 999.</p><p class='govuk-body'>For more advice and information on the virus visit the NHS website.</p><h2 class='govuk-heading-m'>If they need to contact us</h2><p class='govuk-body'>If they have any concerns or questions they can contact us at <a class='govuk-link' href='mailto:surgeresponse@ukhsa.gov.uk'>surgeresponse@ukhsa.gov.uk</a>.</p>",
         "title": "Form submitted",
         "referenceTitle": "Your reference number"
       }

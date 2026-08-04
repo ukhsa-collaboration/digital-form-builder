@@ -5,7 +5,7 @@
   "authentication": true,
   "toggle": true,
   "toggleRedirect": "/kls-enquiries/which-organisation-do-you-work-for-validated",
-  "retryTimeoutSeconds": 20,
+  "retryTimeoutSeconds": 300,
   "analytics": {
     "gtmId1": "GTM-WLKKLMQB"
   },
@@ -97,7 +97,7 @@
           "name": "SentAnotherEmail",
           "options": {},
           "type": "Para",
-          "content": "We’ve sent an email to {{ email }}. <p class=\"govuk-body\">Click the link in the email to continue to access the Knowledge and Library Services form.</p><p>NOTE: You will need to access the link in the same browser you’ve used to initiate this query.</p> <br><br> <h2 class=\"govuk-heading-m\">If you've not received an email</h2><p class=\"govuk-body\">Check your spam or junk folder.<br><br>If you’ve not received the email, you can resubmit the email in 5 minutes.</p>",
+          "content": "We’ve sent an email to {{ email }}. <p class=\"govuk-body\">Click the link in the email to continue to access the Knowledge and Library Services form.</p><br><br> <h2 class=\"govuk-heading-m\">If you've not received an email</h2><p class=\"govuk-body\">Check your spam or junk folder.<br><br>If you’ve not received the email, you can resubmit the email in 5 minutes.</p>",
           "schema": {}
         },
         {
@@ -199,12 +199,13 @@
     },
     {
       "path": "/expired",
+      "unauthenticated": true,
       "title": "This link has expired",
       "components": [
         {
           "type": "Para",
           "title": "This link has expired",
-          "content": "<p class=\"govuk-body\">This link has expired because it is older than 20 minutes or has already been used. Each link can only be used once</p> <a href='/kls-enquiries/start' role='button' draggable='false' class='govuk-button' data-module='govuk-button' data-prevent-double-click='true'>Request a new link</button></a>",
+          "content": "<p class=\"govuk-body\">This link has expired because it is older than 20 minutes or has already been used. Each link can only be used once.</p> <a href='/kls-enquiries/start' role='button' draggable='false' class='govuk-button' data-module='govuk-button' data-prevent-double-click='true'>Request a new link</button></a>",
           "name": "blarGGH",
           "options": {},
           "schema": {}
@@ -248,5 +249,6 @@
     "url": "https://submit.forms.service.gov.uk/form/7932/give-feedback-on-knowledge-and-library-services-kls/30055"
   },
   "version": 2,
-  "conditions": []
+  "conditions": [],
+  "error500ContactEmail": "libraries@kls.ukhsa.gov.uk"
 }

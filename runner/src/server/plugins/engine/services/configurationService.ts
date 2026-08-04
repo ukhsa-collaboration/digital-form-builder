@@ -1,12 +1,13 @@
 import fs from "fs";
 import path from "path";
 
+import { FormDefinition } from "@xgovformbuilder/model";
 import { idFromFilename } from "../helpers";
 
 const FORMS_FOLDER = path.join(__dirname, "..", "..", "..", "forms");
 
 export type FormConfiguration = {
-  configuration: any; // TODO
+  configuration: FormDefinition;
   id: string;
 };
 

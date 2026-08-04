@@ -24,7 +24,7 @@
           "name": "mainContent",
           "options": {},
           "type": "Para",
-          "content": "<p class=\"govuk-caption-l govuk-!-margin-bottom-6\"></p><p class=\"govuk-body-m\">You can use this form to submit an enquiry to Knowledge and Library Services (KLS).</p><p class=\"govuk-body-m\">Staff employed by the following organisations are eligible to access KLS:</p><ul class=\"govuk-list govuk-list--bullet\"><li>UK Health Security Agency</li><li>Office for Health Improvement and Disparities</li><li>NHS England Public Health teams</li><li>Local Authority Public Health teams</li></ul><p class=\"govuk-body-m\">If you do not belong to one of these organisations select 'Other' for information about how to contact KLS.</p><h3 class=\"govuk-heading-m\">Before you start</h3><p class=\"govuk-body-m\">You will need to verify your email address to access this enquiry form.</p><p class=\"govuk-body-m\">You will be asked a series of questions based on the type of enquiry you are submitting.</p><div class=\"govuk-warning-text\"><span class=\"govuk-warning-text__icon\" aria-hidden=\"true\">!</span><strong class=\"govuk-warning-text__text\"><span class=\"govuk-visually-hidden\">Warning</span> You must complete your enquiry form in the same browser you used to access this page. You must submit each page of the form within 40 minutes, or it will time out.</strong></div><h3 class=\"govuk-heading-m\">Literature search</h3><p class=\"govuk-body-m\">To request a literature search, you will need to provide:</p><ul class=\"govuk-list govuk-list--bullet\"><li>a focused question</li><li>relevant population or setting, exposure, and outcomes</li><li>publication date range for your results (for example, last 5 years)</li><li>geographic scope for your results (for example, UK only)</li><li>your requested completion date</li><li>information about you including your name, job title, and email address</li></ul><h3 class=\"govuk-heading-m\">Systematic review</h3><p class=\"govuk-body-m\">To request support with a systematic review, you will need to provide the same information as for a literature search. Additionally, you can add a protocol if you have written one.</p><h3 class=\"govuk-heading-m\">Evidence briefing</h3><p class=\"govuk-body-m\">To request an evidence briefing, you will need to provide the same information as for a literature search. Additionally, you need to specify inclusion and exclusion criteria.</p><h3 class=\"govuk-heading-m\">Current awareness alerts</h3><p class=\"govuk-body-m\">To sign up for current awareness alerts, you will need to:</p><ul class=\"govuk-list govuk-list--bullet\"><li>use tick boxes to select the alerts you want to subscribe to</li><li>provide information about you including your name, job title, and email address</li></ul><h3 class=\"govuk-heading-m\">Other enquiries</h3><p class=\"govuk-body-m\">Use the general enquiry option for anything else, including article requests.</p>"
+          "content": "<p class=\"govuk-caption-l govuk-!-margin-bottom-6\"></p><p class=\"govuk-body-m\">You can use this form to submit an enquiry to Knowledge and Library Services (KLS).</p><p class=\"govuk-body-m\">Staff employed by the following organisations are eligible to access KLS:</p><ul class=\"govuk-list govuk-list--bullet\"><li>UK Health Security Agency</li><li>Office for Health Improvement and Disparities</li><li>NHS England Public Health teams</li><li>Local Authority Public Health teams</li></ul><p class=\"govuk-body-m\">If you do not belong to one of these organisations select 'Other' for information about how to contact KLS.</p><h3 class=\"govuk-heading-m\">Before you start</h3><p class=\"govuk-body-m\">You will need to verify your email address to access this enquiry form.</p><p class=\"govuk-body-m\">You will be asked a series of questions based on the type of enquiry you are submitting.</p><div class=\"govuk-warning-text\"><span class=\"govuk-warning-text__icon\" aria-hidden=\"true\">!</span><strong class=\"govuk-warning-text__text\"><span class=\"govuk-visually-hidden\">Warning</span>You must submit each page of the form within 40 minutes, or it will time out.</strong></div><h3 class=\"govuk-heading-m\">Literature search</h3><p class=\"govuk-body-m\">To request a literature search, you will need to provide:</p><ul class=\"govuk-list govuk-list--bullet\"><li>a focused question</li><li>relevant population or setting, exposure, and outcomes</li><li>publication date range for your results (for example, last 5 years)</li><li>geographic scope for your results (for example, UK only)</li><li>your requested completion date</li><li>information about you including your name, job title, and email address</li></ul><h3 class=\"govuk-heading-m\">Systematic review</h3><p class=\"govuk-body-m\">To request support with a systematic review, you will need to provide the same information as for a literature search. Additionally, you can add a protocol if you have written one.</p><h3 class=\"govuk-heading-m\">Evidence briefing</h3><p class=\"govuk-body-m\">To request an evidence briefing, you will need to provide the same information as for a literature search. Additionally, you need to specify inclusion and exclusion criteria.</p><h3 class=\"govuk-heading-m\">Current awareness alerts</h3><p class=\"govuk-body-m\">To sign up for current awareness alerts, you will need to:</p><ul class=\"govuk-list govuk-list--bullet\"><li>use tick boxes to select the alerts you want to subscribe to</li><li>provide information about you including your name, job title, and email address</li></ul><h3 class=\"govuk-heading-m\">Other enquiries</h3><p class=\"govuk-body-m\">Use the general enquiry option for anything else, including article requests.</p>"
         }
       ],
       "next": [
@@ -164,7 +164,9 @@
     },
     {
       "path": "/type-of-enquiry",
+      "section": "typeOfEnquiry",
       "title": "Type of enquiry",
+      "disableBackLink": true,
       "components": [
         {
           "name": "iAFhFY",
@@ -182,7 +184,7 @@
               "any.only": "Select the option that best matches your enquiry",
               "string.empty": "Select the option that best matches your enquiry"
             },
-            "disableChangingFromSummary": true,
+            "disableChangingFromSummary": false,
             "exposeToContext": false
           },
           "type": "RadiosField",
@@ -194,6 +196,20 @@
           "schema": {}
         }
       ],
+      "next": [
+        {
+          "path": "/type-of-enquiry-summary"
+        }
+      ]
+    },
+    {
+      "path": "/type-of-enquiry-summary",
+      "section": "typeOfEnquiry",
+      "controller": "MiniSummaryPageController",
+      "title": "Confirm your enquiry type",
+      "options": {
+        "subtitle": "You will not be able to change your answer later once confirmed."
+      },
       "next": [
         {
           "path": "/current-awareness",
@@ -263,6 +279,7 @@
     {
       "path": "/current-awareness",
       "title": "About your current awareness alerts query",
+      "disableBackLink": true,
       "components": [
         {
           "name": "CovnkG",
@@ -310,6 +327,7 @@
     {
       "path": "/current-awareness-LAPH",
       "title": "About your current awareness alerts query",
+      "disableBackLink": true,
       "components": [
         {
           "name": "voCgKn",
@@ -348,6 +366,7 @@
     {
       "path": "/about-your-enquiry",
       "title": "About your enquiry",
+      "disableBackLink": true,
       "components": [
         {
           "name": "yYKOmJ",
@@ -381,7 +400,7 @@
             }
           },
           "type": "MultilineTextField",
-          "title": "Explain any relevant concepts",
+          "title": "Explain relevant concepts, including any keywords",
           "schema": {},
           "hint": "Consider the questions: Who? What? Where? Why? When? How?"
         },
@@ -824,6 +843,7 @@
     {
       "path": "/how-can-we-help",
       "title": "How can we help?",
+      "disableBackLink": true,
       "components": [
         {
           "name": "CKlngs",
@@ -876,6 +896,7 @@
     {
       "path": "/which-organisation-do-you-work-for-validated",
       "title": "Which organisation do you work for?",
+      "section": "whichOrganisationValidated",
       "disableBackLink": true,
       "components": [
         {
@@ -886,7 +907,7 @@
               "any.only": "Select the organisation you work for",
               "string.empty": "Select the organisation you work for"
             },
-            "disableChangingFromSummary": true
+            "disableChangingFromSummary": false
           },
           "type": "RadiosField",
           "title": "Which organisation do you work for?",
@@ -898,6 +919,20 @@
           }
         }
       ],
+      "next": [
+        {
+          "path": "/which-organisation-do-you-work-for-summary"
+        }
+      ]
+    },
+    {
+      "path": "/which-organisation-do-you-work-for-summary",
+      "section": "whichOrganisationValidated",
+      "controller": "MiniSummaryPageController",
+      "title": "Confirm your organisation",
+      "options": {
+        "subtitle": "You will not be able to change your answer later once confirmed."
+      },
       "next": [
         {
           "path": "/type-of-enquiry"
@@ -914,7 +949,9 @@
     },
     {
       "path": "/type-of-enquiry-LAPH",
+      "section": "typeOfEnquiryLAPH",
       "title": "Type of enquiry",
+      "disableBackLink": true,
       "components": [
         {
           "name": "RlHHWZ",
@@ -927,7 +964,7 @@
         {
           "name": "VeQCVM",
           "options": {
-            "disableChangingFromSummary": true,
+            "disableChangingFromSummary": false,
             "customValidationMessages": {
               "any.required": "Select the option that best matches your enquiry",
               "any.only": "Select the option that best matches your enquiry",
@@ -945,6 +982,20 @@
       ],
       "next": [
         {
+          "path": "/type-of-enquiry-LAPH-summary"
+        }
+      ]
+    },
+    {
+      "path": "/type-of-enquiry-LAPH-summary",
+      "section": "typeOfEnquiryLAPH",
+      "controller": "MiniSummaryPageController",
+      "title": "Confirm your enquiry type",
+      "options": {
+        "subtitle": "You will not be able to change your answer later once confirmed."
+      },
+      "next": [
+        {
           "path": "/how-can-we-help",
           "condition": "lsHzLP"
         },
@@ -960,6 +1011,7 @@
     {
       "path": "/about-your-enquiry-RPOaaR",
       "title": "About your enquiry",
+      "disableBackLink": true,
       "components": [
         {
           "name": "fXvmRh",
@@ -986,7 +1038,7 @@
           "name": "WYbcGt",
           "options": {},
           "type": "MultilineTextField",
-          "title": "Explain any relevant concepts",
+          "title": "Explain relevant concepts, including any keywords",
           "hint": "Consider the questions: Who? What? Where? Why? When? How?",
           "schema": {}
         },
@@ -1080,6 +1132,7 @@
     {
       "path": "/evidence-briefing-information",
       "title": "Evidence briefing information",
+      "disableBackLink": true,
       "components": [
         {
           "name": "jojhvk",
@@ -1302,10 +1355,15 @@
     },
     {
       "path": "/summary",
+      "controller": "CustomSummaryPageController",
       "title": "Check the details before submitting",
       "components": [],
-      "next": [],
-      "controller": "./pages/summary.js"
+      "customButtonText": "Confirm and submit",
+      "options": {
+        "hiddenFields": ["ZpmVWP"],
+        "disabledChangeFields": ["tUKBgj", "VeQCVM", "wyvXTj"]
+      },
+      "next": []
     }
   ],
   "lists": [
@@ -2198,7 +2256,23 @@
       ]
     }
   ],
-  "sections": [],
+  "sections": [
+    {
+      "name": "whichOrganisationValidated",
+      "title": "whichOrganisationValidated",
+      "hideTitle": true
+    },
+    {
+      "name": "typeOfEnquiry",
+      "title": "Type of enquiry",
+      "hideTitle": true
+    },
+    {
+      "name": "typeOfEnquiryLAPH",
+      "title": "Type of enquiry",
+      "hideTitle": true
+    }
+  ],
   "conditions": [
     {
       "displayName": "Other",
@@ -2252,7 +2326,7 @@
         "conditions": [
           {
             "field": {
-              "name": "tUKBgj",
+              "name": "typeOfEnquiry.tUKBgj",
               "type": "RadiosField",
               "display": "Which option best matches your query?"
             },
@@ -2274,7 +2348,7 @@
         "conditions": [
           {
             "field": {
-              "name": "tUKBgj",
+              "name": "typeOfEnquiry.tUKBgj",
               "type": "RadiosField",
               "display": "Which option best matches your query?"
             },
@@ -2296,7 +2370,7 @@
         "conditions": [
           {
             "field": {
-              "name": "tUKBgj",
+              "name": "typeOfEnquiry.tUKBgj",
               "type": "RadiosField",
               "display": "Which option best matches your query?"
             },
@@ -2318,7 +2392,7 @@
         "conditions": [
           {
             "field": {
-              "name": "tUKBgj",
+              "name": "typeOfEnquiry.tUKBgj",
               "type": "RadiosField",
               "display": "Which option best matches your query?"
             },
@@ -2340,7 +2414,7 @@
         "conditions": [
           {
             "field": {
-              "name": "tUKBgj",
+              "name": "typeOfEnquiry.tUKBgj",
               "type": "RadiosField",
               "display": "Which option best matches your query?"
             },
@@ -2362,7 +2436,7 @@
         "conditions": [
           {
             "field": {
-              "name": "tUKBgj",
+              "name": "typeOfEnquiry.tUKBgj",
               "type": "RadiosField",
               "display": "Which option best matches your query?"
             },
@@ -2376,7 +2450,7 @@
           {
             "coordinator": "or",
             "field": {
-              "name": "tUKBgj",
+              "name": "typeOfEnquiry.tUKBgj",
               "type": "RadiosField",
               "display": "Which option best matches your query?"
             },
@@ -2398,7 +2472,7 @@
         "conditions": [
           {
             "field": {
-              "name": "wyvXTj",
+              "name": "whichOrganisationValidated.wyvXTj",
               "type": "RadiosField",
               "display": "Which organisation do you work for?"
             },
@@ -2420,7 +2494,7 @@
         "conditions": [
           {
             "field": {
-              "name": "wyvXTj",
+              "name": "whichOrganisationValidated.wyvXTj",
               "type": "RadiosField",
               "display": "Which organisation do you work for?"
             },
@@ -2442,7 +2516,7 @@
         "conditions": [
           {
             "field": {
-              "name": "VeQCVM",
+              "name": "typeOfEnquiryLAPH.VeQCVM",
               "type": "RadiosField",
               "display": "Which option best matches your enquiry? - LAPH user"
             },
@@ -2464,7 +2538,7 @@
         "conditions": [
           {
             "field": {
-              "name": "VeQCVM",
+              "name": "typeOfEnquiryLAPH.VeQCVM",
               "type": "RadiosField",
               "display": "Which option best matches your enquiry? - LAPH user"
             },
@@ -2486,7 +2560,7 @@
         "conditions": [
           {
             "field": {
-              "name": "VeQCVM",
+              "name": "typeOfEnquiryLAPH.VeQCVM",
               "type": "RadiosField",
               "display": "Which option best matches your enquiry? - LAPH user"
             },
@@ -2508,7 +2582,7 @@
         "conditions": [
           {
             "field": {
-              "name": "tUKBgj",
+              "name": "typeOfEnquiry.tUKBgj",
               "type": "RadiosField",
               "display": "Which option best matches your enquiry?"
             },
@@ -2522,7 +2596,7 @@
           {
             "coordinator": "or",
             "field": {
-              "name": "VeQCVM",
+              "name": "typeOfEnquiryLAPH.VeQCVM",
               "type": "RadiosField",
               "display": "Which option best matches your enquiry? - LAPH user"
             },
@@ -2544,7 +2618,7 @@
         "conditions": [
           {
             "field": {
-              "name": "tUKBgj",
+              "name": "typeOfEnquiry.tUKBgj",
               "type": "RadiosField",
               "display": "Which option best matches your enquiry?"
             },
@@ -2558,7 +2632,7 @@
           {
             "coordinator": "or",
             "field": {
-              "name": "tUKBgj",
+              "name": "typeOfEnquiry.tUKBgj",
               "type": "RadiosField",
               "display": "Which option best matches your enquiry?"
             },
@@ -2572,7 +2646,7 @@
           {
             "coordinator": "or",
             "field": {
-              "name": "tUKBgj",
+              "name": "typeOfEnquiry.tUKBgj",
               "type": "RadiosField",
               "display": "Which option best matches your enquiry?"
             },
@@ -2594,7 +2668,7 @@
         "conditions": [
           {
             "field": {
-              "name": "wyvXTj",
+              "name": "whichOrganisationValidated.wyvXTj",
               "type": "RadiosField",
               "display": "Which organisation do you work for?"
             },
@@ -2638,5 +2712,7 @@
     "feedbackForm": true,
     "url": "https://submit.forms.service.gov.uk/form/7932/give-feedback-on-knowledge-and-library-services-kls/30055"
   },
-  "jwtKey": "${KLSJwtKey}"
+  "showFilenamesOnSummaryPage": true,
+  "jwtKey": "${KLSJwtKey}",
+  "error500ContactEmail": "libraries@kls.ukhsa.gov.uk"
 }
