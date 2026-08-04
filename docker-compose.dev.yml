@@ -25,3 +25,5 @@ services:
       - /usr/src/app/runner/dist
       - ./runner:/usr/src/app/runner
     command: yarn runner dev
+    environment:
+      - SESSION_COOKIE_PASSWORD=604c565d2037e89c5fc3ed6bb20343148ccd2e5aa1abb93d

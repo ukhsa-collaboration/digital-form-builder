@@ -3,6 +3,7 @@
   "startPage": "/start",
   "fullStartPage": "start",
   "name": "Contact tracing CCA",
+  "confirmationSessionTimeout": 2000,
   "pages": [
     {
       "title": "Record close contact details for a member of the public",
@@ -3689,12 +3690,16 @@
       "type": "string",
       "items": [
         {
-          "text": "people who live at the same address as you",
-          "value": "people who live at the same address as you"
+          "text": "usually live in the same address as you",
+          "value": "usually live in the same address as you"
         },
         {
-          "text": "people who have stayed overnight in the last 14 days",
-          "value": "people who have stayed overnight in the last 14 days"
+          "text": "people who have stayed overnight in the last 7 days",
+          "value": "people who have stayed overnight in the last 7 days"
+        },
+        {
+          "text": "you can provide contact details for, or receive communications on behalf of",
+          "value": "you can provide contact details for, or receive communications on behalf of"
         }
       ]
     },
@@ -3704,12 +3709,16 @@
       "type": "string",
       "items": [
         {
-          "text": "people who live at the same address as them",
-          "value": "people who live at the same address as them"
+          "text": "usually live in the same address as them",
+          "value": "usually live in the same address as them"
         },
         {
-          "text": "people who have stayed overnight in the last 14 days",
-          "value": "people who have stayed overnight in the last 14 days"
+          "text": "people who have stayed overnight in the last 7 days",
+          "value": "people who have stayed overnight in the last 7 days"
+        },
+        {
+          "text": "you can provide contact details for, or receive communications on behalf of",
+          "value": "you can provide contact details for, or receive communications on behalf of"
         }
       ]
     },
@@ -4625,7 +4634,7 @@
       "title": "Execute API",
       "type": "webhook",
       "outputConfiguration": {
-        "url": "https://api.nl1.test.srs.test-and-trace.nhs.uk/v1/forms",
+        "url": "${closeContactWebhookURL}",
         "allowRetry": true
       }
     }

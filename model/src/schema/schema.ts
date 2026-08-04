@@ -322,10 +322,24 @@ const exitSchema = joi.object().keys({
   format: joi.string().allow("STATE", "WEBHOOK"),
 });
 
+const msalAuthorizeConfigSchema = joi.object().keys({
+  tenantId: joi.string().required(),
+  clientId: joi.string().required(),
+  clientSecret: joi.string().required(),
+  scopes: joi.array().items(joi.string()).min(1).required(),
+});
+
+const secureFormSubmissionConfig = msalAuthorizeConfigSchema.concat(
+  joi.object().keys({
+    useAwsWafUserAgentWorkaround: joi.bool().optional(),
+  })
+);
+
 export const Schema = joi
   .object()
   .required()
   .keys({
+    formGroup: localisedString.optional(),
     name: localisedString.optional(),
     feedback: feedbackSchema,
     startPage: joi.string().required(),
@@ -365,6 +379,8 @@ export const Schema = joi
     serviceName: joi.string().optional(),
     confirmationSessionTimeout: joi.number().optional(),
     returnTo: joi.boolean().optional(),
+    secureFormSubmissionConfig: secureFormSubmissionConfig.optional(),
+    error500ContactEmail: joi.string().optional(),
   });
 
 /**

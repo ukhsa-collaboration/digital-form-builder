@@ -1,13 +1,13 @@
-import { FormModel } from "server/plugins/engine/models";
-import Boom from "boom";
-import { WebhookModel } from "server/plugins/engine/models/submission";
 import wreck from "@hapi/wreck";
 import { format, parseISO } from "date-fns";
-import { callbackValidation } from "server/plugins/initialiseSession/helpers";
 import Joi from "joi";
-import { ExitState, FormSubmissionState } from "server/plugins/engine/types";
-import { HapiServer } from "server/types";
+import { FormModel } from "server/plugins/engine/models";
+import { WebhookModel } from "server/plugins/engine/models/submission";
 import { WebhookData } from "server/plugins/engine/models/types";
+import { ExitState, FormSubmissionState } from "server/plugins/engine/types";
+import { callbackValidation } from "server/plugins/initialiseSession/helpers";
+import { HapiServer } from "server/types";
+import { RenderingError } from "../plugins/engine/errors";
 
 /**
  * Expected response from the exit webhook.
@@ -65,7 +65,9 @@ export class ExitService {
 
   async exitForm(form: FormModel, state: FormSubmissionState) {
     if (!form.allowExit) {
-      throw Boom.forbidden();
+      throw new RenderingError("User not allowed to exit form", {
+        code: 403,
+      });
     }
 
     const options = form.exitOptions!;
