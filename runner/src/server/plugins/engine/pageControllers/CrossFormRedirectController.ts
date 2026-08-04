@@ -10,7 +10,7 @@ export class CrossFormRedirectController extends PageController {
 
       // You should define your own magicLinkConfig in your (main) form config
       const crossFormRedirectConfig =
-        model?.def?.magicLinkConfig ?? "spike-form-redirect";
+        model?.def?.toggleRedirect ?? "spike-form-redirect";
 
       const { crossFormCacheService } = request.services([]);
       /* In order to support resume, we need to store the form id */
@@ -18,7 +18,7 @@ export class CrossFormRedirectController extends PageController {
         request
       );
 
-      return h.redirect(`/${crossFormRedirectConfig}/start`).code(302);
+      return h.redirect(`/${crossFormRedirectConfig}`).code(302);
     };
   }
 }

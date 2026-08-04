@@ -2,7 +2,7 @@
   "metadata": {},
   "startPage": "/start",
   "name": "Spike Form",
-  "skipSummary": true,
+  "skipSummary": false,
   "toggleRedirect": "spike-form-redirect",
   "pages": [
     {
@@ -16,7 +16,7 @@
           "content": "<label class='govuk-label govuk-label--s'>Can we send your data between services?</label>"
         },
         {
-          "name": "TextInput",
+          "name": "dogInput",
           "options": {
             "required": true,
             "customValidationMessages": {
@@ -36,12 +36,12 @@
     {
       "path": "/redirect",
       "controller": "CrossFormRedirectController",
-      "next": []
+      "next": [{ "path": "/return" }]
     },
     {
       "path": "/return",
       "controller": "CrossFormReturnController",
-      "next": []
+      "next": [{ "path": "/check-your-details" }]
     },
     {
       "title": "You've.. you've returned! 🤩",
@@ -64,13 +64,12 @@
   "lists": [],
   "outputs": [
     {
-      "name": "SpikeForm",
-      "title": "Spike Form",
-      "type": "email",
+      "name": "BsGFLT",
+      "title": "Execute API",
+      "type": "webhook",
       "outputConfiguration": {
-        "apiKey": "${notifyApiKey}",
-        "emailAddress": "${emailAddress}",
-        "notifyTemplateId": "83d1c036-dfeb-4d5b-b4e3-e8125810c663"
+        "url": "http://host.docker.internal:3000",
+        "allowRetry": true
       }
     }
   ],

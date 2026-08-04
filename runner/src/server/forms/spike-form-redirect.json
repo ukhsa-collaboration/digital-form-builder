@@ -4,7 +4,7 @@
   "name": "Spike Form",
   "skipSummary": true,
   "magicLinkConfig": "spike-form-redirect",
-  "toggleRedirect": "spike-form",
+  "toggleRedirect": "spike-form/return",
   "pages": [
     {
       "path": "/start",
@@ -17,7 +17,7 @@
           "content": "<label class='govuk-label govuk-label--s'>Can we send your data between services?</label>"
         },
         {
-          "name": "TextInput",
+          "name": "catInput",
           "options": {
             "required": true,
             "customValidationMessages": {
@@ -30,9 +30,14 @@
       ],
       "next": [
         {
-          "path": "/submit"
+          "path": "/redirect"
         }
       ]
+    },
+    {
+      "path": "/redirect",
+      "controller": "CrossFormRedirectController",
+      "next": [{ "path": "/submit" }]
     },
     {
       "path": "/submit",
