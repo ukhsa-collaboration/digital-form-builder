@@ -22,7 +22,7 @@
           "name": "mainContent",
           "options": {},
           "type": "Para",
-          "content": "<p class=\"govuk-caption-l govuk-!-margin-bottom-6\"></p><p class=\"govuk-body-m\">You can use this form to submit a training request to Knowledge and Library Services (KLS).</p><p class=\"govuk-body-m\">Staff employed by the following organisations are eligible to request training:</p><ul class=\"govuk-list govuk-list--bullet\"><li>UK Health Security Agency</li><li>Office for Health Improvement and Disparities</li><li>NHS England Public Health teams</li><li>Local Authority Public Health teams</li></ul><p class=\"govuk-body-m\">If you do not belong to one of these organisations select 'Other' for information about how to contact KLS.</p><h3 class=\"govuk-heading-m\">Before you start</h3><p class=\"govuk-body-m\">You will need to verify your email address to access this enquiry form.</p><p class=\"govuk-body-m\">You will be asked a series of questions about the type of training session you are interested in, including:</p><ul class=\"govuk-list govuk-list--bullet\"><li>number of participants</li><li>online or in person</li><li>training topics</li><li>your team’s area of specialism</li><li>preferred dates</li><li>information about you including your name, job title, and email address</li></ul><div class=\"govuk-warning-text\"><span class=\"govuk-warning-text__icon\" aria-hidden=\"true\">!</span><strong class=\"govuk-warning-text__text\"><span class=\"govuk-visually-hidden\">Warning</span>You must complete your enquiry form in the same browser you used to access this page. You must submit each page of the form within 40 minutes, or it will time out.</strong></div>"
+          "content": "<p class=\"govuk-caption-l govuk-!-margin-bottom-6\"></p><p class=\"govuk-body-m\">You can use this form to submit a training request to Knowledge and Library Services (KLS).</p><p class=\"govuk-body-m\">Staff employed by the following organisations are eligible to request training:</p><ul class=\"govuk-list govuk-list--bullet\"><li>UK Health Security Agency</li><li>Office for Health Improvement and Disparities</li><li>NHS England Public Health teams</li><li>Local Authority Public Health teams</li></ul><p class=\"govuk-body-m\">If you do not belong to one of these organisations select 'Other' for information about how to contact KLS.</p><h3 class=\"govuk-heading-m\">Before you start</h3><p class=\"govuk-body-m\">You will need to verify your email address to access this enquiry form.</p><p class=\"govuk-body-m\">You will be asked a series of questions about the type of training session you are interested in, including:</p><ul class=\"govuk-list govuk-list--bullet\"><li>number of participants</li><li>online or in person</li><li>training topics</li><li>your team’s area of specialism</li><li>preferred dates</li><li>information about you including your name, job title, and email address</li></ul><div class=\"govuk-warning-text\"><span class=\"govuk-warning-text__icon\" aria-hidden=\"true\">!</span><strong class=\"govuk-warning-text__text\"><span class=\"govuk-visually-hidden\">Warning</span>You must submit each page of the form within 40 minutes, or it will time out.</strong></div>"
         }
       ],
       "next": [
@@ -94,7 +94,7 @@
     },
     {
       "path": "/training-request-part-1",
-      "section": "trainingPart1",
+      "section": "trainingQuestions",
       "title": "Training request part 1",
       "disableBackLink": true,
       "components": [
@@ -169,42 +169,13 @@
       ],
       "next": [
         {
-          "path": "/training-details-summary"
+          "path": "/training-request-part-2"
         }
       ]
     },
     {
-      "path": "/training-details-summary",
-      "controller": "MiniSummaryPageController",
-      "title": "Confirm the information below",
-      "section": "trainingPart1",
-      "options": {
-        "multiSummary": true,
-        "content": "Please check your details and click the 'Submit' button.",
-        "sections": ["trainingPart1"],
-        "customText": {
-          "title": "Check your answers"
-        }
-      },
-      "next": [{ "path": "/training-request-part-2" }]
-    },
-    {
-      "title": "Enquiry summary",
-      "path": "/summary",
-      "controller": "./pages/summary.js",
-      "components": [
-        {
-          "name": "PdoDpO",
-          "options": {},
-          "type": "Para",
-          "content": "Please check your details and click the 'Submit' button."
-        }
-      ],
-      "next": []
-    },
-    {
       "path": "/training-request-part-2",
-      "section": "trainingPart2",
+      "section": "trainingQuestions",
       "title": "Training request part 2",
       "components": [
         {
@@ -282,8 +253,9 @@
       "path": "/training-topics-summary",
       "controller": "MiniSummaryPageController",
       "title": "Confirm the information below",
-      "section": "trainingPart2",
+      "section": "trainingQuestions",
       "options": {
+        "subtitle": "You will not be able to change your answers later once confirmed.",
         "content": "Please check your details and click the 'Submit' button.",
         "customText": {
           "title": "Check your answers"
@@ -305,6 +277,7 @@
     },
     {
       "path": "/about-you-ukhsa",
+      "disableBackLink": true,
       "section": "aboutYouUKHSA",
       "title": "About you",
       "components": [
@@ -420,8 +393,9 @@
     },
     {
       "path": "/about-you-uksa-summary",
+      "customButtonText": "Confirm and submit",
       "controller": "MiniSummaryPageController",
-      "title": "Confirm the information before submitting",
+      "title": "Confirm your personal details before submitting",
       "section": "aboutYouUKHSA",
       "options": {
         "content": "Please check your details and click the 'Submit' button.",
@@ -437,6 +411,7 @@
     },
     {
       "path": "/about-you-laph",
+      "disableBackLink": true,
       "section": "aboutYouLAPH",
       "title": "About you",
       "components": [
@@ -516,8 +491,9 @@
     },
     {
       "path": "/about-you-laph-summary",
+      "title": "Confirm your personal details before submitting",
       "controller": "MiniSummaryPageController",
-      "title": "Confirm the information before submitting",
+      "customButtonText": "Confirm and submit",
       "section": "aboutYouLAPH",
       "options": {
         "content": "Please check your details and click the 'Submit' button.",
@@ -533,6 +509,7 @@
     },
     {
       "path": "/about-you",
+      "disableBackLink": true,
       "section": "aboutYou",
       "title": "About you",
       "components": [
@@ -599,8 +576,9 @@
     },
     {
       "path": "/about-you-summary",
+      "customButtonText": "Confirm and submit",
       "controller": "MiniSummaryPageController",
-      "title": "Confirm the information before submitting",
+      "title": "Confirm your personal details before submitting",
       "section": "aboutYou",
       "options": {
         "content": "Please check your details and click the 'Submit' button.",
@@ -613,6 +591,20 @@
           "path": "/summary"
         }
       ]
+    },
+    {
+      "title": "Enquiry summary",
+      "path": "/summary",
+      "controller": "./pages/summary.js",
+      "components": [
+        {
+          "name": "PdoDpO",
+          "options": {},
+          "type": "Para",
+          "content": "Please check your details and click the 'Submit' button."
+        }
+      ],
+      "next": []
     }
   ],
   "lists": [
@@ -953,13 +945,8 @@
   ],
   "sections": [
     {
-      "name": "trainingPart1",
+      "name": "trainingQuestions",
       "title": "Training Details",
-      "hideTitle": true
-    },
-    {
-      "name": "trainingPart2",
-      "title": "Training Topics",
       "hideTitle": true
     },
     {
@@ -987,7 +974,7 @@
         "conditions": [
           {
             "field": {
-              "name": "trainingPart2.BpuPgW",
+              "name": "trainingQuestions.BpuPgW",
               "type": "RadiosField",
               "display": "Which organisation do you belong to?"
             },
@@ -1009,7 +996,7 @@
         "conditions": [
           {
             "field": {
-              "name": "trainingPart2.BpuPgW",
+              "name": "trainingQuestions.BpuPgW",
               "type": "RadiosField",
               "display": "Which organisation do you belong to?"
             },
@@ -1099,5 +1086,6 @@
     "feedbackForm": true,
     "url": "https://submit.forms.service.gov.uk/form/7932/give-feedback-on-knowledge-and-library-services-kls/30055"
   },
-  "jwtKey": "${KLSTrainingJwtKey}"
+  "jwtKey": "${KLSTrainingJwtKey}",
+  "error500ContactEmail": "libraries@kls.ukhsa.gov.uk"
 }

@@ -1,36 +1,52 @@
+# OS files
 .DS_Store
-.vscode
-node_modules
-npm-debug.log
-.idea
-.nyc_output
-unit-test.html
-package-lock.json
-/.yarn/cache/
-*/.env
-*/test-results/*
-*/test-coverage/*
-/runner/tmp.pdf
-/model/module/
-/model/dist/
-smoke-tests/designer/reports/
-*/dist/
-*/.dist/
-tsconfig.tsbuildinfo
-.lighthouseci
 
+# Editor
+.idea
+
+# Dependencies
+node_modules
+package-lock.json
+
+# Logs
+npm-debug.log
+
+# Environment variables
+**/.env
+**/.env_mysql
+
+# Build output
+**/dist/
+**/.dist/
+/model/dist/
+/model/module/
+/queue-model/dist
+/queue-model/module
+tsconfig.tsbuildinfo
+
+# Generated / Prisma
+/queue-model/src/prisma/generated
+docs/**/typedoc
+
+# Testing
+**/test-results/*
+**/test-coverage/*
+unit-test.html
+.nyc_output
+.lighthouseci
+/e2e/cypress/screenshots/
+smoke-tests/designer/reports/
+
+# Misc artifacts
+/runner/tmp.pdf
+
+# Yarn (PnP / Berry)
+.pnp.*
 .yarn/*
 !.yarn/releases
 !.yarn/plugins
 !.yarn/sdks
 !.yarn/versions
-.pnp.*
 .yarn/build-state.yml
 .yarn/install-state.gz
-docs/**/typedoc
-
-/e2e/cypress/screenshots/
-.env_mysql
-/queue-model/dist
-/queue-model/module
-/queue-model/src/prisma/generated
+/.yarn/cache/
