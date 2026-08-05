@@ -767,7 +767,7 @@
       "title": "webhookOutput",
       "type": "webhook",
       "outputConfiguration": {
-        "url": "${RPS_RADON_ENQUIRY_API_BASE_URL}/case",
+        "url": "https://api.dev.rps.ukhsa.gov.uk/case",
         "allowRetry": true,
         "payload": {
           "uuid": { "field": "generatedReference" },

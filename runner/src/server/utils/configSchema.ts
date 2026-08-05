@@ -158,5 +158,5 @@ export function buildConfig(config) {
     throw new Error(`The server config is invalid. ${result.error.message}`);
   }
 
-  return config;
+  return result.value;
 }
