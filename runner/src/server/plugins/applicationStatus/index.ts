@@ -1,5 +1,6 @@
 import { redirectTo } from "./../engine";
 import { HapiRequest, HapiResponseToolkit } from "../../types";
+import { getOrCreateCorrelationId } from "../../utils/correlationId";
 import { retryPay } from "./retryPay";
 import { handleUserWithConfirmationViewModel } from "./handleUserWithConfirmationViewModel";
 import { checkUserCompletedSummary } from "./checkUserCompletedSummary";
@@ -57,7 +58,9 @@ const index = {
 
               request.logger.info(
                 ["applicationStatus"],
-                `Callback skipSummary detected, redirecting ${request.yar.id} to ${redirectUrl} and clearing state`
+                `Callback skipSummary detected, redirecting ${getOrCreateCorrelationId(
+                  request
+                )} to ${redirectUrl} and clearing state`
               );
 
               await cacheService.setConfirmationState(request, {

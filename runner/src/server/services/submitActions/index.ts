@@ -2,6 +2,7 @@ import { ControllerError } from "src/server/plugins/engine/errors";
 import { SubmitAction } from "./types";
 import { JsonApiIntegrationWithMsal } from "../jsonApiIntegrationWithMsal";
 import { saveRiskReportDetailsSchema } from "./saveRiskReportDetailsSchema";
+import { getOrCreateCorrelationId } from "../../utils/correlationId";
 
 /**
  * Resolved by `summaryConfig.onSubmit.action` in a form's JSON definition.
@@ -41,7 +42,7 @@ export const submitActionRegistry: Record<string, SubmitAction> = {
 
     const { error, value: requestBody } = saveRiskReportDetailsSchema.validate(
       {
-        uuid: request.yar.id,
+        uuid: getOrCreateCorrelationId(request),
         deliveryMethod: currentState["deliveryMethod"],
         countryCode: selectedRiskReportAddress["countryCode"],
         uprn: selectedRiskReportAddress["uprn"],

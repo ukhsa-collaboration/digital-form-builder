@@ -5,6 +5,7 @@ import {
 } from "@xgovformbuilder/model";
 import { HapiRequest } from "../types";
 import { ControllerError } from "../plugins/engine/errors";
+import { getOrCreateCorrelationId } from "../utils/correlationId";
 
 type ServiceEventFunctions = Record<string, (request: HapiRequest) => void>;
 
@@ -38,7 +39,7 @@ const onValidPaymentFunctions: ServiceEventFunctions = {
     await rpsBackendService.request("/storepayment", {
       method: "POST",
       body: JSON.stringify({
-        uuid: request.yar.id,
+        uuid: getOrCreateCorrelationId(request),
         transactionId: "txn-789",
         settle_status: "SETTLED",
       }),
