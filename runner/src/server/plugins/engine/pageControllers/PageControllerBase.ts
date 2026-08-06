@@ -32,8 +32,9 @@ import { format, parseISO } from "date-fns";
 import config from "server/config";
 import nunjucks from "nunjucks";
 import Joi from "joi";
-import Jwt, { HapiJwt } from "@hapi/jwt";
+import Jwt from "@hapi/jwt";
 import { verifyHmacToken } from "../../initialiseSession/helpers";
+import { extractAddressContext } from "../utils/addressUtils";
 
 const FORM_SCHEMA = Symbol("FORM_SCHEMA");
 const STATE_SCHEMA = Symbol("STATE_SCHEMA");

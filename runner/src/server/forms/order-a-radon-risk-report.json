@@ -131,7 +131,7 @@
           "type": "HiddenField"
         },
         {
-          "name": "selectedReportAddress",
+          "name": "reportAddress_addressSelection",
           "options": {
             "exposeToContext": true
           },
@@ -153,7 +153,8 @@
       ],
       "controller": "SelectAnAddressPageController",
       "options": {
-        "changePath": "/order-risk-report-find-a-report-address"
+        "changePath": "/order-risk-report-find-a-report-address",
+        "onAddressSelection": "rpsRiskReportOnAddressSelection"
       },
       "componentsAfter": [
         {
@@ -200,7 +201,7 @@
           "type": "HiddenField"
         },
         {
-          "name": "selectedReportAddress",
+          "name": "reportAddress_addressSelection",
           "options": {
             "hideTitle": true,
             "customValidationMessages": {
@@ -779,7 +780,7 @@
           "type": "HiddenField"
         },
         {
-          "name": "selectedDeliveryAddress",
+          "name": "deliveryAddress_addressSelection",
           "options": {
             "exposeToContext": true
           },
@@ -854,7 +855,7 @@
           "type": "HiddenField"
         },
         {
-          "name": "selectedDeliveryAddress",
+          "name": "deliveryAddress_addressSelection",
           "options": {
             "hideTitle": true,
             "customValidationMessages": {
