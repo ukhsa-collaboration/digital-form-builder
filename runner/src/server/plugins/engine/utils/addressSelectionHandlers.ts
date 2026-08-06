@@ -109,7 +109,7 @@ const rpsRiskReportOnAddressSelection: AddressSelectionHandler = async (
   const backLinkUrl = progress[progress.length - 1];
 
   await lookupUdprnInDatabase(rpsBackendService, {
-    sessionId: request.yar.id,
+    sessionId: getOrCreateCorrelationId(request),
     backLinkUrl,
     udprn: address?.udprn,
     uprn: address?.uprn,

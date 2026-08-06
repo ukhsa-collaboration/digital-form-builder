@@ -1,5 +1,6 @@
 import { HapiRequest, HapiServer } from "../types";
 import { createHmacRaw } from "../utils/hmac";
+import { getOrCreateCorrelationId } from "../utils/correlationId";
 import {
   CacheService,
   FormSecurityService,
@@ -95,7 +96,9 @@ export class StatusService {
     if (state.status === "success") {
       this.logger.info(
         ["StatusService", "shouldShowPayErrorPage"],
-        `user ${request.yar.id} - shouldShowPayErrorPage: User has succeeded, setting paymentSkipped to false and continuing`
+        `user ${getOrCreateCorrelationId(
+          request
+        )} - shouldShowPayErrorPage: User has succeeded, setting paymentSkipped to false and continuing`
       );
 
       pay.paymentSkipped = false;
@@ -110,7 +113,9 @@ export class StatusService {
 
     this.logger.info(
       ["StatusService", "shouldShowPayErrorPage"],
-      `user ${request.yar.id} - shouldShowPayErrorPage: User has failed ${meta.attempts} payments`
+      `user ${getOrCreateCorrelationId(
+        request
+      )} - shouldShowPayErrorPage: User has failed ${meta.attempts} payments`
     );
 
     if (!allowSubmissionWithoutPayment) {
@@ -131,7 +136,9 @@ export class StatusService {
 
     this.logger.info(
       ["StatusService", "shouldShowPayErrorPage"],
-      `user ${request.yar.id} - shouldShowPayErrorPage: ${shouldRetry}`
+      `user ${getOrCreateCorrelationId(
+        request
+      )} - shouldShowPayErrorPage: ${shouldRetry}`
     );
 
     return shouldRetry;
@@ -181,12 +188,13 @@ export class StatusService {
     let customSecurityHeaders: Record<string, string> = {};
 
     if (hmacKey) {
+      const correlationId = getOrCreateCorrelationId(request);
       const [hmacSignature, requestTime, hmacExpiryTime] = await createHmacRaw(
-        request.yar.id,
+        correlationId,
         hmacKey
       );
       customSecurityHeaders = {
-        "X-Request-ID": request.yar.id.toString(),
+        "X-Request-ID": correlationId,
         "X-HMAC-Signature": hmacSignature.toString(),
         "X-HMAC-Time": requestTime.toString(),
       };
@@ -202,7 +210,9 @@ export class StatusService {
     if (callback) {
       this.logger.info(
         ["StatusService", "outputRequests"],
-        `Callback detected for ${request.yar.id} - PUT to ${callback.callbackUrl}`
+        `Callback detected for ${getOrCreateCorrelationId(request)} - PUT to ${
+          callback.callbackUrl
+        }`
       );
 
       try {
