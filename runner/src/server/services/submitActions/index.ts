@@ -31,6 +31,8 @@ export const submitActionRegistry: Record<string, SubmitAction> = {
 
     const selectedRiskReportAddress =
       currentState["reportAddress_selectedAddress"];
+    const selectedDeliveryAddress =
+      currentState["deliveryAddress_selectedAddress"];
 
     if (!selectedRiskReportAddress)
       throw new ControllerError("cannot find risk report address", {
@@ -39,11 +41,12 @@ export const submitActionRegistry: Record<string, SubmitAction> = {
 
     const { error, value: requestBody } = saveRiskReportDetailsSchema.validate(
       {
-        uuid: currentState["sessionId"],
+        uuid: request.yar.id,
         deliveryMethod: currentState["deliveryMethod"],
         countryCode: selectedRiskReportAddress["countryCode"],
         uprn: selectedRiskReportAddress["uprn"],
         udprn: selectedRiskReportAddress["udprn"],
+        fullAddress: selectedDeliveryAddress["address"],
         // customer details
         firstName: currentState["firstName"],
         lastName: currentState["lastName"],

@@ -12,7 +12,7 @@ export const saveRiskReportDetailsSchema = Joi.object({
       then: Joi.optional().allow("", null),
       otherwise: Joi.required(),
     }),
-  telephone: Joi.string(),
+  telephone: Joi.string().default("dummy-telephone"),
   countryCode: Joi.string(),
   fullAddress: Joi.when("deliveryMethod", {
     is: "post",

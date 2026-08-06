@@ -5,31 +5,25 @@ import Joi from "joi";
 import {
   addressTypeSchema,
   AddressType,
-  SelectedFieldName,
   deriveSelectedFieldName,
   formatAddress,
   resolveAddressByUdprn,
 } from "../utils/addressUtils";
+import { addressSelectionHandlers } from "../utils/addressSelectionHandlers";
 import { ControllerError } from "../errors";
-import { v4 as uuidv4 } from "uuid";
-import { JsonApiIntegrationWithMsal } from "src/server/services/jsonApiIntegrationWithMsal";
 
 type FormSubmission = {
   addressType: AddressType;
   isCorrectAddress: string;
-  selectedReportAddress: string;
-  selectedDeliveryAddress: string;
+  [key: string]: string;
 };
 
 const COMPONENT_ADDRESS_TYPE = "addressType";
 const COMPONENT_ADDRESSES_HEADING = "addressesFoundHeading";
 const COMPONENT_MATCHED_ADDRESS_DISPLAY = "matchedAddressDisplay";
-const CHECK_UDPRN_FOR_ADDRESS_TYPES = ["reportAddress"];
 
 const formSchema = Joi.object({
   addressType: addressTypeSchema,
-  selectedReportAddress: Joi.string().allow(""),
-  selectedDeliveryAddress: Joi.string().allow(""),
 }).unknown(true);
 
 /**
@@ -59,97 +53,9 @@ const extractInputFromSubmission = (data: FormSubmission) => {
 
   return {
     addressType,
-    selectedReportAddress: rest["selectedReportAddress"],
-    selectedDeliveryAddress: rest["selectedDeliveryAddress"],
+    selectedAddress: rest[deriveSelectedFieldName(addressType)],
     isCorrectAddress: rest[`${addressType}_isCorrectAddress`],
   };
-};
-
-/**
- * Calls the RPS backend service to see if a UDPRN is valid for a risk report
- * @param rpsBackendService - The backend service to check UDPRNs in the database
- * @param parameters - udprn & a back link url for the error pages
- * @returns a session ID if successful
- */
-const lookupUdprnInDatabase = async (
-  rpsBackendService: JsonApiIntegrationWithMsal,
-  {
-    udprn,
-    uprn,
-    sessionId,
-    backLinkUrl,
-  }: {
-    udprn: string;
-    uprn: string;
-    sessionId: string;
-    backLinkUrl: string;
-  }
-) => {
-  try {
-    const checkUdprn = await rpsBackendService.request("/lookup", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        sessionId,
-        udprn: udprn.padStart(8, "0"),
-        uprn,
-      }),
-    });
-
-    const response = await checkUdprn.json();
-
-    if (response.error) {
-      throw new ControllerError("database check not successful", {
-        code: 500,
-        page: "500-database-check-error",
-        backUrl: backLinkUrl,
-      });
-    }
-
-    if (!response.found) {
-      throw new ControllerError("address is not in database", {
-        code: 404,
-        page: "404-address-not-in-db",
-        backUrl: backLinkUrl,
-      });
-    }
-
-    return sessionId;
-  } catch (error) {
-    if (error instanceof ControllerError) throw error;
-
-    throw new ControllerError(
-      error instanceof Error ? error.message : "unknown error",
-      {
-        code: 500,
-        backUrl: backLinkUrl,
-        originalStack: error instanceof Error ? error.stack : undefined,
-      }
-    );
-  }
-};
-
-/**
- * Create a new session ID if one does not exist
- * @param request - the request object
- * @returns a session ID
- */
-const getOrCreateSessionId = async (request: HapiRequest) => {
-  const { cacheService } = request.service.getServices("cacheService");
-
-  const currentState = await cacheService.getState(request);
-
-  if (currentState["sessionId"]) return currentState["sessionId"];
-
-  const sessionId = uuidv4();
-
-  await cacheService.mergeState(request, {
-    sessionId,
-  });
-
-  return sessionId;
 };
 
 export class SelectAnAddressPageController extends PageControllerBase {
@@ -158,10 +64,15 @@ export class SelectAnAddressPageController extends PageControllerBase {
   private address: string = "";
 
   private readonly pageAddressType: AddressType;
-  private readonly selectedFieldName: SelectedFieldName;
+  private readonly selectedFieldName: string;
+  private readonly onAddressSelection?: string;
 
   constructor(model: FormModel, pageDef: any) {
     super(model, pageDef);
+
+    // Optional handler name (from page config) run once an address is
+    // confirmed, e.g. an RPS database check for the risk-report journey.
+    this.onAddressSelection = pageDef?.options?.onAddressSelection;
 
     // pageAddressType is declared on the hidden `addressType` component in the
     // form JSON via options.value, so one controller class serves both the
@@ -270,30 +181,11 @@ export class SelectAnAddressPageController extends PageControllerBase {
       const {
         addressType,
         isCorrectAddress,
-        selectedReportAddress,
-        selectedDeliveryAddress,
+        selectedAddress,
       } = extractInputFromSubmission(validation.value);
 
-      const selectedAddress = selectedReportAddress || selectedDeliveryAddress;
-
-      const rpsBackendServiceName = request.service.getName(
-        "rpsBackendService"
-      );
-
-      const { cacheService, ...rest } = request.services([]);
+      const { cacheService } = request.services([]);
       const currentState = await cacheService.getState(request);
-
-      if (rpsBackendServiceName in rest === false) {
-        throw new ControllerError("cannot find rps backend service", {
-          code: 500,
-        });
-      }
-
-      const rpsBackendService = rest[
-        rpsBackendServiceName
-      ] as JsonApiIntegrationWithMsal;
-
-      const sessionId = await getOrCreateSessionId(request);
 
       if (isCorrectAddress) {
         const resolvedSelectedAddress =
@@ -310,30 +202,21 @@ export class SelectAnAddressPageController extends PageControllerBase {
           });
         }
 
-        const checkUdprn = CHECK_UDPRN_FOR_ADDRESS_TYPES.includes(addressType);
+        // Run the optional per-page handler (e.g. RPS database check) once the
+        // user confirms. Handlers throw ControllerError to render error pages.
+        const handler =
+          this.onAddressSelection &&
+          addressSelectionHandlers[this.onAddressSelection];
 
-        if (userSelectedYes && checkUdprn) {
-          const progress = currentState.progress || [];
-          const backLinkUrl = progress[progress.length - 1];
-
-          await lookupUdprnInDatabase(rpsBackendService, {
-            sessionId,
-            backLinkUrl,
-            udprn: resolvedSelectedAddress?.udprn,
-            uprn: resolvedSelectedAddress?.uprn,
-          });
+        if (userSelectedYes && handler) {
+          await handler(request, resolvedSelectedAddress);
         }
 
         const savedState = await cacheService.mergeState(request, {
           [`${addressType}_isCorrectAddress`]: isCorrectAddress === "true",
           [`${addressType}_selectedAddress`]: resolvedSelectedAddress,
-          // clear selected addresses on "No"
-          ...(addressType === "reportAddress" && {
-            selectedReportAddress: null,
-          }),
-          ...(addressType === "deliveryAddress" && {
-            selectedDeliveryAddress: null,
-          }),
+          // clear the selection radios on "No"
+          [deriveSelectedFieldName(addressType)]: null,
         });
 
         const honourReturnUrl = isCorrectAddress === "true";

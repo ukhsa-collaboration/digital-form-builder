@@ -30,17 +30,15 @@ const onInvalidPaymentFunctions: ServiceEventFunctions = {
 
 const onValidPaymentFunctions: ServiceEventFunctions = {
   rpsRiskReportValidPayment: async (request: HapiRequest) => {
-    const { cacheService, rpsBackendService } = request.service.getServices(
+    const { rpsBackendService } = request.service.getServices(
       "cacheService",
       "rpsBackendService"
     );
 
-    const currentState = await cacheService.getState(request);
-
     await rpsBackendService.request("/storepayment", {
       method: "POST",
       body: JSON.stringify({
-        uuid: currentState["sessionId"],
+        uuid: request.yar.id,
         transactionId: "txn-789",
         settle_status: "SETTLED",
       }),
