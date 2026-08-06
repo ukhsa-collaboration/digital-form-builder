@@ -117,14 +117,6 @@
           "type": "TextField",
           "title": "Building number or name",
           "hint": "For example, 15 or Prospect cottage"
-        },
-        {
-          "name": "addressType",
-          "options": {
-            "exposeToContext": true,
-            "value": "propertyAddress"
-          },
-          "type": "HiddenField"
         }
       ],
       "options": {
@@ -140,10 +132,6 @@
           "content": "<br><a href=\"enter-property-address-manually{% if returnUrl %}?returnUrl={{ returnUrl | urlencode }}{% endif %}\">Enter address manually</a>"
         }
       ],
-      "options": {
-        "hiddenFields": ["addressType"],
-        "disabledChangeFields": ["addressType"]
-      },
       "controller": "FindAnAddressPageController",
       "next": [
         {
@@ -176,7 +164,7 @@
           "type": "HiddenField"
         },
         {
-          "name": "selectedPropertyAddress",
+          "name": "propertyAddress_addressSelection",
           "options": {},
           "type": "HiddenField",
           "title": "Property address"
@@ -242,7 +230,7 @@
           "type": "HiddenField"
         },
         {
-          "name": "selectedPropertyAddress",
+          "name": "propertyAddress_addressSelection",
           "options": {
             "hideTitle": true,
             "customValidationMessages": {
@@ -427,7 +415,7 @@
         },
         {
           "path": "/enter-details",
-          "condition": "KTPJJd"
+          "condition": "hasNotTested"
         }
       ]
     },
@@ -582,9 +570,11 @@
       "components": [
         {
           "name": "placeholderAddress",
-          "options": {},
-          "type": "InsetText",
-          "content": "{{ Name }}</br>{{ Street }}</br>\n{{ Town }}</br>\n{{ Postcode }} This is all a placeholder"
+          "options": {
+            "inset": true
+          },
+          "type": "DisplayAddress",
+          "content": "{{ propertyAddress_fullSelectedAddress }}"
         },
         {
           "name": "deliveryAddressQuestion",
@@ -1067,6 +1057,24 @@
             },
             "operator": "is",
             "value": { "type": "Value", "value": "0", "display": "0" }
+          }
+        ]
+      }
+    },
+    {
+      "name": "propertyAddressOnlyOneAddressCondition",
+      "displayName": "Property Address Only One Address",
+      "value": {
+        "name": "propertyAddressOnlyOneAddressCondition",
+        "conditions": [
+          {
+            "field": {
+              "name": "propertyAddress_numberOfAddresses",
+              "type": "NumberField",
+              "display": "numberOfAddresses"
+            },
+            "operator": "is",
+            "value": { "type": "Value", "value": "1", "display": "1" }
           }
         ]
       }
