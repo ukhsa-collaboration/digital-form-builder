@@ -1,8 +1,41 @@
+import { createHash } from "crypto";
 import { ControllerError } from "src/server/plugins/engine/errors";
 import { SubmitAction } from "./types";
 import { JsonApiIntegrationWithMsal } from "../jsonApiIntegrationWithMsal";
 import { saveRiskReportDetailsSchema } from "./saveRiskReportDetailsSchema";
+import { saveGasTestKitDetailsSchema } from "./saveGasTestKitDetailsSchema";
 import { getOrCreateCorrelationId } from "../../utils/correlationId";
+import { resolveSelectedAddress } from "../../plugins/engine/utils/addressUtils";
+
+type PersonDetails = {
+  title: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+};
+
+const toAddressDetails = (address?: {
+  address?: string;
+  postcode?: string;
+  udprn?: string;
+}) => ({
+  udprn: address?.udprn ?? "",
+  fullAddress: address?.address ?? "",
+  postcode: address?.postcode ?? "",
+});
+
+/**
+ * Derives a placeholder order number from the session's correlation id.
+ */
+const deriveOrderNumber = (uuid: string): string => {
+  const digits = createHash("sha256")
+    .update(uuid)
+    .digest("hex")
+    .replace(/\D/g, "")
+    .padEnd(8, "0")
+    .slice(0, 8);
+  return `RRR-${digits}`;
+};
 
 /**
  * Resolved by `summaryConfig.onSubmit.action` in a form's JSON definition.
@@ -66,6 +99,130 @@ export const submitActionRegistry: Record<string, SubmitAction> = {
     }
 
     await rpsBackendService.request("/storereport", {
+      method: "POST",
+      body: JSON.stringify(requestBody),
+    });
+  },
+
+  saveGasTestKitDetails: async (request) => {
+    const gtkBackendServiceName = request.service.getName("gtkBackendService");
+
+    const { cacheService, ...rest } = request.services([]);
+    const currentState = await cacheService.getState(request);
+
+    if (gtkBackendServiceName in rest === false) {
+      throw new ControllerError("cannot find gtk backend service", {
+        code: 500,
+      });
+    }
+
+    const gtkBackendService = rest[
+      gtkBackendServiceName
+    ] as JsonApiIntegrationWithMsal;
+
+    const customer: PersonDetails = {
+      title: currentState["Title"],
+      firstName: currentState["FirstName"],
+      lastName: currentState["LastName"],
+      email: currentState["EmailAddress"],
+    };
+
+    const measurementAddress = resolveSelectedAddress(
+      currentState,
+      "propertyAddress"
+    );
+
+    // The kit-delivery and results-delivery recipient/address only have
+    // their own pages when they differ from the property (and, for results,
+    // from the kit address) — otherwise they fall back to whichever address
+    // was confirmed as "the same".
+    const deliverySameAsProperty =
+      currentState["deliveryAddressConfirmation"] === true;
+    const resultsSameAsProperty =
+      currentState["resultsAddressConfirmation"] === true;
+    const resultsSameAsKit =
+      currentState["deliveryResultsConfirmation"] === true;
+
+    let kitRecipient: PersonDetails;
+    let kitRecipientAddress: ReturnType<typeof resolveSelectedAddress>;
+    let resultsRecipient: PersonDetails;
+    let resultsRecipientAddress: ReturnType<typeof resolveSelectedAddress>;
+
+    if (deliverySameAsProperty) {
+      kitRecipient = customer;
+      kitRecipientAddress = measurementAddress;
+
+      if (resultsSameAsProperty) {
+        resultsRecipient = customer;
+        resultsRecipientAddress = measurementAddress;
+      } else {
+        resultsRecipient = {
+          title: currentState["ResultsTitle"],
+          firstName: currentState["ResultsFirstName"],
+          lastName: currentState["ResultsLastName"],
+          email: currentState["EmailAddress"],
+        };
+
+        resultsRecipientAddress = resolveSelectedAddress(
+          currentState,
+          "resultsAddress"
+        );
+      }
+    } else {
+      kitRecipient = {
+        title: currentState["KitTitle"],
+        firstName: currentState["KitFirstName"],
+        lastName: currentState["KitLastName"],
+        email: currentState["EmailAddress"],
+      };
+
+      kitRecipientAddress = resolveSelectedAddress(currentState, "kitAddress");
+
+      if (resultsSameAsKit) {
+        resultsRecipient = kitRecipient;
+        resultsRecipientAddress = kitRecipientAddress;
+      } else {
+        resultsRecipient = {
+          title: currentState["ResultsTitle"],
+          firstName: currentState["ResultsFirstName"],
+          lastName: currentState["ResultsLastName"],
+          email: currentState["EmailAddress"],
+        };
+
+        resultsRecipientAddress = resolveSelectedAddress(
+          currentState,
+          "resultsAddress"
+        );
+      }
+    }
+
+    const uuid = getOrCreateCorrelationId(request);
+
+    const { error, value: requestBody } = saveGasTestKitDetailsSchema.validate(
+      {
+        uuid,
+        orderNumber: deriveOrderNumber(uuid),
+        customer,
+        measurementAddress: toAddressDetails(measurementAddress),
+        kitRecipient,
+        kitRecipientAddress: toAddressDetails(kitRecipientAddress),
+        resultsRecipient,
+        resultsRecipientAddress: toAddressDetails(resultsRecipientAddress),
+        prevTestedAddress: currentState["testedBeforeYesNo"] === true,
+        prevAboveActionLevel: currentState["bqmYesNo"] === true,
+        remediationComplete: currentState["stepsToReduceYesNo"] === true,
+      },
+      { abortEarly: false }
+    );
+
+    if (error) {
+      throw new ControllerError(
+        `Invalid form state for /storegtk: ${error.message}`,
+        { code: 500 }
+      );
+    }
+
+    await gtkBackendService.request("/storegtk", {
       method: "POST",
       body: JSON.stringify(requestBody),
     });

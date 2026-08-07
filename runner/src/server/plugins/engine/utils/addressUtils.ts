@@ -144,6 +144,27 @@ export const resolveAddressByUdprn = (
   return addresses.find((addr) => String(addr.udprn) === udprn);
 };
 
+/**
+ * Resolves the full selected-address object for an address type.
+ * Returns `undefined` if nothing has been selected yet.
+ * @param state - the full form cache state
+ * @param addressType - the address-type prefix (e.g. `propertyAddress`)
+ */
+export function resolveSelectedAddress(
+  state: Record<string, any>,
+  addressType: string
+): Address | undefined {
+  const value = state[`${addressType}${SELECTED_ADDRESS_SUFFIX}`];
+  if (!value) return undefined;
+  if (typeof value === "object") return value as Address;
+
+  const matched = state[`${addressType}_matchedAddress`];
+  if (matched && String(matched.udprn) === String(value)) return matched;
+
+  const addresses: Address[] = state[`${addressType}_addresses`] || [];
+  return resolveAddressByUdprn(addresses, value);
+}
+
 const STREET_NUMBER_PATTERN = /(^|, )(\d+[A-Z]?([-\/]\d+)?[A-Z]?),/i;
 
 /**
