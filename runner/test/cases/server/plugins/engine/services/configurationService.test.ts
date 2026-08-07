@@ -1,11 +1,16 @@
 import * as Code from "@hapi/code";
 import * as Lab from "@hapi/lab";
-import { loadPreConfiguredForms } from "src/server/plugins/engine/services/configurationService";
-
+import fs from "fs";
+import path from "path";
+import os from "os";
+import {
+  loadFormFile,
+  loadPreConfiguredForms,
+} from "../../../../../../src/server/plugins/engine/services/configurationService";
 const lab = Lab.script();
 exports.lab = lab;
 const { expect } = Code;
-const { suite, test } = lab;
+const { suite, test, afterEach } = lab;
 
 suite("Engine Plugin ConfigurationService", () => {
   test("it loads pre-configured forms configuration correctly ", () => {
@@ -23,5 +28,31 @@ suite("Engine Plugin ConfigurationService", () => {
         configuration: reportFormJSON,
       },
     ]);
+  });
+
+  suite("loadFormFile", () => {
+    let tmpFile: string;
+
+    afterEach(() => {
+      if (tmpFile) fs.unlinkSync(tmpFile);
+    });
+
+    test("loads a plain .json file", () => {
+      tmpFile = path.join(os.tmpdir(), "test-form.json");
+      fs.writeFileSync(tmpFile, JSON.stringify({ name: "test" }));
+      expect(loadFormFile(tmpFile)).to.equal({ name: "test" } as any);
+    });
+
+    test("loads a .jsonc file with single-line comments", () => {
+      tmpFile = path.join(os.tmpdir(), "test-form.jsonc");
+      fs.writeFileSync(tmpFile, '{ "name": "test" // a comment\n}');
+      expect(loadFormFile(tmpFile)).to.equal({ name: "test" } as any);
+    });
+
+    test("loads a .jsonc file with block comments", () => {
+      tmpFile = path.join(os.tmpdir(), "test-form.jsonc");
+      fs.writeFileSync(tmpFile, '{ /* block comment */ "name": "test" }');
+      expect(loadFormFile(tmpFile)).to.equal({ name: "test" } as any);
+    });
   });
 });
