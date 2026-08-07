@@ -995,11 +995,7 @@ export class PageControllerBase {
 
     const returnUrl = getReturnUrl(request);
 
-    const shouldHonourReturnUrl =
-      honourReturnUrl ??
-      (typeof nextUrl === "string" &&
-        returnUrl !== undefined &&
-        nextUrl.split("?")[0] === returnUrl.split("?")[0]);
+    const shouldHonourReturnUrl = honourReturnUrl ?? returnUrl !== undefined;
 
     return proceed(request, h, nextUrl, shouldHonourReturnUrl);
   }
