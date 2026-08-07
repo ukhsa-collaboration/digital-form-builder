@@ -21,7 +21,8 @@ export class SummaryLists extends ComponentBase {
       formData as Record<string, any>,
       options,
       this.model.conditions,
-      this.model.basePath
+      this.model.basePath,
+      this.model
     );
     return {
       ...super.getViewModel(formData, _errors),
