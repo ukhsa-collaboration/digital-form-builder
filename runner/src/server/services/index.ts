@@ -10,6 +10,7 @@ export { AddressService } from "./addressService";
 export { ExitService } from "./ExitService";
 export { FormSecurityService } from "./formSecurityService";
 export { MsalAuthorizer } from "./msalAuthorizerService";
+export { CrossFormCacheService } from "./CrossFormCacheService";
 export {
   SecureFormSubmissionService,
   getSecureFormSubmissionServiceInstance,

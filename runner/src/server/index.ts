@@ -37,6 +37,7 @@ import {
   FormSecurityService,
   SecureFormSubmissionService,
   getSecureFormSubmissionServiceInstance,
+  CrossFormCacheService,
 } from "./services";
 import { HapiRequest, HapiResponseToolkit, RouteConfig } from "./types";
 import getRequestInfo from "./utils/getRequestInfo";
@@ -121,6 +122,7 @@ async function createServer(routeConfig: RouteConfig) {
     AddressService,
     ExitService,
     FormSecurityService,
+    CrossFormCacheService, // add new CrossFormCacheService to the list of registered services
   ]);
   if (!config.documentUploadApiUrl) {
     server.registerService([

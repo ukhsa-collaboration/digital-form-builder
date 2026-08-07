@@ -1,0 +1,94 @@
+{
+  "metadata": {},
+  "startPage": "/start",
+  "name": "Spike Form",
+  "skipSummary": true,
+  "toggleRedirect": "spike-form-redirect",
+  "pages": [
+    {
+      "path": "/start",
+      "title": "Spike Form - Can we do it?! 🤔",
+      "components": [
+        {
+          "name": "FeedbackPara",
+          "options": {},
+          "type": "Para",
+          "content": "<label class='govuk-label govuk-label--s'>Can we send your data between services?</label>"
+        },
+        {
+          "name": "TextInput",
+          "options": {
+            "required": true,
+            "customValidationMessages": {
+              "string.pattern.base": "Enter an input to see if we can pass it between services"
+            }
+          },
+          "title": "Thoughts on dogs?",
+          "type": "TextField"
+        }
+      ],
+      "next": [
+        {
+          "path": "/redirect"
+        }
+      ]
+    },
+    {
+      "path": "/redirect",
+      "controller": "CrossFormRedirectController",
+      "next": []
+    },
+    {
+      "path": "/return",
+      "controller": "CrossFormReturnController",
+      "next": []
+    },
+    {
+      "title": "You've.. you've returned! 🤩",
+      "path": "/check-your-details",
+      "components": [
+        {
+          "name": "ReturnMessage",
+          "options": {},
+          "type": "Para",
+          "content": "<label class='govuk-label govuk-label--s'>Check the logs to see if the details are correct!</label>"
+        }
+      ],
+      "next": [{ "path": "/summary" }]
+    },
+    {
+      "path": "/summary",
+      "controller": "./pages/summary.js"
+    }
+  ],
+  "lists": [],
+  "outputs": [
+    {
+      "name": "SpikeForm",
+      "title": "Spike Form",
+      "type": "email",
+      "outputConfiguration": {
+        "apiKey": "${notifyApiKey}",
+        "emailAddress": "${emailAddress}",
+        "notifyTemplateId": "83d1c036-dfeb-4d5b-b4e3-e8125810c663"
+      }
+    }
+  ],
+  "sections": [],
+  "conditions": [],
+  "phaseBanner": {
+    "phase": "beta"
+  },
+  "feedback": {
+    "feedbackForm": true,
+    "url": "/feedback"
+  },
+  "specialPages": {
+    "confirmationPage": {
+      "customText": {
+        "nextSteps": "<h1 class='govuk-heading-l'>Thank you for completing this survey</h1><p class='govuk-body'>You can now close this page.</p>",
+        "hidePanel": true
+      }
+    }
+  }
+}
