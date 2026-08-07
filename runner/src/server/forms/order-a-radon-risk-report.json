@@ -88,9 +88,9 @@
       ],
       "options": {
         "hiddenFields": ["addressType"],
-        "disabledChangeFields": ["addressType"]
+        "disabledChangeFields": ["addressType"],
+        "customButtonText": "Find address"
       },
-      "customButtonText": "Find address",
       "componentsAfter": [
         {
           "name": "enterManuallyLink",
@@ -723,9 +723,9 @@
       ],
       "options": {
         "hiddenFields": ["addressType"],
-        "disabledChangeFields": ["addressType"]
+        "disabledChangeFields": ["addressType"],
+        "customButtonText": "Find address"
       },
-      "customButtonText": "Find address",
       "componentsAfter": [
         {
           "name": "enterManuallyLink",
