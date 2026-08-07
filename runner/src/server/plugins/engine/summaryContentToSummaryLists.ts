@@ -1,6 +1,8 @@
 import nunjucks from "nunjucks";
 import { format, parseISO } from "date-fns";
 import { RelativeUrl } from "./feedback/RelativeUrl";
+import * as Components from "./components";
+import { FormComponent } from "./components/FormComponent";
 
 export type SummaryContentCase = { condition?: string; value: string };
 
@@ -37,6 +39,13 @@ export interface SummaryContentOptions {
 export interface GovukSummaryListRow {
   key: { text: string };
   value: { html: string } | { text: string };
+  // Populated for display component types; the nunjucks template renders these
+  // via the same generic dispatch used by componentList (partials/components.html).
+  valueComponent?: {
+    type: string;
+    isFormComponent: boolean;
+    model: Record<string, any>;
+  };
   actions?: {
     items: Array<{ href: string; text: string; visuallyHiddenText: string }>;
   };
@@ -52,7 +61,8 @@ export function summaryContentToSummaryLists(
   state: Record<string, any>,
   options: SummaryContentOptions = {},
   conditions: SummaryConditionsMap = {},
-  basePath = ""
+  basePath = "",
+  formModel: any = null
 ): GovukSummaryList[] {
   const enableCards =
     options.enableCards === true || options.enableCards === "true";
@@ -60,7 +70,7 @@ export function summaryContentToSummaryLists(
   return sections.map((section) => {
     const summaryList: GovukSummaryList = {
       rows: section.content.map((item) =>
-        buildRow(item, state, conditions, basePath)
+        buildRow(item, state, conditions, basePath, formModel)
       ),
     };
 
@@ -76,12 +86,43 @@ function buildRow(
   item: SummaryContentItem,
   state: Record<string, any>,
   conditions: SummaryConditionsMap,
-  basePath: string
+  basePath: string,
+  formModel: any
 ): GovukSummaryListRow {
   const row: GovukSummaryListRow = {
     key: { text: item.title },
-    value: resolveValue(item, state, conditions),
+    value: { text: "" },
   };
+
+  if (item.type === "component" && typeof item.value === "object") {
+    const comp = item.value as SummaryContentComponent;
+    const CompClass = (Components as any)[comp.type];
+
+    if (CompClass && !(CompClass.prototype instanceof FormComponent)) {
+      // Display component: pre-resolve conditional content, instantiate the
+      // class, and delegate rendering to its nunjucks macro. The template uses
+      // the same dynamic-import dispatch as componentList, so any registered
+      // display component type works automatically.
+      const resolvedContent = resolveContent(comp.content, state, conditions);
+      const instance = new CompClass(
+        { ...comp, content: resolvedContent, options: comp.options ?? {} },
+        formModel
+      );
+      row.valueComponent = {
+        type: comp.type,
+        isFormComponent: false,
+        model: instance.getViewModel(state),
+      };
+    } else if (CompClass) {
+      // Form field component: the macro renders an input widget, which is
+      // inappropriate inside a summary cell. Pre-render to a plain text value.
+      row.value = resolveFormFieldValue(comp, state);
+    } else {
+      row.value = resolveValue(item, state);
+    }
+  } else {
+    row.value = resolveValue(item, state);
+  }
 
   const changeUrl = resolveChangeUrl(item.changeUrl, state, conditions);
 
@@ -147,33 +188,24 @@ function resolveContent(
 
 function resolveValue(
   item: SummaryContentItem,
-  state: Record<string, any>,
-  conditions: SummaryConditionsMap
+  state: Record<string, any>
 ): { html: string } | { text: string } {
   if (item.type === "component" && typeof item.value === "object") {
-    return resolveComponentValue(item.value, state, conditions);
+    return resolveFormFieldValue(item.value, state);
   }
 
   const rendered = nunjucks.renderString(item.value as string, state);
   return { html: rendered };
 }
 
-function resolveComponentValue(
+// Pre-renders form-field component values to a plain text representation
+// suitable for a summary cell. These types have isFormComponent = true, so
+// their nunjucks macros render full input widgets rather than display-only HTML.
+function resolveFormFieldValue(
   comp: SummaryContentComponent,
-  state: Record<string, any>,
-  conditions: SummaryConditionsMap
+  state: Record<string, any>
 ): { html: string } | { text: string } {
-  const content = resolveContent(comp.content, state, conditions);
-
   switch (comp.type) {
-    case "DisplayAddress":
-    case "Para":
-    case "ContentWithState":
-      return { html: nunjucks.renderString(content, state) };
-
-    case "Html":
-      return { html: content };
-
     case "DatePartsField":
     case "DateField": {
       const val = state[comp.name];

@@ -121,9 +121,9 @@
       ],
       "options": {
         "hiddenFields": ["addressType"],
-        "disabledChangeFields": ["addressType"]
+        "disabledChangeFields": ["addressType"],
+        "customButtonText": "Find address"
       },
-      "customButtonText": "Find address",
       "componentsAfter": [
         {
           "name": "enterManuallyLink",
@@ -562,10 +562,10 @@
           "content": "We will use your email address to send your payment confirmation."
         }
       ],
-      "next": [{ "path": "/delivery-details" }]
+      "next": [{ "path": "/kit-details" }]
     },
     {
-      "path": "/delivery-details",
+      "path": "/kit-details",
       "title": "Measurement address details",
       "components": [
         {
@@ -577,14 +577,14 @@
           "content": "{{ propertyAddress_fullSelectedAddress }}"
         },
         {
-          "name": "deliveryAddressQuestion",
+          "name": "kitAddressQuestion",
           "options": {},
           "type": "Para",
           "content": "<p class=\"govuk-body-m\"><h2 class=\"govuk-heading-m\">Is this the address you want the kit delivered to?</h2></p>"
         },
         {
-          "name": "deliveryAddressConfirmation",
-          "options": { "hideTitle": true },
+          "name": "kitAddressConfirmation",
+          "options": { "hideTitle": true, "exposeToContext": true },
           "type": "YesNoField",
           "title": "Is this the address you want the kit delivered to?"
         },
@@ -608,7 +608,7 @@
         },
         {
           "name": "resultsAddressConfirmation",
-          "options": { "hideTitle": true },
+          "options": { "hideTitle": true, "exposeToContext": true },
           "type": "YesNoField",
           "title": "Is this the address you want your radon gas test results to?"
         },
@@ -625,8 +625,8 @@
           "condition": "readyToReview"
         },
         {
-          "path": "/delivery-recipient",
-          "condition": "deliveryAddressIncorrect"
+          "path": "/kit-recipient",
+          "condition": "kitAddressIncorrect"
         },
         {
           "path": "/results-recipient",
@@ -639,7 +639,7 @@
       "title": "Who is the recipient of radon gas test results",
       "components": [
         {
-          "name": "ResultsTitle",
+          "name": "resultsTitle",
           "options": {
             "exposeToContext": true,
             "customValidationMessages": {
@@ -651,7 +651,7 @@
           "hint": "e.g. Mr, Mrs, Dr"
         },
         {
-          "name": "ResultsFirstName",
+          "name": "resultsFirstName",
           "options": {
             "customValidationMessages": {
               "string.empty": "Enter the first name of the recipient of the radon gas test results"
@@ -662,7 +662,7 @@
           "title": "First name"
         },
         {
-          "name": "ResultsLastName",
+          "name": "resultsLastName",
           "options": {
             "customValidationMessages": {
               "string.empty": "Enter the last name of the recipient of the radon gas test results"
@@ -758,11 +758,11 @@
       "next": [{ "path": "/summary" }]
     },
     {
-      "path": "/delivery-recipient",
+      "path": "/kit-recipient",
       "title": "Who is the recipient of the kit?",
       "components": [
         {
-          "name": "KitTitle",
+          "name": "kitTitle",
           "options": {
             "exposeToContext": true,
             "customValidationMessages": {
@@ -774,7 +774,7 @@
           "hint": "e.g. Mr, Mrs, Dr"
         },
         {
-          "name": "KitFirstName",
+          "name": "kitFirstName",
           "options": {
             "customValidationMessages": {
               "string.empty": "Enter the first name of the recipient of the kit"
@@ -785,7 +785,7 @@
           "title": "First name"
         },
         {
-          "name": "KitLastName",
+          "name": "kitLastName",
           "options": {
             "customValidationMessages": {
               "string.empty": "Enter the last name of the recipient of the kit"
@@ -796,10 +796,10 @@
           "title": "Last Name"
         }
       ],
-      "next": [{ "path": "/delivery-address" }]
+      "next": [{ "path": "/kit-address" }]
     },
     {
-      "path": "/delivery-address",
+      "path": "/kit-address",
       "title": "What address do you want your kit to be delivered to?",
       "components": [
         {
@@ -880,18 +880,18 @@
       "controller": "ManualAddressPageController",
       "next": [
         {
-          "path": "/delivery-address-results-confirm",
+          "path": "/kit-address-results-confirm",
           "condition": "incorrectKitAddressIncorrectResultsAddress"
         },
         { "path": "/summary" }
       ]
     },
     {
-      "path": "/delivery-address-results-confirm",
+      "path": "/kit-address-results-confirm",
       "title": "Delivery Details",
       "components": [
         {
-          "name": "deliveryAddress",
+          "name": "kitAddress",
           "options": {},
           "type": "DisplayAddress",
           "content": "{{ kitAddress_fullSelectedAddress }}"
@@ -903,7 +903,7 @@
           "content": "<p class=\"govuk-body-m\"><h2 class=\"govuk-heading-m\">Is this the address you want your radon gas test results delivered to?</h2></p>"
         },
         {
-          "name": "deliveryResultsConfirmation",
+          "name": "kitResultsConfirmation",
           "options": {
             "customValidationMessages": {
               "any.required": "Select yes if this is the address you want your radon gas test results delivered to"
@@ -917,7 +917,7 @@
       "next": [
         {
           "path": "/results-recipient",
-          "condition": "deliveryDetailsIncorrectResultsAddress"
+          "condition": "kitDetailsIncorrectResultsAddress"
         },
         { "path": "/summary" }
       ]
@@ -925,6 +925,11 @@
     {
       "title": "Summary",
       "path": "/summary",
+      "options": {
+        // force show the continue button
+        "hideContinueButton": false,
+        "customButtonText": "Confirm and go to payment"
+      },
       "components": [
         {
           "type": "SummaryLists",
@@ -985,13 +990,13 @@
                   "title": "Delivery recipient",
                   "type": "component",
                   "value": {
-                    "name": "deliveryRecipient",
+                    "name": "kitRecipient",
                     "options": {},
                     "type": "Para",
                     "content": [
                       {
-                        "condition": "deliveryAddressIncorrect",
-                        "value": "{{deliveryRecipient.title}} {{deliveryRecipient.firstName}} {{deliveryRecipient.lastName}}"
+                        "condition": "kitAddressIncorrect",
+                        "value": "{{kitTitle}} {{kitFirstName}} {{kitLastName}}"
                       },
                       {
                         "value": "{{title}} {{firstName}} {{lastName}}"
@@ -1000,10 +1005,10 @@
                   },
                   "changeUrl": [
                     {
-                      "condition": "deliveryAddressIncorrect",
-                      "value": "/delivery-recipient"
+                      "condition": "kitAddressIncorrect",
+                      "value": "/kit-recipient"
                     },
-                    { "value": "/delivery-details" }
+                    { "value": "/kit-details" }
                   ]
                 },
                 {
@@ -1015,7 +1020,7 @@
                     "type": "DisplayAddress",
                     "content": [
                       {
-                        "condition": "deliveryAddressIncorrect",
+                        "condition": "kitAddressIncorrect",
                         "value": "{{kitAddress_fullSelectedAddress}}"
                       },
                       { "value": "{{propertyAddress_fullSelectedAddress}}" }
@@ -1023,10 +1028,10 @@
                   },
                   "changeUrl": [
                     {
-                      "condition": "deliveryAddressIncorrect",
-                      "value": "/delivery-address"
+                      "condition": "kitAddressIncorrect",
+                      "value": "/kit-address"
                     },
-                    { "value": "/delivery-details" }
+                    { "value": "/kit-details" }
                   ]
                 },
                 {
@@ -1039,7 +1044,7 @@
                     "content": [
                       {
                         "condition": "resultsAddressIncorrect",
-                        "value": "{{resultsRecipient.title}} {{resultsRecipient.firstName}} {{resultsRecipient.lastName}}"
+                        "value": "{{resultsTitle}} {{resultsFirstName}} {{resultsLastName}}"
                       },
                       {
                         "value": "{{title}} {{firstName}} {{lastName}}"
@@ -1051,7 +1056,7 @@
                       "condition": "resultsAddressIncorrect",
                       "value": "/results-recipient"
                     },
-                    { "value": "/delivery-details" }
+                    { "value": "/kit-details" }
                   ]
                 },
                 {
@@ -1074,12 +1079,25 @@
                       "condition": "resultsAddressIncorrect",
                       "value": "/results-address"
                     },
-                    { "value": "/delivery-details" }
+                    { "value": "/kit-details" }
                   ]
                 }
               ]
             }
           ]
+        },
+        {
+          "name": "termsAndConditions",
+          "type": "CheckboxesField",
+          "title": " ",
+          "list": "termsAndConditionsList",
+          "options": {
+            "required": true,
+            "html": true,
+            "customValidationMessages": {
+              "any.required": "<p class=\"govuk-body-m\">You must accept the <a href=\"https://www.ukhsa-protectionservices.org.uk/tc/privacy-policy\" target=\"_blank\">Privacy Policy</a> and <a href=\"https://www.ukhsa-protectionservices.org.uk/tc/terms-conditions\" target=\"_blank\">Terms and Conditions</a> before continuing</p>"
+            }
+          }
         }
       ],
       "next": []
@@ -1129,6 +1147,17 @@
       "title": "addressesList",
       "type": "string",
       "items": []
+    },
+    {
+      "title": "Terms and conditions",
+      "name": "termsAndConditionsList",
+      "type": "string",
+      "items": [
+        {
+          "html": "<p class=\"govuk-body-m\">I agree to the <a href=\"https://www.ukhsa-protectionservices.org.uk/tc/privacy-policy\" target=\"_blank\">Privacy Policy</a> and <a href=\"https://www.ukhsa-protectionservices.org.uk/tc/terms-conditions\" target=\"_blank\">Terms and Conditions</a> for this order.</p>",
+          "value": "accept"
+        }
+      ]
     }
   ],
   "sections": [],
@@ -1315,13 +1344,13 @@
     },
     {
       "displayName": "Delivery Address Incorrect",
-      "name": "deliveryAddressIncorrect",
+      "name": "kitAddressIncorrect",
       "value": {
-        "name": "deliveryAddressIncorrect",
+        "name": "kitAddressIncorrect",
         "conditions": [
           {
             "field": {
-              "name": "deliveryAddressConfirmation",
+              "name": "kitAddressConfirmation",
               "type": "YesNoField",
               "display": "Is this the address you want the kit delivered to?"
             },
@@ -1357,7 +1386,7 @@
         "conditions": [
           {
             "field": {
-              "name": "deliveryAddressConfirmation",
+              "name": "kitAddressConfirmation",
               "type": "YesNoField",
               "display": "Is this the address you want the kit delivered to?"
             },
@@ -1385,7 +1414,7 @@
         "conditions": [
           {
             "field": {
-              "name": "deliveryAddressConfirmation",
+              "name": "kitAddressConfirmation",
               "type": "YesNoField",
               "display": "Is this the address you want the kit delivered to?"
             },
@@ -1413,7 +1442,7 @@
         "conditions": [
           {
             "field": {
-              "name": "deliveryAddressConfirmation",
+              "name": "kitAddressConfirmation",
               "type": "YesNoField",
               "display": "Is this the address you want the kit delivered to?"
             },
@@ -1435,13 +1464,13 @@
     },
     {
       "displayName": "Delivery Details Incorrect Results Address",
-      "name": "deliveryDetailsIncorrectResultsAddress",
+      "name": "kitDetailsIncorrectResultsAddress",
       "value": {
-        "name": "deliveryDetailsIncorrectResultsAddress",
+        "name": "kitDetailsIncorrectResultsAddress",
         "conditions": [
           {
             "field": {
-              "name": "deliveryResultsConfirmation",
+              "name": "kitResultsConfirmation",
               "type": "YesNoField",
               "display": "Is this the address you want the kit delivered to?"
             },
@@ -1460,74 +1489,6 @@
   ],
   "provider": "trust-payments",
   "generateReference": true,
-  "summaryConfig": {
-    "submitLabel": "Confirm and go to payment",
-    "onSubmit": { "action": "saveGasTestKitDetails" },
-    "declaration": {
-      "hideDeclarationHeading": true,
-      "label": "I agree to the <a href=\"https://www.ukhsa-protectionservices.org.uk/tc/privacy-policy\" target=\"_blank\">Privacy Policy</a> and <a href=\"https://www.ukhsa-protectionservices.org.uk/tc/terms-conditions\" target=\"_blank\">Terms and Conditions</a> for this order.",
-      "errorMessage": "You must accept the Privacy Policy and Terms and Conditions before continuing"
-    },
-    "feesRow": {
-      "enabled": true,
-      "label": "Amount"
-    },
-    "mergeFields": [
-      {
-        "names": [
-          "propertyAddress_addressLine1Lookup",
-          "propertyAddress_addressLine2Lookup",
-          "propertyAddress_townLookup",
-          "propertyAddress_countyLookup",
-          "propertyAddress_postcodeLookup"
-        ],
-        "to": "Property address",
-        "joiner": ", "
-      },
-      {
-        "names": [
-          "kitAddress_addressLine1Lookup",
-          "kitAddress_addressLine2Lookup",
-          "kitAddress_townLookup",
-          "kitAddress_countyLookup",
-          "kitAddress_postcodeLookup"
-        ],
-        "to": "Kit delivery address",
-        "joiner": ", "
-      },
-      {
-        "names": [
-          "resultsAddress_addressLine1Lookup",
-          "resultsAddress_addressLine2Lookup",
-          "resultsAddress_townLookup",
-          "resultsAddress_countyLookup",
-          "resultsAddress_postcodeLookup"
-        ],
-        "to": "Results delivery address",
-        "joiner": ", "
-      }
-    ],
-    "removeFields": [
-      "addressType",
-      "propertyAddress_postcodeLookup",
-      "propertyAddress_buildingLookup",
-      "propertyAddress_addressLine1Lookup",
-      "propertyAddress_addressLine2Lookup",
-      "propertyAddress_townLookup",
-      "propertyAddress_countyLookup",
-      "propertyAddress_isCorrectAddress",
-      "kitAddress_addressLine1Lookup",
-      "kitAddress_addressLine2Lookup",
-      "kitAddress_townLookup",
-      "kitAddress_countyLookup",
-      "kitAddress_postcodeLookup",
-      "resultsAddress_addressLine1Lookup",
-      "resultsAddress_addressLine2Lookup",
-      "resultsAddress_townLookup",
-      "resultsAddress_countyLookup",
-      "resultsAddress_postcodeLookup"
-    ]
-  },
   "outputs": [
     {
       "name": "AgHhXn",

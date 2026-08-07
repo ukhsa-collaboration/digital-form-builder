@@ -384,7 +384,7 @@ describe("summaryContentToSummaryLists", () => {
   });
 
   describe("component type: DisplayAddress", () => {
-    it("renders content template as html", () => {
+    it("produces a valueComponent view model for the template to render", () => {
       const state = {
         propertyAddress_selectedAddress: {
           address: "10 Downing Street, London, SW1A 2AA",
@@ -410,8 +410,41 @@ describe("summaryContentToSummaryLists", () => {
         ],
         state
       );
-      expect(result[0].rows[0].value).toEqual({
-        html: "10 Downing Street, London, SW1A 2AA",
+      expect(result[0].rows[0].valueComponent).toEqual({
+        type: "DisplayAddress",
+        isFormComponent: false,
+        model: {
+          content: "10 Downing Street, London, SW1A 2AA",
+          attributes: {},
+        },
+      });
+    });
+
+    it("sets attributes.inset when the inset option is true", () => {
+      const state = { addr: "10 Downing Street, London, SW1A 2AA" };
+      const result = summaryContentToSummaryLists(
+        [
+          {
+            title: "Section",
+            content: [
+              {
+                title: "Property address",
+                type: "component",
+                value: {
+                  name: "displayPropertyAddress",
+                  type: "DisplayAddress",
+                  options: { inset: true },
+                  content: "{{addr}}",
+                },
+                changeUrl: false,
+              },
+            ],
+          },
+        ],
+        state
+      );
+      expect(result[0].rows[0].valueComponent?.model.attributes).toEqual({
+        inset: true,
       });
     });
   });
@@ -450,7 +483,9 @@ describe("summaryContentToSummaryLists", () => {
         {},
         { DeliveryAddressIncorrect: { fn: () => true } }
       );
-      expect(result[0].rows[0].value).toEqual({ html: "10 Downing Street" });
+      expect(result[0].rows[0].valueComponent?.model.content).toBe(
+        "10 Downing Street"
+      );
     });
 
     it("falls through to the unconditional default when the condition evaluates false", () => {
@@ -486,7 +521,9 @@ describe("summaryContentToSummaryLists", () => {
         {},
         { DeliveryAddressIncorrect: { fn: () => false } }
       );
-      expect(result[0].rows[0].value).toEqual({ html: "22 Baker Street" });
+      expect(result[0].rows[0].valueComponent?.model.content).toBe(
+        "22 Baker Street"
+      );
     });
 
     it("returns empty string when no case matches and there is no unconditional fallback", () => {
@@ -512,7 +549,7 @@ describe("summaryContentToSummaryLists", () => {
         {},
         { A: { fn: () => false } }
       );
-      expect(result[0].rows[0].value).toEqual({ html: "" });
+      expect(result[0].rows[0].valueComponent?.model.content).toBe("");
     });
 
     it("passes the current state into the condition fn", () => {
@@ -565,7 +602,7 @@ describe("summaryContentToSummaryLists", () => {
         ],
         state
       );
-      expect(result[0].rows[0].value).toEqual({ html: "1 Main St" });
+      expect(result[0].rows[0].valueComponent?.model.content).toBe("1 Main St");
     });
   });
 

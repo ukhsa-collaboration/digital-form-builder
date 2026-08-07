@@ -96,7 +96,8 @@ export class PageControllerBase {
     this.disableBackLink = pageDef.disableBackLink;
     this.disableSingleComponentAsHeading =
       pageDef.disableSingleComponentAsHeading;
-    this.buttonText = pageDef.customButtonText ?? this.defaultButtonText;
+    this.buttonText =
+      pageDef?.options?.customButtonText ?? this.defaultButtonText;
     this.hideContinueButton = pageDef.options?.hideContinueButton ?? false;
 
     // Resolve section
@@ -304,19 +305,32 @@ export class PageControllerBase {
     }
 
     let defaultLink;
+    const conditionResults: { condition: string; passed: boolean }[] = [];
     const nextLink = this.next.find((link) => {
       const { condition } = link;
 
       if (!condition) {
         defaultLink = link;
+        return false;
       }
 
       const conditionPassed = this.model.conditions[condition]?.fn?.(state);
+      conditionResults.push({ condition, passed: !!conditionPassed });
 
       if (conditionPassed) return link;
 
       return false;
     });
+    console.debug(
+      `[getNextPage ${this.path}] conditions:`,
+      conditionResults,
+      `→ resolved: ${
+        nextLink?.page?.path ??
+        nextLink?.redirect ??
+        defaultLink?.page?.path ??
+        "(none)"
+      }`
+    );
 
     if (nextLink?.redirect) {
       return nextLink;
@@ -539,6 +553,15 @@ export class PageControllerBase {
       const startPage = this.model.def.startPage;
       const formData = this.getFormDataFromState(state, num - 1);
 
+      console.debug(
+        `[GET ${this.path}] state:`,
+        JSON.stringify(state, null, 2)
+      );
+      console.debug(
+        `[GET ${this.path}] formData:`,
+        JSON.stringify(formData, null, 2)
+      );
+
       const isStartPage = this.path === `${startPage}`;
       const isInitialisedSession = !!state.callback;
       const shouldRedirectToStartPage =
@@ -610,19 +633,43 @@ export class PageControllerBase {
        */
       //Calculate our relevantState, which will filter out previously input answers that are no longer relevant to this user journey
       let relevantState = this.getConditionEvaluationContext(this.model, state);
+      console.debug(
+        `[GET ${this.path}] relevantState:`,
+        JSON.stringify(relevantState, null, 2)
+      );
 
       //Filter our components based on their conditions using our calculated state
+      const componentConditionResults: {
+        component: string;
+        condition: string;
+        passed: boolean;
+      }[] = [];
       viewModel.components = viewModel.components.filter((component) => {
         if (
           (component.model.content || component.type === "Details") &&
           component.model.condition
         ) {
           const condition = this.model.conditions[component.model.condition];
-          return condition.fn(relevantState);
+          const result = condition.fn(relevantState);
+          componentConditionResults.push({
+            component: (component.model as any).name ?? component.type,
+            condition: component.model.condition,
+            passed: result,
+          });
+          return result;
         }
         return true;
       });
+      console.debug(
+        `[GET ${this.path}] component conditions:`,
+        componentConditionResults
+      );
 
+      const componentsAfterConditionResults: {
+        component: string;
+        condition: string;
+        passed: boolean;
+      }[] = [];
       viewModel.componentsAfter = viewModel.componentsAfter.filter(
         (component) => {
           if (
@@ -630,10 +677,20 @@ export class PageControllerBase {
             component.model.condition
           ) {
             const condition = this.model.conditions[component.model.condition];
-            return condition.fn(relevantState);
+            const result = condition.fn(relevantState);
+            componentsAfterConditionResults.push({
+              component: (component.model as any).name ?? component.type,
+              condition: component.model.condition,
+              passed: result,
+            });
+            return result;
           }
           return true;
         }
+      );
+      console.debug(
+        `[GET ${this.path}] componentsAfter conditions:`,
+        componentsAfterConditionResults
       );
       /**
        * For conditional reveal components (which we no longer support until GDS resolves the related accessibility issues {@link https://github.com/alphagov/govuk-frontend/issues/1991}
@@ -692,6 +749,27 @@ export class PageControllerBase {
       }
 
       viewModel.allowExit = this.model.allowExit;
+
+      console.debug(
+        `[GET ${this.path}] viewModel injected:`,
+        JSON.stringify(
+          {
+            pageTitle: viewModel.pageTitle,
+            sectionTitle: viewModel.sectionTitle,
+            backLink: viewModel.backLink,
+            errors: viewModel.errors,
+            components: viewModel.components?.map((c) => ({
+              type: c.type,
+              name: (c.model as any)?.name,
+              value: (c.model as any)?.value,
+            })),
+            returnUrl: viewModel.returnUrl,
+            allowExit: viewModel.allowExit,
+          },
+          null,
+          2
+        )
+      );
 
       return h.view(this.viewName, viewModel);
     };
