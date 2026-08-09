@@ -1,0 +1,87 @@
+{
+  "startPage": "/which-languages-do-you-translate-or-interpret",
+  "pages": [
+    {
+      "title": "Check your answers",
+      "path": "/summary",
+      "controller": "./pages/summary.js",
+      "components": [],
+      "next": []
+    },
+    {
+      "path": "/which-languages-do-you-translate-or-interpret",
+      "title": "Select Interpreters",
+      "controller": "RepeatedMultiFieldPageController",
+      "options": {
+        "sectionKey": "people_you_live_with",
+        "summaryDisplayMode": {
+          "samePage": false
+        },
+        "customText": {
+          "separatePageTitle": "You have selected these Interpreters"
+        }
+      },
+      "components": [
+        {
+          "name": "Name",
+          "options": {
+            "customValidationMessages": {
+              "string.pattern.base": "Enter a valid first (given) name"
+            }
+          },
+          "type": "TextField",
+          "title": "Your name",
+          "schema": {
+            "regex": "(?=.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*)^[\\sA-Za-zÀ-ÖØ-öø-ÿ'\\-,.]*$"
+          }
+        },
+        {
+          "name": "languagesProvided",
+          "list": "languages",
+          "type": "AutocompleteField",
+          "title": "Language",
+          "hint": "Start typing and select a language. Add each language separately. Include all the languages you provide a service in, apart from English.",
+          "schema": {}
+        }
+      ],
+      "next": [
+        {
+          "path": "/summary"
+        }
+      ]
+    }
+  ],
+  "lists": [
+    {
+      "title": "Languages",
+      "name": "languages",
+      "type": "string",
+      "items": [
+        {
+          "value": "fr",
+          "text": "French"
+        },
+        {
+          "value": "es",
+          "text": "Spanish; Castilian"
+        },
+        {
+          "value": "it",
+          "text": "Italian"
+        }
+      ]
+    }
+  ],
+  "sections": [],
+  "phaseBanner": {
+    "phase": "beta"
+  },
+  "metadata": {
+    "type": "translators-interpreters"
+  },
+  "fees": [],
+  "outputs": [],
+  "version": 2,
+  "conditions": [],
+  "skipSummary": false
+}
