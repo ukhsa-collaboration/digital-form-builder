@@ -27,7 +27,7 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v5
         with:
-          node-version: 16.x
+          node-version: 18.x
 
       - name: Restore cache
         uses: actions/cache@v5
