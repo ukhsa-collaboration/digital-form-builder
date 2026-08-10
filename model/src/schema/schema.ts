@@ -428,6 +428,20 @@ const summaryConfigSchema = joi.object().keys({
       parameters: joi.object().unknown(true).optional(),
     })
     .optional(),
+  onBeforeSubmit: joi
+    .object()
+    .keys({
+      action: joi.string().required(),
+      parameters: joi.object().unknown(true).optional(),
+    })
+    .optional(),
+  onAfterSubmit: joi
+    .object()
+    .keys({
+      action: joi.string().required(),
+      parameters: joi.object().unknown(true).optional(),
+    })
+    .optional(),
 });
 
 export const trustPaymentConfigSchema = joi.object({
@@ -487,6 +501,7 @@ export const Schema = joi
     generateReference: joi.boolean().optional(),
     services: joi.array().items(dynamicServiceConfigSchema).optional(),
     provider: joi.string().valid("govuk-pay", "trust-payments").optional(),
+    paymentProvider: joi.string().optional(),
   });
 
 /**
