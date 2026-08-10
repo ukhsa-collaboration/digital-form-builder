@@ -1,0 +1,118 @@
+import config from "server/config";
+import { isMultipleApiKey } from "@xgovformbuilder/model";
+import { HapiRequest, HapiResponseToolkit } from "server/types";
+import { ControllerError } from "server/plugins/engine/errors";
+import { PaymentProviderService, PaymentResult } from "./types";
+
+class GovUkPayAdapter implements PaymentProviderService {
+  async createPayment(
+    request: HapiRequest,
+    _state: Record<string, any>,
+    feesModel: any,
+    model: any
+  ): Promise<PaymentResult> {
+    const { payService, cacheService } = request.services([]);
+
+    const payApiKey = this.resolvePayApiKey(model);
+    const payReturnUrl = model.feeOptions?.payReturnUrl ?? config.payReturnUrl;
+    const returnUrl = new URL(
+      `${payReturnUrl}/${request.params.id}/status`
+    ).toString();
+
+    request.logger.info(
+      `[GovUkPayAdapter] payReturnUrl configured to ${payReturnUrl}`
+    );
+
+    const payStateMeta = payService.createPayStateMeta({
+      feesModel,
+      payApiKey,
+      url: returnUrl,
+    });
+
+    const res = await payService.payRequestFromMeta(payStateMeta);
+
+    const payState = {
+      pay: {
+        payId: res.payment_id,
+        reference: res.reference,
+        self: res._links.self.href,
+        next_url: res._links.next_url.href,
+        returnUrl,
+        meta: payStateMeta,
+      },
+    };
+
+    request.yar.set("basePath", model.basePath);
+    await cacheService.mergeState(request, payState);
+
+    return { redirectUrl: payState.pay.next_url, reference: res.reference };
+  }
+
+  async redirectUser(
+    _request: HapiRequest,
+    h: HapiResponseToolkit,
+    result: PaymentResult
+  ) {
+    return h.redirect(result.redirectUrl as string);
+  }
+
+  async cancelPayment(): Promise<void> {}
+
+  private resolvePayApiKey(model: any): string {
+    const modelDef = model.def;
+    const payApiKey = modelDef.feeOptions?.payApiKey ?? modelDef.payApiKey;
+
+    if (isMultipleApiKey(payApiKey)) {
+      return payApiKey[config.apiEnv] ?? payApiKey.test ?? payApiKey.production;
+    }
+    return payApiKey ?? "";
+  }
+}
+
+class TrustPaymentsAdapter implements PaymentProviderService {
+  async createPayment(
+    request: HapiRequest,
+    state: Record<string, any>,
+    feesModel: any,
+    _model: any
+  ): Promise<PaymentResult> {
+    const { trustPaymentsService } = request.service.getServices(
+      "trustPaymentsService"
+    );
+
+    if (!trustPaymentsService) {
+      throw new ControllerError("cannot find trust payments service", {
+        code: 500,
+      });
+    }
+
+    const url = new URL(request.url);
+    const redirectUrl = `${url.origin}/${request.params.id}/status`;
+
+    const html = await trustPaymentsService.createTrustPaymentsForm({
+      billingFirstName: state["firstName"] ?? "",
+      billingLastName: state["lastName"] ?? "",
+      amount: feesModel.total,
+      redirectUrl,
+    });
+
+    return { html };
+  }
+
+  async redirectUser(
+    _request: HapiRequest,
+    h: HapiResponseToolkit,
+    result: PaymentResult
+  ) {
+    return h.response(result.html as string).type("text/html");
+  }
+
+  async cancelPayment(): Promise<void> {}
+}
+
+export const paymentProviderRegistry: Record<string, PaymentProviderService> = {
+  "gov-uk-pay": new GovUkPayAdapter(),
+  "trust-payments": new TrustPaymentsAdapter(),
+};
+
+export type { PaymentProviderService, PaymentResult };
