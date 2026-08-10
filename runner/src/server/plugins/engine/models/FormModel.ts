@@ -98,7 +98,7 @@ export class FormModel {
 
     this.def = def;
     this.lists = def.lists;
-    this.sections = def.sections;
+    this.sections = Array.isArray(def.sections) ? def.sections : [];
     this.options = options;
     this.name = def.name;
     this.serviceStartPage =
