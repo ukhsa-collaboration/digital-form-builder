@@ -6,6 +6,7 @@
   "serviceName": "Order a radon gas test kit",
   "confirmationSessionTimeout": 2000,
   "paymentProvider": "trust-payments",
+  "version": 2,
   "pages": [
     {
       "path": "/start",
@@ -982,7 +983,6 @@
                   "type": "component",
                   "value": {
                     "name": "displayPropertyAddress",
-                    "options": {},
                     "type": "DisplayAddress",
                     "content": "{{propertyAddress_fullSelectedAddress}}"
                   },
@@ -993,7 +993,6 @@
                   "type": "component",
                   "value": {
                     "name": "kitRecipient",
-                    "options": {},
                     "type": "Para",
                     "content": [
                       {
@@ -1018,7 +1017,6 @@
                   "type": "component",
                   "value": {
                     "name": "displayKitAddress",
-                    "options": {},
                     "type": "DisplayAddress",
                     "content": [
                       {
@@ -1041,7 +1039,6 @@
                   "type": "component",
                   "value": {
                     "name": "resultsRecipient",
-                    "options": {},
                     "type": "Para",
                     "content": [
                       {
@@ -1066,7 +1063,6 @@
                   "type": "component",
                   "value": {
                     "name": "displayResultsAddress",
-                    "options": {},
                     "type": "DisplayAddress",
                     "content": [
                       {
@@ -1489,22 +1485,8 @@
       "amount": 5280
     }
   ],
-  "provider": "trust-payments",
   "generateReference": true,
-  "outputs": [
-    {
-      "name": "AgHhXn",
-      "title": "webhookOutput",
-      "type": "webhook",
-      "outputConfiguration": {
-        "url": "https://webho.ok",
-        "allowRetry": true
-      }
-    }
-  ],
-  "version": 2,
   "skipSummary": false,
-  "feeOptions": {},
   "feedback": {
     "feedbackForm": false,
     "url": ""
