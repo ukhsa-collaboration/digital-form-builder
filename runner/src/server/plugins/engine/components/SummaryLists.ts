@@ -1,10 +1,11 @@
 import { ComponentBase } from "./ComponentBase";
-import { FormData, FormSubmissionErrors } from "../types";
+import { FormData, FormSubmissionErrors, FormSubmissionState } from "../types";
 import {
   summaryContentToSummaryLists,
   SummaryContentSection,
   SummaryContentOptions,
 } from "../summaryContentToSummaryLists";
+import { FeesModel } from "../models/submission/FeesModel";
 
 export class SummaryLists extends ComponentBase {
   sections: SummaryContentSection[];
@@ -16,9 +17,16 @@ export class SummaryLists extends ComponentBase {
 
   getViewModel(formData: FormData, _errors?: FormSubmissionErrors) {
     const options = (this.options ?? {}) as SummaryContentOptions;
+    const feesModel = FeesModel(this.model, formData as FormSubmissionState);
+    const state: Record<string, any> = feesModel
+      ? {
+          ...formData,
+          fees: feesModel,
+        }
+      : (formData as Record<string, any>);
     const summaryLists = summaryContentToSummaryLists(
       this.sections,
-      formData as Record<string, any>,
+      state,
       options,
       this.model.conditions,
       this.model.basePath,

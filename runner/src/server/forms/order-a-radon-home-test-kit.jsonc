@@ -876,7 +876,7 @@
       ]
     },
     {
-      "title": "Summary",
+      "title": "Review your order",
       "path": "/summary",
       "options": {
         // force show the continue button
@@ -885,6 +885,10 @@
       },
       "controller": "HeadlessSummaryPageController",
       "components": [
+        {
+          "type": "Para",
+          "content": "Check that everything is correct before you confirm your order."
+        },
         {
           "type": "SummaryLists",
           "content": [
@@ -898,7 +902,7 @@
                 },
                 {
                   "title": "Total",
-                  "value": "£{{fees.total}} (including VAT)",
+                  "value": "<b class=\"govuk-summary-list__row--no-wrap\">£{{fees.totalInPounds}} (including VAT)</b>",
                   "changeUrl": false
                 }
               ]
@@ -1063,6 +1067,12 @@
               "any.required": "You must accept the Privacy Policy and Terms and Conditions before continuing"
             }
           }
+        }
+      ],
+      "componentsAfter": [
+        {
+          "type": "Para",
+          "content": "You will be redirected to Trust Payments, UKHSA approved payment system."
         }
       ],
       "next": []

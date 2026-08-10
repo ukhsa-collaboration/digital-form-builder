@@ -65,7 +65,12 @@
     &--hidden-titles {
       @extend .govuk-visually-hidden;
     }
+
+    &--no-wrap {
+      white-space: nowrap;
+    }
   }
+
   &__key {
     &--hidden-titles {
       width: 100%;
