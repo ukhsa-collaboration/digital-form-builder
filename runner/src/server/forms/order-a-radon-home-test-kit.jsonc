@@ -7,6 +7,17 @@
   "confirmationSessionTimeout": 2000,
   "paymentProvider": "trust-payments",
   "version": 2,
+  "fees": [
+    {
+      "description": "Radon gas home test kit",
+      "amount": 5280
+    }
+  ],
+  "generateReference": true,
+  "feedback": {
+    "feedbackForm": false,
+    "url": ""
+  },
   "pages": [
     {
       "path": "/start",
@@ -14,58 +25,35 @@
       "backLinkFallback": "https://www.ukhsa-protectionservices.org.uk/",
       "components": [
         {
-          "name": "serviceExplanation",
-          "options": {},
           "type": "Para",
-          "content": "Use this service to order a radon gas test kit for a property in the UK and and the Isle of Man.\n</br></br>The radon gas test kit measures the level of radon in your property over a period of 3 months. The results show if the radon level is above the Action Level advised by the UK Health Security Agency. If your result is above the Action Level, you should take steps to reduce it.",
-          "schema": {}
+          "content": "Use this service to order a radon gas test kit for a property in the UK and and the Isle of Man.\n</br></br>The radon gas test kit measures the level of radon in your property over a period of 3 months. The results show if the radon level is above the Action Level advised by the UK Health Security Agency. If your result is above the Action Level, you should take steps to reduce it."
         },
         {
-          "name": "tqtivv",
-          "options": {},
           "type": "InsetText",
-          "content": "The Action Level for radon in homes is 200 becquerels per cubic metre (Bq m-3). A becquerel is a measure of radioactivity. If the radon level in your property is higher than this, you should take steps to reduce it.",
-          "schema": {}
+          "content": "The Action Level for radon in homes is 200 becquerels per cubic metre (Bq m-3). A becquerel is a measure of radioactivity. If the radon level in your property is higher than this, you should take steps to reduce it."
         },
         {
-          "name": "smokingRisk",
-          "options": {},
           "type": "InsetText",
-          "content": " If you or anyone living in your home is a current or ex-smoker, the risk to health is greater. In this case, the Action Level is lower, at 100 Bq m-3.",
-          "schema": {}
+          "content": " If you or anyone living in your home is a current or ex-smoker, the risk to health is greater. In this case, the Action Level is lower, at 100 Bq m-3."
         },
         {
-          "name": "sendingAndReturningExplanation",
-          "options": {},
           "type": "Para",
-          "content": "\nOnce your kit arrives, we will send you instructions on how to do the test.\n</br></br>\nAfter you return the kit, you will receive a report showing the radon level at your address and advice on whether you need to take action.\n</br></br>\nA test kit costs £52.80, including VAT.\n</br></br>\n<b>Before you start</b>\n</br></br>\nThe test will not be valid if:</br>",
-          "schema": {}
+          "content": "\nOnce your kit arrives, we will send you instructions on how to do the test.\n</br></br>\nAfter you return the kit, you will receive a report showing the radon level at your address and advice on whether you need to take action.\n</br></br>\nA test kit costs £52.80, including VAT.\n</br></br>\n<b>Before you start</b>\n</br></br>\nThe test will not be valid if:</br>"
         },
         {
-          "name": "invalidListDisplay",
-          "options": {},
           "type": "List",
-          "hint": "",
-          "list": "invalidIfList",
           "title": "The test will not be valid if",
-          "values": { "type": "listRef" },
-          "schema": {}
+          "list": "invalidIfList",
+          "values": { "type": "listRef" }
         },
         {
-          "name": "homeUseAffectsRadon",
-          "options": {},
           "type": "Para",
-          "content": "\nThis is because how a home is used can affect radon levels. For example, how often windows and doors are opened, or how the home is heated.\n</br></br>\nYou'll need your:</br>",
-          "schema": {}
+          "content": "\nThis is because how a home is used can affect radon levels. For example, how often windows and doors are opened, or how the home is heated.\n</br></br>\nYou'll need your:</br>"
         },
         {
-          "name": "whatYouWillNeedList",
-          "options": {},
           "type": "List",
-          "hint": "",
           "title": "You'll need your:",
-          "list": "youllNeedYourList",
-          "schema": {}
+          "list": "youllNeedYourList"
         }
       ],
       "next": [{ "path": "/property-address" }],
@@ -74,9 +62,17 @@
     {
       "path": "/property-address",
       "title": "Enter the address you want to measure the radon level",
+      "controller": "FindAnAddressPageController",
       "components": [
         {
           "name": "propertyAddress_postcodeLookup",
+          "type": "TextField",
+          "title": "Postcode",
+          "hint": "For example, AA3 1AB",
+          "schema": {
+            "max": 10,
+            "regex": "^[\\s]*[A-z]{1,2}[0-9][A-z0-9]?[\\s]*[0-9]{1,2}[ABD-hJLNP-uW-z]{2}[\\s]*$"
+          },
           "options": {
             "customValidationMessages": {
               "string.empty": "Enter postcode",
@@ -89,36 +85,29 @@
               "trim": true,
               "case": "upper"
             }
-          },
-          "schema": {
-            "max": 10,
-            "regex": "^[\\s]*[A-z]{1,2}[0-9][A-z0-9]?[\\s]*[0-9]{1,2}[ABD-hJLNP-uW-z]{2}[\\s]*$"
-          },
-          "type": "TextField",
-          "title": "Postcode",
-          "hint": "For example, AA3 1AB"
+          }
         },
         {
           "name": "addressType",
+          "type": "HiddenField",
           "options": {
             "exposeToContext": true,
             "value": "propertyAddress"
-          },
-          "type": "HiddenField"
+          }
         },
         {
           "name": "propertyAddress_buildingLookup",
+          "type": "TextField",
+          "title": "Building number or name",
+          "hint": "For example, 15 or Prospect cottage",
+          "schema": { "max": 100 },
           "options": {
             "customValidationMessages": {
               "string.empty": "Enter building number or name",
               "string.max": "Building name must be less than 100 characters"
             },
             "exposeToContext": true
-          },
-          "schema": { "max": 100 },
-          "type": "TextField",
-          "title": "Building number or name",
-          "hint": "For example, 15 or Prospect cottage"
+          }
         }
       ],
       "options": {
@@ -128,13 +117,10 @@
       },
       "componentsAfter": [
         {
-          "name": "enterManuallyLink",
-          "options": {},
           "type": "Html",
           "content": "<br><a href=\"property-address-manual{% if returnUrl %}?returnUrl={{ returnUrl | urlencode }}{% endif %}\">Enter address manually</a>"
         }
       ],
-      "controller": "FindAnAddressPageController",
       "next": [
         {
           "path": "/property-address-confirm",
@@ -153,34 +139,32 @@
       "components": [
         {
           "name": "propertyAddress_matchedAddressDisplay",
-          "options": {},
           "type": "DisplayAddress",
           "content": "{{ propertyAddress_matchedAddress.address }}"
         },
         {
           "name": "addressType",
+          "type": "HiddenField",
           "options": {
             "exposeToContext": true,
             "value": "propertyAddress"
-          },
-          "type": "HiddenField"
+          }
         },
         {
           "name": "propertyAddress_addressSelection",
-          "options": {},
           "type": "HiddenField",
           "title": "Property address"
         },
         {
           "name": "propertyAddress_isCorrectAddress",
+          "type": "YesNoField",
+          "title": "Is this the correct address?",
           "options": {
             "hideTitle": true,
             "customValidationMessages": {
               "any.required": "Select Yes if this is the correct address"
             }
-          },
-          "type": "YesNoField",
-          "title": "Is this the correct address?"
+          }
         }
       ],
       "controller": "SelectAnAddressPageController",
@@ -190,7 +174,6 @@
       "componentsAfter": [
         {
           "name": "enterAddressManuallyLink",
-          "options": {},
           "type": "Html",
           "content": "<br><a href=\"property-address-manual{% if returnUrl %}?returnUrl={{ returnUrl | urlencode }}{% endif %}\">Enter address manually</a>"
         }
@@ -210,48 +193,39 @@
     {
       "path": "/property-address-select",
       "title": "Select an address",
+      "controller": "SelectAnAddressPageController",
       "components": [
         {
-          "name": "addressesFoundHeading",
-          "options": {},
           "type": "Para",
           "content": "{{ propertyAddress_numberOfAddresses }} addresses found for '{{ propertyAddress_postcodeLookup }}'"
         },
         {
-          "name": "searchAgain",
-          "options": {},
           "type": "Html",
           "content": "<p class=\"govuk-body-m\"><a href=\"/property-address{% if returnUrl %}?returnUrl={{ returnUrl | urlencode }}{% endif %}\">Change your search</a> if the address you're looking for is not listed.</p>"
         },
         {
           "name": "addressType",
+          "type": "HiddenField",
           "options": {
             "exposeToContext": true,
             "value": "propertyAddress"
-          },
-          "type": "HiddenField"
+          }
         },
         {
           "name": "propertyAddress_addressSelection",
+          "type": "RadiosField",
+          "title": "Property address",
+          "list": "addressesList",
           "options": {
             "hideTitle": true,
             "customValidationMessages": {
               "any.required": "Select an address"
             }
-          },
-          "type": "RadiosField",
-          "title": "Property address",
-          "list": "addressesList"
+          }
         }
       ],
-      "controller": "SelectAnAddressPageController",
-      "options": {
-        "changePath": "/property-address"
-      },
       "componentsAfter": [
         {
-          "name": "enterAddressManuallyLink",
-          "options": {},
           "type": "Html",
           "content": "<br><a href=\"property-address-manual{% if returnUrl %}?returnUrl={{ returnUrl | urlencode }}{% endif %}\">Enter address manually</a>"
         }
@@ -267,14 +241,10 @@
       "title": "No addresses found for {{ propertyAddress_postcodeLookup }} and {{ propertyAddress_buildingLookup }}",
       "components": [
         {
-          "name": "noAddressesFoundMessage",
-          "options": {},
           "type": "Para",
           "content": "Check your address for mistakes, then try again.<br><br>Check you have entered the address correctly, then try again."
         },
         {
-          "name": "searchAgain",
-          "options": {},
           "type": "Html",
           "content": "<p class=\"govuk-body-m\"><a href=\"property-address{% if returnUrl %}?returnUrl={{ returnUrl | urlencode }}{% endif %}\">Change your search</a> or <a href=\"property-address-manual{% if returnUrl %}?returnUrl={{ returnUrl | urlencode }}{% endif %}\">enter address manually</a></p>"
         }
@@ -284,17 +254,20 @@
     {
       "path": "/property-address-manual",
       "title": "Enter the address you want to measure the radon level",
+      "controller": "FindAnAddressPageController",
       "components": [
         {
           "name": "addressType",
+          "type": "HiddenField",
           "options": {
             "exposeToContext": true,
             "value": "propertyAddress"
-          },
-          "type": "HiddenField"
+          }
         },
         {
           "name": "propertyAddress_addressLine1Lookup",
+          "type": "TextField",
+          "title": "Address Line 1",
           "options": {
             "customValidationMessages": {
               "any.required": "Enter address line 1, typically the building and street",
@@ -302,40 +275,45 @@
               "string.empty": "Enter address line 1, typically the building and street"
             },
             "exposeToContext": true
-          },
-          "type": "TextField",
-          "title": "Address Line 1"
+          }
         },
         {
           "name": "propertyAddress_addressLine2Lookup",
+          "type": "TextField",
+          "title": "Address Line 2",
           "options": {
             "required": false
-          },
-          "type": "TextField",
-          "title": "Address Line 2"
+          }
         },
         {
           "name": "propertyAddress_townLookup",
+          "type": "TextField",
+          "title": "Town or city",
           "options": {
             "customValidationMessages": {
               "any.required": "Enter town or city",
               "any.only": "Enter town or city",
               "string.empty": "Enter town or city"
             }
-          },
-          "type": "TextField",
-          "title": "Town or city"
+          }
         },
         {
           "name": "propertyAddress_countyLookup",
+          "type": "TextField",
+          "title": "County",
           "options": {
             "required": false
-          },
-          "type": "TextField",
-          "title": "County"
+          }
         },
         {
           "name": "propertyAddress_postcodeLookup",
+          "type": "TextField",
+          "title": "Postcode",
+          "hint": "For example, AA3 1AB",
+          "schema": {
+            "max": 10,
+            "regex": "^[\\s]*[A-z]{1,2}[0-9][A-z0-9]?[\\s]*[0-9]{1,2}[ABD-hJLNP-uW-z]{2}[\\s]*$"
+          },
           "options": {
             "customValidationMessages": {
               "string.empty": "Enter postcode",
@@ -347,21 +325,13 @@
               "trim": true,
               "case": "upper"
             }
-          },
-          "schema": {
-            "max": 10,
-            "regex": "^[\\s]*[A-z]{1,2}[0-9][A-z0-9]?[\\s]*[0-9]{1,2}[ABD-hJLNP-uW-z]{2}[\\s]*$"
-          },
-          "type": "TextField",
-          "title": "Postcode",
-          "hint": "For example, AA3 1AB"
+          }
         }
       ],
       "options": {
         "hiddenFields": ["addressType"],
         "disabledChangeFields": ["addressType"]
       },
-      "controller": "FindAnAddressPageController",
       "next": [
         {
           "path": "/property-address-confirm",
@@ -379,14 +349,10 @@
       "title": "We cannot find your address",
       "components": [
         {
-          "name": "noAddressesFoundMessage",
-          "options": {},
           "type": "Para",
           "content": "No address found for {{ propertyAddress_addressLine1Lookup }}{% if propertyAddress_addressLine2Lookup %}, {{ propertyAddress_addressLine2Lookup }}{% endif %}{% if propertyAddress_townLookup %}, {{ propertyAddress_townLookup }}{% endif %}{% if propertyAddress_countyLookup %}, {{ propertyAddress_countyLookup }}{% endif %}{% if propertyAddress_postcodeLookup %}, {{ propertyAddress_postcodeLookup }}{% endif %}<br><br>Check your address for mistakes, then try again.<br><br>Check you have entered the address correctly, then try again."
         },
         {
-          "name": "searchAgain",
-          "options": {},
           "type": "Html",
           "content": "<p class=\"govuk-body-m\"><a href=\"property-address{% if returnUrl %}?returnUrl={{ returnUrl | urlencode }}{% endif %}\">Change your search</a> or <a href=\"property-address-manual{% if returnUrl %}?returnUrl={{ returnUrl | urlencode }}{% endif %}\">enter address manually</a></p>"
         }
@@ -399,15 +365,14 @@
       "components": [
         {
           "name": "testedBeforeYesNo",
+          "type": "YesNoField",
+          "title": "Have you tested this address before using a gas test kit purchaced from us?",
+          "values": { "type": "listRef" },
           "options": {
             "customValidationMessages": {
               "any.required": "Select yes if this address has been tested before using a gas test kit purchased from us"
             }
-          },
-          "type": "YesNoField",
-          "title": "Have you tested this address before using a gas test kit purchaced from us?",
-          "schema": {},
-          "values": { "type": "listRef" }
+          }
         }
       ],
       "next": [
@@ -427,14 +392,13 @@
       "components": [
         {
           "name": "bqmYesNo",
+          "type": "YesNoField",
+          "title": "Was the level above the action level 200 Bq m⁻³",
           "options": {
             "customValidationMessages": {
               "any.required": "Select yes if the level was above the action level of 200 Bq m⁻³"
             }
-          },
-          "type": "YesNoField",
-          "title": "Was the level above the action level 200 Bq m⁻³",
-          "schema": {}
+          }
         }
       ],
       "next": [
@@ -454,14 +418,13 @@
       "components": [
         {
           "name": "stepsToReduceYesNo",
+          "type": "YesNoField",
+          "title": "Have you taken any steps to reduce the radon level since the last test?",
           "options": {
             "customValidationMessages": {
               "any.required": "Select yes if you have taken steps to reduce the radon level since the last test"
             }
-          },
-          "type": "YesNoField",
-          "title": "Have you taken any steps to reduce the radon level since the last test?",
-          "schema": {}
+          }
         }
       ],
       "next": [
@@ -481,17 +444,13 @@
       "components": [
         {
           "name": "contactNumber",
-          "options": {},
           "type": "Para",
-          "content": "Contact the Radon team on 01235 822622 to find out.",
-          "schema": {}
+          "content": "Contact the Radon team on 01235 822622 to find out."
         },
         {
           "name": "continueWithoutFreeRetestLink",
-          "options": {},
           "type": "Para",
-          "content": "<a href=\"your-details\" target=\"_blank\">Continue without a free retest</a>",
-          "schema": {}
+          "content": "<a href=\"your-details\" target=\"_blank\">Continue without a free retest</a>"
         }
       ],
       "next": []
@@ -501,50 +460,47 @@
       "title": "Enter details",
       "components": [
         {
-          "name": "enterPersonalDetailsHeader",
-          "options": {},
           "type": "Para",
           "content": "<p class=\"govuk-body-m\"><h2 class=\"govuk-heading-m\">Enter your personal details</h2></p>"
         },
         {
           "name": "title",
+          "type": "TextField",
+          "title": "Title",
+          "hint": "e.g. Mr, Mrs, Dr",
           "options": {
             "exposeToContext": true,
             "customValidationMessages": {
               "string.empty": "Enter your Title"
             }
-          },
-          "type": "TextField",
-          "title": "Title",
-          "hint": "e.g. Mr, Mrs, Dr"
+          }
         },
         {
           "name": "firstName",
+          "type": "TextField",
+          "title": "First name",
           "options": {
             "customValidationMessages": {
               "string.empty": "Enter your first name"
             },
             "exposeToContext": true
-          },
-          "type": "TextField",
-          "title": "First name"
+          }
         },
         {
           "name": "lastName",
-          "options": { "required": false, "exposeToContext": true },
           "type": "TextField",
-          "title": "Last Name"
+          "title": "Last Name",
+          "options": { "required": false, "exposeToContext": true }
         },
         {
-          "name": "EmailAddressText",
-          "options": {},
           "type": "Para",
           "content": "<p class=\"govuk-body-m\"><h2 class=\"govuk-heading-m\">Enter your email address</h2></p>"
         },
         {
+          "name": "emailAddress",
           "type": "EmailAddressField",
           "title": "Email address",
-          "name": "emailAddress",
+          "hint": "For example, 'name@example.com'.",
           "options": {
             "exposeToContext": true,
             "customValidationMessages": {
@@ -554,12 +510,9 @@
               "string.pattern.base": "Enter an email address in the correct format, like name@example.com"
             },
             "hideTitle": true
-          },
-          "hint": "For example, 'name@example.com'."
+          }
         },
         {
-          "name": "paymentConfirmationInfo",
-          "options": {},
           "type": "InsetText",
           "content": "We will use your email address to send your payment confirmation."
         }
@@ -571,52 +524,41 @@
       "title": "Measurement address details",
       "components": [
         {
-          "name": "placeholderAddress",
+          "type": "DisplayAddress",
+          "content": "{{ propertyAddress_fullSelectedAddress }}",
           "options": {
             "inset": true
-          },
-          "type": "DisplayAddress",
-          "content": "{{ propertyAddress_fullSelectedAddress }}"
+          }
         },
         {
-          "name": "kitAddressQuestion",
-          "options": {},
           "type": "Para",
           "content": "<p class=\"govuk-body-m\"><h2 class=\"govuk-heading-m\">Is this the address you want the kit delivered to?</h2></p>"
         },
         {
           "name": "kitAddressConfirmation",
-          "options": { "hideTitle": true, "exposeToContext": true },
           "type": "YesNoField",
-          "title": "Is this the address you want the kit delivered to?"
+          "title": "Is this the address you want the kit delivered to?",
+          "options": { "hideTitle": true, "exposeToContext": true }
         },
         {
-          "name": "locationOfKitWarning",
-          "options": {},
           "type": "Html",
           "content": "<div class=\"govuk-warning-text\"><span class=\"govuk-warning-text__icon\" aria-hidden=\"true\">!</span><strong class=\"govuk-warning-text__text\"><span class=\"govuk-visually-hidden\">Warning</span>The detectors record continuously so the reading may be less accurate if they are not at the measurement address.</strong></div>"
         },
         {
-          "name": "deploymentTimeInfo",
-          "options": {},
           "type": "Para",
           "content": "If the kits are delivered to a different address than where they will be used, the detectors must be placed within the measurement address within 7 days of delivery.\n</br></br>\nA kit fits through a standard letter box."
         },
         {
-          "name": "testAddressQuestion",
-          "options": {},
           "type": "Para",
           "content": "<p class=\"govuk-body-m\"><h2 class=\"govuk-heading-m\">Is this the address you want your radon gas test results to?</h2></p>"
         },
         {
           "name": "resultsAddressConfirmation",
-          "options": { "hideTitle": true, "exposeToContext": true },
           "type": "YesNoField",
-          "title": "Is this the address you want your radon gas test results to?"
+          "title": "Is this the address you want your radon gas test results to?",
+          "options": { "hideTitle": true, "exposeToContext": true }
         },
         {
-          "name": "physicalReportInfo",
-          "options": {},
           "type": "Para",
           "content": "You will receive a physical report showing the radon level at your measurement address and advice on whether you need to take action."
         }
@@ -642,37 +584,37 @@
       "components": [
         {
           "name": "resultsTitle",
+          "type": "TextField",
+          "title": "Title",
+          "hint": "e.g. Mr, Mrs, Dr",
           "options": {
             "exposeToContext": true,
             "customValidationMessages": {
               "string.empty": "Enter the title of the recipient of the radon gas test results"
             }
-          },
-          "type": "TextField",
-          "title": "Title",
-          "hint": "e.g. Mr, Mrs, Dr"
+          }
         },
         {
           "name": "resultsFirstName",
+          "type": "TextField",
+          "title": "First name",
           "options": {
             "customValidationMessages": {
               "string.empty": "Enter the first name of the recipient of the radon gas test results"
             },
             "exposeToContext": true
-          },
-          "type": "TextField",
-          "title": "First name"
+          }
         },
         {
           "name": "resultsLastName",
+          "type": "TextField",
+          "title": "Last Name",
           "options": {
             "customValidationMessages": {
               "string.empty": "Enter the last name of the recipient of the radon gas test results"
             },
             "exposeToContext": true
-          },
-          "type": "TextField",
-          "title": "Last Name"
+          }
         }
       ],
       "next": [{ "path": "/results-address" }]
@@ -683,54 +625,60 @@
       "components": [
         {
           "name": "addressType",
+          "type": "HiddenField",
           "options": {
             "exposeToContext": true,
             "value": "resultsAddress"
-          },
-          "type": "HiddenField"
+          }
         },
         {
           "name": "resultsAddress_addressLine1Lookup",
+          "type": "TextField",
+          "title": "Address Line 1",
           "options": {
             "customValidationMessages": {
               "string.empty": "Enter address line 1, typically the building and street"
             },
             "exposeToContext": true
-          },
-          "type": "TextField",
-          "title": "Address Line 1"
+          }
         },
         {
           "name": "resultsAddress_addressLine2Lookup",
+          "type": "TextField",
+          "title": "Address Line 2",
           "options": {
             "required": false,
             "exposeToContext": true
-          },
-          "type": "TextField",
-          "title": "Address Line 2"
+          }
         },
         {
           "name": "resultsAddress_townLookup",
+          "type": "TextField",
+          "title": "Town or city",
           "options": {
             "customValidationMessages": {
               "string.empty": "Enter town or city"
             },
             "exposeToContext": true
-          },
-          "type": "TextField",
-          "title": "Town or city"
+          }
         },
         {
           "name": "resultsAddress_countyLookup",
+          "type": "TextField",
+          "title": "County",
           "options": {
             "required": false,
             "exposeToContext": true
-          },
-          "type": "TextField",
-          "title": "County"
+          }
         },
         {
           "name": "resultsAddress_postcodeLookup",
+          "type": "TextField",
+          "title": "Postcode",
+          "schema": {
+            "max": 10,
+            "regex": "^[\\s]*[A-z]{1,2}[0-9][A-z0-9]?[\\s]*[0-9]{1,2}[ABD-hJLNP-uW-z]{2}[\\s]*$"
+          },
           "options": {
             "customValidationMessages": {
               "string.empty": "Enter postcode",
@@ -743,13 +691,7 @@
               "trim": true,
               "case": "upper"
             }
-          },
-          "schema": {
-            "max": 10,
-            "regex": "^[\\s]*[A-z]{1,2}[0-9][A-z0-9]?[\\s]*[0-9]{1,2}[ABD-hJLNP-uW-z]{2}[\\s]*$"
-          },
-          "type": "TextField",
-          "title": "Postcode"
+          }
         }
       ],
       "options": {
@@ -765,37 +707,37 @@
       "components": [
         {
           "name": "kitTitle",
+          "type": "TextField",
+          "title": "Title",
+          "hint": "e.g. Mr, Mrs, Dr",
           "options": {
             "exposeToContext": true,
             "customValidationMessages": {
               "string.empty": "Enter the title of the recipient of the kit"
             }
-          },
-          "type": "TextField",
-          "title": "Title",
-          "hint": "e.g. Mr, Mrs, Dr"
+          }
         },
         {
           "name": "kitFirstName",
+          "type": "TextField",
+          "title": "First name",
           "options": {
             "customValidationMessages": {
               "string.empty": "Enter the first name of the recipient of the kit"
             },
             "exposeToContext": true
-          },
-          "type": "TextField",
-          "title": "First name"
+          }
         },
         {
           "name": "kitLastName",
+          "type": "TextField",
+          "title": "Last Name",
           "options": {
             "customValidationMessages": {
               "string.empty": "Enter the last name of the recipient of the kit"
             },
             "exposeToContext": true
-          },
-          "type": "TextField",
-          "title": "Last Name"
+          }
         }
       ],
       "next": [{ "path": "/kit-address" }]
@@ -806,54 +748,60 @@
       "components": [
         {
           "name": "addressType",
+          "type": "HiddenField",
           "options": {
             "exposeToContext": true,
             "value": "kitAddress"
-          },
-          "type": "HiddenField"
+          }
         },
         {
           "name": "kitAddress_addressLine1Lookup",
+          "type": "TextField",
+          "title": "Address Line 1",
           "options": {
             "customValidationMessages": {
               "string.empty": "Enter address line 1, typically the building and street"
             },
             "exposeToContext": true
-          },
-          "type": "TextField",
-          "title": "Address Line 1"
+          }
         },
         {
           "name": "kitAddress_addressLine2Lookup",
+          "type": "TextField",
+          "title": "Address Line 2",
           "options": {
             "required": false,
             "exposeToContext": true
-          },
-          "type": "TextField",
-          "title": "Address Line 2"
+          }
         },
         {
           "name": "kitAddress_townLookup",
+          "type": "TextField",
+          "title": "Town or city",
           "options": {
             "customValidationMessages": {
               "string.empty": "Enter town or city"
             },
             "exposeToContext": true
-          },
-          "type": "TextField",
-          "title": "Town or city"
+          }
         },
         {
           "name": "kitAddress_countyLookup",
+          "type": "TextField",
+          "title": "County",
           "options": {
             "required": false,
             "exposeToContext": true
-          },
-          "type": "TextField",
-          "title": "County"
+          }
         },
         {
           "name": "kitAddress_postcodeLookup",
+          "type": "TextField",
+          "title": "Postcode",
+          "schema": {
+            "max": 10,
+            "regex": "^[\\s]*[A-z]{1,2}[0-9][A-z0-9]?[\\s]*[0-9]{1,2}[ABD-hJLNP-uW-z]{2}[\\s]*$"
+          },
           "options": {
             "customValidationMessages": {
               "string.empty": "Enter postcode",
@@ -866,13 +814,7 @@
               "trim": true,
               "case": "upper"
             }
-          },
-          "schema": {
-            "max": 10,
-            "regex": "^[\\s]*[A-z]{1,2}[0-9][A-z0-9]?[\\s]*[0-9]{1,2}[ABD-hJLNP-uW-z]{2}[\\s]*$"
-          },
-          "type": "TextField",
-          "title": "Postcode"
+          }
         }
       ],
       "options": {
@@ -894,26 +836,23 @@
       "components": [
         {
           "name": "kitAddress",
-          "options": {},
           "type": "DisplayAddress",
           "content": "{{ kitAddress_fullSelectedAddress }}"
         },
         {
           "name": "ResultsDeliveryQuestion",
-          "options": {},
           "type": "Para",
           "content": "<p class=\"govuk-body-m\"><h2 class=\"govuk-heading-m\">Is this the address you want your radon gas test results delivered to?</h2></p>"
         },
         {
           "name": "kitResultsConfirmation",
+          "type": "YesNoField",
+          "title": "Is this the address you want your radon gas test results delivered to?",
           "options": {
             "customValidationMessages": {
               "any.required": "Select yes if this is the address you want your radon gas test results delivered to"
             }
-          },
-          "type": "YesNoField",
-          "title": "Is this the address you want your radon gas test results delivered to?",
-          "schema": {}
+          }
         }
       ],
       "next": [
@@ -940,9 +879,6 @@
         },
         {
           "type": "SummaryLists",
-          "options": {
-            "enableCards": "true"
-          },
           "content": [
             {
               "title": "Order summary",
@@ -983,18 +919,25 @@
                   "changeUrl": "/your-details"
                 },
                 {
-                  "title": "Property address",
                   "type": "component",
+                  "title": "Property address",
+                  "changeUrl": "/property-address",
                   "value": {
                     "name": "displayPropertyAddress",
                     "type": "DisplayAddress",
                     "content": "{{propertyAddress_fullSelectedAddress}}"
-                  },
-                  "changeUrl": "/property-address"
+                  }
                 },
                 {
-                  "title": "Delivery recipient",
                   "type": "component",
+                  "title": "Delivery recipient",
+                  "changeUrl": [
+                    {
+                      "condition": "kitAddressIncorrect",
+                      "value": "/kit-recipient"
+                    },
+                    { "value": "/kit-details" }
+                  ],
                   "value": {
                     "name": "kitRecipient",
                     "type": "Para",
@@ -1007,18 +950,18 @@
                         "value": "{{title}} {{firstName}} {{lastName}}"
                       }
                     ]
-                  },
+                  }
+                },
+                {
+                  "type": "component",
+                  "title": "Delivery address",
                   "changeUrl": [
                     {
                       "condition": "kitAddressIncorrect",
-                      "value": "/kit-recipient"
+                      "value": "/kit-address"
                     },
                     { "value": "/kit-details" }
-                  ]
-                },
-                {
-                  "title": "Delivery address",
-                  "type": "component",
+                  ],
                   "value": {
                     "name": "displayKitAddress",
                     "type": "DisplayAddress",
@@ -1029,18 +972,18 @@
                       },
                       { "value": "{{propertyAddress_fullSelectedAddress}}" }
                     ]
-                  },
-                  "changeUrl": [
-                    {
-                      "condition": "kitAddressIncorrect",
-                      "value": "/kit-address"
-                    },
-                    { "value": "/kit-details" }
-                  ]
+                  }
                 },
                 {
-                  "title": "Results recipient",
                   "type": "component",
+                  "title": "Results recipient",
+                  "changeUrl": [
+                    {
+                      "condition": "resultsAddressIncorrect",
+                      "value": "/results-recipient"
+                    },
+                    { "value": "/kit-details" }
+                  ],
                   "value": {
                     "name": "resultsRecipient",
                     "type": "Para",
@@ -1053,18 +996,18 @@
                         "value": "{{title}} {{firstName}} {{lastName}}"
                       }
                     ]
-                  },
+                  }
+                },
+                {
+                  "type": "component",
+                  "title": "Results address",
                   "changeUrl": [
                     {
                       "condition": "resultsAddressIncorrect",
-                      "value": "/results-recipient"
+                      "value": "/results-address"
                     },
                     { "value": "/kit-details" }
-                  ]
-                },
-                {
-                  "title": "Results address",
-                  "type": "component",
+                  ],
                   "value": {
                     "name": "displayResultsAddress",
                     "type": "DisplayAddress",
@@ -1075,18 +1018,14 @@
                       },
                       { "value": "{{propertyAddress_fullSelectedAddress}}" }
                     ]
-                  },
-                  "changeUrl": [
-                    {
-                      "condition": "resultsAddressIncorrect",
-                      "value": "/results-address"
-                    },
-                    { "value": "/kit-details" }
-                  ]
+                  }
                 }
               ]
             }
-          ]
+          ],
+          "options": {
+            "enableCards": "true"
+          }
         },
         {
           "name": "termsAndConditions",
@@ -1168,7 +1107,6 @@
       ]
     }
   ],
-  "sections": [],
   "conditions": [
     {
       "name": "hasMatchedPropertyAddressCondition",
@@ -1489,18 +1427,6 @@
       }
     }
   ],
-  "fees": [
-    {
-      "description": "Radon gas home test kit",
-      "amount": 5280
-    }
-  ],
-  "generateReference": true,
-  "skipSummary": false,
-  "feedback": {
-    "feedbackForm": false,
-    "url": ""
-  },
   "services": [
     {
       "name": "addressLookupService",

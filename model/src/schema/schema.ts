@@ -464,7 +464,7 @@ export const Schema = joi
       .required()
       .items(joi.alternatives().try(pageSchema, multiStartPageSchema))
       .unique("path"),
-    sections: joi.array().items(sectionsSchema).unique("name").required(),
+    sections: joi.array().items(sectionsSchema).unique("name").optional(),
     conditions: joi.array().items(conditionsSchema).unique("name"),
     lists: joi.array().items(listSchema).unique("name"),
     fees: joi.array().items(feeSchema).optional(),
