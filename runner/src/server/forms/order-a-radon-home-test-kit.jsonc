@@ -837,7 +837,10 @@
         {
           "name": "kitAddress",
           "type": "DisplayAddress",
-          "content": "{{ kitAddress_fullSelectedAddress }}"
+          "content": "{{kitTitle}} {{kitFirstName}} {{kitLastName}}, {{ kitAddress_fullSelectedAddress }}",
+          "options": {
+            "inset": true
+          }
         },
         {
           "name": "ResultsDeliveryQuestion",
@@ -847,8 +850,9 @@
         {
           "name": "kitResultsConfirmation",
           "type": "YesNoField",
-          "title": "Is this the address you want your radon gas test results delivered to?",
+          "title": " ",
           "options": {
+            "exposeToContext": true,
             "customValidationMessages": {
               "any.required": "Select yes if this is the address you want your radon gas test results delivered to"
             }
@@ -979,6 +983,10 @@
                   "title": "Results recipient",
                   "changeUrl": [
                     {
+                      "condition": "kitResultsConfirmationYes",
+                      "value": "/kit-address-results-confirm"
+                    },
+                    {
                       "condition": "resultsAddressIncorrect",
                       "value": "/results-recipient"
                     },
@@ -988,6 +996,10 @@
                     "name": "resultsRecipient",
                     "type": "Para",
                     "content": [
+                      {
+                        "condition": "kitResultsConfirmationYes",
+                        "value": "{{kitTitle}} {{kitFirstName}} {{kitLastName}}"
+                      },
                       {
                         "condition": "resultsAddressIncorrect",
                         "value": "{{resultsTitle}} {{resultsFirstName}} {{resultsLastName}}"
@@ -1003,6 +1015,10 @@
                   "title": "Results address",
                   "changeUrl": [
                     {
+                      "condition": "kitResultsConfirmationYes",
+                      "value": "/kit-address-results-confirm"
+                    },
+                    {
                       "condition": "resultsAddressIncorrect",
                       "value": "/results-address"
                     },
@@ -1012,6 +1028,10 @@
                     "name": "displayResultsAddress",
                     "type": "DisplayAddress",
                     "content": [
+                      {
+                        "condition": "kitResultsConfirmationYes",
+                        "value": "{{kitAddress_fullSelectedAddress}}"
+                      },
                       {
                         "condition": "resultsAddressIncorrect",
                         "value": "{{resultsAddress_fullSelectedAddress}}"
@@ -1422,6 +1442,24 @@
             },
             "operator": "is",
             "value": { "type": "Value", "value": "false", "display": "false" }
+          }
+        ]
+      }
+    },
+    {
+      "displayName": "Kit Results Confirmation Yes",
+      "name": "kitResultsConfirmationYes",
+      "value": {
+        "name": "kitResultsConfirmationYes",
+        "conditions": [
+          {
+            "field": {
+              "name": "kitResultsConfirmation",
+              "type": "YesNoField",
+              "display": "Is this the address you want your radon gas test results delivered to?"
+            },
+            "operator": "is",
+            "value": { "type": "Value", "value": "true", "display": "true" }
           }
         ]
       }
