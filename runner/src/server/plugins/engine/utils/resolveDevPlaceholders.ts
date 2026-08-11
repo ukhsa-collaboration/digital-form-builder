@@ -1,10 +1,9 @@
 import config from "../../../config";
 
 /**
- * Resolves placeholder variables in form configurations during development.
+ * Resolves placeholder variables in form configurations. This is a development-only
+ * workaround and is a no-op unless `config.isDev` is true.
  * Supports syntax like ${VAR_NAME} which gets replaced with process.env.VAR_NAME values.
- *
- * This function only operates when NODE_ENV is 'development'.
  *
  * @example
  *
@@ -24,8 +23,8 @@ import config from "../../../config";
  *     "clientId": "abc123"
  *   }
  */
-export function resolvePlaceholders<T>(obj: T): T {
-  if (config.env !== "development") {
+export function resolveDevPlaceholders<T>(obj: T): T {
+  if (!config.isDev) {
     return obj;
   }
 
@@ -67,7 +66,7 @@ function resolveString(str: string): string {
     const value = process.env[varName];
     if (value === undefined) {
       console.warn(
-        `[resolvePlaceholders] Environment variable '${varName}' not found. Placeholder '${match}' will remain unresolved.`
+        `[resolveDevPlaceholders] Environment variable '${varName}' not found. Placeholder '${match}' will remain unresolved.`
       );
       return match;
     }

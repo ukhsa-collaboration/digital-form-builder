@@ -156,8 +156,8 @@ export class PageControllerBase {
    */
   getViewModel(
     formData: FormData,
-    iteration?: any,
-    errors?: any
+    iteration?: unknown,
+    errors?: FormSubmissionErrors
   ): {
     page: PageControllerBase;
     name: string;
@@ -166,7 +166,7 @@ export class PageControllerBase {
     showTitle: boolean;
     components: ComponentCollectionViewModel;
     componentsAfter: ComponentCollectionViewModel;
-    errors: FormSubmissionErrors;
+    errors?: FormSubmissionErrors;
     isStartPage: boolean;
     startPage?: HapiResponseObject;
     backLink?: string;
@@ -361,7 +361,7 @@ export class PageControllerBase {
    */
   getFormDataFromState(state: any, atIndex: number): FormData {
     const pageState = this.section ? state[this.section.name] : state;
-    let formData: any;
+    let formData: Partial<FormData>;
 
     if (this.repeatField) {
       const repeatedPageState =
@@ -491,7 +491,7 @@ export class PageControllerBase {
     let nextPage = model.startPage;
 
     //While the current page isn't null
-    const checkedPages = new Set<any>();
+    const checkedPages = new Set<PageControllerBase>();
     while (nextPage != null) {
       //Either get the current state or the current state of the section if this page belongs to a section
       const currentState =
@@ -546,6 +546,8 @@ export class PageControllerBase {
 
   makeGetRouteHandler() {
     return async (request: HapiRequest, h: HapiResponseToolkit) => {
+      await this.getRouteHandlerHook(request);
+
       const { cacheService } = request.services([]);
       const lang = this.langFromRequest(request);
       const state = await cacheService.getState(request);
@@ -554,8 +556,6 @@ export class PageControllerBase {
       const currentPath = `/${this.model.basePath}${this.path}${request.url.search}`;
       const startPage = this.model.def.startPage;
       const formData = this.getFormDataFromState(state, num - 1);
-
-      await this.getRouteHandlerHook(request);
 
       const isStartPage = this.path === `${startPage}`;
       const isInitialisedSession = !!state.callback;
@@ -757,6 +757,7 @@ export class PageControllerBase {
           text: `The selected files must be smaller than ${config.maxFileSizeStringInMb}MB`,
         };
       });
+
       formResult.errors = Object.is(formResult.errors, null)
         ? { titleText: "There is a problem" }
         : formResult.errors;
@@ -889,7 +890,8 @@ export class PageControllerBase {
       }
 
       const shouldGoToExitPage =
-        this.model.allowExit && (request.payload as any)?.action === "exit";
+        this.model.allowExit &&
+        (request.payload as { action?: string })?.action === "exit";
 
       if (shouldGoToExitPage) {
         await cacheService.setExitState(request, {

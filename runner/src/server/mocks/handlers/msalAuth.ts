@@ -1,8 +1,8 @@
-import { http, HttpResponse } from "msw";
+import { http, HttpResponse, RequestHandler } from "msw";
 
-export const MOCK_ACCESS_TOKEN = "mock-msal-access-token";
+const MOCK_ACCESS_TOKEN = "mock-msal-access-token";
 
-export const msalAuthHandlers = [
+export const msalAuthHandlers: RequestHandler[] = [
   http.post(
     "https://login.microsoftonline.com/:tenantId/oauth2/v2.0/token",
     () => {

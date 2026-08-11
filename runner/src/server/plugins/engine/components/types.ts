@@ -15,6 +15,7 @@ export type ListItemLabel = Omit<Label, "text" | "isPageHeading">;
 
 export type ListItem = {
   text?: string;
+  html?: string;
   value: string | boolean | number;
   hint?: {
     html: string;

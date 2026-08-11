@@ -1,6 +1,5 @@
 import { PageControllerBase } from "./PageControllerBase";
 import { HapiRequest, HapiResponseToolkit } from "server/types";
-import { formatAddress } from "../utils/addressUtils";
 
 const COMPONENT_SAME_AS_REPORT = "deliveryAddressSameAsReport";
 const COMPONENT_DISPLAY = "deliveryAddressSameAsReportDisplay";
@@ -49,9 +48,7 @@ export class DeliveryAddressSameAsReportPageController extends PageControllerBas
           deliveryAddress_selectedAddress: reportAddress,
           deliveryAddress_matchedAddress: reportAddress,
           deliveryAddress_isCorrectAddress: true,
-          [COMPONENT_DISPLAY]: reportAddress
-            ? formatAddress(reportAddress)
-            : "",
+          [COMPONENT_DISPLAY]: reportAddress ?? "",
         });
 
         return this.proceed(request, h, savedState, true);

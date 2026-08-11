@@ -504,12 +504,14 @@ export class CustomSummaryPageController extends PageController {
 
   get payApiKey(): string {
     const modelDef = this.model.def;
-    const payApiKey = modelDef.feeOptions?.payApiKey ?? def.payApiKey;
+    const payApiKey = modelDef.feeOptions?.payApiKey ?? modelDef.payApiKey;
 
     if (isMultipleApiKey(payApiKey)) {
-      return payApiKey[config.apiEnv] ?? payApiKey.test ?? payApiKey.production;
+      return (
+        payApiKey[config.apiEnv] ?? payApiKey.test ?? payApiKey.production ?? ""
+      );
     }
-    return payApiKey;
+    return payApiKey ?? "";
   }
 
   get defaultButtonText() {

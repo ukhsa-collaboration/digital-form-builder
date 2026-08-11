@@ -7,10 +7,12 @@ Here you can find additional documentation for XGovFormBuilder.
 
 ## Contents
 
-- [Runner](#runner)
-- [Designer](#designer)
-- [Examples](#examples)
-- [ADRs](#adrs)
+- [Documentation](#documentation)
+  - [Contents](#contents)
+    - [Runner](#runner)
+    - [Designer](#designer)
+    - [Examples](#examples)
+    - [ADRs](#adrs)
 
 ### Runner
 
@@ -39,6 +41,8 @@ Features and configuration options for the runner.
   - Run a server-side action when the summary page is submitted, before the normal outputs/payment flow
 - [templating](runner/templating.md)
   - Allow njks templating within html components and add previous answers to the render context
+- [mock API](runner/mock-api.md)
+  - Intercept outbound HTTP calls in local development with mock responses
 
 ### Designer
 

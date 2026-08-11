@@ -1,6 +1,6 @@
-import { http, HttpResponse } from "msw";
+import { http, HttpResponse, RequestHandler } from "msw";
 
-export const MOCK_ADDRESSES = [
+const MOCK_ADDRESSES = [
   {
     addressString: "1 Test Street, London, SW1A 1AA",
     postcode: "SW1A 1AA",
@@ -46,10 +46,10 @@ export const MOCK_ADDRESSES = [
  * Lookup address API provided by OS Places API
  * @link https://www.api.gov.uk/os/os-places-api/#os-places-api
  */
-export const lookupAddressEndpoint = http.get("*/matchAddress", () => {
+const lookupAddressEndpoint = http.get("*/matchAddress", () => {
   return HttpResponse.json({
     matchedAddresses: MOCK_ADDRESSES,
   });
 });
 
-export const addressLookupHandlers = [lookupAddressEndpoint];
+export const addressLookupHandlers: RequestHandler[] = [lookupAddressEndpoint];

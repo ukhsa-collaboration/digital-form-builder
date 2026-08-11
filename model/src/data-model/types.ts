@@ -356,9 +356,10 @@ export type FormDefinition = {
   fileUploadHmacSharedKey?: string | undefined;
   fullStartPage?: string | undefined;
   serviceName?: string | undefined;
-  confirmationSessionTimeout: number | undefined;
+  confirmationSessionTimeout?: number | undefined;
   returnTo?: boolean | undefined;
   addressLookupConfig?: AddressLookupConfig;
+  secureFormSubmissionConfig?: SecureFormSubmissionConfig;
   error500ContactEmail?: string | undefined;
   summaryConfig?: SummaryConfig;
   generateReference?: boolean | undefined;

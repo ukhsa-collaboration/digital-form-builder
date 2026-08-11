@@ -48,6 +48,8 @@ export const submitActionRegistry: Record<string, SubmitAction> = {
         firstName: currentState["firstName"],
         lastName: currentState["lastName"],
         emailAddress: currentState["emailAddress"],
+        deliveryAddress_selectedAddress:
+          currentState["deliveryAddress_selectedAddress"],
       },
       {
         abortEarly: false,

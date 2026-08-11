@@ -240,8 +240,8 @@ export class SummaryPageController extends PageController {
 
         // extract payment details from cache
         const paymentDetails: TrustPaymentsDetails = {
-          billingFirstName: "FirstNAme",
-          billingLastName: "LastName",
+          billingFirstName: state.firstName ?? "",
+          billingLastName: state.lastName ?? "",
           amount: feesModel.total,
           redirectUrl: `${url.origin}/${request.params.id}/status`,
         };
@@ -377,7 +377,9 @@ export class SummaryPageController extends PageController {
     const payApiKey = modelDef.feeOptions?.payApiKey ?? modelDef.payApiKey;
 
     if (isMultipleApiKey(payApiKey)) {
-      return payApiKey[config.apiEnv] ?? payApiKey.test ?? payApiKey.production;
+      return (
+        payApiKey[config.apiEnv] ?? payApiKey.test ?? payApiKey.production ?? ""
+      );
     }
     return payApiKey ?? "";
   }

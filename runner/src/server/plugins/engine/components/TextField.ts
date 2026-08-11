@@ -64,7 +64,10 @@ export class TextField extends FormComponent {
     return { [this.name]: this.formSchema as Schema };
   }
 
-  format(options: any, value: string) {
+  format(
+    options: { trim?: boolean; case?: "upper" | "lower" } | undefined,
+    value: string
+  ) {
     if (options?.trim) {
       value = value.trim();
     }

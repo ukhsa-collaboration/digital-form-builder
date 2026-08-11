@@ -16,6 +16,8 @@ import { mergeRows } from "server/transforms/summaryDetails/mergeRows";
 import { removeRows } from "server/transforms/summaryDetails/removeRows";
 import { adjustRows } from "server/transforms/summaryDetails/adjustRows";
 import { transformValues } from "server/transforms/summaryDetails/transformValues";
+import { applyConditionalRows } from "server/transforms/summaryDetails/conditionalRows";
+import { applyFeesRow } from "server/transforms/summaryDetails/feesRow";
 
 import pino from "pino";
 const logger = pino().child({ name: "SummaryViewModel" });
@@ -175,65 +177,17 @@ export class SummaryViewModel {
         }
 
         if (summaryConfig.conditionalRows?.length) {
-          // Snapshot all items before iterating so rule order doesn't affect
-          // which `when` conditions are evaluated.
-          const allItems = transformed.flatMap((d: any) => d.items);
-          const itemsByName = new Map(
-            allItems.map((item: any) => [item.name, item])
-          );
-
-          for (const rule of summaryConfig.conditionalRows) {
-            const match = itemsByName.get(rule.when.field);
-
-            const conditionMatches =
-              rule.when.isEmpty === true
-                ? match == null ||
-                  match.rawValue == null ||
-                  match.rawValue === ""
-                : match?.rawValue === rule.when.value;
-
-            if (conditionMatches) {
-              if (rule.removeFields?.length) {
-                transformed = removeRows(transformed, rule.removeFields);
-              }
-              if (rule.appendToLastSection) {
-                transformed = transformed.map((d: any, i: number) =>
-                  i === transformed.length - 1
-                    ? { ...d, items: [...d.items, rule.appendToLastSection] }
-                    : d
-                );
-              }
-            }
-          }
-        }
-
-        if (
-          summaryConfig.feesRow?.enabled &&
-          this.fees?.details?.length &&
-          transformed.length
-        ) {
-          const totalAmount = new Intl.NumberFormat("en-GB", {
-            style: "currency",
-            currency: "GBP",
-          }).format(this.fees?.total / 100);
-
-          transformed = transformed.map((d: any, i: number) =>
-            i === transformed.length - 1
-              ? {
-                  ...d,
-                  items: [
-                    ...d.items,
-                    {
-                      name: "fees",
-                      label: summaryConfig.feesRow?.label ?? "Fees",
-                      value: totalAmount,
-                      immutable: true,
-                    },
-                  ],
-                }
-              : d
+          transformed = applyConditionalRows(
+            transformed,
+            summaryConfig.conditionalRows
           );
         }
+
+        transformed = applyFeesRow(
+          transformed,
+          this.fees,
+          summaryConfig.feesRow
+        );
 
         this.details = transformed;
       } catch (err) {
