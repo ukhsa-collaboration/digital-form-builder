@@ -48,10 +48,11 @@ export const storeGtkEndpoint = http.post("*/storegtk", async ({ request }) => {
       { err: validated.error },
       "Mock /storegtk request failed validation"
     );
+
     return HttpResponse.json(validated.error, { status: 500 });
   }
 
   return HttpResponse.json({});
 });
 
-export const gtkBackendHandlers = [storeGtkEndpoint];
+export const rpsGasTestKitBackendHandlers = [storeGtkEndpoint];
