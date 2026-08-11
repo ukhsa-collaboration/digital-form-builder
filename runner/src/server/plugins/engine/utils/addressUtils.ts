@@ -1,7 +1,7 @@
 import { Item } from "@xgovformbuilder/model/dist/module/data-model/types";
 import Joi from "joi";
 import { Address } from "src/server/services/addressLookupService";
-import * as Fuse from "fuse.js";
+import Fuse from "fuse.js";
 
 export type AddressType =
   | "reportAddress"
@@ -74,13 +74,12 @@ const STREET_NUMBER_PATTERN = /(^|, )(\d+[A-Z]?([-\/]\d+)?[A-Z]?),/i;
 
 export const getAddressQuery = (
   addressLine1: string,
-  addressLine2: string,
   town: string,
-  county: string,
-  postcode: string
+  addressLine2?: string,
+  county?: string
 ): string => {
-  const addressParts = [addressLine1, addressLine2, town, county, postcode];
-  return addressParts.filter((part) => part && part.trim() !== "").join(",%20");
+  const addressParts = [addressLine1, addressLine2, town, county];
+  return addressParts.filter((part) => part && part.trim() !== "").join(", ");
 };
 
 export const findMatchingAddress = (
@@ -92,39 +91,35 @@ export const findMatchingAddress = (
   county?: string
 ): Address | undefined => {
   const normalizedBuilding = building?.trim().toUpperCase();
-  const normalizedAddressLine1 = addressLine1
-    ? addressLine1.trim().toUpperCase()
-    : undefined;
-  const normalizedAddressLine2 = addressLine2
-    ? addressLine2.trim().toUpperCase()
-    : undefined;
-  const normalizedTown = town ? town.trim().toUpperCase() : undefined;
-  const normalizedCounty = county ? county.trim().toUpperCase() : undefined;
+  const normalizedAddressLine1 = addressLine1?.trim().toUpperCase();
+  const normalizedAddressLine2 = addressLine2?.trim().toUpperCase();
+  const normalizedTown = town?.trim().toUpperCase();
+  const normalizedCounty = county?.trim().toUpperCase();
 
-  for (const address of addresses) {
-    const firstPart = address.address.split(",")[0].trim().toUpperCase();
+  let addressSearch;
+  if (normalizedAddressLine1 && normalizedTown) {
+    addressSearch = getAddressQuery(
+      normalizedAddressLine1,
+      normalizedTown,
+      normalizedAddressLine2,
+      normalizedCounty
+    );
+  } else if (normalizedBuilding) {
+    addressSearch = normalizedBuilding;
+  }
 
-    if (normalizedBuilding) {
-      if (
-        firstPart.replace(/\s/g, "") ===
-          normalizedBuilding.replace(/\s/g, "") ||
-        firstPart.startsWith(normalizedBuilding + " ")
-      ) {
-        return address;
-      }
-    }
+  // Default 0.6 tolerance
+  const fuse = new Fuse(addresses, {
+    includeScore: true,
+    includeMatches: true,
+    useTokenSearch: true,
+    keys: ["address"],
+  });
 
-    if (normalizedAddressLine1) {
-      const addressParts = [addressLine1, addressLine2, town, county];
-      const addressSearch = addressParts.join(", ").toUpperCase();
-      const fuse = new Fuse([address.address], {
-        useTokenSearch: true,
-        keys: ["address"],
-      });
-
-      fuse.search(addressSearch);
-    }
-    return address;
+  const results = fuse.search(addressSearch);
+  // Return the first match
+  if (results.length > 0) {
+    return results[0].item;
   }
 
   return undefined;
