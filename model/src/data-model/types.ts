@@ -366,4 +366,5 @@ export type FormDefinition = {
   services?: DynamicServiceConfig[];
   provider?: string;
   trustPayementsConfig?: TrustPaymentsConfig;
+  featureFlags?: string[];
 };

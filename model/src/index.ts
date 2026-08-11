@@ -9,3 +9,4 @@ export * from "./utils/helpers";
 export * from "./migration";
 export * from "./data-model/types";
 export { whichMigrations } from "./migration/whichMigrations";
+export { hasFeatureFlag } from "./featureFlags";

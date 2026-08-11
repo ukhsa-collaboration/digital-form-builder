@@ -9,7 +9,11 @@ import {
 } from "../feedback";
 import config from "server/config";
 import { FeesModel } from "server/plugins/engine/models/submission";
-import { isMultipleApiKey, TrustPaymentsDetails } from "@xgovformbuilder/model";
+import {
+  isMultipleApiKey,
+  TrustPaymentsDetails,
+  hasFeatureFlag,
+} from "@xgovformbuilder/model";
 import { v4 as uuidv4 } from "uuid";
 import { ControllerError } from "../errors";
 import { submitActionRegistry } from "src/server/services/submitActions";
@@ -44,63 +48,114 @@ export class SummaryPageController extends PageController {
         );
       }
 
-      /**
-       * iterates through the errors. If there are errors, a user will be redirected to the page
-       * with the error with returnUrl=`/${model.basePath}/summary` in the URL query parameter.
-       */
-      if (viewModel.errors) {
-        const errorToFix = viewModel.errors[0];
-        const { path } = errorToFix;
-        const parts = path.split(".");
-        const property = parts.length > 1 ? parts[parts.length - 1] : parts[0];
+      if (hasFeatureFlag(this.model.def, "ENHANCED_SUMMARY_VALIDATION")) {
+        /**
+         * iterates through the errors. If there are errors and the ENHANCED_SUMMARY_VALIDATION feature
+         * flag is enabled, a user will be redirected to the page with the error with
+         * returnUrl=`/${model.basePath}/summary` in the URL query parameter.
+         */
+        if (viewModel.errors) {
+          const errorToFix = viewModel.errors[0];
+          const { path } = errorToFix;
+          const parts = path.split(".");
+          const property =
+            parts.length > 1 ? parts[parts.length - 1] : parts[0];
 
-        const sectionName = parts.length > 1 ? parts[0] : null;
+          const sectionName = parts.length > 1 ? parts[0] : null;
 
-        const iteration = parts.length === 3 ? Number(parts[1]) + 1 : null;
+          const iteration = parts.length === 3 ? Number(parts[1]) + 1 : null;
 
-        const candidatePages = model.pages.filter((page) => {
-          const sectionMatches = page.section
-            ? page.section.name === sectionName
-            : sectionName === null;
+          const candidatePages = model.pages.filter((page) => {
+            const sectionMatches = page.section
+              ? page.section.name === sectionName
+              : sectionName === null;
 
-          if (!sectionMatches) return false;
+            if (!sectionMatches) return false;
 
-          let propertyMatches = true;
-          let conditionMatches = true;
-          if (property) {
-            propertyMatches =
-              page.components.formItems.filter((item) => item.name === property)
-                .length > 0;
+            let propertyMatches = true;
+            let conditionMatches = true;
+            if (property) {
+              propertyMatches =
+                page.components.formItems.filter(
+                  (item) => item.name === property
+                ).length > 0;
+            }
+
+            if (
+              propertyMatches &&
+              page.condition &&
+              model.conditions[page.condition]
+            ) {
+              conditionMatches = model.conditions[page.condition].fn(state);
+            }
+
+            return propertyMatches && conditionMatches;
+          });
+
+          const pageWithError =
+            candidatePages.find(
+              (page) =>
+                page.condition && model.conditions[page.condition]?.fn(state)
+            ) ?? candidatePages[0];
+
+          if (pageWithError) {
+            const params = {
+              returnUrl: redirectUrl(request, `/${model.basePath}/summary`),
+              num: iteration && pageWithError.repeatField ? iteration : null,
+            };
+            return redirectTo(
+              request,
+              h,
+              `/${model.basePath}${pageWithError.path}`,
+              params
+            );
           }
-
-          if (
-            propertyMatches &&
-            page.condition &&
-            model.conditions[page.condition]
-          ) {
-            conditionMatches = model.conditions[page.condition].fn(state);
+        }
+      } else {
+        /**
+         * iterates through the errors. If there are errors, a user will be redirected to the page
+         * with the error with returnUrl=`/${model.basePath}/summary` in the URL query parameter.
+         */
+        if (viewModel.errors) {
+          const errorToFix = viewModel.errors[0];
+          const { path } = errorToFix;
+          const parts = path.split(".");
+          const section = parts[0];
+          const property = parts.length > 1 ? parts[parts.length - 1] : null;
+          const iteration = parts.length === 3 ? Number(parts[1]) + 1 : null;
+          const pageWithError = model.pages.filter((page) => {
+            if (page.section && page.section.name === section) {
+              let propertyMatches = true;
+              let conditionMatches = true;
+              if (property) {
+                propertyMatches =
+                  page.components.formItems.filter(
+                    (item) => item.name === property
+                  ).length > 0;
+              }
+              if (
+                propertyMatches &&
+                page.condition &&
+                model.conditions[page.condition]
+              ) {
+                conditionMatches = model.conditions[page.condition].fn(state);
+              }
+              return propertyMatches && conditionMatches;
+            }
+            return false;
+          })[0];
+          if (pageWithError) {
+            const params = {
+              returnUrl: redirectUrl(request, `/${model.basePath}/summary`),
+              num: iteration && pageWithError.repeatField ? iteration : null,
+            };
+            return redirectTo(
+              request,
+              h,
+              `/${model.basePath}${pageWithError.path}`,
+              params
+            );
           }
-
-          return propertyMatches && conditionMatches;
-        });
-
-        const pageWithError =
-          candidatePages.find(
-            (page) =>
-              page.condition && model.conditions[page.condition]?.fn(state)
-          ) ?? candidatePages[0];
-
-        if (pageWithError) {
-          const params = {
-            returnUrl: redirectUrl(request, `/${model.basePath}/summary`),
-            num: iteration && pageWithError.repeatField ? iteration : null,
-          };
-          return redirectTo(
-            request,
-            h,
-            `/${model.basePath}${pageWithError.path}`,
-            params
-          );
         }
       }
 
