@@ -5454,12 +5454,11 @@ __metadata:
     sass: ^1.49.9
     schmervice: ^1.6.0
     sinon: ^13.0.1
-    tmp: ^0.2.3
+    tmp: ^0.2.1
     typescript: ^5.x
     url-parse: ^1.5.10
     uuid: ^8.3.2
     yar: 9.1.0
-    fuse.js: 7.5.0
   languageName: unknown
   linkType: soft
 
@@ -11417,13 +11416,6 @@ __metadata:
   version: 1.2.3
   resolution: "functions-have-names@npm:1.2.3"
   checksum: c3f1f5ba20f4e962efb71344ce0a40722163e85bee2101ce25f88214e78182d2d2476aa85ef37950c579eb6cf6ee811c17b3101bb84004bb75655f3e33f3fdb5
-  languageName: node
-  linkType: hard
-
-"fuse.js@npm:^7.5.0":
-  version: 7.5.0
-  resolution: "fuse.js@npm:7.5.0"
-  checksum: d7729183ea712ca811ccea44898b360e62f53da933ca18a5c01b351dbd8e26ea6d166790c9a705e9c402734c2a32fda4bc5a5972175b25de89a77a8155a8d2a9
   languageName: node
   linkType: hard
 
@@ -20784,14 +20776,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tmp@npm:^0.2.3":
-  version: 0.2.7
-  resolution: "tmp@npm:0.2.7"
-  checksum: 45dec2fc288ad368eeff7268cb6d5d33452c6d35f4f7d9b1b5e023409a141dab57a3c08b5f505daf3af6d69667a5f544fc1a5b6a27c6f9396a5a1b4002912f1c
-  languageName: node
-  linkType: hard
-
-"tmp@npm:~0.2.1":
+"tmp@npm:^0.2.1, tmp@npm:~0.2.1":
   version: 0.2.1
   resolution: "tmp@npm:0.2.1"
   dependencies:
