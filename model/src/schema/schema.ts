@@ -502,6 +502,7 @@ export const Schema = joi
     services: joi.array().items(dynamicServiceConfigSchema).optional(),
     provider: joi.string().valid("govuk-pay", "trust-payments").optional(),
     paymentProvider: joi.string().optional(),
+    featureFlags: joi.array().items(joi.string()).optional(),
   });
 
 /**

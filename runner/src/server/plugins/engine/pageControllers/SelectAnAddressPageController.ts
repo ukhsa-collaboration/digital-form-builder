@@ -6,7 +6,6 @@ import {
   addressTypeSchema,
   AddressType,
   deriveSelectedFieldName,
-  formatAddress,
   resolveAddressByUdprn,
 } from "../utils/addressUtils";
 import { addressSelectionHandlers } from "../utils/addressSelectionHandlers";
@@ -39,12 +38,12 @@ function buildDisplayStringFromState(
   return function (state) {
     const value = state[`${pageAddressType}_selectedAddress`];
     if (!value) return "";
-    if (typeof value === "object" && value.address) return formatAddress(value);
+    if (typeof value === "object" && value.address) return value.address;
     const addresses: any[] = state[`${pageAddressType}_addresses`] || [];
     const match = addresses.find(
       (addr) => String(addr.udprn) === String(value)
     );
-    return match ? formatAddress(match) : String(value);
+    return match ? match.address : String(value);
   };
 }
 
@@ -96,7 +95,7 @@ export class SelectAnAddressPageController extends PageControllerBase {
     }
   }
 
-  async getRouteHandlerHook(request: HapiRequest) {
+  async onMakeGetRouteHandler(request: HapiRequest) {
     const { cacheService } = request.services([]);
     const currentState = await cacheService.getState(request);
 

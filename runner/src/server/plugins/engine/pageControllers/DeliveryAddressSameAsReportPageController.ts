@@ -1,6 +1,5 @@
 import { PageControllerBase } from "./PageControllerBase";
 import { HapiRequest, HapiResponseToolkit } from "server/types";
-import { formatAddress } from "../utils/addressUtils";
 
 const COMPONENT_SAME_AS_REPORT = "deliveryAddressSameAsReport";
 const COMPONENT_DISPLAY = "deliveryAddressSameAsReportDisplay";
@@ -8,7 +7,7 @@ const COMPONENT_DISPLAY = "deliveryAddressSameAsReportDisplay";
 export class DeliveryAddressSameAsReportPageController extends PageControllerBase {
   private displayAddress: string = "";
 
-  async getRouteHandlerHook(request: HapiRequest) {
+  async onMakeGetRouteHandler(request: HapiRequest) {
     const { cacheService } = request.services([]);
     const currentState = await cacheService.getState(request);
     this.displayAddress = `${currentState.reportAddress_selectedAddress.address}`;
@@ -49,9 +48,7 @@ export class DeliveryAddressSameAsReportPageController extends PageControllerBas
           deliveryAddress_selectedAddress: reportAddress,
           deliveryAddress_matchedAddress: reportAddress,
           deliveryAddress_isCorrectAddress: true,
-          [COMPONENT_DISPLAY]: reportAddress
-            ? formatAddress(reportAddress)
-            : "",
+          [COMPONENT_DISPLAY]: reportAddress ?? "",
         });
 
         return this.proceed(request, h, savedState, true);

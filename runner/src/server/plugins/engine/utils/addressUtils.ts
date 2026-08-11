@@ -120,18 +120,6 @@ export const addressesToList = (addresses: Address[]): Item[] => {
 };
 
 /**
- * Formats the address object from the lookup api
- * @param address - an address object
- * @returns a single line comma-separated address
- */
-export const formatAddress = (address: {
-  address: string;
-  postcode?: string;
-}): string => {
-  return address.address;
-};
-
-/**
  * Finds an address by UDPRN
  * @param addresses - a list of addresses
  * @param udprn - the udprn

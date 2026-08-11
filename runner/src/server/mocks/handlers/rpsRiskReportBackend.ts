@@ -1,16 +1,16 @@
-import { http, HttpResponse } from "msw";
+import { http, HttpResponse, RequestHandler } from "msw";
 import joi from "joi";
 import pino from "pino";
 
 const logger = pino().child({ name: "rpsRiskReportBackend" });
 
-export const lookupAddressRequestSchema = joi.object({
+const lookupAddressRequestSchema = joi.object({
   uuid: joi.string().uuid().required(),
   uprn: joi.string().required(),
   udprn: joi.string().required(),
 });
 
-export interface RiskReportLookupResponse {
+interface RiskReportLookupResponse {
   requestId: string;
   success: boolean;
   UDPRN: string;
@@ -18,7 +18,7 @@ export interface RiskReportLookupResponse {
   found: boolean;
 }
 
-export const storeReportRequestSchema = joi.object({
+const storeReportRequestSchema = joi.object({
   uuid: joi.string().uuid().required(),
   firstName: joi.string().required(),
   lastName: joi.string().required(),
@@ -34,50 +34,18 @@ export const storeReportRequestSchema = joi.object({
   countryCode: joi.string().valid("N", "E", "S", "W").required(),
 });
 
-export type StoreReportAddressRequest = {
-  uuid: string;
-  udprn: string;
-  uprn: string;
-  countryCode: "E" | "W" | "N" | "S";
-};
-
-export type StoreReportDetailsRequest =
-  | {
-      deliveryMethod: "post";
-      uuid: string;
-      firstName: string;
-      lastName: string;
-      email?: string;
-
-      /* Postal address details */
-      address?: string;
-
-      addressLine1?: string;
-      addressLine2?: string;
-      country?: string;
-      townCity?: string;
-      postcode?: string;
-    }
-  | {
-      deliveryMethod: "email";
-      uuid: string;
-      firstName: string;
-      lastName: string;
-      email: string;
-    };
-
-export interface StoreReportResponse {
+interface StoreReportResponse {
   message: string;
   uuid: string;
 }
 
-export const storePaymentDetailsRequestSchema = joi.object({
+const storePaymentDetailsRequestSchema = joi.object({
   uuid: joi.string().required(),
   transactionId: joi.string().required(),
   settle_status: joi.string().valid("SETTLED", "NOT_SETTLED"),
 });
 
-export interface StorePaymentDetailsResponse {
+interface StorePaymentDetailsResponse {
   uuid: string;
   transactionId: string;
   message: string;
@@ -86,7 +54,7 @@ export interface StorePaymentDetailsResponse {
 /**
  * Post request to store customer details & delivery address (if delivery method is `Post`).
  */
-export const storeReportDetailsEndpoint = http.post(
+const storeReportDetailsEndpoint = http.post(
   "*/storereport",
   async ({ request }) => {
     const validated = storeReportRequestSchema.validate(await request.json());
@@ -111,7 +79,7 @@ export const storeReportDetailsEndpoint = http.post(
 /**
  * Post request to store risk report address details. Stores UDPRN and Country Code
  */
-export const storeRiskReportAddressEndpoint = http.post(
+const storeRiskReportAddressEndpoint = http.post(
   "*/lookup",
   async ({ request }) => {
     const validated = lookupAddressRequestSchema.validate(await request.json());
@@ -130,28 +98,32 @@ export const storeRiskReportAddressEndpoint = http.post(
       case undefined:
         return HttpResponse.json({}, { status: 500 });
 
-      case "20765140":
-        return HttpResponse.json({
+      case "20765140": {
+        const response: RiskReportLookupResponse = {
           success: false,
           UDPRN: udprn,
           TemplateId: "1",
           found: false,
           requestId: sessionId,
-        });
+        };
+        return HttpResponse.json(response);
+      }
 
-      default:
-        return HttpResponse.json({
+      default: {
+        const response: RiskReportLookupResponse = {
           success: true,
           UDPRN: udprn,
           TemplateId: "5",
           found: true,
           requestId: sessionId,
-        });
+        };
+        return HttpResponse.json(response);
+      }
     }
   }
 );
 
-export const storePaymentDetailsEndpoint = http.post(
+const storePaymentDetailsEndpoint = http.post(
   "*/storepayment",
   async ({ request }) => {
     const validated = storePaymentDetailsRequestSchema.validate(
@@ -168,15 +140,16 @@ export const storePaymentDetailsEndpoint = http.post(
 
     const { uuid, transactionId } = validated.value;
 
-    return HttpResponse.json({
+    const response: StorePaymentDetailsResponse = {
       message: "Payment stored",
       uuid,
       transactionId,
-    });
+    };
+    return HttpResponse.json(response);
   }
 );
 
-export const rpsRiskReportBackendHandlers = [
+export const rpsRiskReportBackendHandlers: RequestHandler[] = [
   storeRiskReportAddressEndpoint,
   storeReportDetailsEndpoint,
   storePaymentDetailsEndpoint,

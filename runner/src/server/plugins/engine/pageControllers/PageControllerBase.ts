@@ -153,13 +153,19 @@ export class PageControllerBase {
   }
 
   /**
+   * This method is called at the start of the getRouteHandler function. It can be overridden to retrieve state
+   * @param _request the http request object
+   */
+  async onMakeGetRouteHandler(_request: HapiRequest) {}
+
+  /**
    * Used for mapping FormData and errors to govuk-frontend's template api, so a page can be rendered
    * @param formData - contains a user's form payload, and any validation errors that may have occurred
    */
   getViewModel(
     formData: FormData,
-    iteration?: any,
-    errors?: any
+    iteration?: unknown,
+    errors?: FormSubmissionErrors
   ): {
     page: PageControllerBase;
     name: string;
@@ -168,7 +174,7 @@ export class PageControllerBase {
     showTitle: boolean;
     components: ComponentCollectionViewModel;
     componentsAfter: ComponentCollectionViewModel;
-    errors: FormSubmissionErrors;
+    errors?: FormSubmissionErrors;
     isStartPage: boolean;
     startPage?: HapiResponseObject;
     backLink?: string;
@@ -376,7 +382,7 @@ export class PageControllerBase {
    */
   getFormDataFromState(state: any, atIndex: number): FormData {
     const pageState = this.section ? state[this.section.name] : state;
-    let formData: any;
+    let formData: Partial<FormData>;
 
     if (this.repeatField) {
       const repeatedPageState =
@@ -511,7 +517,7 @@ export class PageControllerBase {
     let nextPage = model.startPage;
 
     //While the current page isn't null
-    const checkedPages = new Set<any>();
+    const checkedPages = new Set<PageControllerBase>();
     while (nextPage != null) {
       //Either get the current state or the current state of the section if this page belongs to a section
       const currentState =
@@ -558,14 +564,10 @@ export class PageControllerBase {
     return relevantState;
   }
 
-  /**
-   * This method is called at the start of the getRouteHandler function. It can be overridden to retrieve state
-   * @param _request the http request object
-   */
-  async getRouteHandlerHook(_request: HapiRequest) {}
-
   makeGetRouteHandler() {
     return async (request: HapiRequest, h: HapiResponseToolkit) => {
+      await this.onMakeGetRouteHandler(request);
+
       const { cacheService } = request.services([]);
       const lang = this.langFromRequest(request);
       const state = await cacheService.getState(request);
@@ -583,8 +585,6 @@ export class PageControllerBase {
         `[GET ${this.path}] formData:`,
         JSON.stringify(formData, null, 2)
       );
-
-      await this.getRouteHandlerHook(request);
 
       const isStartPage = this.path === `${startPage}`;
       const isInitialisedSession = !!state.callback;
@@ -841,9 +841,11 @@ export class PageControllerBase {
           text: `The selected files must be smaller than ${config.maxFileSizeStringInMb}MB`,
         };
       });
+
       formResult.errors = Object.is(formResult.errors, null)
         ? { titleText: "There is a problem" }
         : formResult.errors;
+
       formResult.errors.errorList = reformattedErrors;
     }
 
@@ -852,6 +854,7 @@ export class PageControllerBase {
      */
     if (preHandlerErrors?.length) {
       const reformattedErrors: any[] = [];
+
       preHandlerErrors.forEach((error) => {
         const reformatted = error;
         const fieldMeta = fileFields.find((field) => field.id === error.name);
@@ -867,16 +870,20 @@ export class PageControllerBase {
           reformattedErrors.push(reformatted);
         }
       });
+
       formResult.errors = Object.is(formResult.errors, null)
         ? { titleText: "There is a problem" }
         : formResult.errors;
+
       formResult.errors.errorList = reformattedErrors;
     }
+
     Object.entries(payload).forEach(([key, value]) => {
       if (value && value === (originalFilenames[key] || {}).location) {
         payload[key] = originalFilenames[key].originalFilename;
       }
     });
+
     /**
      * If there are any errors, render the page with the parsed errors
      */
@@ -895,6 +902,7 @@ export class PageControllerBase {
 
     const newState = this.getStateFromValidForm(formResult.value);
     const stateResult = this.validateState(newState);
+
     if (stateResult.errors) {
       return this.renderWithErrors(
         request,
@@ -911,6 +919,7 @@ export class PageControllerBase {
     if (this.repeatField) {
       const updateValue = { [this.path]: update[this.section.name] };
       const sectionState = state[this.section.name];
+
       if (!sectionState) {
         update = { [this.section.name]: [updateValue] };
       } else if (!sectionState[num - 1]) {
@@ -923,6 +932,7 @@ export class PageControllerBase {
     }
 
     const { nullOverride, arrayMerge, modifyUpdate } = mergeOptions;
+
     if (modifyUpdate) {
       update = modifyUpdate(update);
     }
@@ -936,9 +946,11 @@ export class PageControllerBase {
   makePostRouteHandler() {
     return async (request: HapiRequest, h: HapiResponseToolkit) => {
       const response = await this.handlePostRequest(request, h);
+
       if (response?.source?.context?.errors) {
         return response;
       }
+
       const { cacheService } = request.services([]);
 
       if (
@@ -959,10 +971,12 @@ export class PageControllerBase {
 
         if (authCookie) {
           const tokenArtifacts = Jwt.token.decode(authCookie);
+
           const { isValid, error } = verifyHmacToken(
             tokenArtifacts,
             this.model.def.jwtKey
           );
+
           if (!isValid) {
             // If the token is invalid, redirect to the start page
             if (currentPath !== `/${this.model.basePath}${startPage!}`) {
@@ -973,7 +987,8 @@ export class PageControllerBase {
       }
 
       const shouldGoToExitPage =
-        this.model.allowExit && (request.payload as any)?.action === "exit";
+        this.model.allowExit &&
+        (request.payload as { action?: string })?.action === "exit";
 
       if (shouldGoToExitPage) {
         await cacheService.setExitState(request, {
@@ -1060,7 +1075,13 @@ export class PageControllerBase {
   }
 
   /**
-   * TODO:- proceed is interfering with subclasses
+   * Navigates to the next page after a successful form submission.
+   *
+   * @param request - The incoming Hapi request.
+   * @param h - The Hapi response toolkit used to issue the redirect.
+   * @param state - Current form submission state, used to determine the next page.
+   * @param honourReturnUrl - Override whether the `returnUrl` query param is
+   *   respected. Defaults to `true` when the next path matches the return URL.
    */
   proceed(
     request: HapiRequest,

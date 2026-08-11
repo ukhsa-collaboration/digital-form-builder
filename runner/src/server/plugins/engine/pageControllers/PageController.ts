@@ -1,43 +1,10 @@
 import { PageControllerBase } from "./PageControllerBase";
 import { HapiRequest, HapiResponseToolkit } from "server/types";
-import { FormModel, SummaryViewModel } from "../models";
-import { submitActionRegistry } from "server/services/submitActions";
-import { ControllerError } from "../errors";
+import { FormModel } from "../models";
 
 export class PageController extends PageControllerBase {
   constructor(model: FormModel, pageDef: any) {
     super(model, pageDef);
-  }
-
-  /**
-   * Runs the summary page's configured `summaryConfig.onSubmit` action, if any.
-   * Returning a Hapi response from the action short-circuits the caller's submit
-   * handler; returning `undefined` means the normal submit flow should continue.
-   */
-  async runOnSubmitAction(
-    request: HapiRequest,
-    h: HapiResponseToolkit,
-    summaryViewModel: SummaryViewModel
-  ) {
-    const onSubmit = this.model.def.summaryConfig?.onSubmit;
-    if (!onSubmit) return undefined;
-
-    const action = submitActionRegistry[onSubmit.action];
-
-    if (!action) {
-      throw new ControllerError(
-        `Unknown summary onSubmit action '${onSubmit.action}'`,
-        {
-          code: 500,
-        }
-      );
-    }
-
-    return action(request, h, {
-      model: this.model,
-      summaryViewModel,
-      parameters: onSubmit.parameters,
-    });
   }
 
   /**

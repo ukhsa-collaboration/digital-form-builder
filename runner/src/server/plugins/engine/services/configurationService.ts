@@ -2,7 +2,7 @@ import fs from "fs";
 import path from "path";
 import stripJsonComments from "strip-json-comments";
 
-import { resolvePlaceholders } from "../utils/resolvePlaceholders";
+import { resolveDevPlaceholders } from "../utils/resolveDevPlaceholders";
 import { FormDefinition } from "@xgovformbuilder/model";
 import { idFromFilename } from "../helpers";
 
@@ -60,7 +60,7 @@ export const loadPreConfiguredForms = (): FormConfiguration[] => {
 
   return Array.from(filesById.entries()).map(([id, configFile]) => {
     const dataFilePath = path.join(FORMS_FOLDER, configFile);
-    const configuration = resolvePlaceholders(loadFormFile(dataFilePath));
+    const configuration = resolveDevPlaceholders(loadFormFile(dataFilePath));
     return { configuration, id };
   });
 };
