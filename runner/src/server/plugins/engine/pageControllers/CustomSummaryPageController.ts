@@ -13,6 +13,8 @@ import { isMultipleApiKey } from "@xgovformbuilder/model";
 import { FormComponent } from "../components";
 import { SelectionControlField } from "../components/SelectionControlField";
 import { PageControllerBase } from "./PageControllerBase";
+import { submitActionRegistry } from "src/server/services/submitActions";
+import { ControllerError } from "../errors";
 
 const DEFAULT_OPTIONS = {
   customText: {},
@@ -516,5 +518,36 @@ export class CustomSummaryPageController extends PageController {
 
   get defaultButtonText() {
     return "Confirm and send";
+  }
+
+  /**
+   * Runs the summary page's configured `summaryConfig.onSubmit` action, if any.
+   * Returning a Hapi response from the action short-circuits the caller's submit
+   * handler; returning `undefined` means the normal submit flow should continue.
+   */
+  async runOnSubmitAction(
+    request: HapiRequest,
+    h: HapiResponseToolkit,
+    summaryViewModel: SummaryViewModel
+  ) {
+    const onSubmit = this.model.def.summaryConfig?.onSubmit;
+    if (!onSubmit) return undefined;
+
+    const action = submitActionRegistry[onSubmit.action];
+
+    if (!action) {
+      throw new ControllerError(
+        `Unknown summary onSubmit action '${onSubmit.action}'`,
+        {
+          code: 500,
+        }
+      );
+    }
+
+    return action(request, h, {
+      model: this.model,
+      summaryViewModel,
+      parameters: onSubmit.parameters,
+    });
   }
 }

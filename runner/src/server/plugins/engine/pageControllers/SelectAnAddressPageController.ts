@@ -184,7 +184,7 @@ export class SelectAnAddressPageController extends PageControllerBase {
     }
   }
 
-  async getRouteHandlerHook(request: HapiRequest) {
+  async onMakeGetRouteHandler(request: HapiRequest) {
     const { cacheService } = request.services([]);
     const currentState = await cacheService.getState(request);
 

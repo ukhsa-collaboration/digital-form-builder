@@ -7,7 +7,7 @@ const COMPONENT_DISPLAY = "deliveryAddressSameAsReportDisplay";
 export class DeliveryAddressSameAsReportPageController extends PageControllerBase {
   private displayAddress: string = "";
 
-  async getRouteHandlerHook(request: HapiRequest) {
+  async onMakeGetRouteHandler(request: HapiRequest) {
     const { cacheService } = request.services([]);
     const currentState = await cacheService.getState(request);
     this.displayAddress = `${currentState.reportAddress_selectedAddress.address}`;

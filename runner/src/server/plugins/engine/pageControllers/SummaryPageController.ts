@@ -12,6 +12,7 @@ import { FeesModel } from "server/plugins/engine/models/submission";
 import { isMultipleApiKey, TrustPaymentsDetails } from "@xgovformbuilder/model";
 import { v4 as uuidv4 } from "uuid";
 import { ControllerError } from "../errors";
+import { submitActionRegistry } from "src/server/services/submitActions";
 
 export class SummaryPageController extends PageController {
   /**
@@ -382,5 +383,36 @@ export class SummaryPageController extends PageController {
       );
     }
     return payApiKey ?? "";
+  }
+
+  /**
+   * Runs the summary page's configured `summaryConfig.onSubmit` action, if any.
+   * Returning a Hapi response from the action short-circuits the caller's submit
+   * handler; returning `undefined` means the normal submit flow should continue.
+   */
+  async runOnSubmitAction(
+    request: HapiRequest,
+    h: HapiResponseToolkit,
+    summaryViewModel: SummaryViewModel
+  ) {
+    const onSubmit = this.model.def.summaryConfig?.onSubmit;
+    if (!onSubmit) return undefined;
+
+    const action = submitActionRegistry[onSubmit.action];
+
+    if (!action) {
+      throw new ControllerError(
+        `Unknown summary onSubmit action '${onSubmit.action}'`,
+        {
+          code: 500,
+        }
+      );
+    }
+
+    return action(request, h, {
+      model: this.model,
+      summaryViewModel,
+      parameters: onSubmit.parameters,
+    });
   }
 }
