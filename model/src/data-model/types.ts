@@ -319,10 +319,6 @@ export interface SummaryConfig {
   conditionalRows?: Array<SummaryConditionalRow>;
   feesRow?: SummaryFeesRowConfig;
   onSubmit?: SubmitActionConfig;
-  /** PluggableSummaryPageController: runs before form validation. */
-  onBeforeSubmit?: SubmitActionConfig;
-  /** PluggableSummaryPageController: runs after onSubmit. */
-  onAfterSubmit?: SubmitActionConfig;
 }
 
 /**
@@ -366,6 +362,7 @@ export type FormDefinition = {
   secureFormSubmissionConfig?: SecureFormSubmissionConfig;
   error500ContactEmail?: string | undefined;
   summaryConfig?: SummaryConfig;
+  hooks?: Record<string, string>;
   generateReference?: boolean | undefined;
   services?: DynamicServiceConfig[];
   provider?: string;

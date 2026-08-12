@@ -18,6 +18,9 @@
     "feedbackForm": false,
     "url": ""
   },
+  "hooks": {
+    "HeadlessSummaryPageController.onSubmit": "rpsGasTestKitOnSummarySubmit"
+  },
   "pages": [
     {
       "path": "/start",
@@ -1487,7 +1490,7 @@
       }
     },
     {
-      "name": "gtkBackendService",
+      "name": "rpsBackendService",
       "service": "jsonApiIntegrationWithMsal",
       "parameters": {
         "apimBaseUrl": "${RPS_RADON_TEST_KIT_API_BASE_URL}",

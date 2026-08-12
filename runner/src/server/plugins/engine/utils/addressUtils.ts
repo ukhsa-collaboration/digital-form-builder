@@ -61,17 +61,17 @@ function resolveFullSelectedAddress(
   const value = state[`${addressType}${SELECTED_ADDRESS_SUFFIX}`];
   if (!value) return "";
 
-  if (typeof value === "object" && value.address) return formatAddress(value);
+  if (typeof value === "object" && value.address) return value.address;
 
   // value is a UDPRN string — resolve it to the full object.
   const matched = state[`${addressType}_matchedAddress`];
   if (matched && String(matched.udprn) === String(value)) {
-    return formatAddress(matched);
+    return matched.address;
   }
 
   const addresses: Address[] = state[`${addressType}_addresses`] || [];
   const found = addresses.find((addr) => String(addr.udprn) === String(value));
-  return found ? formatAddress(found) : String(value);
+  return found ? found.address : String(value);
 }
 
 /**
