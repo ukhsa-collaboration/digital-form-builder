@@ -76,6 +76,7 @@ export class PageControllerBase {
   returnUrl?: string;
   buttonText?: string;
   hideContinueButton?: boolean;
+  skipBrowserValidation: boolean;
 
   // TODO: pageDef type
   constructor(model: FormModel, pageDef: { [prop: string]: any } = {}) {
@@ -96,6 +97,8 @@ export class PageControllerBase {
     this.disableSingleComponentAsHeading =
       pageDef.disableSingleComponentAsHeading;
     this.buttonText = pageDef.customButtonText ?? this.defaultButtonText;
+    this.skipBrowserValidation =
+      pageDef.options?.skipBrowserValidation ?? false;
     this.hideContinueButton = pageDef.options?.hideContinueButton ?? false;
 
     // Resolve section
