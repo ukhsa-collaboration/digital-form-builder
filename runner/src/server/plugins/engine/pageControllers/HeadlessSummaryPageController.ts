@@ -1,17 +1,11 @@
-import { SummaryConfig } from "@xgovformbuilder/model";
 import { PageController } from "./PageController";
 import { redirectTo } from "../helpers";
 import { FeesModel } from "server/plugins/engine/models/submission";
 import { HapiRequest, HapiResponseToolkit } from "server/types";
 import { ControllerError } from "../errors";
 import { gatherRepeatPages } from "server/utils/gatherRepeatPages";
-import {
-  onBeforeSubmitRegistry,
-  onSubmitRegistry,
-  onAfterSubmitRegistry,
-  runHook,
-} from "server/services/summaryLifecycle";
 import { paymentProviderRegistry } from "server/services/paymentProviders";
+import { runHook } from "server/services/hooks";
 
 export class HeadlessSummaryPageController extends PageController {
   makeGetRouteHandler() {
@@ -66,7 +60,6 @@ export class HeadlessSummaryPageController extends PageController {
     return async (request: HapiRequest, h: HapiResponseToolkit) => {
       const { cacheService } = request.services([]);
       const model = this.model;
-      const summaryConfig: SummaryConfig = model.def.summaryConfig ?? {};
 
       const response = await this.handlePostRequest(request, h);
 
@@ -91,37 +84,34 @@ export class HeadlessSummaryPageController extends PageController {
         return this.redirectToStartPage(request, h, model);
       }
 
-      if (summaryConfig.onBeforeSubmit) {
-        const hookResponse = await runHook(
-          onBeforeSubmitRegistry,
-          summaryConfig.onBeforeSubmit.action,
-          request,
-          state
-        );
-        if (hookResponse) return hookResponse;
-      }
+      const beforeSubmitResponse = await runHook(
+        this.constructor.name,
+        "onBeforeSubmit",
+        request,
+        h,
+        { model }
+      );
+      if (beforeSubmitResponse) return beforeSubmitResponse;
 
       await cacheService.mergeState(request, { userCompletedSummary: true });
 
-      if (summaryConfig.onSubmit) {
-        const hookResponse = await runHook(
-          onSubmitRegistry,
-          summaryConfig.onSubmit.action,
-          request,
-          state
-        );
-        if (hookResponse) return hookResponse;
-      }
+      const submitResponse = await runHook(
+        this.constructor.name,
+        "onSubmit",
+        request,
+        h,
+        { model }
+      );
+      if (submitResponse) return submitResponse;
 
-      if (summaryConfig.onAfterSubmit) {
-        const hookResponse = await runHook(
-          onAfterSubmitRegistry,
-          summaryConfig.onAfterSubmit.action,
-          request,
-          state
-        );
-        if (hookResponse) return hookResponse;
-      }
+      const afterSubmitResponse = await runHook(
+        this.constructor.name,
+        "onAfterSubmit",
+        request,
+        h,
+        { model }
+      );
+      if (afterSubmitResponse) return afterSubmitResponse;
 
       const feesModel = FeesModel(model, state);
 
