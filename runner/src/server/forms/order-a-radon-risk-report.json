@@ -88,8 +88,7 @@
       ],
       "options": {
         "hiddenFields": ["addressType"],
-        "disabledChangeFields": ["addressType"],
-        "skipBrowserValidation": true
+        "disabledChangeFields": ["addressType"]
       },
       "customButtonText": "Find address",
       "componentsAfter": [
