@@ -1,4 +1,3 @@
-import { createHash } from "crypto";
 import { ControllerError } from "server/plugins/engine/errors";
 import { saveGasTestKitDetailsSchema } from "server/services/submitActions/saveGasTestKitDetailsSchema";
 import { getOrCreateCorrelationId } from "server/utils/correlationId";
