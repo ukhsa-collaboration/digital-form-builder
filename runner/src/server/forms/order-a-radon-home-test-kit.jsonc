@@ -700,7 +700,7 @@
       ],
       "options": {
         "hiddenFields": ["addressType"],
-        "disabledChangeFields": ["addressType"],
+        "disabledChangeFields": ["addressType"]
       },
       "controller": "ManualAddressPageController",
       "next": [{ "path": "/summary" }]
@@ -824,7 +824,7 @@
       ],
       "options": {
         "hiddenFields": ["addressType"],
-        "disabledChangeFields": ["addressType"],
+        "disabledChangeFields": ["addressType"]
       },
       "controller": "ManualAddressPageController",
       "next": [
