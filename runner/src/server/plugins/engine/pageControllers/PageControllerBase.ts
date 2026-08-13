@@ -402,6 +402,8 @@ export class PageControllerBase {
               typeof v === "boolean")
         )
       );
+
+      // inject raw state in the component
       formData = {
         ...rawState,
         ...this.components.getFormDataFromState(pageState || {}),
