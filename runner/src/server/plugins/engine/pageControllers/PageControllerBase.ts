@@ -76,6 +76,7 @@ export class PageControllerBase {
   disableBackLink?: boolean;
   returnUrl?: string;
   buttonText?: string;
+  honorReturnURL?: boolean;
   hideContinueButton?: boolean;
 
   // TODO: pageDef type
@@ -98,6 +99,8 @@ export class PageControllerBase {
       pageDef.disableSingleComponentAsHeading;
     this.buttonText =
       pageDef?.options?.customButtonText ?? this.defaultButtonText;
+    this.honorReturnURL = 
+      pageDef?.options?.honorReturnURL ?? true;
     this.hideContinueButton = pageDef.options?.hideContinueButton ?? false;
 
     // Resolve section
@@ -1094,7 +1097,7 @@ export class PageControllerBase {
 
     const returnUrl = getReturnUrl(request);
 
-    const shouldHonourReturnUrl = honourReturnUrl ?? returnUrl !== undefined;
+    const shouldHonourReturnUrl = this.honorReturnURL ?? returnUrl !== undefined;
 
     return proceed(request, h, nextUrl, shouldHonourReturnUrl);
   }

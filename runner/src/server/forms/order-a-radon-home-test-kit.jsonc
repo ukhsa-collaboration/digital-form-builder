@@ -620,6 +620,7 @@
           }
         }
       ],
+      "options":{"honorReturnURL":false},
       "next": [{ "path": "/results-address" }]
     },
     {
@@ -699,7 +700,7 @@
       ],
       "options": {
         "hiddenFields": ["addressType"],
-        "disabledChangeFields": ["addressType"]
+        "disabledChangeFields": ["addressType"],
       },
       "controller": "ManualAddressPageController",
       "next": [{ "path": "/summary" }]
@@ -743,6 +744,7 @@
           }
         }
       ],
+      "options":{"honorReturnURL": false},
       "next": [{ "path": "/kit-address" }]
     },
     {
@@ -822,7 +824,7 @@
       ],
       "options": {
         "hiddenFields": ["addressType"],
-        "disabledChangeFields": ["addressType"]
+        "disabledChangeFields": ["addressType"],
       },
       "controller": "ManualAddressPageController",
       "next": [
