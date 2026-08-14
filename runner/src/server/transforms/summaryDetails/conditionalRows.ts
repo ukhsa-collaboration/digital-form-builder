@@ -1,20 +1,21 @@
 // Remove or append rows on the summary based on a configured field's value
 import { SummaryConditionalRow } from "@xgovformbuilder/model";
 import { removeRows } from "./removeRows";
+import { SummarySection } from "./types";
 
 export function applyConditionalRows(
-  details: any,
+  details: SummarySection[],
   conditionalRows: Array<SummaryConditionalRow>
 ) {
   // Snapshot all items before iterating so rule order doesn't affect
   // which `when` conditions are evaluated.
   const allItems = details.flatMap((d: any) => d.items);
-  const itemsByName = new Map(allItems.map((item: any) => [item.name, item]));
+  const itemsByName = new Map(allItems.map((item) => [item.name, item]));
 
   let transformed = details;
 
   for (const rule of conditionalRows) {
-    const match: any = itemsByName.get(rule.when.field);
+    const match = itemsByName.get(rule.when.field);
 
     const conditionMatches =
       rule.when.isEmpty === true
@@ -28,11 +29,11 @@ export function applyConditionalRows(
     }
 
     if (rule.appendToLastSection) {
-      transformed = transformed.map((d: any, i: number) =>
+      transformed = transformed.map((detail, i: number) =>
         i === transformed.length - 1
-          ? { ...d, items: [...d.items, rule.appendToLastSection] }
-          : d
-      );
+          ? { ...detail, items: [...detail.items, rule.appendToLastSection] }
+          : detail
+      ) as SummarySection[];
     }
   }
 

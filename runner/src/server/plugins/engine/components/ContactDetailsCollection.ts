@@ -23,6 +23,7 @@ import { ListItem } from "./types";
  * the visible inputs so that key is always present in the payload — Joi only
  * runs validators on keys that exist in the input being validated.
  */
+const DEFAULT_EMAIL_MESSAGE = "Enter an email address in the correct format";
 export class ContactDetailsCollection extends FormComponent {
   children: ComponentCollection;
 
@@ -72,7 +73,10 @@ export class ContactDetailsCollection extends FormComponent {
             required: false,
             optionalText: false,
             customValidationMessages: {
-              "string.email": "Enter an email address in the correct format",
+              "string.pattern.base": DEFAULT_EMAIL_MESSAGE,
+              "any.required": DEFAULT_EMAIL_MESSAGE,
+              "any.only": DEFAULT_EMAIL_MESSAGE,
+              "string.empty": DEFAULT_EMAIL_MESSAGE,
             },
           },
         },

@@ -10,6 +10,7 @@ Here you can find additional documentation for XGovFormBuilder.
 - [Documentation](#documentation)
   - [Contents](#contents)
     - [Runner](#runner)
+      - [Components](#components)
     - [Designer](#designer)
     - [Examples](#examples)
     - [ADRs](#adrs)
@@ -43,6 +44,13 @@ Features and configuration options for the runner.
   - Allow njks templating within html components and add previous answers to the render context
 - [mock API](runner/mock-api.md)
   - Intercept outbound HTTP calls in local development with mock responses
+
+#### Components
+
+- [hidden field](runner/components/hidden-field.md)
+  - Embed non-visible data in a form page for use in submissions or later pages
+- [display address](runner/components/display-address.md)
+  - Render a previously collected address from form state with each line on its own line
 
 ### Designer
 

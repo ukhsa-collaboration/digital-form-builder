@@ -99,8 +99,7 @@ export class PageControllerBase {
       pageDef.disableSingleComponentAsHeading;
     this.buttonText =
       pageDef?.options?.customButtonText ?? this.defaultButtonText;
-    this.honorReturnURL = 
-      pageDef?.options?.honorReturnURL ?? true;
+    this.honorReturnURL = pageDef?.options?.honorReturnURL ?? true;
     this.hideContinueButton = pageDef.options?.hideContinueButton ?? false;
 
     // Resolve section
@@ -385,7 +384,6 @@ export class PageControllerBase {
    */
   getFormDataFromState(state: any, atIndex: number): FormData {
     const pageState = this.section ? state[this.section.name] : state;
-    let formData: Partial<FormData>;
 
     if (this.repeatField) {
       const repeatedPageState =
@@ -396,7 +394,7 @@ export class PageControllerBase {
         ? values.reduce((acc: any, page: any) => ({ ...acc, ...page }), {})
         : {};
 
-      formData = {
+      return {
         ...this.components.getFormDataFromState(
           newState as FormSubmissionState
         ),
@@ -404,35 +402,12 @@ export class PageControllerBase {
           newState as FormSubmissionState
         ),
       };
-    } else {
-      // get component names
-      const ownFieldNames = new Set(
-        this.components.formItems.map((item) => item.name)
-      );
-
-      // extract state values matching component state names
-      const rawState = Object.fromEntries(
-        Object.entries(pageState || {}).filter(
-          ([key, v]) =>
-            ownFieldNames.has(key) &&
-            (typeof v === "string" ||
-              typeof v === "number" ||
-              typeof v === "boolean")
-        )
-      );
-      formData = {
-        ...rawState,
-        // Expose namespaced address state keys (selected/matched address
-        // objects + lookup scalars) so any component can display a previously
-        // selected address, e.g. `{{ propertyAddress_selectedAddress.address }}`.
-        // Uses the full `state` since these keys live at the top level.
-        ...extractAddressContext(state),
-        ...this.components.getFormDataFromState(pageState || {}),
-        ...this.model.getContextState(state),
-      };
     }
 
-    return formData;
+    return {
+      ...this.components.getFormDataFromState(pageState || {}),
+      ...this.model.getContextState(state),
+    };
   }
 
   getStateFromValidForm(formData: FormPayload) {
@@ -1097,7 +1072,8 @@ export class PageControllerBase {
 
     const returnUrl = getReturnUrl(request);
 
-    const shouldHonourReturnUrl = this.honorReturnURL ?? returnUrl !== undefined;
+    const shouldHonourReturnUrl =
+      this.honorReturnURL ?? returnUrl !== undefined;
 
     return proceed(request, h, nextUrl, shouldHonourReturnUrl);
   }
