@@ -12,6 +12,15 @@ export type SelectedFieldName =
   | "selectedReportAddress"
   | "selectedDeliveryAddress";
 
+export type AddressLookupFields = {
+  postcode: string;
+  building?: string;
+  addressLine1?: string;
+  addressLine2?: string;
+  town?: string;
+  county?: string;
+};
+
 export const addressTypeSchema = Joi.string().valid(
   "reportAddress",
   "deliveryAddress",
@@ -69,56 +78,43 @@ const STREET_NUMBER_PATTERN = /(^|, )(\d+[A-Z]?([-\/]\d+)?[A-Z]?),/i;
  * @param addresses - a list of addresses
  * @param building - the building name
  * @param addressLine1 - the 1st line of the address
+ * @param addressLine2 - the 2nd line of the address
+ * @param town - the town of the address
+ * @param county - the county of the address
  * @returns an address or undefined
  */
 
-export const getAddressQuery = (
-  addressLine1: string,
-  town: string,
-  addressLine2?: string,
-  county?: string
-): string => {
-  const addressParts = [addressLine1, addressLine2, town, county];
-  return addressParts.filter((part) => part && part.trim() !== "").join(", ");
-};
-
 export const findMatchingAddress = (
   addresses: Address[],
-  building?: string,
-  addressLine1?: string,
-  addressLine2?: string,
-  town?: string,
-  county?: string
+  address: AddressLookupFields
 ): Address | undefined => {
-  const normalizedBuilding = building?.trim().toUpperCase();
-  const normalizedAddressLine1 = addressLine1?.trim().toUpperCase();
-  const normalizedAddressLine2 = addressLine2?.trim().toUpperCase();
-  const normalizedTown = town?.trim().toUpperCase();
-  const normalizedCounty = county?.trim().toUpperCase();
+  const addressQuery = [
+    address.building,
+    address.addressLine1,
+    address.addressLine2,
+    address.town,
+    address.county,
+  ]
+    .filter(Boolean)
+    .map((part) => part?.trim().toUpperCase())
+    .join(", ");
+  return fuzzyMatchAddress(addresses, addressQuery);
+};
 
-  let addressSearch;
-  if (normalizedAddressLine1 && normalizedTown) {
-    addressSearch = getAddressQuery(
-      normalizedAddressLine1,
-      normalizedTown,
-      normalizedAddressLine2,
-      normalizedCounty
-    );
-  } else if (normalizedBuilding) {
-    addressSearch = normalizedBuilding;
-  }
-
-  // Default 0.6 tolerance
+export const fuzzyMatchAddress = (
+  addresses: Address[],
+  query: string
+): Address | undefined => {
   const fuse = new Fuse(addresses, {
+    threshold: 0.4,
     includeScore: true,
     includeMatches: true,
-    useTokenSearch: true,
     keys: ["address"],
   });
 
-  const results = fuse.search(addressSearch);
-  // Return the first match
-  if (results.length > 0) {
+  const results = fuse.search(query);
+  // Return the best match
+  if (results.length > 0 && results[0].score < 0.38) {
     return results[0].item;
   }
 
