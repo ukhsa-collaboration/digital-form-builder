@@ -99,8 +99,7 @@ export class PageControllerBase {
       pageDef.disableSingleComponentAsHeading;
     this.buttonText =
       pageDef?.options?.customButtonText ?? this.defaultButtonText;
-    this.honorReturnURL = 
-      pageDef?.options?.honorReturnURL ?? true;
+    this.honorReturnURL = pageDef?.options?.honorReturnURL ?? true;
     this.hideContinueButton = pageDef.options?.hideContinueButton ?? false;
 
     // Resolve section
@@ -408,6 +407,7 @@ export class PageControllerBase {
     return {
       ...this.components.getFormDataFromState(pageState || {}),
       ...this.model.getContextState(state),
+      ...extractAddressContext(state),
     };
   }
 
@@ -1073,7 +1073,8 @@ export class PageControllerBase {
 
     const returnUrl = getReturnUrl(request);
 
-    const shouldHonourReturnUrl = this.honorReturnURL ?? returnUrl !== undefined;
+    const shouldHonourReturnUrl =
+      this.honorReturnURL ?? returnUrl !== undefined;
 
     return proceed(request, h, nextUrl, shouldHonourReturnUrl);
   }
