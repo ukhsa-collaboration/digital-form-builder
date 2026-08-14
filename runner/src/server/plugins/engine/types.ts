@@ -88,9 +88,3 @@ export type CookiesPolicy = {
   analytics: "on" | "off";
   usage: boolean;
 };
-
-export type FieldAssignment = {
-  field: string;
-  value: any;
-  condition?: string;
-};
