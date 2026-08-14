@@ -8,7 +8,10 @@ import {
   WebhookService,
 } from "server/services";
 import { SendNotificationArgs } from "server/services/notifyService";
-import { WebhookOutputConfiguration } from "@xgovformbuilder/model";
+import {
+  WebhookOutputConfiguration,
+  PayloadValueConfig,
+} from "@xgovformbuilder/model";
 import { ComponentCollection } from "server/plugins/engine/components/ComponentCollection";
 import { FormSubmissionState } from "server/plugins/engine/types";
 import { FormModel } from "server/plugins/engine/models";
@@ -19,6 +22,7 @@ import {
   OutputData,
   TNotifyModel,
 } from "../plugins/engine/models/submission/types";
+import { ControllerError } from "../plugins/engine/errors";
 
 type WebhookModel = WebhookOutputConfiguration & {
   formData: object;
@@ -66,18 +70,26 @@ export class StatusService {
     this.payService = payService;
     this.formSecurityService = formSecurityService;
   }
+
   async shouldShowPayErrorPage(request: HapiRequest): Promise<boolean> {
-    const { pay } = await this.cacheService.getState(request);
+    const { pay, paymentProvider } = await this.cacheService.getState(request);
+
+    if (paymentProvider === "trust-payments")
+      await this.verifyTrustPaymentRedirect(request);
+
     if (!pay) {
       this.logger.info(
         ["StatusService", "shouldShowPayErrorPage"],
         "No pay state detected, skipping"
       );
+
       return false;
     }
+
     const { self, meta } = pay;
     const { query } = request;
     const { state } = await this.payService.payStatus(self, meta.payApiKey);
+
     pay.state = state;
 
     if (state.status === "success") {
@@ -125,6 +137,30 @@ export class StatusService {
     return shouldRetry;
   }
 
+  async verifyTrustPaymentRedirect(request: HapiRequest) {
+    // verify redirect for trust payments
+    const { trustPaymentsService } = request.service.getServices(
+      "trustPaymentsService"
+    );
+
+    const paymentErrorStatus = request.query["errorcode"];
+
+    if (
+      !trustPaymentsService.verifyRedirect(request) ||
+      (paymentErrorStatus && paymentErrorStatus !== "0")
+    ) {
+      // call service event on invalid payment
+      await trustPaymentsService.onInvalidPayment(request);
+
+      // throw payment page error
+      throw new ControllerError("cannot verify trust payment redirect", {
+        code: 500,
+      });
+    }
+
+    await trustPaymentsService.onValidPayment(request);
+  }
+
   async outputRequests(request: HapiRequest) {
     const state = await this.cacheService.getState(request);
     let formData = this.webhookArgsFromState(state);
@@ -168,6 +204,7 @@ export class StatusService {
         ["StatusService", "outputRequests"],
         `Callback detected for ${request.yar.id} - PUT to ${callback.callbackUrl}`
       );
+
       try {
         newReference = await this.webhookService.postRequest(
           callback.callbackUrl,
@@ -184,14 +221,22 @@ export class StatusService {
 
     const firstWebhook = outputs?.find((output) => output.type === "webhook");
     const otherOutputs = outputs?.filter((output) => output !== firstWebhook);
+
     if (firstWebhook) {
+      const payload = this.resolvePayload(
+        firstWebhook.outputData.payload,
+        formData,
+        state
+      );
+
       newReference = await this.webhookService.postRequest(
         firstWebhook.outputData.url,
-        { ...formData },
+        { ...formData, ...payload },
         "POST",
         firstWebhook.outputData.sendAdditionalPayMetadata,
         customSecurityHeaders
       );
+
       await this.cacheService.mergeState(request, {
         reference: newReference,
       });
@@ -225,6 +270,43 @@ export class StatusService {
       reference: newReference,
       results: Promise.allSettled(requests),
     };
+  }
+
+  /**
+   * Injects values from `formData` and `state` into the payload structure
+   * If a value is not found in `formData` or `state`, it defaults to the value
+   * in the payload structure
+   *
+   * @param payload
+   * @param formData
+   * @param state
+   * @returns
+   */
+  resolvePayload(
+    payload: Record<string, PayloadValueConfig> | undefined | null,
+    formData: Record<string, unknown>,
+    state: Record<string, unknown>
+  ): Record<string, string> {
+    if (!payload) return {};
+
+    const resolveFieldValue = (field: string | undefined) =>
+      field ? formData[field] ?? state[field] : undefined;
+
+    const resolveValue = ({
+      string,
+      field,
+      fallback,
+    }: PayloadValueConfig): string =>
+      String(string ?? resolveFieldValue(field) ?? fallback ?? "");
+
+    const output: Record<string, string> = {};
+    for (const [key, config] of Object.entries(payload)) {
+      const value = resolveValue(config);
+      if (value !== "" || config.required !== false) {
+        output[key] = value;
+      }
+    }
+    return output;
   }
 
   /**
@@ -354,7 +436,7 @@ export class StatusService {
     formModel: FormModel,
     newReference?: string
   ) {
-    const { reference, pay, callback } = state;
+    const { reference, pay, callback, generatedReference = null } = state;
     this.logger.info(
       ["StatusService", "getViewModel"],
       `generating viewModel for ${newReference ?? reference}`
@@ -366,6 +448,7 @@ export class StatusService {
     let model = {
       reference: referenceToDisplay,
       ...(pay && { paymentSkipped: pay.paymentSkipped }),
+      ...(generatedReference && { generatedReference }),
     };
 
     const confirmationPageDef = formModel.def.specialPages?.confirmationPage;
@@ -401,6 +484,7 @@ export class StatusService {
       componentDefsToRender,
       formModel
     );
+
     model.components = componentCollection.getViewModel(
       state,
       undefined,

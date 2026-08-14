@@ -2,23 +2,66 @@ import { RelativeUrl } from "./feedback";
 import { HapiRequest, HapiResponseToolkit } from "server/types";
 import { reach } from "@hapi/hoek";
 import _ from "lodash";
+import { AddressLookupConfig } from "@xgovformbuilder/model";
 
 export const feedbackReturnInfoKey = "f_t";
 
-const paramsToCopy = [feedbackReturnInfoKey];
+const paramsToCopy = [feedbackReturnInfoKey, "returnUrl"];
+
+/**
+ * Checks if the url is internal
+ */
+const isSafeInternalUrl = (url: string): boolean =>
+  url.startsWith("/") && !url.startsWith("//");
 
 export function proceed(
   request: HapiRequest,
   h: HapiResponseToolkit,
-  nextUrl: string
+  nextUrl: string,
+  honourReturnUrl: boolean = true
 ) {
   const returnUrl = request.query.returnUrl;
 
-  if (typeof returnUrl === "string" && returnUrl.startsWith("/")) {
+  if (
+    honourReturnUrl &&
+    typeof returnUrl === "string" &&
+    isSafeInternalUrl(returnUrl)
+  ) {
     return h.redirect(returnUrl);
   } else {
     return redirectTo(request, h, nextUrl);
   }
+}
+
+/**
+ * A page reached via a summary page's "Change" link carries a `returnUrl`
+ * query param that already tells us where the user came from - trust it for
+ * the back link the same way `proceed` trusts it for forward navigation,
+ * rather than relying on the generic progress history.
+ */
+export function getBackLink(
+  request: HapiRequest,
+  progress: string[],
+  backLinkFallback?: string
+) {
+  const returnUrl = request.query.returnUrl;
+
+  if (typeof returnUrl === "string" && isSafeInternalUrl(returnUrl)) {
+    return returnUrl;
+  }
+
+  return progress[progress.length - 2] ?? backLinkFallback;
+}
+
+/**
+ * Returns the current request's `returnUrl` query param if it's present.
+ */
+export function getReturnUrl(request: HapiRequest): string | undefined {
+  const returnUrl = request.query.returnUrl;
+
+  return typeof returnUrl === "string" && isSafeInternalUrl(returnUrl)
+    ? returnUrl
+    : undefined;
 }
 
 type Params = { num?: number; returnUrl: string } | {};

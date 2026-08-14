@@ -64,10 +64,40 @@ export class TextField extends FormComponent {
     return { [this.name]: this.formSchema as Schema };
   }
 
+  format(
+    options: { trim?: boolean; case?: "upper" | "lower" } | undefined,
+    value: string
+  ) {
+    if (options?.trim) {
+      value = value.trim();
+    }
+
+    if (options?.case === "upper") {
+      value = value.toUpperCase();
+    } else if (options?.case === "lower") {
+      value = value.toLowerCase();
+    }
+
+    return value;
+  }
+
   getViewModel(formData: FormData, errors: FormSubmissionErrors) {
     const options: any = this.options;
     const schema: any = this.schema;
     const viewModel = super.getViewModel(formData, errors);
+    const payload = formData.value;
+    let value;
+    if (payload) {
+      value = this.getStateValueFromValidForm(payload);
+      if (value) {
+        if (options.format) {
+          value = this.format(options.format, value);
+          payload[this.name] = value;
+          formData.value = payload;
+          viewModel.value = value;
+        }
+      }
+    }
 
     if (schema.max) {
       viewModel.attributes = {

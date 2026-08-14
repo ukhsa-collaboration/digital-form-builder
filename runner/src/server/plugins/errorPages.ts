@@ -74,7 +74,9 @@ export const handleApplicationError = (
     ("page" in data && data.page && findView(folders, data.page)) ||
     findView(folders, code);
 
-  return response.view(view || code).code(data.code);
+  return response
+    .view(view || code, data.backUrl ? { backLink: data.backUrl } : {})
+    .code(data.code);
 };
 
 /*
@@ -107,6 +109,7 @@ export default {
                 statusCode: statusCode,
                 data: response.data,
                 message: response.message,
+                stack: response.stack,
               });
 
               // In the event of 403 (CSRF protection)

@@ -9,7 +9,14 @@ import {
 } from "../feedback";
 import config from "server/config";
 import { FeesModel } from "server/plugins/engine/models/submission";
-import { isMultipleApiKey } from "@xgovformbuilder/model";
+import {
+  isMultipleApiKey,
+  TrustPaymentsDetails,
+  hasFeatureFlag,
+} from "@xgovformbuilder/model";
+import { v4 as uuidv4 } from "uuid";
+import { ControllerError } from "../errors";
+import { submitActionRegistry } from "src/server/services/submitActions";
 
 export class SummaryPageController extends PageController {
   /**
@@ -41,19 +48,30 @@ export class SummaryPageController extends PageController {
         );
       }
 
-      /**
-       * iterates through the errors. If there are errors, a user will be redirected to the page
-       * with the error with returnUrl=`/${model.basePath}/summary` in the URL query parameter.
-       */
-      if (viewModel.errors) {
-        const errorToFix = viewModel.errors[0];
-        const { path } = errorToFix;
-        const parts = path.split(".");
-        const section = parts[0];
-        const property = parts.length > 1 ? parts[parts.length - 1] : null;
-        const iteration = parts.length === 3 ? Number(parts[1]) + 1 : null;
-        const pageWithError = model.pages.filter((page) => {
-          if (page.section && page.section.name === section) {
+      if (hasFeatureFlag(this.model.def, "ENHANCED_SUMMARY_VALIDATION")) {
+        /**
+         * iterates through the errors. If there are errors and the ENHANCED_SUMMARY_VALIDATION feature
+         * flag is enabled, a user will be redirected to the page with the error with
+         * returnUrl=`/${model.basePath}/summary` in the URL query parameter.
+         */
+        if (viewModel.errors) {
+          const errorToFix = viewModel.errors[0];
+          const { path } = errorToFix;
+          const parts = path.split(".");
+          const property =
+            parts.length > 1 ? parts[parts.length - 1] : parts[0];
+
+          const sectionName = parts.length > 1 ? parts[0] : null;
+
+          const iteration = parts.length === 3 ? Number(parts[1]) + 1 : null;
+
+          const candidatePages = model.pages.filter((page) => {
+            const sectionMatches = page.section
+              ? page.section.name === sectionName
+              : sectionName === null;
+
+            if (!sectionMatches) return false;
+
             let propertyMatches = true;
             let conditionMatches = true;
             if (property) {
@@ -62,6 +80,7 @@ export class SummaryPageController extends PageController {
                   (item) => item.name === property
                 ).length > 0;
             }
+
             if (
               propertyMatches &&
               page.condition &&
@@ -69,28 +88,88 @@ export class SummaryPageController extends PageController {
             ) {
               conditionMatches = model.conditions[page.condition].fn(state);
             }
+
             return propertyMatches && conditionMatches;
+          });
+
+          const pageWithError =
+            candidatePages.find(
+              (page) =>
+                page.condition && model.conditions[page.condition]?.fn(state)
+            ) ?? candidatePages[0];
+
+          if (pageWithError) {
+            const params = {
+              returnUrl: redirectUrl(request, `/${model.basePath}/summary`),
+              num: iteration && pageWithError.repeatField ? iteration : null,
+            };
+            return redirectTo(
+              request,
+              h,
+              `/${model.basePath}${pageWithError.path}`,
+              params
+            );
           }
-          return false;
-        })[0];
-        if (pageWithError) {
-          const params = {
-            returnUrl: redirectUrl(request, `/${model.basePath}/summary`),
-            num: iteration && pageWithError.repeatField ? iteration : null,
-          };
-          return redirectTo(
-            request,
-            h,
-            `/${model.basePath}${pageWithError.path}`,
-            params
-          );
         }
+      } else {
+        /**
+         * iterates through the errors. If there are errors, a user will be redirected to the page
+         * with the error with returnUrl=`/${model.basePath}/summary` in the URL query parameter.
+         */
+        if (viewModel.errors) {
+          const errorToFix = viewModel.errors[0];
+          const { path } = errorToFix;
+          const parts = path.split(".");
+          const section = parts[0];
+          const property = parts.length > 1 ? parts[parts.length - 1] : null;
+          const iteration = parts.length === 3 ? Number(parts[1]) + 1 : null;
+          const pageWithError = model.pages.filter((page) => {
+            if (page.section && page.section.name === section) {
+              let propertyMatches = true;
+              let conditionMatches = true;
+              if (property) {
+                propertyMatches =
+                  page.components.formItems.filter(
+                    (item) => item.name === property
+                  ).length > 0;
+              }
+              if (
+                propertyMatches &&
+                page.condition &&
+                model.conditions[page.condition]
+              ) {
+                conditionMatches = model.conditions[page.condition].fn(state);
+              }
+              return propertyMatches && conditionMatches;
+            }
+            return false;
+          })[0];
+          if (pageWithError) {
+            const params = {
+              returnUrl: redirectUrl(request, `/${model.basePath}/summary`),
+              num: iteration && pageWithError.repeatField ? iteration : null,
+            };
+            return redirectTo(
+              request,
+              h,
+              `/${model.basePath}${pageWithError.path}`,
+              params
+            );
+          }
+        }
+      }
+
+      const { progress = [] } = state;
+      if (!this.disableBackLink) {
+        viewModel.backLink =
+          progress[progress.length - 1] ?? this.backLinkFallback;
       }
 
       const declarationError = request.yar.flash("declarationError");
       if (declarationError.length) {
         viewModel.declarationError = declarationError[0];
       }
+
       return h.view("summary", viewModel);
     };
   }
@@ -102,6 +181,7 @@ export class SummaryPageController extends PageController {
   makePostRouteHandler() {
     return async (request: HapiRequest, h: HapiResponseToolkit) => {
       const { payService, cacheService } = request.services([]);
+
       const model = this.model;
       const state = await cacheService.getState(request);
       const summaryViewModel = new SummaryViewModel(
@@ -147,20 +227,42 @@ export class SummaryPageController extends PageController {
        * If a form is configured with a declaration, a checkbox will be rendered with the configured declaration text.
        * If the user does not agree to the declaration, the page will be rerendered with a warning.
        */
-      if (summaryViewModel.declaration && !summaryViewModel.skipSummary) {
+      if (
+        (summaryViewModel.declaration || summaryViewModel.declarationLabel) &&
+        !summaryViewModel.skipSummary
+      ) {
         const { declaration } = request.payload as {
           declaration?: any;
         };
 
         if (!declaration) {
-          request.yar.flash(
-            "declarationError",
-            "You must declare to be able to submit this application"
-          );
+          const errorMessage =
+            this.model.def.summaryConfig?.declaration?.errorMessage ??
+            "You must declare to be able to submit this application";
+          request.yar.flash("declarationError", errorMessage);
           const url = request.headers.referer ?? request.path;
           return redirectTo(request, h, `${url}#declaration`);
         }
+
         summaryViewModel.addDeclarationAsQuestion();
+      }
+
+      const onSubmitResult = await this.runOnSubmitAction(
+        request,
+        h,
+        summaryViewModel
+      );
+
+      if (onSubmitResult) {
+        return onSubmitResult;
+      }
+
+      if (model.def?.generateReference == true) {
+        const reference = uuidv4();
+        summaryViewModel.addReferenceToWebhook(reference);
+        await cacheService.mergeState(request, {
+          generatedReference: reference,
+        });
       }
 
       await cacheService.mergeState(request, {
@@ -168,17 +270,44 @@ export class SummaryPageController extends PageController {
         userCompletedSummary: true,
       });
 
-      // Commented out due to potential for logging PII
-      // request.logger.info(
-      //   ["Webhook data", "before send", request.yar.id],
-      //   JSON.stringify(summaryViewModel.validatedWebhookData)
-      // );
-
       await cacheService.mergeState(request, {
         webhookData: summaryViewModel.validatedWebhookData,
       });
 
       const feesModel = FeesModel(model, state);
+
+      if (model.def?.provider === "trust-payments") {
+        const { trustPaymentsService } = request.service.getServices(
+          "trustPaymentsService"
+        );
+
+        if (!trustPaymentsService) {
+          throw new ControllerError("cannot find trust payments service", {
+            code: 500,
+          });
+        }
+
+        const url = new URL(request.url);
+
+        if (!feesModel)
+          throw new ControllerError("feesModel is undefined", {
+            code: 500,
+          });
+
+        // extract payment details from cache
+        const paymentDetails: TrustPaymentsDetails = {
+          billingFirstName: state.firstName ?? "",
+          billingLastName: state.lastName ?? "",
+          amount: feesModel.total,
+          redirectUrl: `${url.origin}/${request.params.id}/status`,
+        };
+
+        const html = await trustPaymentsService.createTrustPaymentsForm(
+          paymentDetails
+        );
+
+        return h.response(html).type("text/html");
+      }
 
       /**
        * If a user does not need to pay, redirect them to /status
@@ -277,7 +406,10 @@ export class SummaryPageController extends PageController {
         "Summary",
         `${request.url.pathname}${request.url.search}`
       );
-      relativeFeedbackUrl.setParam(feedbackReturnInfoKey, returnInfo.toString());
+      relativeFeedbackUrl.setParam(
+        feedbackReturnInfoKey,
+        returnInfo.toString()
+      );
       return relativeFeedbackUrl.toString();
     }
 
@@ -298,11 +430,44 @@ export class SummaryPageController extends PageController {
 
   get payApiKey(): string {
     const modelDef = this.model.def;
-    const payApiKey = modelDef.feeOptions?.payApiKey ?? def.payApiKey;
+    const payApiKey = modelDef.feeOptions?.payApiKey ?? modelDef.payApiKey;
 
     if (isMultipleApiKey(payApiKey)) {
-      return payApiKey[config.apiEnv] ?? payApiKey.test ?? payApiKey.production;
+      return (
+        payApiKey[config.apiEnv] ?? payApiKey.test ?? payApiKey.production ?? ""
+      );
     }
-    return payApiKey;
+    return payApiKey ?? "";
+  }
+
+  /**
+   * Runs the summary page's configured `summaryConfig.onSubmit` action, if any.
+   * Returning a Hapi response from the action short-circuits the caller's submit
+   * handler; returning `undefined` means the normal submit flow should continue.
+   */
+  async runOnSubmitAction(
+    request: HapiRequest,
+    h: HapiResponseToolkit,
+    summaryViewModel: SummaryViewModel
+  ) {
+    const onSubmit = this.model.def.summaryConfig?.onSubmit;
+    if (!onSubmit) return undefined;
+
+    const action = submitActionRegistry[onSubmit.action];
+
+    if (!action) {
+      throw new ControllerError(
+        `Unknown summary onSubmit action '${onSubmit.action}'`,
+        {
+          code: 500,
+        }
+      );
+    }
+
+    return action(request, h, {
+      model: this.model,
+      summaryViewModel,
+      parameters: onSubmit.parameters,
+    });
   }
 }

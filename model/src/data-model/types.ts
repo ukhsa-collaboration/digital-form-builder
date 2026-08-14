@@ -16,6 +16,7 @@ export interface Page {
   disableBackLink?: boolean;
   controller: string;
   components?: ComponentDef[];
+  componentsAfter?: ComponentDef[];
   section?: string; // the section ID
   sectionForExitJourneySummaryPages?: string;
   sectionForMultiSummaryPages?: string;
@@ -107,11 +108,18 @@ export type NotifyOutputConfiguration = {
   }[];
   escapeURLs?: boolean;
 };
+export type PayloadValueConfig = {
+  field?: string;
+  fallback?: string;
+  string?: string;
+  required?: boolean;
+};
 
 export type WebhookOutputConfiguration = {
   url: string;
   sendAdditionalPayMetadata?: boolean;
   allowRetry?: boolean;
+  payload?: Record<string, PayloadValueConfig>;
 };
 
 export type OutputConfiguration =
@@ -131,6 +139,7 @@ export type ConfirmationPage = {
     title: string;
     paymentSkipped: Toggleable<string>;
     nextSteps: Toggleable<string>;
+    generatedReferenceContent: string;
     referenceTitle: string;
     referenceContent: string;
     hidePanel?: boolean;
@@ -208,6 +217,110 @@ export interface SecureFormSubmissionConfig extends MsalAuthorizerConfig {
   useAwsWafUserAgentWorkaround?: boolean;
 }
 
+export interface AddressLookupConfig extends MsalAuthorizerConfig {
+  apimBaseUrl: string;
+  callingApplication: string;
+  subscriptionKey?: string;
+}
+
+export interface DynamicServiceConfig {
+  name: string;
+  service: string;
+  parameters: Record<string, any>;
+}
+
+export interface TrustPaymentsConfig {
+  siteReference: string;
+  hashPassword: string;
+  onInvalidPaymentFunction?: string;
+  onValidPaymentFunction?: string;
+}
+
+export interface TrustPaymentsDetails {
+  billingFirstName: string;
+  billingLastName: string;
+  amount: number;
+  redirectUrl: string;
+}
+
+export interface SummaryDeclaration {
+  /** Checkbox label rendered on the summary page. */
+  label: string;
+  /** Overrides the default "You must declare…" flash error when unchecked. */
+  errorMessage?: string;
+  /** Hides the h2 Declaration heading in the summary page */
+  hideDeclarationHeading?: boolean;
+}
+
+/**
+ * Merges multiple named fields into a single summary row.
+ * The resulting row uses `to` as its field name and joins the source values with `joiner`.
+ */
+export interface SummaryMergeField {
+  names: string[];
+  to: string;
+  joiner: string;
+}
+
+/** A synthetic row that can be appended to the last summary section via a conditional rule. */
+export interface SummaryAppendSection {
+  name: string;
+  label: string;
+  value: string;
+  /** When true the user cannot return to change this value from the summary. */
+  immutable?: boolean;
+}
+
+/** Configures rendering the fees total as the final row of the main summary table, instead of the separate Fees section. */
+export interface SummaryFeesRowConfig {
+  enabled: boolean;
+  /** Overrides the default "Fees" row label. */
+  label?: string;
+}
+
+export interface SummaryConditionalRowCondition {
+  field: string;
+  value?: string;
+  isEmpty?: boolean;
+}
+
+export interface SummaryConditionalRow {
+  when: SummaryConditionalRowCondition;
+  removeFields?: string[];
+  appendToLastSection?: SummaryAppendSection;
+}
+
+/**
+ * Names a function registered in the runner's `submitActionRegistry` to run when the
+ * summary page's submit button is clicked, after the declaration check passes and before
+ * outputs/webhookData are merged into state.
+ */
+export interface SubmitActionConfig {
+  /** Key into the runner's `submitActionRegistry`. */
+  action: string;
+  parameters?: Record<string, any>;
+}
+
+/**
+ * Data-driven configuration for the summary page, set at the form-definition level.
+ * Transforms are applied in order: merge → remove → relabel → value transform → conditional rules.
+ */
+export interface SummaryConfig {
+  /** Overrides the default "Confirm and submit" button label. */
+  submitLabel?: string;
+  declaration?: SummaryDeclaration;
+  /** Field names to strip from the summary rows entirely. */
+  removeFields?: string[];
+  mergeFields?: Array<SummaryMergeField>;
+  /** Map of field name → new display label. */
+  relabelFields?: Record<string, string>;
+  /** Map of field name → { rawValue → replacement display value }. */
+  valueTransforms?: Record<string, Record<string, string>>;
+  conditionalRows?: Array<SummaryConditionalRow>;
+  feesRow?: SummaryFeesRowConfig;
+  onSubmit?: SubmitActionConfig;
+}
+
 /**
  * `FormDefinition` is a typescript representation of `Schema`
  */
@@ -243,8 +356,15 @@ export type FormDefinition = {
   fileUploadHmacSharedKey?: string | undefined;
   fullStartPage?: string | undefined;
   serviceName?: string | undefined;
-  confirmationSessionTimeout: number | undefined;
+  confirmationSessionTimeout?: number | undefined;
   returnTo?: boolean | undefined;
-  secureFormSubmissionConfig: SecureFormSubmissionConfig;
+  addressLookupConfig?: AddressLookupConfig;
+  secureFormSubmissionConfig?: SecureFormSubmissionConfig;
   error500ContactEmail?: string | undefined;
+  summaryConfig?: SummaryConfig;
+  generateReference?: boolean | undefined;
+  services?: DynamicServiceConfig[];
+  provider?: string;
+  trustPayementsConfig?: TrustPaymentsConfig;
+  featureFlags?: string[];
 };

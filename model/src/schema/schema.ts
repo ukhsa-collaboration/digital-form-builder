@@ -120,6 +120,7 @@ const pageSchema = joi.object().keys({
   sidebarContent: joi.object().optional(),
   controller: joi.string(),
   components: joi.array().items(componentSchema),
+  componentsAfter: joi.array().items(componentSchema).optional(),
   disableSingleComponentAsHeading: joi.boolean(),
   next: joi.array().items(nextSchema),
   repeatField: joi.string().optional(),
@@ -127,6 +128,7 @@ const pageSchema = joi.object().keys({
   backLinkFallback: joi.string().optional(),
   disableBackLink: joi.bool().optional(),
   customButtonText: joi.string().optional(),
+  hideContinueButton: joi.boolean().optional(),
 });
 
 const startNavigationLinkSchema = joi.object().keys({
@@ -156,6 +158,7 @@ const confirmationPageSchema = joi.object({
       nextSteps: toggleableString.default(
         "You will receive an email with details with the next steps."
       ),
+      generatedReferenceContent: joi.string().optional(),
       referenceTitle: joi.string(),
       referenceContent: joi.string(),
       hidePanel: joi.boolean().optional(),
@@ -177,11 +180,11 @@ const specialPagesSchema = joi.object().keys({
   paymentSkippedWarningPage: paymentSkippedWarningPage.optional(),
 });
 
-const listItemSchema = joi.object().keys({
-  text: localisedString,
+const listItemBaseKeys = {
   value: joi.alternatives().try(joi.number(), joi.string()),
   checkpointDisplayValue: joi.alternatives().try(joi.number(), joi.string()),
   description: localisedString.optional(),
+  selected: joi.boolean().optional(),
   conditional: joi
     .object()
     .keys({
@@ -194,7 +197,17 @@ const listItemSchema = joi.object().keys({
     .allow(null)
     .optional(),
   condition: joi.string().allow(null, "").optional(),
-});
+};
+
+// Either `html` or `text` must be present, but not both — .oxor enforces this.
+const listItemSchema = joi
+  .object()
+  .keys({
+    ...listItemBaseKeys,
+    html: localisedString,
+    text: localisedString,
+  })
+  .oxor("html", "text");
 
 const listSchema = joi.object().keys({
   name: joi.string().required(),
@@ -254,6 +267,7 @@ const webhookSchema = joi.object().keys({
   url: joi.string(),
   sendAdditionalPayMetadata: joi.boolean().optional().default(false),
   allowRetry: joi.boolean().default(true),
+  payload: joi.object().unknown(true).optional(),
 });
 
 const outputSchema = joi.object().keys({
@@ -335,6 +349,94 @@ const secureFormSubmissionConfig = msalAuthorizeConfigSchema.concat(
   })
 );
 
+const addressLookupConfigSchema = msalAuthorizeConfigSchema.concat(
+  joi.object().keys({
+    apimBaseUrl: joi.string(),
+    callingApplication: joi.string(),
+    subscriptionKey: joi.string().optional(),
+  })
+);
+
+const dynamicServiceConfigSchema = joi.object().keys({
+  name: joi.string().required(),
+  service: joi.string().required(),
+  parameters: joi.object().unknown(true).required(),
+});
+
+const summaryConfigSchema = joi.object().keys({
+  submitLabel: joi.string().optional(),
+  declaration: joi
+    .object()
+    .keys({
+      label: joi.string().required(),
+      errorMessage: joi.string().optional(),
+      hideDeclarationHeading: joi.boolean().optional(),
+    })
+    .optional(),
+  removeFields: joi.array().items(joi.string()).optional(),
+  mergeFields: joi
+    .array()
+    .items(
+      joi.object().keys({
+        names: joi.array().items(joi.string()).required(),
+        to: joi.string().required(),
+        joiner: joi.string().required(),
+      })
+    )
+    .optional(),
+  relabelFields: joi.object().pattern(joi.string(), joi.string()).optional(),
+  valueTransforms: joi
+    .object()
+    .pattern(joi.string(), joi.object().pattern(joi.string(), joi.string()))
+    .optional(),
+  conditionalRows: joi
+    .array()
+    .items(
+      joi.object().keys({
+        when: joi
+          .object()
+          .keys({
+            field: joi.string().required(),
+            value: joi.string().optional(),
+            isEmpty: joi.boolean().optional(),
+          })
+          .or("value", "isEmpty")
+          .required(),
+        removeFields: joi.array().items(joi.string()).optional(),
+        appendToLastSection: joi
+          .object()
+          .keys({
+            name: joi.string().required(),
+            label: joi.string().required(),
+            value: joi.string().required(),
+            immutable: joi.boolean().optional(),
+          })
+          .optional(),
+      })
+    )
+    .optional(),
+  feesRow: joi
+    .object()
+    .keys({
+      enabled: joi.boolean().required(),
+      label: joi.string().optional(),
+    })
+    .optional(),
+  onSubmit: joi
+    .object()
+    .keys({
+      action: joi.string().required(),
+      parameters: joi.object().unknown(true).optional(),
+    })
+    .optional(),
+});
+
+export const trustPaymentConfigSchema = joi.object({
+  hashPassword: joi.string().required(),
+  siteReference: joi.string().required(),
+  onValidRedirect: joi.string().optional(),
+});
+
 export const Schema = joi
   .object()
   .required()
@@ -380,7 +482,13 @@ export const Schema = joi
     confirmationSessionTimeout: joi.number().optional(),
     returnTo: joi.boolean().optional(),
     secureFormSubmissionConfig: secureFormSubmissionConfig.optional(),
+    addressLookupConfig: addressLookupConfigSchema.optional(),
     error500ContactEmail: joi.string().optional(),
+    summaryConfig: summaryConfigSchema.optional(),
+    generateReference: joi.boolean().optional(),
+    services: joi.array().items(dynamicServiceConfigSchema).optional(),
+    provider: joi.string().valid("govuk-pay", "trust-payments").optional(),
+    featureFlags: joi.array().items(joi.string()).optional(),
   });
 
 /**

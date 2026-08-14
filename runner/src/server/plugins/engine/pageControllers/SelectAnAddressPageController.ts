@@ -1,0 +1,358 @@
+import { PageControllerBase } from "./PageControllerBase";
+import { FormModel } from "../models";
+import { HapiRequest, HapiResponseToolkit } from "server/types";
+import Joi from "joi";
+import {
+  addressTypeSchema,
+  AddressType,
+  SelectedFieldName,
+  deriveSelectedFieldName,
+  resolveAddressByUdprn,
+} from "../utils/addressUtils";
+import { ControllerError } from "../errors";
+import { v4 as uuidv4 } from "uuid";
+import { JsonApiIntegrationWithMsal } from "src/server/services/jsonApiIntegrationWithMsal";
+
+type FormSubmission = {
+  addressType: AddressType;
+  isCorrectAddress: string;
+  selectedReportAddress: string;
+  selectedDeliveryAddress: string;
+};
+
+const COMPONENT_ADDRESS_TYPE = "addressType";
+const COMPONENT_ADDRESSES_HEADING = "addressesFoundHeading";
+const COMPONENT_MATCHED_ADDRESS_DISPLAY = "matchedAddressDisplay";
+const CHECK_UDPRN_FOR_ADDRESS_TYPES = ["reportAddress"];
+
+const formSchema = Joi.object({
+  addressType: addressTypeSchema,
+  selectedReportAddress: Joi.string().allow(""),
+  selectedDeliveryAddress: Joi.string().allow(""),
+}).unknown(true);
+
+/**
+ * Returns a `getDisplayStringFromState` implementation for the given address type.
+ * State keys are namespaced by address type (e.g. `reportAddress_selectedAddress`)
+ * so that report and delivery addresses coexist without collision.
+ * When the stored value is a UDPRN string, it resolves the full address from the
+ * cached `${addressType}_addresses` list.
+ */
+function buildDisplayStringFromState(
+  pageAddressType: AddressType
+): (state: Record<string, any>) => string {
+  return function (state) {
+    const value = state[`${pageAddressType}_selectedAddress`];
+    if (!value) return "";
+    if (typeof value === "object" && value.address) return value.address;
+    const addresses: any[] = state[`${pageAddressType}_addresses`] || [];
+    const match = addresses.find(
+      (addr) => String(addr.udprn) === String(value)
+    );
+    return match ? match.address : String(value);
+  };
+}
+
+const extractInputFromSubmission = (data: FormSubmission) => {
+  const { addressType, ...rest } = data;
+
+  return {
+    addressType,
+    selectedReportAddress: rest["selectedReportAddress"],
+    selectedDeliveryAddress: rest["selectedDeliveryAddress"],
+    isCorrectAddress: rest[`${addressType}_isCorrectAddress`],
+  };
+};
+
+/**
+ * Calls the RPS backend service to see if a UDPRN is valid for a risk report
+ * @param rpsBackendService - The backend service to check UDPRNs in the database
+ * @param parameters - udprn & a back link url for the error pages
+ * @returns a session ID if successful
+ */
+const lookupUdprnInDatabase = async (
+  rpsBackendService: JsonApiIntegrationWithMsal,
+  {
+    udprn,
+    uprn,
+    sessionId,
+    backLinkUrl,
+  }: {
+    udprn: string;
+    uprn: string;
+    sessionId: string;
+    backLinkUrl: string;
+  }
+) => {
+  try {
+    const checkUdprn = await rpsBackendService.request("/lookup", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        sessionId,
+        udprn: udprn.padStart(8, "0"),
+        uprn,
+      }),
+    });
+
+    const response = await checkUdprn.json();
+
+    if (response.error) {
+      throw new ControllerError("database check not successful", {
+        code: 500,
+        page: "500-database-check-error",
+        backUrl: backLinkUrl,
+      });
+    }
+
+    if (!response.found) {
+      throw new ControllerError("address is not in database", {
+        code: 404,
+        page: "404-address-not-in-db",
+        backUrl: backLinkUrl,
+      });
+    }
+
+    return sessionId;
+  } catch (error) {
+    if (error instanceof ControllerError) throw error;
+
+    throw new ControllerError(
+      error instanceof Error ? error.message : "unknown error",
+      {
+        code: 500,
+        backUrl: backLinkUrl,
+        originalStack: error instanceof Error ? error.stack : undefined,
+      }
+    );
+  }
+};
+
+/**
+ * Create a new session ID if one does not exist
+ * @param request - the request object
+ * @returns a session ID
+ */
+const getOrCreateSessionId = async (request: HapiRequest) => {
+  const { cacheService } = request.service.getServices("cacheService");
+
+  const currentState = await cacheService.getState(request);
+
+  if (currentState["sessionId"]) return currentState["sessionId"];
+
+  const sessionId = uuidv4();
+
+  await cacheService.mergeState(request, {
+    sessionId,
+  });
+
+  return sessionId;
+};
+
+export class SelectAnAddressPageController extends PageControllerBase {
+  private addresses: any[] = [];
+  private postcodeLookup: string = "";
+  private address: string = "";
+
+  private readonly pageAddressType: AddressType;
+  private readonly selectedFieldName: SelectedFieldName;
+
+  constructor(model: FormModel, pageDef: any) {
+    super(model, pageDef);
+
+    // pageAddressType is declared on the hidden `addressType` component in the
+    // form JSON via options.value, so one controller class serves both the
+    // report-address and delivery-address selection pages.
+    const addressTypeComponent: any = this.components.items.find(
+      (c: any) => c.name === COMPONENT_ADDRESS_TYPE
+    );
+
+    this.pageAddressType =
+      (addressTypeComponent?.options?.value as AddressType) || "reportAddress";
+    this.selectedFieldName = deriveSelectedFieldName(this.pageAddressType);
+
+    const component: any = this.components.items.find(
+      (c: any) => c.name === this.selectedFieldName
+    );
+
+    if (component) {
+      component.getDisplayStringFromState = buildDisplayStringFromState(
+        this.pageAddressType
+      );
+    }
+  }
+
+  async onMakeGetRouteHandler(request: HapiRequest) {
+    const { cacheService } = request.services([]);
+    const currentState = await cacheService.getState(request);
+
+    this.addresses = currentState?.[`${this.pageAddressType}_addresses`];
+    this.postcodeLookup =
+      currentState?.[`${this.pageAddressType}_postcodeLookup`];
+    this.address =
+      currentState?.[`${this.pageAddressType}_matchedAddress`]?.address;
+  }
+
+  getViewModel(formData: any, iteration?: any, errors?: any) {
+    const viewModel = super.getViewModel(formData, iteration, errors);
+    this.populateAddressRadios(viewModel, formData);
+    this.updateAddressesHeading(viewModel);
+    this.updateMatchedAddressDisplay(viewModel);
+    return viewModel;
+  }
+
+  private populateAddressRadios(viewModel: any, formData: any): void {
+    const addresses = this.addresses || [];
+    const radiosIndex = this.components.items.findIndex(
+      (c: any) => c.name === this.selectedFieldName
+    );
+
+    if (radiosIndex === -1 || !viewModel.components[radiosIndex]) return;
+
+    viewModel.components[radiosIndex].model.items = addresses.map(
+      (addr: any) => ({
+        text: addr.address,
+        value: addr.udprn,
+        checked: `${addr.udprn}` === `${formData[this.selectedFieldName]}`,
+      })
+    );
+  }
+
+  private updateAddressesHeading(viewModel: any): void {
+    const addresses = this.addresses || [];
+    const headingIndex = this.components.items.findIndex(
+      (c: any) => c.name === COMPONENT_ADDRESSES_HEADING
+    );
+
+    if (headingIndex === -1 || !viewModel.components[headingIndex]?.model)
+      return;
+
+    viewModel.components[
+      headingIndex
+    ].model.content = `${addresses.length} addresses found for '${this.postcodeLookup}'`;
+  }
+
+  private updateMatchedAddressDisplay(viewModel: any): void {
+    const matchedDisplayIndex = this.components.items.findIndex(
+      (c: any) =>
+        c.name ===
+        `${this.pageAddressType}_${COMPONENT_MATCHED_ADDRESS_DISPLAY}`
+    );
+
+    if (
+      matchedDisplayIndex === -1 ||
+      !viewModel.components[matchedDisplayIndex]?.model
+    )
+      return;
+
+    viewModel.components[matchedDisplayIndex].model.content = `${this.address}`;
+  }
+
+  makePostRouteHandler() {
+    return async (request: HapiRequest, h: HapiResponseToolkit) => {
+      const response = await this.handlePostRequest(request, h);
+      const payload = (request.payload || {}) as Record<string, unknown>;
+      const validation = this.validate<FormSubmission>(payload, formSchema);
+
+      const formResult = this.validateForm(payload);
+
+      if (formResult.errors) {
+        return response;
+      }
+
+      if (validation.errors) {
+        return response;
+      }
+
+      const {
+        addressType,
+        isCorrectAddress,
+        selectedReportAddress,
+        selectedDeliveryAddress,
+      } = extractInputFromSubmission(validation.value);
+
+      const selectedAddress = selectedReportAddress || selectedDeliveryAddress;
+
+      const rpsBackendServiceName = request.service.getName(
+        "rpsBackendService"
+      );
+
+      const { cacheService, ...rest } = request.services([]);
+      const currentState = await cacheService.getState(request);
+
+      if (rpsBackendServiceName in rest === false) {
+        throw new ControllerError("cannot find rps backend service", {
+          code: 500,
+        });
+      }
+
+      const rpsBackendService = rest[
+        rpsBackendServiceName
+      ] as JsonApiIntegrationWithMsal;
+
+      const sessionId = await getOrCreateSessionId(request);
+
+      if (isCorrectAddress) {
+        const resolvedSelectedAddress =
+          isCorrectAddress === "true"
+            ? currentState[`${addressType}_matchedAddress`]
+            : null;
+
+        const userSelectedYes = isCorrectAddress === "true";
+
+        if (userSelectedYes && !resolvedSelectedAddress) {
+          // throw error invalid data
+          throw new ControllerError("cannot find matched report address", {
+            code: 500,
+          });
+        }
+
+        const checkUdprn = CHECK_UDPRN_FOR_ADDRESS_TYPES.includes(addressType);
+
+        if (userSelectedYes && checkUdprn) {
+          const progress = currentState.progress || [];
+          const backLinkUrl = progress[progress.length - 1];
+
+          await lookupUdprnInDatabase(rpsBackendService, {
+            sessionId,
+            backLinkUrl,
+            udprn: resolvedSelectedAddress?.udprn,
+            uprn: resolvedSelectedAddress?.uprn,
+          });
+        }
+
+        const savedState = await cacheService.mergeState(request, {
+          [`${addressType}_isCorrectAddress`]: isCorrectAddress === "true",
+          [`${addressType}_selectedAddress`]: resolvedSelectedAddress,
+          // clear selected addresses on "No"
+          ...(addressType === "reportAddress" && {
+            selectedReportAddress: null,
+          }),
+          ...(addressType === "deliveryAddress" && {
+            selectedDeliveryAddress: null,
+          }),
+        });
+
+        const honourReturnUrl = isCorrectAddress === "true";
+        return this.proceed(request, h, savedState, honourReturnUrl);
+      }
+
+      const addresses: any[] = currentState[`${addressType}_addresses`] || [];
+
+      const resolvedMatchedAddress = resolveAddressByUdprn(
+        addresses,
+        selectedAddress
+      );
+
+      const savedState = await cacheService.mergeState(request, {
+        [`${addressType}_isCorrectAddress`]: null,
+        [`${addressType}_selectedAddress`]: selectedAddress,
+        [`${addressType}_matchedAddress`]: resolvedMatchedAddress,
+      });
+
+      return this.proceed(request, h, savedState, false);
+    };
+  }
+}
