@@ -85,7 +85,6 @@ export class FindAnAddressPageController extends PageControllerBase {
 
         const addresses = cleanAddresses(addressResponse.addresses);
 
-        // TODO:- "Fuzzy check full address" integration point
         const matchedAddress = findMatchingAddress(addresses, addressFields);
 
         const list = this.model.lists.find(
