@@ -71,6 +71,7 @@ suite("addressUtils", () => {
         postcode: "SW1A 1AA",
         building: "12",
       };
+
       expect(findMatchingAddress(addresses, addressFields)).to.equal(
         addresses[1]
       );
@@ -81,6 +82,7 @@ suite("addressUtils", () => {
         postcode: "SW1A 1AA",
         addressLine1: "12 Test Street",
       };
+
       expect(findMatchingAddress(addresses, addressFields)).to.equal(
         addresses[1]
       );
@@ -99,6 +101,7 @@ suite("addressUtils", () => {
         postcode: "SW1A 1AA",
         addressLine1: "Flat 1 2 Test Street",
       };
+
       expect(findMatchingAddress(addresses, addressFields2)).to.equal(
         addresses[0]
       );
@@ -109,6 +112,7 @@ suite("addressUtils", () => {
         postcode: "SW1A 1AA",
         addressLine1: "Cottagw",
       };
+
       expect(findMatchingAddress(addresses, addressFields)).to.equal(
         addresses[3]
       );
@@ -119,6 +123,7 @@ suite("addressUtils", () => {
         postcode: "SW1A 1AA",
         addressLine1: "Collage",
       };
+
       expect(findMatchingAddress(addresses, addressFields)).to.equal(undefined);
     });
 
@@ -131,6 +136,7 @@ suite("addressUtils", () => {
           "TESTING CRESCENT, GIANT'S ROAD, BIG INDUSTRIAL PARK, AREAZONE",
         town: "LARGETOWN",
       };
+
       expect(findMatchingAddress(addresses, addressFields)).to.equal(
         addresses[4]
       );
@@ -141,6 +147,7 @@ suite("addressUtils", () => {
         postcode: "SW1A 1AA",
         addressLine1: "Exclamation!",
       };
+
       expect(findMatchingAddress(addresses, addressFields)).to.equal(
         addresses[5]
       );
@@ -152,6 +159,7 @@ suite("addressUtils", () => {
         addressLine1: "999",
         addressLine2: "Nowhere Street",
       };
+
       expect(findMatchingAddress(addresses, addressFields)).to.equal(undefined);
     });
   });
@@ -159,6 +167,7 @@ suite("addressUtils", () => {
   suite("cleanAddresses", () => {
     test("removes the comma directly after a leading street number", () => {
       const addresses = [buildAddress({ address: "12A, Test Street" })];
+
       expect(cleanAddresses(addresses)[0].address).to.equal("12A Test Street");
     });
   });
@@ -177,6 +186,7 @@ suite("addressUtils", () => {
         postcode: "SW1A 1AA",
         building: "1.1",
       };
+
       expect(findMatchingAddress(addresses, addressFields)).to.equal(
         addresses[1]
       );
@@ -187,6 +197,7 @@ suite("addressUtils", () => {
         postcode: "SW1A 1AA",
         building: "1/1",
       };
+
       expect(findMatchingAddress(addresses, addressFields)).to.equal(
         addresses[2]
       );
@@ -197,6 +208,7 @@ suite("addressUtils", () => {
         postcode: "SW1A 1AA",
         building: "1-1",
       };
+
       expect(findMatchingAddress(addresses, addressFields)).to.equal(
         addresses[3]
       );
