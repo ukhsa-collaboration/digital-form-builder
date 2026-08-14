@@ -528,6 +528,9 @@
     {
       "path": "/kit-details",
       "title": "Measurement address details",
+      "options": {
+        "honorReturnURL": false
+      },
       "components": [
         {
           "type": "DisplayAddress",

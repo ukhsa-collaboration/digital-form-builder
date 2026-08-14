@@ -1074,7 +1074,7 @@ export class PageControllerBase {
     const returnUrl = getReturnUrl(request);
 
     const shouldHonourReturnUrl =
-      this.honorReturnURL ?? returnUrl !== undefined;
+      honourReturnUrl ?? this.honorReturnURL ?? returnUrl !== undefined;
 
     return proceed(request, h, nextUrl, shouldHonourReturnUrl);
   }

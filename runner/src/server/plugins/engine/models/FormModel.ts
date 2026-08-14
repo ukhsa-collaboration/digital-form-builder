@@ -279,9 +279,11 @@ export class FormModel {
   getRelevantPages(state: FormSubmissionState) {
     let nextPage = this.startPage;
     const relevantPages: any[] = [];
+    const visitedPages = new Set<PageControllerBase>();
     let endPage = null;
 
-    while (nextPage != null) {
+    while (nextPage != null && !visitedPages.has(nextPage)) {
+      visitedPages.add(nextPage);
       if (nextPage.hasFormComponents) {
         relevantPages.push(nextPage);
       } else if (
