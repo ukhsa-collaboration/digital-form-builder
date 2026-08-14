@@ -17,8 +17,8 @@ export const saveRiskReportDetailsSchema = Joi.object({
   fullAddress: Joi.when("deliveryMethod", {
     is: "post",
     then: Joi.alternatives().try(Joi.string(), Joi.object()).required(),
-    otherwise: Joi.optional().allow(null),
-  }),
+    otherwise: Joi.optional().allow(""),
+  }).default("test"),
 })
   .rename("emailAddress", "email")
   .rename("deliveryAddress_selectedAddress", "fullAddress")

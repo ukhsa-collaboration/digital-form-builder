@@ -444,6 +444,9 @@
     {
       "path": "/free-test-eligibility",
       "title": "You may be eligible for a free test",
+      "options": {
+        "hideContinueButton": true
+      },
       "components": [
         {
           "name": "contactNumber",
@@ -620,7 +623,7 @@
           }
         }
       ],
-      "options":{"honorReturnURL":false},
+      "options": { "honorReturnURL": false },
       "next": [{ "path": "/results-address" }]
     },
     {
@@ -744,7 +747,7 @@
           }
         }
       ],
-      "options":{"honorReturnURL": false},
+      "options": { "honorReturnURL": false },
       "next": [{ "path": "/kit-address" }]
     },
     {
