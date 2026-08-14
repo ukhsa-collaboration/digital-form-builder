@@ -17,8 +17,15 @@ Refer to the [`MSAL Authentication documentation`](/docs/runner/msal-apim-authen
   }
 ```
 
-> **Note: useAwsWafUserAgentWorkaround**  
-> AWS WAF requires User-Agent to be present as part of auth, setting this option to tru will make the functioality provide one to prevent 403
+## Optional parameters
+
+### useAwsWafUserAgentWorkaround
+
+AWS WAF requires User-Agent to be present as part of auth, setting this option to true will make the functioality provide one to prevent 403
+
+### routingKey
+
+Allows to set an additonal header corrisponsing to a subsription key `Ocp-Apim-Subscription-Key` which allows us to set values based on `Subscription based Back-End Routing` which is a solution desinged by the core apim team
 
 ## How to Update env variables
 

@@ -4421,6 +4421,7 @@
     "clientId": "${SRSNL8CoreApimClientId}",
     "clientSecret": "${SRSNL8CoreApimClientSecret}",
     "scopes": ["${SRSNL8CoreApimScope1}"],
-    "useAwsWafUserAgentWorkaround": true
+    "useAwsWafUserAgentWorkaround": true,
+    "routingKey": "${NL8RoutingKey}"
   }
 }

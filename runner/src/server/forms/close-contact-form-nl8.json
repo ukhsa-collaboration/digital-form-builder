@@ -4426,10 +4426,11 @@
     }
   },
   "secureFormSubmissionConfig": {
-    "tenantId": "${SRSNL8CoreApimTenantId}",
-    "clientId": "${SRSNL8CoreApimClientId}",
-    "clientSecret": "${SRSNL8CoreApimClientSecret}",
-    "scopes": ["${SRSNL8CoreApimScope1}"],
-    "useAwsWafUserAgentWorkaround": true
+    "tenantId": "${SRSCoreApimTenantId}",
+    "clientId": "${SRSCoreApimClientId}",
+    "clientSecret": "${SRSCoreApimClientSecret}",
+    "scopes": ["${SRSCoreApimScope1}"],
+    "useAwsWafUserAgentWorkaround": true,
+    "routingKey": "${NL8RoutingKey}"
   }
 }

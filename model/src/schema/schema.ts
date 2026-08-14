@@ -332,6 +332,7 @@ const msalAuthorizeConfigSchema = joi.object().keys({
 const secureFormSubmissionConfig = msalAuthorizeConfigSchema.concat(
   joi.object().keys({
     useAwsWafUserAgentWorkaround: joi.bool().optional(),
+    routingKey: joi.string().optional(),
   })
 );
 
