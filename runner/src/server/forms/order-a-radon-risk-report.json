@@ -132,7 +132,9 @@
         },
         {
           "name": "selectedReportAddress",
-          "options": {},
+          "options": {
+            "exposeToContext": true
+          },
           "type": "HiddenField",
           "title": "Risk report address"
         },
@@ -142,7 +144,8 @@
             "hideTitle": true,
             "customValidationMessages": {
               "any.required": "Select Yes if this is the correct address"
-            }
+            },
+            "exposeToContext": true
           },
           "type": "YesNoField",
           "title": "Is this the correct report address?"
@@ -408,7 +411,8 @@
             "autocomplete": "first name",
             "customValidationMessages": {
               "string.empty": "Enter your first name"
-            }
+            },
+            "exposeToContext": true
           },
           "type": "TextField",
           "title": "First Name",
@@ -422,7 +426,8 @@
             "autocomplete": "last name",
             "customValidationMessages": {
               "string.empty": "Enter your last name"
-            }
+            },
+            "exposeToContext": true
           },
           "type": "TextField",
           "hint": "Last name",
@@ -443,7 +448,8 @@
             "customValidationMessages": {
               "string.empty": "Enter an email address in the correct format",
               "string.pattern.base": "Enter an email address in the correct format"
-            }
+            },
+            "exposeToContext": true
           },
           "type": "EmailAddressField",
           "title": "",
@@ -475,7 +481,8 @@
             "autocomplete": "first name",
             "customValidationMessages": {
               "string.empty": "Enter your first name"
-            }
+            },
+            "exposeToContext": true
           },
           "type": "TextField",
           "title": "First Name",
@@ -489,7 +496,8 @@
             "autocomplete": "last name",
             "customValidationMessages": {
               "string.empty": "Enter your last name"
-            }
+            },
+            "exposeToContext": true
           },
           "type": "TextField",
           "hint": "Last name",
@@ -504,7 +512,8 @@
             "customValidationMessages": {
               "string.empty": "Enter an email address in the correct format",
               "string.pattern.base": "Enter an email address in the correct format"
-            }
+            },
+            "exposeToContext": true
           },
           "type": "EmailAddressField",
           "title": "Enter your email address",
@@ -538,7 +547,8 @@
             "hideTitle": true,
             "customValidationMessages": {
               "any.required": "Select yes if your delivery address is the same as your risk report address"
-            }
+            },
+            "exposeToContext": true
           },
           "type": "YesNoField",
           "title": "Is this the correct delivery address?"
@@ -603,7 +613,8 @@
         {
           "name": "deliveryAddress_addressLine2Lookup",
           "options": {
-            "required": false
+            "required": false,
+            "exposeToContext": true
           },
           "type": "TextField",
           "title": "Address Line 2"
@@ -615,7 +626,8 @@
               "any.required": "Enter town or city",
               "any.only": "Enter town or city",
               "string.empty": "Enter town or city"
-            }
+            },
+            "exposeToContext": true
           },
           "type": "TextField",
           "title": "Town or city"
@@ -623,7 +635,8 @@
         {
           "name": "deliveryAddress_countyLookup",
           "options": {
-            "required": false
+            "required": false,
+            "exposeToContext": true
           },
           "type": "TextField",
           "title": "County"
@@ -640,7 +653,8 @@
             "format": {
               "trim": true,
               "case": "upper"
-            }
+            },
+            "exposeToContext": true
           },
           "schema": {
             "max": 10,
@@ -766,7 +780,9 @@
         },
         {
           "name": "selectedDeliveryAddress",
-          "options": {},
+          "options": {
+            "exposeToContext": true
+          },
           "type": "HiddenField",
           "title": "Delivery address"
         },
@@ -776,7 +792,8 @@
             "hideTitle": true,
             "customValidationMessages": {
               "any.required": "Select Yes if this is the correct delivery address"
-            }
+            },
+            "exposeToContext": true
           },
           "type": "YesNoField",
           "title": "Is this the correct delivery address?"
@@ -842,7 +859,8 @@
             "hideTitle": true,
             "customValidationMessages": {
               "any.required": "Select an address"
-            }
+            },
+            "exposeToContext": true
           },
           "type": "RadiosField",
           "title": "Delivery address",

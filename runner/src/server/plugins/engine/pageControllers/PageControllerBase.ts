@@ -367,7 +367,6 @@ export class PageControllerBase {
    */
   getFormDataFromState(state: any, atIndex: number): FormData {
     const pageState = this.section ? state[this.section.name] : state;
-    let formData: Partial<FormData>;
 
     if (this.repeatField) {
       const repeatedPageState =
@@ -378,7 +377,7 @@ export class PageControllerBase {
         ? values.reduce((acc: any, page: any) => ({ ...acc, ...page }), {})
         : {};
 
-      formData = {
+      return {
         ...this.components.getFormDataFromState(
           newState as FormSubmissionState
         ),
@@ -386,32 +385,12 @@ export class PageControllerBase {
           newState as FormSubmissionState
         ),
       };
-    } else {
-      // get component names
-      const ownFieldNames = new Set(
-        this.components.formItems.map((item) => item.name)
-      );
-
-      // extract state values matching component state names
-      const rawState = Object.fromEntries(
-        Object.entries(pageState || {}).filter(
-          ([key, v]) =>
-            ownFieldNames.has(key) &&
-            (typeof v === "string" ||
-              typeof v === "number" ||
-              typeof v === "boolean")
-        )
-      );
-
-      // inject raw state in the component
-      formData = {
-        ...rawState,
-        ...this.components.getFormDataFromState(pageState || {}),
-        ...this.model.getContextState(state),
-      };
     }
 
-    return formData;
+    return {
+      ...this.components.getFormDataFromState(pageState || {}),
+      ...this.model.getContextState(state),
+    };
   }
 
   getStateFromValidForm(formData: FormPayload) {
