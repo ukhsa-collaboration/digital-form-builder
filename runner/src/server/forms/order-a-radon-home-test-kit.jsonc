@@ -1,4 +1,5 @@
 {
+  "formGroup": "radon",
   "metadata": {},
   "startPage": "/start",
   "fullStartPage": "start",
@@ -1085,6 +1086,34 @@
       "next": []
     }
   ],
+  "generateReference": true,
+  "specialPages": {
+    "confirmationPage": {
+      "customText": {
+        "title": "Home radon gas test kit ordered",
+        "nextSteps": "<p class=\"govuk-body-m\">We have sent a confirmation email to {{ emailAddress }}</p>",
+        "generatedReferenceContent": "Your order number is",
+        "hidePanel": false
+      },
+      "components": [
+        {
+          "name": "info",
+          "type": "Para",
+          "content": "<p class=\"govuk-body-m\">We have received your order. It may take up to 10 working days to dispatch the kit.<br></br>Instructions on how to set up the kit in the property will be included in the delivery package</p>"
+        },
+        {
+          "name":"warningText",
+          "type": "Html",
+          "content": "<div class=\"govuk-warning-text\"><span class=\"govuk-warning-text__icon\" aria-hidden=\"true\">!</span><strong class=\"govuk-warning-text__text\"><span class=\"govuk-visually-hidden\">Warning</span>You must place the kit within the measurement address within 7 days of delivery.</strong></div>"
+        },
+        {
+          "name": "final links",
+          "type": "Para",
+          "content": "<p class=\"govuk-body-m\"><a href=\"https://www.gov.uk/health-protection-team\" target=”_blank”>What did you think of this service?</a> (takes 30 seconds)</p></br><p class=\"govuk-body-m\"><a href=\"start\" target=”_blank”>Order another radon gas test kit</a></p></br><p class=\"govuk-body-m\"><a href=\"https://www.gov.uk/health-protection-team\" target=”_blank”>Go to Radon services for homeowners or householders</a></p>"
+        }
+      ]
+    }
+  },
   "lists": [
     {
       "title": "The test will not be valid if:",
@@ -1477,6 +1506,20 @@
             "value": { "type": "Value", "value": "true", "display": "true" }
           }
         ]
+      }
+    }
+  ],
+  "outputs":[
+  {
+      "name": "AgHhXn",
+      "title": "webhookOutput",
+      "type": "webhook",
+      "outputConfiguration": {
+        "url": "https://api.dev.rps.ukhsa.gov.uk/case",
+        "allowRetry": true,
+        "payload": {
+          "uuid": { "field": "generatedReference" }
+        }
       }
     }
   ],

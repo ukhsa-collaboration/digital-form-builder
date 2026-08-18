@@ -6,6 +6,7 @@ import { ControllerError } from "../errors";
 import { gatherRepeatPages } from "server/utils/gatherRepeatPages";
 import { paymentProviderRegistry } from "server/services/paymentProviders";
 import { runHook } from "server/services/hooks";
+import { v4 as uuidv4 } from "uuid";
 
 /**
  * A summary controller for forms that have no summary *view* — there is no
@@ -124,6 +125,13 @@ export class HeadlessSummaryPageController extends PageController {
         { model }
       );
       if (beforeSubmitResponse) return beforeSubmitResponse;
+
+      if (model.def?.generateReference == true) {
+          const reference = uuidv4();
+          await cacheService.mergeState(request, {
+            generatedReference: reference,
+          });
+        }
 
       await cacheService.mergeState(request, { userCompletedSummary: true });
 
