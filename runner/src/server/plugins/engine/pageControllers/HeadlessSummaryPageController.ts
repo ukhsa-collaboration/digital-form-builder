@@ -7,6 +7,36 @@ import { gatherRepeatPages } from "server/utils/gatherRepeatPages";
 import { paymentProviderRegistry } from "server/services/paymentProviders";
 import { runHook } from "server/services/hooks";
 
+/**
+ * A summary controller for forms that have no summary *view* — there is no
+ * declaration checkbox, no webhook, no per-provider payment branching inline
+ * here. It exists to keep that stripped-down path from having to fork
+ * {@link SummaryPageController}, which grows a new `if` branch (or subclass)
+ * every time a form needs a different submit side effect or payment provider.
+ *
+ * The aim: keep this controller's own logic to the minimum every form
+ * on this path needs — validate the gathered state, mark the summary
+ * complete, decide whether payment is due — and push everything
+ * form-specific out to two indirections instead of growing the class:
+ *
+ * - **Hooks** (`onBeforeSubmit` / `onSubmit` / `onAfterSubmit`, run via
+ *   {@link runHook}): form-specific side effects (e.g. posting to a backend
+ *   service) are configured per-form in the form definition's `hooks` block
+ *   and looked up in `hookRegistry` by name. Any of the three may return a
+ *   Hapi response to short-circuit the submit flow (e.g. to show a bespoke
+ *   error page); returning `undefined` lets it continue.
+ * - **Payment provider adapters** (`paymentProviderRegistry`): payment
+ *   creation and redirect behaviour is delegated to whichever
+ *   `PaymentProviderService` implementation matches `model.def.paymentProvider`,
+ *   rather than being an `if (provider === ...)` chain in this controller.
+ *
+ * New form-specific behaviour should be added as a new hook or a new payment
+ * adapter, not as new branches or overrides here. If a form needs behaviour
+ * that doesn't fit either extension point, that's a signal the extension
+ * points themselves need to grow, not this controller i.e. make a new extension
+ * point, keep the implementation minimal in this controller, extract all logic
+ * to hooks or adapters.
+ */
 export class HeadlessSummaryPageController extends PageController {
   makeGetRouteHandler() {
     const renderPage = super.makeGetRouteHandler();
@@ -84,6 +114,8 @@ export class HeadlessSummaryPageController extends PageController {
         return this.redirectToStartPage(request, h, model);
       }
 
+      // Extension point: form-specific side effects live in
+      // hookRegistry, configured per-form, not as new logic in this method.
       const beforeSubmitResponse = await runHook(
         this.constructor.name,
         "onBeforeSubmit",
@@ -119,6 +151,8 @@ export class HeadlessSummaryPageController extends PageController {
         return redirectTo(request, h, `/${request.params.id}/status`);
       }
 
+      // Extension point: payment behaviour is delegated to whichever adapter
+      // matches the form's configured provider, not branched on here.
       const paymentService = paymentProviderRegistry[model.def.paymentProvider];
 
       if (!paymentService) {

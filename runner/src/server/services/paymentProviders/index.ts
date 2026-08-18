@@ -4,6 +4,21 @@ import { HapiRequest, HapiResponseToolkit } from "server/types";
 import { ControllerError } from "server/plugins/engine/errors";
 import { PaymentProviderService, PaymentResult } from "./types";
 
+/**
+ * Each payment provider is an adapter implementing the common
+ * {@link PaymentProviderService} contract, keyed by the provider id used
+ * in a form's `paymentProvider` definition. Callers
+ * (e.g. `HeadlessSummaryPageController`) resolve the adapter by that id
+ * and call through the interface — they never know or care which gateway
+ * is behind it, so adding a provider never means touching a caller's
+ * `if (provider === ...)` chain.
+ *
+ * To add a provider: write an adapter class implementing
+ * `PaymentProviderService`, then add it to `paymentProviderRegistry` below
+ * under its id. Nothing outside this file should change.
+ */
+
+/** Adapter for GOV.UK Pay, registered under `"gov-uk-pay"`. */
 class GovUkPayAdapter implements PaymentProviderService {
   async createPayment(
     request: HapiRequest,
@@ -69,6 +84,7 @@ class GovUkPayAdapter implements PaymentProviderService {
   }
 }
 
+/** Adapter for Trust Payments, registered under `"trust-payments"`. */
 class TrustPaymentsAdapter implements PaymentProviderService {
   async createPayment(
     request: HapiRequest,
@@ -110,6 +126,7 @@ class TrustPaymentsAdapter implements PaymentProviderService {
   async cancelPayment(): Promise<void> {}
 }
 
+/** The lookup table callers resolve `model.def.paymentProvider` against. */
 export const paymentProviderRegistry: Record<string, PaymentProviderService> = {
   "gov-uk-pay": new GovUkPayAdapter(),
   "trust-payments": new TrustPaymentsAdapter(),

@@ -51,6 +51,8 @@ Features and configuration options for the runner.
   - Embed non-visible data in a form page for use in submissions or later pages
 - [display address](runner/components/display-address.md)
   - Render a previously collected address from form state with each line on its own line
+- [summary lists](runner/components/summary-lists.md)
+  - Render one or more GOV.UK summary lists from form state with optional change links and summary cards
 
 ### Designer
 
