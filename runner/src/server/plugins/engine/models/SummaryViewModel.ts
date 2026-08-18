@@ -1,5 +1,6 @@
-import { clone, reach } from "hoek";
 import config from "server/config";
+import pino from "pino";
+import { clone, reach } from "hoek";
 import { FormModel } from "./FormModel";
 import { feedbackReturnInfoKey, redirectUrl } from "../helpers";
 import { decodeFeedbackContextInfo } from "../feedback";
@@ -18,8 +19,7 @@ import { adjustRows } from "server/transforms/summaryDetails/adjustRows";
 import { transformValues } from "server/transforms/summaryDetails/transformValues";
 import { applyConditionalRows } from "server/transforms/summaryDetails/conditionalRows";
 import { applyFeesRow } from "server/transforms/summaryDetails/feesRow";
-
-import pino from "pino";
+import { gatherRepeatPages } from "src/server/utils/gatherRepeatPages";
 const logger = pino().child({ name: "SummaryViewModel" });
 
 /**
@@ -442,23 +442,6 @@ export class SummaryViewModel {
     }
     return webhookData;
   }
-}
-
-function gatherRepeatPages(state) {
-  if (!!Object.values(state).find((section) => Array.isArray(section))) {
-    return state;
-  }
-  const clonedState = clone(state);
-  Object.entries(state).forEach(([key, section]) => {
-    if (key === "progress") {
-      return;
-    }
-    if (Array.isArray(section)) {
-      clonedState[key] = section.map((pages) =>
-        Object.values(pages).reduce((acc: {}, p: any) => ({ ...acc, ...p }), {})
-      );
-    }
-  });
 }
 
 function renderTemplate(str: string, context: object): string {

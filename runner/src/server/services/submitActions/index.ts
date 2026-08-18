@@ -7,7 +7,7 @@ import { saveGasTestKitDetailsSchema } from "./saveGasTestKitDetailsSchema";
 import { getOrCreateCorrelationId } from "../../utils/correlationId";
 import { resolveSelectedAddress } from "../../plugins/engine/utils/addressUtils";
 
-type PersonDetails = {
+type PersonalDetails = {
   title: string;
   firstName: string;
   lastName: string;
@@ -122,7 +122,7 @@ export const submitActionRegistry: Record<string, SubmitAction> = {
       gtkBackendServiceName
     ] as JsonApiIntegrationWithMsal;
 
-    const customer: PersonDetails = {
+    const customer: PersonalDetails = {
       title: currentState["Title"],
       firstName: currentState["FirstName"],
       lastName: currentState["LastName"],
@@ -145,9 +145,9 @@ export const submitActionRegistry: Record<string, SubmitAction> = {
     const resultsSameAsKit =
       currentState["deliveryResultsConfirmation"] === true;
 
-    let kitRecipient: PersonDetails;
+    let kitRecipient: PersonalDetails;
     let kitRecipientAddress: ReturnType<typeof resolveSelectedAddress>;
-    let resultsRecipient: PersonDetails;
+    let resultsRecipient: PersonalDetails;
     let resultsRecipientAddress: ReturnType<typeof resolveSelectedAddress>;
 
     if (deliverySameAsProperty) {

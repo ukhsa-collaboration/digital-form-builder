@@ -6,7 +6,7 @@ import { Hook } from "../types";
 
 export type RpsGasTestKitOnSummarySubmit = Hook<void>;
 
-type PersonDetails = {
+type PersonalDetails = {
   title: string;
   firstName: string;
   lastName: string;
@@ -32,7 +32,7 @@ export const rpsGasTestKitOnSummarySubmit: RpsGasTestKitOnSummarySubmit = async 
     "rpsBackendService"
   );
 
-  const customer: PersonDetails = {
+  const customer: PersonalDetails = {
     title: state["title"],
     firstName: state["firstName"],
     lastName: state["lastName"],
@@ -45,9 +45,9 @@ export const rpsGasTestKitOnSummarySubmit: RpsGasTestKitOnSummarySubmit = async 
   const resultsSameAsProperty = state["resultsAddressConfirmation"] === true;
   const resultsSameAsKit = state["kitResultsConfirmation"] === true;
 
-  let kitRecipient: PersonDetails;
+  let kitRecipient: PersonalDetails;
   let kitRecipientAddress: ReturnType<typeof resolveSelectedAddress>;
-  let resultsRecipient: PersonDetails;
+  let resultsRecipient: PersonalDetails;
   let resultsRecipientAddress: ReturnType<typeof resolveSelectedAddress>;
 
   if (kitSameAsProperty) {
@@ -115,7 +115,7 @@ export const rpsGasTestKitOnSummarySubmit: RpsGasTestKitOnSummarySubmit = async 
     );
   }
 
-  request.logger.warn(
+  request.logger.trace(
     ["rpsGasTestKitOnSummarySubmit::Request"],
     JSON.stringify({
       request: requestBody,
@@ -127,7 +127,7 @@ export const rpsGasTestKitOnSummarySubmit: RpsGasTestKitOnSummarySubmit = async 
     body: JSON.stringify(requestBody),
   });
 
-  request.logger.warn(
+  request.logger.trace(
     ["rpsGasTestKitOnSummarySubmit::Response"],
     JSON.stringify({
       status: response.status,

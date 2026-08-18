@@ -1,10 +1,10 @@
 import Joi from "joi";
 
-// Matches `PersonDetails` in gas-test-kit-api-spec.json. This form doesn't
+// Matches `PersonalDetails` in gas-test-kit-api-spec.json. This form doesn't
 // collect a phone number, so `telephone` defaults to a placeholder — the
 // same approach `saveRiskReportDetailsSchema.ts` uses for the risk-report
 // form, which doesn't collect one either.
-const personDetailsSchema = Joi.object({
+const personalDetailsSchema = Joi.object({
   title: Joi.string().required(),
   firstName: Joi.string().required(),
   lastName: Joi.string().required(),
@@ -32,11 +32,11 @@ const addressDetailsSchema = Joi.object({
 export const saveGasTestKitDetailsSchema = Joi.object({
   uuid: Joi.string().required(),
   orderNumber: Joi.string().required(),
-  customer: personDetailsSchema.required(),
+  customer: personalDetailsSchema.required(),
   measurementAddress: addressDetailsSchema.required(),
-  kitRecipient: personDetailsSchema.required(),
+  kitRecipient: personalDetailsSchema.required(),
   kitRecipientAddress: addressDetailsSchema.required(),
-  resultsRecipient: personDetailsSchema.required(),
+  resultsRecipient: personalDetailsSchema.required(),
   resultsRecipientAddress: addressDetailsSchema.required(),
   prevTestedAddress: Joi.boolean().required(),
   prevAboveActionLevel: Joi.boolean().required(),

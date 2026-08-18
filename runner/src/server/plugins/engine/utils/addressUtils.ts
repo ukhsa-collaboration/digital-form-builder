@@ -2,13 +2,17 @@ import { Item } from "@xgovformbuilder/model/dist/module/data-model/types";
 import Joi from "joi";
 import { Address } from "src/server/services/addressLookupService";
 
-// An address type is any identifier-safe string declared in the form JSON. It
-// is used as a prefix for the namespaced state keys (e.g. `reportAddress_*`),
-// so the controllers are agnostic to the specific value.
+/**
+ * An address type is any identifier-safe string declared in the form JSON. It
+ * is used as a prefix for the namespaced state keys (e.g. `reportAddress_*`),
+ * so the controllers are agnostic to the specific value.
+ */
 export type AddressType = string;
 
-// The address type is used to build state-key prefixes and the derived
-// selected-address field name, so keep it to identifier-safe characters.
+/**
+ * The address type is used to build state-key prefixes and the derived
+ * selected-address field name, so keep it to identifier-safe characters.
+ */
 export const addressTypeSchema = Joi.string()
   .pattern(/^[a-zA-Z][a-zA-Z0-9]*$/)
   .max(64);
