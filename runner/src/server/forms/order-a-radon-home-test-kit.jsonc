@@ -626,7 +626,6 @@
           }
         }
       ],
-      "options": { "honorReturnURL": false },
       "next": [{ "path": "/results-address" }]
     },
     {
@@ -750,7 +749,6 @@
           }
         }
       ],
-      "options": { "honorReturnURL": false },
       "next": [{ "path": "/kit-address" }]
     },
     {
@@ -844,6 +842,12 @@
     {
       "path": "/kit-address-results-confirm",
       "title": "Delivery Details",
+      "options": {
+        "honorReturnURL": [
+          { "condition": "kitResultsConfirmationYes", "value": true },
+          { "value": false }
+        ]
+      },
       "components": [
         {
           "name": "kitAddress",
@@ -951,7 +955,7 @@
                       "condition": "kitAddressIncorrect",
                       "value": "/kit-recipient"
                     },
-                    { "value": "/kit-details" }
+                    { "value": "/your-details" }
                   ],
                   "value": {
                     "name": "kitRecipient",
@@ -975,7 +979,7 @@
                       "condition": "kitAddressIncorrect",
                       "value": "/kit-address"
                     },
-                    { "value": "/kit-details" }
+                    { "value": "/property-address" }
                   ],
                   "value": {
                     "name": "displayKitAddress",
@@ -995,13 +999,13 @@
                   "changeUrl": [
                     {
                       "condition": "kitResultsConfirmationYes",
-                      "value": "/kit-address-results-confirm"
+                      "value": "/kit-recipient"
                     },
                     {
                       "condition": "resultsAddressIncorrect",
                       "value": "/results-recipient"
                     },
-                    { "value": "/kit-details" }
+                    { "value": "/your-details" }
                   ],
                   "value": {
                     "name": "resultsRecipient",
@@ -1027,13 +1031,13 @@
                   "changeUrl": [
                     {
                       "condition": "kitResultsConfirmationYes",
-                      "value": "/kit-address-results-confirm"
+                      "value": "/kit-address"
                     },
                     {
                       "condition": "resultsAddressIncorrect",
                       "value": "/results-address"
                     },
-                    { "value": "/kit-details" }
+                    { "value": "/property-address" }
                   ],
                   "value": {
                     "name": "displayResultsAddress",

@@ -79,7 +79,7 @@ export class ManualAddressPageController extends PageControllerBase {
         },
       });
 
-      return this.proceed(request, h, savedState, false);
+      return this.proceed(request, h, savedState);
     };
   }
 }

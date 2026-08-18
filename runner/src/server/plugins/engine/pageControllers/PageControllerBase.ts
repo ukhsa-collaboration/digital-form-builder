@@ -35,6 +35,7 @@ import Joi from "joi";
 import Jwt from "@hapi/jwt";
 import { verifyHmacToken } from "../../initialiseSession/helpers";
 import { extractAddressContext } from "../utils/addressUtils";
+import { ConditionalCase, resolveConditionalValue } from "../conditionalValue";
 
 const FORM_SCHEMA = Symbol("FORM_SCHEMA");
 const STATE_SCHEMA = Symbol("STATE_SCHEMA");
@@ -76,7 +77,7 @@ export class PageControllerBase {
   disableBackLink?: boolean;
   returnUrl?: string;
   buttonText?: string;
-  honorReturnURL?: boolean;
+  honorReturnURL?: boolean | ConditionalCase<boolean>[];
   hideContinueButton?: boolean;
 
   // TODO: pageDef type
@@ -724,11 +725,18 @@ export class PageControllerBase {
 
       /**
        * used for when a user clicks the "back" link. Progress is stored in the state. This is a safer alternative to running javascript that pops the history `onclick`.
+       *
+       * If we're revisiting a page already further down the stack (e.g. returning to
+       * a summary page after a multi-hop detour like an address lookup or a
+       * change-link sub-journey), truncate back to that point rather than pushing a
+       * duplicate - otherwise the detour pages linger forever and the back link
+       * cycles through stale pages instead of leaving the loop.
        */
       const lastVisited = progress[progress.length - 1];
       if (!lastVisited || !lastVisited.startsWith(currentPath)) {
-        if (progress[progress.length - 2] === currentPath) {
-          progress.pop();
+        const priorIndex = progress.lastIndexOf(currentPath);
+        if (priorIndex !== -1) {
+          progress.length = priorIndex + 1;
         } else {
           progress.push(currentPath);
         }
@@ -1073,8 +1081,15 @@ export class PageControllerBase {
 
     const returnUrl = getReturnUrl(request);
 
+    const resolvedHonorReturnURL = resolveConditionalValue(
+      this.honorReturnURL,
+      state,
+      this.model.conditions,
+      true
+    );
+
     const shouldHonourReturnUrl =
-      honourReturnUrl ?? this.honorReturnURL ?? returnUrl !== undefined;
+      honourReturnUrl ?? resolvedHonorReturnURL ?? returnUrl !== undefined;
 
     return proceed(request, h, nextUrl, shouldHonourReturnUrl);
   }

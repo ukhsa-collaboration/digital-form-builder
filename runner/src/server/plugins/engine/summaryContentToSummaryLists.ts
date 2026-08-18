@@ -3,8 +3,13 @@ import { format, parseISO } from "date-fns";
 import { RelativeUrl } from "./feedback/RelativeUrl";
 import * as Components from "./components";
 import { FormComponent } from "./components/FormComponent";
+import {
+  ConditionalCase,
+  ConditionsMap,
+  resolveConditionalValue,
+} from "./conditionalValue";
 
-export type SummaryContentCase = { condition?: string; value: string };
+export type SummaryContentCase = ConditionalCase<string>;
 
 export interface SummaryContentComponent {
   name: string;
@@ -13,12 +18,9 @@ export interface SummaryContentComponent {
   options?: Record<string, any>;
 }
 
-export type SummaryContentChangeUrlCase = { condition?: string; value: string };
+export type SummaryContentChangeUrlCase = ConditionalCase<string>;
 
-export type SummaryConditionsMap = Record<
-  string,
-  { fn: (state: any) => boolean } | undefined
->;
+export type SummaryConditionsMap = ConditionsMap;
 
 export interface SummaryContentItem {
   title: string;
@@ -154,19 +156,7 @@ function resolveChangeUrl(
   state: Record<string, any>,
   conditions: SummaryConditionsMap
 ): string | false {
-  if (!Array.isArray(changeUrl)) {
-    return changeUrl;
-  }
-
-  // An unknown/typo condition name is treated as non-matching rather than
-  // thrown, since a form-author mistake here must not break the whole
-  // summary page render.
-  const match = changeUrl.find(
-    (item) =>
-      !item.condition || conditions[item.condition]?.fn?.(state) === true
-  );
-
-  return match ? match.value : false;
+  return resolveConditionalValue(changeUrl, state, conditions, false);
 }
 
 function resolveContent(
@@ -174,16 +164,7 @@ function resolveContent(
   state: Record<string, any>,
   conditions: SummaryConditionsMap
 ): string {
-  if (!Array.isArray(content)) {
-    return content;
-  }
-
-  const match = content.find(
-    (item) =>
-      !item.condition || conditions[item.condition]?.fn?.(state) === true
-  );
-
-  return match ? match.value : "";
+  return resolveConditionalValue(content, state, conditions, "");
 }
 
 function resolveValue(
