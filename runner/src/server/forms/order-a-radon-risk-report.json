@@ -935,7 +935,7 @@
           "options": {
             "condition": "isEmailDelivery"
           },
-          "content": "<p class=\"govuk-body-m\">Your radon risk report has been sent to {{ emailAddress }}</p>"
+          "content": "<p class=\"govuk-body-m\">Your radon risk report has been sent to {{ emailAddress }}.</p>"
         },
         {
           "name": "introEmail",
@@ -948,7 +948,7 @@
         {
           "name": "final links",
           "type": "Para",
-          "content": "<p class=\"govuk-body-m\"><a href=\"https://www.gov.uk/health-protection-team\" target=”_blank”>What did you think of this service?</a> (takes 30 seconds)</p></br><p class=\"govuk-body-m\"><a href=\"https://www.gov.uk/health-protection-team\" target=”_blank”>Go to Radon services for homeowners or householders</a></p>"
+          "content": "<p class=\"govuk-body-m\"><a href=\"https://www.gov.uk/health-protection-team\" target=”_blank”>What did you think of this service?</a> (takes 30 seconds)</p><p class=\"govuk-body-m\"><a href=\"https://www.gov.uk/health-protection-team\" target=”_blank”>Go to Radon services for homeowners or householders</a></p>"
         }
       ]
     }
