@@ -1,20 +1,20 @@
 {
   "formGroup": "radon",
+  "version": 2,
   "metadata": {},
   "startPage": "/start",
   "fullStartPage": "start",
   "name": "Order a radon gas test kit",
   "serviceName": "Order a radon gas test kit",
   "confirmationSessionTimeout": 2000,
+  "generateReference": true,
   "paymentProvider": "trust-payments",
-  "version": 2,
   "fees": [
     {
       "description": "Radon gas home test kit",
       "amount": 5280
     }
   ],
-  "generateReference": true,
   "feedback": {
     "feedbackForm": false,
     "url": ""
@@ -1086,7 +1086,6 @@
       "next": []
     }
   ],
-  "generateReference": true,
   "specialPages": {
     "confirmationPage": {
       "customText": {

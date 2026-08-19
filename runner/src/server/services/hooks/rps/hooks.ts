@@ -1,10 +1,69 @@
 import { ControllerError } from "server/plugins/engine/errors";
-import { saveGasTestKitDetailsSchema } from "server/services/submitActions/saveGasTestKitDetailsSchema";
+import { saveGasTestKitDetailsSchema } from "src/server/services/hooks/rps/saveGasTestKitDetailsSchema";
 import { getOrCreateCorrelationId } from "server/utils/correlationId";
 import { resolveSelectedAddress } from "server/plugins/engine/utils/addressUtils";
 import { Hook } from "../types";
+import { JsonApiIntegrationWithMsal } from "../../jsonApiIntegrationWithMsal";
+import { saveRiskReportDetailsSchema } from "./saveRiskReportDetailsSchema";
 
 export type RpsGasTestKitOnSummarySubmit = Hook<void>;
+
+export type RpsRiskReportOnSummarySubmit = Hook<void>;
+
+export const rpsRiskReportOnSummarySubmit: RpsRiskReportOnSummarySubmit = async (
+  request
+) => {
+  const rpsBackendServiceName = request.service.getName("rpsBackendService");
+
+  const { cacheService, ...rest } = request.services([]);
+  const currentState = await cacheService.getState(request);
+
+  if (rpsBackendServiceName in rest === false) {
+    throw new ControllerError("cannot find rps backend service", {
+      code: 500,
+    });
+  }
+
+  const rpsBackendService = rest[
+    rpsBackendServiceName
+  ] as JsonApiIntegrationWithMsal;
+
+  const selectedRiskReportAddress =
+    currentState["reportAddress_selectedAddress"];
+
+  if (!selectedRiskReportAddress)
+    throw new ControllerError("cannot find risk report address", {
+      code: 500,
+    });
+
+  const { error, value: requestBody } = saveRiskReportDetailsSchema.validate(
+    {
+      uuid: getOrCreateCorrelationId(request),
+      deliveryMethod: currentState["deliveryMethod"],
+      countryCode: selectedRiskReportAddress["countryCode"],
+      uprn: selectedRiskReportAddress["uprn"],
+      udprn: selectedRiskReportAddress["udprn"],
+      firstName: currentState["firstName"],
+      lastName: currentState["lastName"],
+      emailAddress: currentState["emailAddress"],
+      deliveryAddress_selectedAddress:
+        currentState["deliveryAddress_selectedAddress"],
+    },
+    { abortEarly: false }
+  );
+
+  if (error) {
+    throw new ControllerError(
+      `Invalid form state for /storereport: ${error.message}`,
+      { code: 500 }
+    );
+  }
+
+  await rpsBackendService.request("/storereport", {
+    method: "POST",
+    body: JSON.stringify(requestBody),
+  });
+};
 
 type PersonalDetails = {
   title: string;

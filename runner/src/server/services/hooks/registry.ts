@@ -1,6 +1,8 @@
 import {
   rpsGasTestKitOnSummarySubmit,
   RpsGasTestKitOnSummarySubmit,
+  rpsRiskReportOnSummarySubmit,
+  RpsRiskReportOnSummarySubmit,
 } from "./rps/hooks";
 
 /**
@@ -20,8 +22,10 @@ import {
  */
 export interface HookRegistryEntries {
   rpsGasTestKitOnSummarySubmit: RpsGasTestKitOnSummarySubmit;
+  rpsRiskReportOnSummarySubmit: RpsRiskReportOnSummarySubmit;
 }
 
 export const hookRegistry: HookRegistryEntries = {
   rpsGasTestKitOnSummarySubmit,
+  rpsRiskReportOnSummarySubmit,
 } as HookRegistryEntries;

@@ -27,11 +27,13 @@ export interface SummaryContentItem {
   value: string | SummaryContentComponent;
   changeUrl: string | false | SummaryContentChangeUrlCase[];
   type?: "component";
+  condition?: string;
 }
 
 export interface SummaryContentSection {
   title: string;
   content: SummaryContentItem[];
+  condition?: string;
 }
 
 export interface SummaryContentOptions {
@@ -69,19 +71,31 @@ export function summaryContentToSummaryLists(
   const enableCards =
     options.enableCards === true || options.enableCards === "true";
 
-  return sections.map((section) => {
-    const summaryList: GovukSummaryList = {
-      rows: section.content.map((item) =>
-        buildRow(item, state, conditions, basePath, formModel)
-      ),
-    };
+  return sections
+    .filter(
+      (section) =>
+        !section.condition ||
+        conditions[section.condition]?.fn?.(state) === true
+    )
+    .map((section) => {
+      const summaryList: GovukSummaryList = {
+        rows: section.content
+          .filter(
+            (item) =>
+              !item.condition ||
+              conditions[item.condition]?.fn?.(state) === true
+          )
+          .map((item) =>
+            buildRow(item, state, conditions, basePath, formModel)
+          ),
+      };
 
-    if (enableCards) {
-      summaryList.card = { title: { text: section.title } };
-    }
+      if (enableCards) {
+        summaryList.card = { title: { text: section.title } };
+      }
 
-    return summaryList;
-  });
+      return summaryList;
+    });
 }
 
 function buildRow(

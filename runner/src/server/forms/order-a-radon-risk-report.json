@@ -1,11 +1,33 @@
 {
   "formGroup": "radon",
+  "version": 2,
   "metadata": {},
   "startPage": "/order-a-radon-risk-report-start-now",
   "fullStartPage": "order-a-radon-risk-report-start-now",
   "name": "Order a radon risk report",
   "serviceName": "Order a radon risk report",
   "confirmationSessionTimeout": 2000,
+  "generateReference": true,
+  "paymentProvider": "trust-payments",
+  "fees": [
+    {
+      "description": "Email delivery",
+      "amount": 390,
+      "condition": "isEmailDelivery"
+    },
+    {
+      "description": "Post delivery",
+      "amount": 524,
+      "condition": "isPostDelivery"
+    }
+  ],
+  "feedback": {
+    "feedbackForm": false,
+    "url": ""
+  },
+  "hooks": {
+    "HeadlessSummaryPageController.onSubmit": "rpsRiskReportOnSummarySubmit"
+  },
   "pages": [
     {
       "title": "Order a radon risk report",
@@ -34,7 +56,6 @@
       "next": [{ "path": "/order-risk-report-find-a-report-address" }],
       "controller": "./pages/start.js"
     },
-
     {
       "path": "/order-risk-report-find-a-report-address",
       "title": "What address are you ordering a risk report for?",
@@ -376,6 +397,7 @@
           "name": "deliveryMethod",
           "options": {
             "hideTitle": true,
+            "exposeToContext": true,
             "customValidationMessages": {
               "any.required": "Select if would like to receive your report by Email or Post",
               "any.only": "Select if would like to receive your report by Email or Post"
@@ -915,8 +937,131 @@
     {
       "title": "Check your answers",
       "path": "/summary",
-      "controller": "./pages/summary.js",
-      "components": [],
+      "controller": "HeadlessSummaryPageController",
+      "options": {
+        "hideContinueButton": false,
+        "customButtonText": "Confirm and go to payment"
+      },
+      "components": [
+        {
+          "type": "SummaryLists",
+          "options": { "enableCards": "false" },
+          "content": [
+            {
+              "title": "Order summary",
+              "content": [
+                {
+                  "type": "component",
+                  "title": "Risk report address",
+                  "changeUrl": "/order-risk-report-find-a-report-address",
+                  "value": {
+                    "name": "displayReportAddress",
+                    "type": "Para",
+                    "content": [
+                      {
+                        "condition": "reportAddressEnteredManuallyCondition",
+                        "value": "{{reportAddress_addressLine1Lookup}}, {{reportAddress_addressLine2Lookup}}, {{reportAddress_townLookup}}, {{reportAddress_countyLookup}}, {{reportAddress_postcodeLookup}}"
+                      },
+                      { "value": "{{reportAddress_fullSelectedAddress}}" }
+                    ]
+                  }
+                },
+                {
+                  "type": "component",
+                  "title": "Delivery method",
+                  "changeUrl": "/how-would-you-like-to-receive-your-report",
+                  "value": {
+                    "name": "deliveryMethodDisplay",
+                    "type": "Para",
+                    "content": [
+                      { "condition": "isEmailDelivery", "value": "Email" },
+                      { "condition": "isPostDelivery", "value": "Post" }
+                    ]
+                  }
+                },
+                {
+                  "title": "First name",
+                  "value": "{{firstName}}",
+                  "changeUrl": [
+                    {
+                      "condition": "isEmailDelivery",
+                      "value": "/enter-your-details"
+                    },
+                    { "value": "/order-risk-report-enter-your-details-post" }
+                  ]
+                },
+                {
+                  "title": "Last name",
+                  "value": "{{lastName}}",
+                  "changeUrl": [
+                    {
+                      "condition": "isEmailDelivery",
+                      "value": "/enter-your-details"
+                    },
+                    { "value": "/order-risk-report-enter-your-details-post" }
+                  ]
+                },
+                {
+                  "title": "Email address",
+                  "value": "{{emailAddress}}",
+                  "changeUrl": "/enter-your-details",
+                  "condition": "isEmailDelivery"
+                },
+                {
+                  "type": "component",
+                  "title": "Delivery address",
+                  "changeUrl": [
+                    {
+                      "condition": "isDeliveryAddressSameAsReport",
+                      "value": "/order-risk-report-find-a-report-address"
+                    },
+                    { "value": "/order-risk-report-find-a-delivery-address" }
+                  ],
+                  "value": {
+                    "name": "displayDeliveryAddress",
+                    "type": "Para",
+                    "content": [
+                      {
+                        "condition": "isSameDeliveryAddressWithManualReport",
+                        "value": "{{reportAddress_addressLine1Lookup}}, {{reportAddress_addressLine2Lookup}}, {{reportAddress_townLookup}}, {{reportAddress_countyLookup}}, {{reportAddress_postcodeLookup}}"
+                      },
+                      {
+                        "condition": "isDeliveryAddressSameAsReport",
+                        "value": "{{reportAddress_fullSelectedAddress}}"
+                      },
+                      {
+                        "condition": "deliveryAddressEnteredManuallyCondition",
+                        "value": "{{deliveryAddress_addressLine1Lookup}}, {{deliveryAddress_addressLine2Lookup}}, {{deliveryAddress_townLookup}}, {{deliveryAddress_countyLookup}}, {{deliveryAddress_postcodeLookup}}"
+                      },
+                      { "value": "{{deliveryAddress_fullSelectedAddress}}" }
+                    ]
+                  },
+                  "condition": "isPostDelivery"
+                },
+                {
+                  "title": "Amount",
+                  "value": "£{{fees.totalInPounds}}",
+                  "changeUrl": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "termsAndConditions",
+          "type": "CheckboxesField",
+          "title": " ",
+          "list": "termsAndConditionsList",
+          "options": {
+            "required": true,
+            "html": true,
+            "customValidationMessages": {
+              "any.required": "You must accept the Privacy Policy and Terms and Conditions before continuing"
+            }
+          }
+        }
+      ],
+      "componentsAfter": [],
       "next": []
     }
   ],
@@ -974,9 +1119,18 @@
       "title": "addressesList",
       "type": "string",
       "items": []
+    },
+    {
+      "name": "termsAndConditionsList",
+      "type": "string",
+      "items": [
+        {
+          "html": "<p class=\"govuk-body-m\">I agree to the <a href=\"https://www.ukhsa-protectionservices.org.uk/tc/privacy-policy\" target=\"_blank\">Privacy Policy</a> and <a href=\"https://www.ukhsa-protectionservices.org.uk/tc/terms-conditions\" target=\"_blank\">Terms and Conditions</a> for this order.</p>",
+          "value": "accept"
+        }
+      ]
     }
   ],
-  "sections": [],
   "conditions": [
     {
       "name": "hasMatchedReportAddressCondition",
@@ -1211,130 +1365,34 @@
           }
         ]
       }
-    }
-  ],
-  "summaryConfig": {
-    "submitLabel": "Confirm and go to payment",
-
-    "onSubmit": {
-      "action": "saveRiskReportDetails"
-    },
-
-    "declaration": {
-      "hideDeclarationHeading": true,
-      "label": "I agree to the <a href=\"https://www.ukhsa-protectionservices.org.uk/tc/privacy-policy\" target=\"_blank\">Privacy Policy</a> and <a href=\"https://www.ukhsa-protectionservices.org.uk/tc/terms-conditions\" target=\"_blank\">Terms and Conditions</a> for this order.",
-      "errorMessage": "You must accept the Privacy Policy and Terms and Conditions before continuing"
-    },
-
-    "feesRow": {
-      "enabled": true,
-      "label": "Amount"
-    },
-
-    "mergeFields": [
-      {
-        "names": [
-          "reportAddress_addressLine1Lookup",
-          "reportAddress_addressLine2Lookup",
-          "reportAddress_townLookup",
-          "reportAddress_countyLookup",
-          "reportAddress_postcodeLookup"
-        ],
-        "to": "Risk report address",
-        "joiner": ", "
-      },
-      {
-        "names": [
-          "deliveryAddress_addressLine1Lookup",
-          "deliveryAddress_addressLine2Lookup",
-          "deliveryAddress_townLookup",
-          "deliveryAddress_countyLookup",
-          "deliveryAddress_postcodeLookup"
-        ],
-        "to": "Delivery address",
-        "joiner": ", "
-      }
-    ],
-    "removeFields": [
-      "addressType",
-
-      "reportAddress_addressType",
-      "reportAddress_postcodeLookup",
-      "reportAddress_buildingLookup",
-      "reportAddress_addressLine1Lookup",
-      "reportAddress_addressLine2Lookup",
-      "reportAddress_townLookup",
-      "reportAddress_countyLookup",
-      "reportAddress_isCorrectAddress",
-
-      "deliveryAddress_postcodeLookup",
-      "deliveryAddress_buildingLookup",
-      "deliveryAddress_addressLine1Lookup",
-      "deliveryAddress_addressLine2Lookup",
-      "deliveryAddress_townLookup",
-      "deliveryAddress_countyLookup",
-      "deliveryAddress_isCorrectAddress",
-
-      "deliveryAddress_addressType",
-      "deliveryAddressSameAsReport",
-
-      "targetType",
-      "sourceType"
-    ],
-    "relabelFields": {
-      "deliveryMethod": "Delivery method",
-      "firstName": "First name",
-      "emailAddress": "Email"
-    },
-    "valueTransforms": {
-      "deliveryMethod": {
-        "email": "Email",
-        "post": "Post"
-      }
-    },
-    "conditionalRows": [
-      {
-        "when": { "field": "emailAddress", "isEmpty": true },
-        "removeFields": ["emailAddress"]
-      },
-      {
-        "when": {
-          "field": "deliveryAddressSameAsReportDisplay",
-          "isEmpty": true
-        },
-        "removeFields": ["deliveryAddressSameAsReportDisplay"]
-      }
-    ]
-  },
-  "generateReference": true,
-  "provider": "trust-payments",
-  "outputs": [
-    {
-      "name": "webhookOutput",
-      "title": "webhookOutput",
-      "type": "webhook",
-      "outputConfiguration": {
-        "url": "https://webho.ok",
-        "allowRetry": true
-      }
-    }
-  ],
-  "version": 2,
-  "skipSummary": false,
-  "feedback": {
-    "feedbackForm": false,
-    "url": ""
-  },
-  "fees": [
-    {
-      "description": "Email delivery",
-      "amount": 390,
-      "condition": "isEmailDelivery"
     },
     {
-      "description": "Post delivery",
-      "amount": 524,
-      "condition": "isPostDelivery"
+      "displayName": "Delivery Same As Report And Report Manual Entry",
+      "name": "isSameDeliveryAddressWithManualReport",
+      "value": {
+        "name": "isSameDeliveryAddressWithManualReport",
+        "conditions": [
+          {
+            "field": {
+              "name": "deliveryAddressSameAsReport",
+              "type": "YesNoField",
+              "display": "deliveryAddressSameAsReport"
+            },
+            "operator": "is",
+            "value": { "type": "Value", "value": "true", "display": "true" }
+          },
+          {
+            "coordinator": "and",
+            "field": {
+              "name": "reportAddress_addressLine1Lookup",
+              "type": "TextField",
+              "display": "reportAddressEnteredManually"
+            },
+            "operator": "is longer than",
+            "value": { "type": "Value", "value": "0", "display": "0" }
+          }
+        ]
+      }
     }
   ],
   "services": [
