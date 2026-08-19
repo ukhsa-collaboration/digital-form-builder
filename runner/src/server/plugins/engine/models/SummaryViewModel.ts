@@ -1,6 +1,5 @@
 import config from "server/config";
-import pino from "pino";
-import { clone, reach } from "hoek";
+import { reach } from "hoek";
 import { FormModel } from "./FormModel";
 import { feedbackReturnInfoKey, redirectUrl } from "../helpers";
 import { decodeFeedbackContextInfo } from "../feedback";
@@ -11,16 +10,8 @@ import { FeesModel } from "server/plugins/engine/models/submission";
 import { HapiRequest } from "src/server/types";
 import { InitialiseSessionOptions } from "server/plugins/initialiseSession/types";
 import { Outputs } from "server/plugins/engine/models/submission/Outputs";
-import { summaryDetailsTransformationMap } from "./SummaryViewModel.detailsTransformationMap";
 import nunjucks from "nunjucks";
-import { mergeRows } from "server/transforms/summaryDetails/mergeRows";
-import { removeRows } from "server/transforms/summaryDetails/removeRows";
-import { adjustRows } from "server/transforms/summaryDetails/adjustRows";
-import { transformValues } from "server/transforms/summaryDetails/transformValues";
-import { applyConditionalRows } from "server/transforms/summaryDetails/conditionalRows";
-import { applyFeesRow } from "server/transforms/summaryDetails/feesRow";
 import { gatherRepeatPages } from "src/server/utils/gatherRepeatPages";
-const logger = pino().child({ name: "SummaryViewModel" });
 
 /**
  * TODO - extract submission behaviour dependencies from the viewmodel
@@ -65,10 +56,6 @@ export class SummaryViewModel {
   callback?: InitialiseSessionOptions;
   showPaymentSkippedWarningPage: boolean = false;
   returnUrl: string;
-  backLink: string | undefined;
-  submitLabel: string | undefined;
-  declarationLabel: string | undefined;
-  hideDeclarationHeading: boolean | undefined;
 
   constructor(
     pageTitle: string,
@@ -123,87 +110,6 @@ export class SummaryViewModel {
     }
 
     this.details = details;
-
-    const transformDetails = summaryDetailsTransformationMap[model.basePath];
-    if (transformDetails) {
-      /**
-       * Clone the details to avoid mutating the original object.
-       */
-      const clonedDetails = clone(details);
-      try {
-        this.details = transformDetails(clonedDetails);
-      } catch (err) {
-        logger.error({ err }, "Error transforming summary");
-      }
-    }
-
-    // summaryConfig provides a data-driven alternative to the per-form
-    // transformation functions in summaryDetailsTransformationMap. Transforms
-    // run after the legacy map so they can build on top of any existing
-    // per-form logic. Order matters: merge first (combines fields), then
-    // remove (drops fields), then relabel (renames), then value transform
-    // (replaces the displayed value), then conditional rules (which may
-    // remove or append based on a field value).
-    const summaryConfig = def.summaryConfig;
-
-    if (summaryConfig) {
-      try {
-        let transformed = clone(this.details);
-
-        if (summaryConfig.mergeFields?.length) {
-          transformed = mergeRows(transformed, summaryConfig.mergeFields);
-        }
-
-        if (summaryConfig.removeFields?.length) {
-          transformed = removeRows(transformed, summaryConfig.removeFields);
-        }
-
-        if (summaryConfig.relabelFields) {
-          const adjustments = Object.fromEntries(
-            Object.entries(summaryConfig.relabelFields).map(([k, v]) => [
-              k,
-              { label: v as string },
-            ])
-          );
-
-          transformed = adjustRows(transformed, adjustments);
-        }
-
-        if (summaryConfig.valueTransforms) {
-          transformed = transformValues(
-            transformed,
-            summaryConfig.valueTransforms
-          );
-        }
-
-        if (summaryConfig.conditionalRows?.length) {
-          transformed = applyConditionalRows(
-            transformed,
-            summaryConfig.conditionalRows
-          );
-        }
-
-        transformed = applyFeesRow(
-          transformed,
-          this.fees,
-          summaryConfig.feesRow
-        );
-
-        this.details = transformed;
-      } catch (err) {
-        logger.error({ err }, "Error applying summaryConfig transforms");
-      }
-
-      this.submitLabel = summaryConfig.submitLabel;
-      this.feesInSummaryTable = Boolean(summaryConfig.feesRow?.enabled);
-
-      if (summaryConfig.declaration) {
-        this.declaration = undefined;
-        this.declarationLabel = summaryConfig.declaration.label;
-        this.hideDeclarationHeading =
-          summaryConfig.declaration.hideDeclarationHeading;
-      }
-    }
 
     this.result = result;
     this.state = state;

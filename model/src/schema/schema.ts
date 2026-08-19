@@ -348,86 +348,10 @@ const secureFormSubmissionConfig = msalAuthorizeConfigSchema.concat(
   })
 );
 
-const addressLookupConfigSchema = msalAuthorizeConfigSchema.concat(
-  joi.object().keys({
-    apimBaseUrl: joi.string(),
-    callingApplication: joi.string(),
-    subscriptionKey: joi.string().optional(),
-  })
-);
-
 const dynamicServiceConfigSchema = joi.object().keys({
   name: joi.string().required(),
   service: joi.string().required(),
   parameters: joi.object().unknown(true).required(),
-});
-
-const summaryConfigSchema = joi.object().keys({
-  submitLabel: joi.string().optional(),
-  declaration: joi
-    .object()
-    .keys({
-      label: joi.string().required(),
-      errorMessage: joi.string().optional(),
-      hideDeclarationHeading: joi.boolean().optional(),
-    })
-    .optional(),
-  removeFields: joi.array().items(joi.string()).optional(),
-  mergeFields: joi
-    .array()
-    .items(
-      joi.object().keys({
-        names: joi.array().items(joi.string()).required(),
-        to: joi.string().required(),
-        joiner: joi.string().required(),
-      })
-    )
-    .optional(),
-  relabelFields: joi.object().pattern(joi.string(), joi.string()).optional(),
-  valueTransforms: joi
-    .object()
-    .pattern(joi.string(), joi.object().pattern(joi.string(), joi.string()))
-    .optional(),
-  conditionalRows: joi
-    .array()
-    .items(
-      joi.object().keys({
-        when: joi
-          .object()
-          .keys({
-            field: joi.string().required(),
-            value: joi.string().optional(),
-            isEmpty: joi.boolean().optional(),
-          })
-          .or("value", "isEmpty")
-          .required(),
-        removeFields: joi.array().items(joi.string()).optional(),
-        appendToLastSection: joi
-          .object()
-          .keys({
-            name: joi.string().required(),
-            label: joi.string().required(),
-            value: joi.string().required(),
-            immutable: joi.boolean().optional(),
-          })
-          .optional(),
-      })
-    )
-    .optional(),
-  feesRow: joi
-    .object()
-    .keys({
-      enabled: joi.boolean().required(),
-      label: joi.string().optional(),
-    })
-    .optional(),
-  onSubmit: joi
-    .object()
-    .keys({
-      action: joi.string().required(),
-      parameters: joi.object().unknown(true).optional(),
-    })
-    .optional(),
 });
 
 export const trustPaymentConfigSchema = joi.object({
@@ -481,9 +405,7 @@ export const Schema = joi
     confirmationSessionTimeout: joi.number().optional(),
     returnTo: joi.boolean().optional(),
     secureFormSubmissionConfig: secureFormSubmissionConfig.optional(),
-    addressLookupConfig: addressLookupConfigSchema.optional(),
     error500ContactEmail: joi.string().optional(),
-    summaryConfig: summaryConfigSchema.optional(),
     hooks: joi.object().pattern(joi.string(), joi.string()).optional(),
     generateReference: joi.boolean().optional(),
     services: joi.array().items(dynamicServiceConfigSchema).optional(),

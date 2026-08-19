@@ -124,14 +124,15 @@ export class HeadlessSummaryPageController extends PageController {
         h,
         { model }
       );
+
       if (beforeSubmitResponse) return beforeSubmitResponse;
 
       if (model.def?.generateReference == true) {
-          const reference = uuidv4();
-          await cacheService.mergeState(request, {
-            generatedReference: reference,
-          });
-        }
+        const reference = uuidv4();
+        await cacheService.mergeState(request, {
+          generatedReference: reference,
+        });
+      }
 
       await cacheService.mergeState(request, { userCompletedSummary: true });
 
@@ -142,6 +143,7 @@ export class HeadlessSummaryPageController extends PageController {
         h,
         { model }
       );
+
       if (submitResponse) return submitResponse;
 
       const afterSubmitResponse = await runHook(
@@ -151,6 +153,7 @@ export class HeadlessSummaryPageController extends PageController {
         h,
         { model }
       );
+
       if (afterSubmitResponse) return afterSubmitResponse;
 
       const feesModel = FeesModel(model, state);

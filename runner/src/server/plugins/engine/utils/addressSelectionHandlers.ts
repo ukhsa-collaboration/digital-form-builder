@@ -36,16 +36,18 @@ const lookupUdprnInDatabase = async (
   }
 ) => {
   try {
+    const request = {
+      sessionId,
+      udprn: udprn.padStart(8, "0"),
+      uprn,
+    };
+
     const checkUdprn = await rpsBackendService.request("/lookup", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        sessionId,
-        udprn: udprn.padStart(8, "0"),
-        uprn,
-      }),
+      body: JSON.stringify(request),
     });
 
     const response = await checkUdprn.json();

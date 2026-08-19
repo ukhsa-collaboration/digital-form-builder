@@ -1,6 +1,6 @@
 import * as Code from "@hapi/code";
 import * as Lab from "@hapi/lab";
-import { saveGasTestKitDetailsSchema } from "../../../../../src/server/services/submitActions/saveGasTestKitDetailsSchema";
+import { saveGasTestKitDetailsSchema } from "../../../../../src/server/services/hooks/rps/saveGasTestKitDetailsSchema";
 
 const { expect } = Code;
 const lab = Lab.script();

@@ -229,13 +229,6 @@ export interface DynamicServiceConfig {
   parameters: Record<string, any>;
 }
 
-export interface TrustPaymentsConfig {
-  siteReference: string;
-  hashPassword: string;
-  onInvalidPaymentFunction?: string;
-  onValidPaymentFunction?: string;
-}
-
 export interface TrustPaymentsDetails {
   billingFirstName: string;
   billingLastName: string;
@@ -358,15 +351,12 @@ export type FormDefinition = {
   serviceName?: string | undefined;
   confirmationSessionTimeout?: number | undefined;
   returnTo?: boolean | undefined;
-  addressLookupConfig?: AddressLookupConfig;
   secureFormSubmissionConfig?: SecureFormSubmissionConfig;
   error500ContactEmail?: string | undefined;
-  summaryConfig?: SummaryConfig;
   hooks?: Record<string, string>;
   generateReference?: boolean | undefined;
   services?: DynamicServiceConfig[];
   provider?: string;
   paymentProvider?: string;
-  trustPayementsConfig?: TrustPaymentsConfig;
   featureFlags?: string[];
 };
