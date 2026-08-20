@@ -1413,7 +1413,7 @@
       "service": "jsonApiIntegrationWithMsal",
       "parameters": {
         "name": "rpsBackendService.RadonRiskReport",
-        "apimBaseUrl": "https://api.test.rps.ukhsa.gov.uk",
+        "apimBaseUrl": "${RPS_RADON_RISK_REPORT_API_BASE_URL}",
         "callingApplication": "RPS",
         "tenantId": "${RPS_RADON_RISK_REPORT_API_TENANT_ID}",
         "clientId": "${RPS_RADON_RISK_REPORT_API_CLIENT_ID}",

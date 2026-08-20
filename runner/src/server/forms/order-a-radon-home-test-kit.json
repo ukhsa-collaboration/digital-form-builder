@@ -1533,7 +1533,7 @@
       "service": "jsonApiIntegrationWithMsal",
       "parameters": {
         "name": "rpsBackendService.RadonHomeGasTestKit",
-        "apimBaseUrl": "https://api.test.rps.ukhsa.gov.uk",
+        "apimBaseUrl": "${RPS_RADON_TEST_KIT_API_BASE_URL}",
         "callingApplication": "RPS",
         "tenantId": "${RPS_RADON_TEST_KIT_API_TENANT_ID}",
         "clientId": "${RPS_RADON_TEST_KIT_API_CLIENT_ID}",

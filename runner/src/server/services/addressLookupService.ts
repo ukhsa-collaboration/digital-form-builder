@@ -57,7 +57,7 @@ export class AddressLookupService extends BaseService {
 
     const url = `${this.config.apimBaseUrl}/matchAddress?${params}`;
 
-    this.logger.warn(
+    this.logger.trace(
       { url, headers },
       "AddressLookupService.lookupByPostcode.request"
     );
@@ -66,7 +66,7 @@ export class AddressLookupService extends BaseService {
 
     const body = await response.json();
 
-    this.logger.warn(
+    this.logger.trace(
       {
         status: response.status,
         statusText: response.statusText,
