@@ -26,6 +26,7 @@ import {
   FormPayload,
   FormSubmissionErrors,
   FormSubmissionState,
+  FieldAssignment,
 } from "../types";
 import { ComponentCollectionViewModel } from "../components/types";
 import { format, parseISO } from "date-fns";
@@ -78,6 +79,7 @@ export class PageControllerBase {
   buttonText?: string;
   honorReturnURL?: boolean;
   hideContinueButton?: boolean;
+  isStartButton?: boolean;
 
   // TODO: pageDef type
   constructor(model: FormModel, pageDef: { [prop: string]: any } = {}) {
@@ -101,6 +103,7 @@ export class PageControllerBase {
       pageDef?.options?.customButtonText ?? this.defaultButtonText;
     this.honorReturnURL = pageDef?.options?.honorReturnURL ?? true;
     this.hideContinueButton = pageDef.options?.hideContinueButton ?? false;
+    this.isStartButton = pageDef?.options?.isStartButton ?? false;
 
     // Resolve section
     this.section = model.sections?.find(
