@@ -1,8 +1,8 @@
 import { http, HttpResponse, RequestHandler } from "msw";
 import joi from "joi";
-import pino from "pino";
+import { createChildLogger } from "../../utils/logger";
 
-const logger = pino().child({ name: "rpsRiskReportBackend" });
+const logger = createChildLogger({ name: "rpsRiskReportBackend" });
 
 const lookupAddressRequestSchema = joi.object({
   uuid: joi.string().uuid().required(),
@@ -92,7 +92,7 @@ const storeRiskReportAddressEndpoint = http.post(
       return HttpResponse.json(validated.error, { status: 500 });
     }
 
-    const { udprn, sessionId } = validated.value;
+    const { udprn, uuid } = validated.value;
 
     switch (udprn) {
       case undefined:
@@ -104,7 +104,7 @@ const storeRiskReportAddressEndpoint = http.post(
           UDPRN: udprn,
           TemplateId: "1",
           found: false,
-          requestId: sessionId,
+          requestId: uuid,
         };
         return HttpResponse.json(response);
       }
@@ -115,7 +115,7 @@ const storeRiskReportAddressEndpoint = http.post(
           UDPRN: udprn,
           TemplateId: "5",
           found: true,
-          requestId: sessionId,
+          requestId: uuid,
         };
         return HttpResponse.json(response);
       }

@@ -37,7 +37,7 @@ const lookupUdprnInDatabase = async (
 ) => {
   try {
     const request = {
-      sessionId,
+      sessionId: sessionId,
       udprn: udprn.padStart(8, "0"),
       uprn,
     };

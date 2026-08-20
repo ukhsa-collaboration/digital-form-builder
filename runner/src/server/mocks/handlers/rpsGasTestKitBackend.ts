@@ -1,8 +1,8 @@
 import { http, HttpResponse } from "msw";
 import joi from "joi";
-import pino from "pino";
+import { createChildLogger } from "../../utils/logger";
 
-const logger = pino().child({ name: "gtkBackend" });
+const logger = createChildLogger({ name: "gtkBackend" });
 
 const personDetailsSchema = joi.object({
   title: joi.string().required(),
