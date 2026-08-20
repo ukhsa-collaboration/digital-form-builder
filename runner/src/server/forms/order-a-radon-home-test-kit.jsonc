@@ -30,38 +30,42 @@
       "components": [
         {
           "type": "Para",
-          "content": "Use this service to order a radon gas test kit for a property in the UK and and the Isle of Man.\n</br></br>The radon gas test kit measures the level of radon in your property over a period of 3 months. The results show if the radon level is above the Action Level advised by the UK Health Security Agency. If your result is above the Action Level, you should take steps to reduce it."
+          "content": "<ul class=\"govuk-list govuk-list--bullet\"><li>Use this service to order a radon gas test kit for a property in the UK and and the Isle of Man.</li><li>The radon gas test kit measures the level of radon in your property over a period of three months</li><li>The results show if the radon level is above the Action Level advised by the UK Health Security Agency</li><li>If your result is above the Action Level, you should take steps to reduce it</li></ul>"
         },
         {
           "type": "InsetText",
-          "content": "The Action Level for radon in homes is 200 becquerels per cubic metre (Bq m-3). A becquerel is a measure of radioactivity. If the radon level in your property is higher than this, you should take steps to reduce it."
+          "content": "The Action Level for radon in homes is 200 becquerels per cubic metre (Bq m-3). A becquerel is a measure of radioactivity."
         },
         {
           "type": "InsetText",
-          "content": " If you or anyone living in your home is a current or ex-smoker, the risk to health is greater. In this case, the Action Level is lower, at 100 Bq m-3."
+          "content": "You may wish to use the Target Level of 100 Bq m-3 if there are smokers or ex-smokers living in the property as there is a greater risk to their health."
         },
         {
           "type": "Para",
-          "content": "\nOnce your kit arrives, we will send you instructions on how to do the test.\n</br></br>\nAfter you return the kit, you will receive a report showing the radon level at your address and advice on whether you need to take action.\n</br></br>\nA test kit costs £52.80, including VAT.\n</br></br>\n<b>Before you start</b>\n</br></br>\nThe test will not be valid if:</br>"
-        },
-        {
-          "type": "List",
-          "title": "The test will not be valid if",
-          "list": "invalidIfList",
-          "values": { "type": "listRef" }
+          "content": "A test kit costs £52.80 (including VAT).<p class=\"govuk-body\"><b>Your kit includes:</b></p><ul class=\"govuk-list govuk-list--bullet\"><li>2 detectors, one for the living area and the other for the bedroom - these are likely the rooms that people use the most</li><li>Detector placement instructions</li><li>A pre-paid envelope, to return the detector 3 months later</li></ul>"
         },
         {
           "type": "Para",
-          "content": "\nThis is because how a home is used can affect radon levels. For example, how often windows and doors are opened, or how the home is heated.\n</br></br>\nYou'll need your:</br>"
+          "content": "After 3 months you will return the kit and receive a report showing the radon level at your address and advice on whether you need to take action"
         },
         {
-          "type": "List",
-          "title": "You'll need your:",
-          "list": "youllNeedYourList"
+          "type": "Para",
+          "content": "<h1 class=\"govuk-heading-m\">Before you start</h2><p class=\"govuk-body\">Ordering a kit takes around 5 minutes. It may take up to 10 working days to dispatch the kit.<p class=\"govuk-body\"><b>To review</b></p><ul class=\"govuk-list govuk-list--bullet\"><li>if you are a landlord, understand your responsibility to tenants under <a href=\"#to-be-determined\">Duty of Care and the Housing Act</a></li><li>if your property's radon level has been measure before using UKHSA, you may be eligible for a free retest - you will be asked your name, address, and the method of remediaton you have used to determine your eligibility</li><li>if you would like 50 or more radon detectors or are a public sector organisation - <a href=\"#to-be-determined\">contact us</a> as discounts may be available</li></ul>"
+        },
+        {
+          "type": "Para",
+          "content": "<b>The test will not be valid if:</b><ul class=\"govuk-list govuk-list--bullet\"><li>any building work is planned during the testing period that disrupts normal living conditions, or changes the way air moves through the property</li><li>the property is empty for more than 2 weeks during the test</li><li>the people living in the property change during the test</li></ul><p class=\"govuk-body\">This is because how a home is used can affect radon levels. For example, how often windows and doors are opened, or how the home is heated.</p>"
+        },
+        {
+          "type": "Para",
+          "content": "<b>You'll need your</b><ul class=\"govuk-list govuk-list--bullet\"><li>a valid email address</li><li>a postal delivery address in the UK or Isle of Man</li><li>your payment details</li></ul></br>"
         }
       ],
       "next": [{ "path": "/property-address" }],
-      "controller": "./pages/start.js"
+      "controller": "./pages/start.js",
+      "options": {
+        "isStartButton": true
+      }
     },
     {
       "path": "/property-address",
