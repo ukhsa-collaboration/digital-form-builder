@@ -94,14 +94,21 @@ export const rpsRiskReportOnSummarySubmit: RpsRiskReportOnSummarySubmit = async 
     );
   }
 
+  request.logger.trace(requestBody, "rpsRiskReportOnSummarySubmit.requestBody");
+
   const response = await rpsBackendService.request("/storereport", {
     method: "POST",
     body: JSON.stringify(requestBody),
   });
 
-  const data = await response.json();
+  const body = await response.json();
 
-  if (response.status !== 200 || data.error) {
+  request.logger.trace(
+    { status: response.status, body },
+    "rpsRiskReportOnSummarySubmit.response"
+  );
+
+  if (response.status !== 200 || body.error) {
     throw new ControllerError(`Request to save report details has failed`, {
       code: 500,
     });

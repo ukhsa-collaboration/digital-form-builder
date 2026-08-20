@@ -43,6 +43,10 @@ export class HeadlessSummaryPageController extends PageController {
     const renderPage = super.makeGetRouteHandler();
 
     return async (request: HapiRequest, h: HapiResponseToolkit) => {
+      request.logger.trace([
+        "HeadlessSummaryPageController.GET",
+        "Handler entered",
+      ]);
       this.langFromRequest(request);
 
       const { cacheService } = request.services([]);
@@ -53,6 +57,10 @@ export class HeadlessSummaryPageController extends PageController {
       const pagesBeforeSummary = relevantPages.filter((page) => page !== this);
 
       if (endPage && endPage !== this) {
+        request.logger.trace([
+          "HeadlessSummaryPageController.GET",
+          `Redirecting to end page '${(endPage as any).path}'`,
+        ]);
         return h.redirect(`/${model.basePath}${(endPage as any).path}`);
       }
 
@@ -68,6 +76,11 @@ export class HeadlessSummaryPageController extends PageController {
           firstDetail.path.length - 1
         ] as string;
 
+        request.logger.trace([
+          "HeadlessSummaryPageController.GET",
+          `Validation error on field '${fieldName}', searching for page to redirect`,
+        ]);
+
         const pageWithError = pagesBeforeSummary.find((page) =>
           page.components.formItems.some(
             (item: { name: string }) => item.name === fieldName
@@ -75,6 +88,11 @@ export class HeadlessSummaryPageController extends PageController {
         );
 
         if (pageWithError) {
+          request.logger.trace([
+            "HeadlessSummaryPageController.GET",
+            `Redirecting to page '${pageWithError.path}' with error`,
+          ]);
+
           return h.redirect(
             `/${model.basePath}${
               pageWithError.path
@@ -83,18 +101,32 @@ export class HeadlessSummaryPageController extends PageController {
         }
       }
 
+      request.logger.trace([
+        "HeadlessSummaryPageController.GET",
+        "Rendering summary page",
+      ]);
       return renderPage(request, h);
     };
   }
 
   makePostRouteHandler() {
     return async (request: HapiRequest, h: HapiResponseToolkit) => {
+      request.logger.trace([
+        "HeadlessSummaryPageController.POST",
+        "Handler entered",
+      ]);
+
       const { cacheService } = request.services([]);
       const model = this.model;
 
       const response = await this.handlePostRequest(request, h);
 
       if (response?.source?.context?.errors) {
+        request.logger.trace([
+          "HeadlessSummaryPageController.POST",
+          "Form errors present, returning response",
+        ]);
+
         return response;
       }
 
@@ -108,10 +140,11 @@ export class HeadlessSummaryPageController extends PageController {
       });
 
       if (result.error) {
-        request.logger.error(
-          "PluggableSummaryPage validation error",
-          result.error
-        );
+        request.logger.error([
+          "HeadlessSummaryPageController.POST",
+          `Validation error, redirecting to start page: ${result.error.message}`,
+        ]);
+
         return this.redirectToStartPage(request, h, model);
       }
 
@@ -125,16 +158,34 @@ export class HeadlessSummaryPageController extends PageController {
         { model }
       );
 
-      if (beforeSubmitResponse) return beforeSubmitResponse;
+      if (beforeSubmitResponse) {
+        request.logger.trace([
+          "HeadlessSummaryPageController.POST",
+          "onBeforeSubmit hook returned a response, short-circuiting",
+        ]);
+
+        return beforeSubmitResponse;
+      }
 
       if (model.def?.generateReference == true) {
         const reference = uuidv4();
+
+        request.logger.trace([
+          "HeadlessSummaryPageController.POST",
+          `Generated reference '${reference}'`,
+        ]);
+
         await cacheService.mergeState(request, {
           generatedReference: reference,
         });
       }
 
       await cacheService.mergeState(request, { userCompletedSummary: true });
+
+      request.logger.trace([
+        "HeadlessSummaryPageController.POST",
+        "Marked summary as complete",
+      ]);
 
       const submitResponse = await runHook(
         this.constructor.name,
@@ -144,7 +195,13 @@ export class HeadlessSummaryPageController extends PageController {
         { model }
       );
 
-      if (submitResponse) return submitResponse;
+      if (submitResponse) {
+        request.logger.trace([
+          "HeadlessSummaryPageController.POST",
+          "onSubmit hook returned a response, short-circuiting",
+        ]);
+        return submitResponse;
+      }
 
       const afterSubmitResponse = await runHook(
         this.constructor.name,
@@ -154,11 +211,22 @@ export class HeadlessSummaryPageController extends PageController {
         { model }
       );
 
-      if (afterSubmitResponse) return afterSubmitResponse;
+      if (afterSubmitResponse) {
+        request.logger.trace([
+          "HeadlessSummaryPageController.POST",
+          "onAfterSubmit hook returned a response, short-circuiting",
+        ]);
+        return afterSubmitResponse;
+      }
 
       const feesModel = FeesModel(model, state);
 
       if (!model.def.paymentProvider || !feesModel?.details?.length) {
+        request.logger.trace([
+          "HeadlessSummaryPageController.POST",
+          "No payment required, redirecting to status",
+        ]);
+
         return redirectTo(request, h, `/${request.params.id}/status`);
       }
 
@@ -172,6 +240,11 @@ export class HeadlessSummaryPageController extends PageController {
           { code: 500 }
         );
       }
+
+      request.logger.trace([
+        "HeadlessSummaryPageController.POST",
+        `Creating payment via provider '${model.def.paymentProvider}'`,
+      ]);
 
       const paymentResult = await paymentService.createPayment(
         request,

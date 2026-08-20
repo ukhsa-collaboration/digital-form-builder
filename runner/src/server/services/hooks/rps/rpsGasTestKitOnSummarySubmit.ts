@@ -157,12 +157,19 @@ export const rpsGasTestKitOnSummarySubmit: RpsGasTestKitOnSummarySubmit = async 
     );
   }
 
+  request.logger.trace(requestBody, "rpsGasTestKitOnSummarySubmit.requestBody");
+
   const response = await rpsBackendService.request("/storegtk", {
     method: "POST",
     body: JSON.stringify(requestBody),
   });
 
   const body = await response.json();
+
+  request.logger.trace(
+    { status: response.status, body },
+    "rpsGasTestKitOnSummarySubmit.response"
+  );
 
   if (response.status !== 200 || body.error) {
     throw new ControllerError(

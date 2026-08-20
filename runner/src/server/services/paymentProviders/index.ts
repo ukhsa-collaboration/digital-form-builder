@@ -2,6 +2,7 @@ import config from "server/config";
 import { isMultipleApiKey } from "@xgovformbuilder/model";
 import { HapiRequest, HapiResponseToolkit } from "server/types";
 import { ControllerError } from "server/plugins/engine/errors";
+import { BaseService } from "../BaseService";
 import { PaymentProviderService, PaymentResult } from "./types";
 
 /**
@@ -19,13 +20,19 @@ import { PaymentProviderService, PaymentResult } from "./types";
  */
 
 /** Adapter for GOV.UK Pay, registered under `"gov-uk-pay"`. */
-class GovUkPayAdapter implements PaymentProviderService {
+class GovUkPayAdapter extends BaseService implements PaymentProviderService {
+  constructor() {
+    super("GovUkPayAdapter");
+  }
+
   async createPayment(
     request: HapiRequest,
     _state: Record<string, any>,
     feesModel: any,
     model: any
   ): Promise<PaymentResult> {
+    this.logger.trace({ formId: request.params.id }, "createPayment start");
+
     const { payService, cacheService } = request.services([]);
 
     const payApiKey = this.resolvePayApiKey(model);
@@ -34,9 +41,7 @@ class GovUkPayAdapter implements PaymentProviderService {
       `${payReturnUrl}/${request.params.id}/status`
     ).toString();
 
-    request.logger.info(
-      `[GovUkPayAdapter] payReturnUrl configured to ${payReturnUrl}`
-    );
+    this.logger.info(`payReturnUrl configured to ${payReturnUrl}`);
 
     const payStateMeta = payService.createPayStateMeta({
       feesModel,
@@ -59,6 +64,11 @@ class GovUkPayAdapter implements PaymentProviderService {
 
     request.yar.set("basePath", model.basePath);
     await cacheService.mergeState(request, payState);
+
+    this.logger.trace(
+      { paymentId: res.payment_id, reference: res.reference },
+      "createPayment complete"
+    );
 
     return { redirectUrl: payState.pay.next_url, reference: res.reference };
   }
@@ -85,13 +95,21 @@ class GovUkPayAdapter implements PaymentProviderService {
 }
 
 /** Adapter for Trust Payments, registered under `"trust-payments"`. */
-class TrustPaymentsAdapter implements PaymentProviderService {
+class TrustPaymentsAdapter
+  extends BaseService
+  implements PaymentProviderService {
+  constructor() {
+    super("TrustPaymentsAdapter");
+  }
+
   async createPayment(
     request: HapiRequest,
     state: Record<string, any>,
     feesModel: any,
     _model: any
   ): Promise<PaymentResult> {
+    this.logger.trace({ formId: request.params.id }, "createPayment start");
+
     const { trustPaymentsService } = request.service.getServices(
       "trustPaymentsService"
     );
@@ -111,6 +129,8 @@ class TrustPaymentsAdapter implements PaymentProviderService {
       amount: feesModel.total,
       redirectUrl,
     });
+
+    this.logger.trace({ formId: request.params.id }, "createPayment complete");
 
     return { html };
   }

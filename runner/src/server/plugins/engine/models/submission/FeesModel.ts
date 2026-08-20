@@ -55,31 +55,23 @@ export function FeesModel(
 
   const details = feesAsFeeDetails(applicableFees, state);
 
-  const feeDetails = details.reduce(
-    (acc: FeesModel, fee: FeeDetails) => {
-      const { amount, multiplyBy = 1, prefix = "" } = fee;
-
-      acc.total = acc.total + amount * multiplyBy;
-      acc.prefixes = [...acc.prefixes, prefix].filter((p) => p);
-
-      return acc;
-    },
-    {
-      details,
-      total: 0,
-      totalInPounds: "",
-      prefixes: [],
-      referenceFormat:
-        model.feeOptions?.paymentReferenceFormat ??
-        model.def.paymentReferenceFormat ??
-        "",
-      ...(reportingColumns && { reportingColumns }),
-    }
+  const total = details.reduce(
+    (sum, { amount, multiplyBy = 1 }) => sum + amount * multiplyBy,
+    0
   );
 
+  const prefixes = details.map(({ prefix = "" }) => prefix).filter(Boolean);
+
   return {
-    ...feeDetails,
-    totalInPounds: Number(feeDetails.total / 100).toFixed(2),
+    details,
+    total,
+    totalInPounds: (total / 100).toFixed(2),
+    prefixes,
+    referenceFormat:
+      model.feeOptions?.paymentReferenceFormat ??
+      model.def.paymentReferenceFormat ??
+      "",
+    ...(reportingColumns && { reportingColumns }),
   };
 }
 

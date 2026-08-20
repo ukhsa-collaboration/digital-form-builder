@@ -325,26 +325,35 @@ export interface HiddenFieldComponent {
   schema?: {};
 }
 
+export interface ConditionalValue {
+  condition?: string;
+  value: string;
+}
+
+export interface SummaryListComponentValue {
+  name: string;
+  type: string;
+  content: string | ConditionalValue[];
+  options?: Record<string, any>;
+}
+
+export interface SummaryListRow {
+  title: string;
+  value: string | SummaryListComponentValue;
+  changeUrl: string | false | ConditionalValue[];
+  type?: "component";
+}
+
+export interface SummaryListSection {
+  title: string;
+  content: SummaryListRow[];
+}
+
 export interface SummaryListsComponent {
   type: "SummaryLists";
   name: string;
   title?: string;
-  content: Array<{
-    title: string;
-    content: Array<{
-      title: string;
-      value:
-        | string
-        | {
-            name: string;
-            type: string;
-            content: string | Array<{ condition?: string; value: string }>;
-            options?: Record<string, any>;
-          };
-      changeUrl: string | false | Array<{ condition?: string; value: string }>;
-      type?: "component";
-    }>;
-  }>;
+  content: SummaryListSection[];
   subType?: "content";
   options: {
     enableCards?: boolean | "true" | "false";
