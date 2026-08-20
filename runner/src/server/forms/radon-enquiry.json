@@ -756,10 +756,10 @@
   ],
   "fees": [],
   "secureFormSubmissionConfig": {
-    "tenantId": "${RPS_RADON_ENQUIRY_API_TENANT_ID}",
-    "clientId": "${RPS_RADON_ENQUIRY_API_CLIENT_ID}",
-    "clientSecret": "${RPS_RADON_ENQUIRY_API_CLIENT_SECRET}",
-    "scopes": ["${RPS_RADON_ENQUIRY_API_SCOPES}"],
+    "tenantId": "${RPS_AWS_AUTHORISER_API_TENANT_ID}",
+    "clientId": "${RPS_AWS_AUTHORISER_API_CLIENT_ID}",
+    "clientSecret": "${RPS_AWS_AUTHORISER_API_CLIENT_SECRET}",
+    "scopes": ["${RPS_AWS_AUTHORISER_API_SCOPES}"],
     "useAwsWafUserAgentWorkaround": true
   },
   "outputs": [
@@ -768,7 +768,7 @@
       "title": "webhookOutput",
       "type": "webhook",
       "outputConfiguration": {
-        "url": "${RPS_RADON_ENQUIRY_API_BASE_URL}/sendcase",
+        "url": "${RPS_AWS_APIGW_BASE_URL}/sendcase",
         "allowRetry": true,
         "payload": {
           "uuid": { "field": "generatedReference" },
