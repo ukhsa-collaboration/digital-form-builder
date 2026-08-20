@@ -1400,7 +1400,7 @@
       "name": "addressLookupService",
       "service": "addressLookupService",
       "parameters": {
-        "apimBaseUrl": "${RPS_LOCATION_SERVICES_API_BASE_URL}",
+        "apimBaseUrl": "https://api.test.rps.ukhsa.gov.uk",
         "callingApplication": "RPS",
         "tenantId": "${RPS_LOCATION_SERVICES_API_TENANT_ID}",
         "clientId": "${RPS_LOCATION_SERVICES_API_CLIENT_ID}",

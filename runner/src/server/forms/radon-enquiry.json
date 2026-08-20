@@ -767,7 +767,7 @@
       "title": "webhookOutput",
       "type": "webhook",
       "outputConfiguration": {
-        "url": "https://api.dev.rps.ukhsa.gov.uk/case",
+        "url": "https://api.test.rps.ukhsa.gov.uk/sendcase",
         "allowRetry": true,
         "payload": {
           "uuid": { "field": "generatedReference" },
