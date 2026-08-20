@@ -1412,6 +1412,16 @@
       }
     },
     {
+      "name": "trustPaymentsService",
+      "service": "trustPaymentsService",
+      "parameters": {
+        "siteReference": "${RPS_RADON_ORR_TRUST_PAYMENTS_SITE_REFERENCE}",
+        "hashPassword": "${RPS_TRUST_PAYMENTS_HASH_PASSWORD}",
+        "onInvalidPaymentFunction": "rpsRiskReportInvalidPayment",
+        "onValidPaymentFunction": "rpsRiskReportValidPayment"
+      }
+    },
+    {
       "name": "rpsBackendService",
       "service": "jsonApiIntegrationWithMsal",
       "parameters": {
@@ -1422,16 +1432,6 @@
         "clientId": "${RPS_RADON_RISK_REPORT_API_CLIENT_ID}",
         "clientSecret": "${RPS_RADON_RISK_REPORT_API_CLIENT_SECRET}",
         "scopes": ["${RPS_RADON_RISK_REPORT_API_SCOPES}"]
-      }
-    },
-    {
-      "name": "trustPaymentsService",
-      "service": "trustPaymentsService",
-      "parameters": {
-        "siteReference": "${RPS_TRUST_PAYMENTS_SITE_REFERENCE}",
-        "hashPassword": "${RPS_TRUST_PAYMENTS_HASH_PASSWORD}",
-        "onInvalidPaymentFunction": "rpsRiskReportInvalidPayment",
-        "onValidPaymentFunction": "rpsRiskReportValidPayment"
       }
     }
   ]

@@ -1556,7 +1556,7 @@
       "name": "trustPaymentsService",
       "service": "trustPaymentsService",
       "parameters": {
-        "siteReference": "${RPS_TRUST_PAYMENTS_SITE_REFERENCE}",
+        "siteReference": "${RPS_RADON_ORR_TRUST_PAYMENTS_SITE_REFERENCE}",
         "hashPassword": "${RPS_TRUST_PAYMENTS_HASH_PASSWORD}"
       }
     },
