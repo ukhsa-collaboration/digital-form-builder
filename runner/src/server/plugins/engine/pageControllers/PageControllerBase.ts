@@ -26,7 +26,6 @@ import {
   FormPayload,
   FormSubmissionErrors,
   FormSubmissionState,
-  FieldAssignment,
 } from "../types";
 import { ComponentCollectionViewModel } from "../components/types";
 import { format, parseISO } from "date-fns";
