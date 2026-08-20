@@ -60,14 +60,22 @@
           "list": "youllNeedYourList"
         }
       ],
-      "next": [{ "path": "/property-address" }],
-      "controller": "./pages/start.js"
+      "next": [{ "path": "/gas-test-kit-property-address-postcode" }],
+      "controller": "./pages/start.js",
+      "options": {
+        "isStartButton": true
+      }
     },
     {
-      "path": "/property-address",
+      "path": "/gas-test-kit-property-address-postcode",
       "title": "Enter the address you want to measure the radon level",
       "controller": "FindAnAddressPageController",
       "components": [
+
+        {
+          "type": "Para",
+          "content": "This will be the property where your radon level will be measured"
+        },
         {
           "name": "propertyAddress_postcodeLookup",
           "type": "TextField",
@@ -173,7 +181,7 @@
       ],
       "controller": "SelectAnAddressPageController",
       "options": {
-        "changePath": "/property-address"
+        "changePath": "/gas-test-kit-property-address-postcode"
       },
       "componentsAfter": [
         {
@@ -191,7 +199,7 @@
           "path": "/property-address-not-found",
           "condition": "propertyAddressOnlyOneAddressCondition"
         },
-        { "path": "/property-address" }
+        { "path": "/gas-test-kit-property-address-postcode" }
       ]
     },
     {
@@ -253,7 +261,7 @@
           "content": "<p class=\"govuk-body-m\"><a href=\"property-address{% if returnUrl %}?returnUrl={{ returnUrl | urlencode }}{% endif %}\">Change your search</a> or <a href=\"property-address-manual{% if returnUrl %}?returnUrl={{ returnUrl | urlencode }}{% endif %}\">enter address manually</a></p>"
         }
       ],
-      "next": [{ "path": "/property-address" }]
+      "next": [{ "path": "/gas-test-kit-property-address-postcode" }]
     },
     {
       "path": "/property-address-manual",
@@ -941,7 +949,7 @@
                 {
                   "type": "component",
                   "title": "Property address",
-                  "changeUrl": "/property-address",
+                  "changeUrl": "/gas-test-kit-property-address-postcode",
                   "value": {
                     "name": "displayPropertyAddress",
                     "type": "DisplayAddress",
@@ -980,7 +988,7 @@
                       "condition": "kitAddressIncorrect",
                       "value": "/kit-address"
                     },
-                    { "value": "/property-address" }
+                    { "value": "/gas-test-kit-property-address-postcode" }
                   ],
                   "value": {
                     "name": "displayKitAddress",
@@ -1038,7 +1046,7 @@
                       "condition": "resultsAddressIncorrect",
                       "value": "/results-address"
                     },
-                    { "value": "/property-address" }
+                    { "value": "/gas-test-kit-property-address-postcode" }
                   ],
                   "value": {
                     "name": "displayResultsAddress",
