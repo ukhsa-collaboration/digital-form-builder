@@ -1,9 +1,11 @@
 import {
   rpsGasTestKitOnSummarySubmit,
   RpsGasTestKitOnSummarySubmit,
+} from "./rps/rpsGasTestKitOnSummarySubmit";
+import {
   rpsRiskReportOnSummarySubmit,
   RpsRiskReportOnSummarySubmit,
-} from "./rps/hooks";
+} from "./rps/rpsRiskReportOnSummarySubmit";
 
 /**
  * Global registry of named hook handlers. Add entries here as hooks are

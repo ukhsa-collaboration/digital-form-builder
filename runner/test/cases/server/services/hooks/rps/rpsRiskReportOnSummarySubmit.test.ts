@@ -1,6 +1,6 @@
 import * as Code from "@hapi/code";
 import * as Lab from "@hapi/lab";
-import { saveRiskReportDetailsSchema } from "../../../../../src/server/services/submitActions/saveRiskReportDetailsSchema";
+import { saveRiskReportDetailsSchema } from "../../../../../../src/server/services/hooks/rps/rpsRiskReportOnSummarySubmit";
 
 const { expect } = Code;
 const lab = Lab.script();
@@ -9,23 +9,20 @@ const { describe, it } = lab;
 
 describe("saveRiskReportDetailsSchema", () => {
   const basePostState = {
-    sessionId: "abc-123",
+    uuid: "abc-123",
     firstName: "John",
     lastName: "Doe",
     deliveryMethod: "post",
     emailAddress: "",
     deliveryAddress_selectedAddress: "10 Downing Street, London, SW1A 2AA",
-    progress: ["/page1", "/page2"],
-    callback: {},
   };
 
   const baseEmailState = {
-    sessionId: "abc-123",
+    uuid: "abc-123",
     firstName: "Jane",
     lastName: "Doe",
     deliveryMethod: "email",
     emailAddress: "jane.doe@example.com",
-    progress: ["/page1"],
   };
 
   describe("valid payloads", () => {
@@ -35,18 +32,16 @@ describe("saveRiskReportDetailsSchema", () => {
       );
       expect(error).to.be.undefined();
       expect(value).to.equal({
+        uuid: "abc-123",
         firstName: "John",
         lastName: "Doe",
         deliveryMethod: "post",
-        uuid: "abc-123",
         email: "",
-        address: "10 Downing Street, London, SW1A 2AA",
+        telephone: "dummy-telephone",
+        fullAddress: "10 Downing Street, London, SW1A 2AA",
       });
-      expect(value).to.not.include("sessionId");
       expect(value).to.not.include("emailAddress");
       expect(value).to.not.include("deliveryAddress_selectedAddress");
-      expect(value).to.not.include("progress");
-      expect(value).to.not.include("callback");
     });
 
     it("renames keys and strips unknown fields for an email delivery", () => {
@@ -55,11 +50,13 @@ describe("saveRiskReportDetailsSchema", () => {
       );
       expect(error).to.be.undefined();
       expect(value).to.equal({
+        uuid: "abc-123",
         firstName: "Jane",
         lastName: "Doe",
         deliveryMethod: "email",
-        uuid: "abc-123",
         email: "jane.doe@example.com",
+        telephone: "dummy-telephone",
+        fullAddress: "test",
       });
     });
 
@@ -73,7 +70,7 @@ describe("saveRiskReportDetailsSchema", () => {
       };
       const { error, value } = saveRiskReportDetailsSchema.validate(state);
       expect(error).to.be.undefined();
-      expect(value.address).to.equal({
+      expect(value.fullAddress).to.equal({
         address: "10 Downing Street",
         postcode: "SW1A 2AA",
       });
@@ -102,8 +99,8 @@ describe("saveRiskReportDetailsSchema", () => {
       expect(error!.message).to.include("lastName");
     });
 
-    it("errors when sessionId is missing", () => {
-      const state = { ...basePostState, sessionId: undefined };
+    it("errors when uuid is missing", () => {
+      const state = { ...basePostState, uuid: undefined };
       const { error } = saveRiskReportDetailsSchema.validate(state);
       expect(error).to.exist();
       expect(error!.message).to.include("uuid");
@@ -116,7 +113,7 @@ describe("saveRiskReportDetailsSchema", () => {
       };
       const { error } = saveRiskReportDetailsSchema.validate(state);
       expect(error).to.exist();
-      expect(error!.message).to.include("address");
+      expect(error!.message).to.include("fullAddress");
     });
 
     it("errors when deliveryMethod is email and email is missing", () => {
