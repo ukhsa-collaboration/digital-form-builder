@@ -318,7 +318,8 @@
               "any.required": "Enter town or city",
               "any.only": "Enter town or city",
               "string.empty": "Enter town or city"
-            }
+            },
+            "exposeToContext": true
           },
           "type": "TextField",
           "title": "Town or city"
@@ -326,7 +327,8 @@
         {
           "name": "reportAddress_countyLookup",
           "options": {
-            "required": false
+            "required": false,
+            "exposeToContext": true
           },
           "type": "TextField",
           "title": "County"
@@ -343,7 +345,8 @@
             "format": {
               "trim": true,
               "case": "upper"
-            }
+            },
+            "exposeToContext": true
           },
           "schema": {
             "max": 10,

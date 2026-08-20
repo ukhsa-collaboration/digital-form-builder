@@ -242,7 +242,7 @@
     },
     {
       "path": "/property-address-not-found",
-      "title": "No addresses found for {{ propertyAddress_postcodeLookup }} and {{ propertyAddress_buildingLookup }}",
+      "title": "No addresses found for ‘{{ propertyAddress_postcodeLookup }}’ and ‘{{ propertyAddress_buildingLookup }}’",
       "components": [
         {
           "type": "Para",
@@ -253,6 +253,9 @@
           "content": "<p class=\"govuk-body-m\"><a href=\"property-address{% if returnUrl %}?returnUrl={{ returnUrl | urlencode }}{% endif %}\">Change your search</a> or <a href=\"property-address-manual{% if returnUrl %}?returnUrl={{ returnUrl | urlencode }}{% endif %}\">enter address manually</a></p>"
         }
       ],
+      "options": {
+        "hideContinueButton": true
+      },
       "next": [{ "path": "/property-address" }]
     },
     {
@@ -286,7 +289,8 @@
           "type": "TextField",
           "title": "Address Line 2",
           "options": {
-            "required": false
+            "required": false,
+            "exposeToContext": true
           }
         },
         {
@@ -298,7 +302,8 @@
               "any.required": "Enter town or city",
               "any.only": "Enter town or city",
               "string.empty": "Enter town or city"
-            }
+            },
+            "exposeToContext": true
           }
         },
         {
@@ -306,7 +311,8 @@
           "type": "TextField",
           "title": "County",
           "options": {
-            "required": false
+            "required": false,
+            "exposeToContext": true
           }
         },
         {
@@ -328,7 +334,8 @@
             "format": {
               "trim": true,
               "case": "upper"
-            }
+            },
+            "exposeToContext": true
           }
         }
       ],
@@ -351,6 +358,9 @@
     {
       "path": "/property-address-manual-not-found",
       "title": "We cannot find your address",
+      "options": {
+        "hideContinueButton": true
+      },
       "components": [
         {
           "type": "Para",
@@ -402,7 +412,8 @@
             "customValidationMessages": {
               "any.required": "Select yes if the level was above the action level of 200 Bq m⁻³"
             }
-          }
+          },
+          "hint": "This information will be on your radon gas test results"
         }
       ],
       "next": [
@@ -428,7 +439,8 @@
             "customValidationMessages": {
               "any.required": "Select yes if you have taken steps to reduce the radon level since the last test"
             }
-          }
+          },
+          "hint": "This information will be on your radon gas test results"
         }
       ],
       "next": [
@@ -464,23 +476,24 @@
     },
     {
       "path": "/your-details",
-      "title": "Enter details",
+      "title": "Enter your personal details",
       "components": [
         {
           "type": "Para",
-          "content": "<p class=\"govuk-body-m\"><h2 class=\"govuk-heading-m\">Enter your personal details</h2></p>"
+          "content": "Fill in the information of the person who is paying for the radon gas test kit"
         },
         {
           "name": "title",
-          "type": "TextField",
+          "type": "RadiosField",
           "title": "Title",
-          "hint": "e.g. Mr, Mrs, Dr",
           "options": {
             "exposeToContext": true,
             "customValidationMessages": {
-              "string.empty": "Enter your Title"
-            }
-          }
+              "any.required": "Select a title"
+            },
+            "divider": true
+          },
+          "list": "titleList"
         },
         {
           "name": "firstName",
@@ -488,7 +501,7 @@
           "title": "First name",
           "options": {
             "customValidationMessages": {
-              "string.empty": "Enter your first name"
+              "string.empty": "Enter a first name"
             },
             "exposeToContext": true
           }
@@ -496,12 +509,13 @@
         {
           "name": "lastName",
           "type": "TextField",
-          "title": "Last Name",
-          "options": { "required": false, "exposeToContext": true }
-        },
-        {
-          "type": "Para",
-          "content": "<p class=\"govuk-body-m\"><h2 class=\"govuk-heading-m\">Enter your email address</h2></p>"
+          "title": "Last name",
+          "options": {
+            "exposeToContext": true,
+            "customValidationMessages": {
+              "string.empty": "Enter a last name"
+            }
+          }
         },
         {
           "name": "emailAddress",
@@ -511,12 +525,11 @@
           "options": {
             "exposeToContext": true,
             "customValidationMessages": {
-              "any.required": "Enter your email address",
-              "any.only": "Enter your email address",
-              "string.empty": "Enter your email address",
+              "any.required": "Enter an email address",
+              "any.only": "Enter an email address",
+              "string.empty": "Enter an email address",
               "string.pattern.base": "Enter an email address in the correct format, like name@example.com"
-            },
-            "hideTitle": true
+            }
           }
         },
         {
@@ -1156,6 +1169,25 @@
       "title": "addressesList",
       "type": "string",
       "items": []
+    },
+    {
+      "name": "titleList",
+      "title": "titleList",
+      "type": "string",
+      "items": [
+        { "text": "Mr", "value": "Mr" },
+        { "text": "Mrs", "value": "Mrs" },
+        { "text": "Miss", "value": "Miss" },
+        { "text": "Ms", "value": "Ms" },
+        {
+          "text": "Prefer not to say",
+          "value": "Prefer not to say"
+        },
+        {
+          "text": "None of the above",
+          "value": "None of the above"
+        }
+      ]
     },
     {
       "title": "Terms and conditions",
