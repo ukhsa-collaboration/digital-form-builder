@@ -1513,7 +1513,7 @@
       "name": "addressLookupService",
       "service": "addressLookupService",
       "parameters": {
-        "apimBaseUrl": "https://api.test.rps.ukhsa.gov.uk",
+        "apimBaseUrl": "${RPS_LOCATION_SERVICES_API_BASE_URL}",
         "callingApplication": "RPS",
         "tenantId": "${RPS_LOCATION_SERVICES_API_TENANT_ID}",
         "clientId": "${RPS_LOCATION_SERVICES_API_CLIENT_ID}",
@@ -1534,7 +1534,7 @@
       "service": "jsonApiIntegrationWithMsal",
       "parameters": {
         "name": "rpsBackendService.RadonHomeGasTestKit",
-        "apimBaseUrl": "${RPS_RADON_TEST_KIT_API_BASE_URL}",
+        "apimBaseUrl": "https://api.test.rps.ukhsa.gov.uk",
         "callingApplication": "RPS",
         "tenantId": "${RPS_RADON_TEST_KIT_API_TENANT_ID}",
         "clientId": "${RPS_RADON_TEST_KIT_API_CLIENT_ID}",
