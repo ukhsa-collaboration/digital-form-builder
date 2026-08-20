@@ -12,7 +12,7 @@ if (process.env.NODE_ENV !== "test") {
  * @param {string} name
  * @returns
  */
-const createRedactedHeader = (name) => {
+const createRedactedHeaderLogPath = (name) => {
   return [
     `req.headers['${name}']`,
     `request.headers['${name}']`,
@@ -147,13 +147,13 @@ module.exports = {
 
   // You should check your privacy policy before disabling this. Check https://getpino.io/#/docs/redaction on how to configure redaction paths
   logRedactPaths: [
-    ...createRedactedHeader("x-forwarded-for"),
-    ...createRedactedHeader("authorization"),
-    ...createRedactedHeader("cookie"),
-    ...createRedactedHeader("set-cookie"),
-    ...createRedactedHeader("x-api-key"),
-    ...createRedactedHeader("x-auth-token"),
-    ...createRedactedHeader("x-client-secret"),
+    ...createRedactedHeaderLogPath("x-forwarded-for"),
+    ...createRedactedHeaderLogPath("authorization"),
+    ...createRedactedHeaderLogPath("cookie"),
+    ...createRedactedHeaderLogPath("set-cookie"),
+    ...createRedactedHeaderLogPath("x-api-key"),
+    ...createRedactedHeaderLogPath("x-auth-token"),
+    ...createRedactedHeaderLogPath("x-client-secret"),
   ],
 
   safelist: ["61bca17e-fe74-40e0-9c15-a901ad120eca.mock.pstmn.io"],
