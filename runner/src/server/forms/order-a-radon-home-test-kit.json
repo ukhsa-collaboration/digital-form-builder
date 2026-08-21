@@ -1556,8 +1556,8 @@
       "name": "trustPaymentsService",
       "service": "trustPaymentsService",
       "parameters": {
-        "siteReference": "${RPS_GTK_TRUST_PAYMENTS_SITE_REFERENCE}",
-        "hashPassword": "${RPS_GTK_TRUST_PAYMENTS_HASH_PASSWORD}"
+        "siteReference": "${RPS_TRUST_PAYMENTS_SITE_REFERENCE}",
+        "hashPassword": "${RPS_TRUST_PAYMENTS_HASH_PASSWORD}"
       }
     },
     {
@@ -1565,12 +1565,12 @@
       "service": "jsonApiIntegrationWithMsal",
       "parameters": {
         "name": "rpsBackendService.RadonHomeGasTestKit",
-        "apimBaseUrl": "${RPS_AWS_APIGW_BASE_URL}",
+        "apimBaseUrl": "${RPS_RADON_TEST_KIT_API_BASE_URL}",
         "callingApplication": "RPS",
-        "tenantId": "${RPS_AWS_AUTHORISER_API_TENANT_ID}",
-        "clientId": "${RPS_AWS_AUTHORISER_API_CLIENT_ID}",
-        "clientSecret": "${RPS_AWS_AUTHORISER_API_CLIENT_SECRET}",
-        "scopes": ["${RPS_AWS_AUTHORISER_API_SCOPES}"]
+        "tenantId": "${RPS_RADON_TEST_KIT_API_TENANT_ID}",
+        "clientId": "${RPS_RADON_TEST_KIT_API_CLIENT_ID}",
+        "clientSecret": "${RPS_RADON_TEST_KIT_API_CLIENT_SECRET}",
+        "scopes": ["${RPS_RADON_TEST_KIT_API_SCOPES}"]
       }
     }
   ]
