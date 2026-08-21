@@ -4400,7 +4400,7 @@
       "title": "Execute API",
       "type": "webhook",
       "outputConfiguration": {
-        "url": "${SRSNL8OutputUrl}",
+        "url": "${SRSOutputUrl}",
         "allowRetry": true
       }
     }
