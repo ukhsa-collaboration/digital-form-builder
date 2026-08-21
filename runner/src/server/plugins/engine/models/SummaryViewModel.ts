@@ -1,5 +1,5 @@
+import { clone, reach } from "hoek";
 import config from "server/config";
-import { reach } from "hoek";
 import { FormModel } from "./FormModel";
 import { feedbackReturnInfoKey, redirectUrl } from "../helpers";
 import { decodeFeedbackContextInfo } from "../feedback";
@@ -10,8 +10,12 @@ import { FeesModel } from "server/plugins/engine/models/submission";
 import { HapiRequest } from "src/server/types";
 import { InitialiseSessionOptions } from "server/plugins/initialiseSession/types";
 import { Outputs } from "server/plugins/engine/models/submission/Outputs";
+import { summaryDetailsTransformationMap } from "./SummaryViewModel.detailsTransformationMap";
 import nunjucks from "nunjucks";
 import { gatherRepeatPages } from "src/server/utils/gatherRepeatPages";
+
+import pino from "pino";
+const logger = pino().child({ name: "SummaryViewModel" });
 
 /**
  * TODO - extract submission behaviour dependencies from the viewmodel
@@ -38,7 +42,6 @@ export class SummaryViewModel {
   state: any;
   value: any;
   fees: FeesModel | undefined;
-  feesInSummaryTable: boolean = false;
   name: string | undefined;
   feedbackLink: string | undefined;
   phaseTag: string | undefined;
@@ -111,6 +114,19 @@ export class SummaryViewModel {
 
     this.details = details;
 
+    const transformDetails = summaryDetailsTransformationMap[model.basePath];
+    if (transformDetails) {
+      /**
+       * Clone the details to avoid mutating the original object.
+       */
+      const clonedDetails = clone(details);
+      try {
+        this.details = transformDetails(clonedDetails);
+      } catch (err) {
+        logger.error({ err }, "Error transforming summary");
+      }
+    }
+
     this.result = result;
     this.state = state;
     this.value = result.value;
@@ -165,6 +181,7 @@ export class SummaryViewModel {
     [undefined, ...model.sections].forEach((section) => {
       const items: any[] = [];
       const itemNames = new Set<string>();
+
       let sectionState = section ? state[section.name] || {} : state;
 
       sectionState.originalFilenames = state.originalFilenames ?? {};
@@ -391,11 +408,6 @@ function Item(
     });
   }
 
-  // Some pages (e.g. an address "close match" Yes/No confirmation) shouldn't
-  // be the target of the Change link even though they own the component -
-  // changePath lets the page declare where Change should send the user instead.
-  const changePath = page.pageDef?.options?.changePath ?? page.path;
-
   const item = {
     name: component.name,
     path: page.path,
@@ -405,8 +417,8 @@ function Item(
     }),
     value: component.getDisplayStringFromState(sectionState),
     rawValue: sectionState[component.name],
-    url: redirectUrl(request, `/${model.basePath}${changePath}`, params),
-    pageId: `/${model.basePath}${changePath}`,
+    url: redirectUrl(request, `/${model.basePath}${page.path}`, params),
+    pageId: `/${model.basePath}${page.path}`,
     type: component.type,
     title: component.title,
     dataType: component.dataType,

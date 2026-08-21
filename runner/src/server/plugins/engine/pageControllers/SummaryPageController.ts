@@ -9,9 +9,8 @@ import {
 } from "../feedback";
 import config from "server/config";
 import { FeesModel } from "server/plugins/engine/models/submission";
-import { isMultipleApiKey, TrustPaymentsDetails } from "@xgovformbuilder/model";
+import { isMultipleApiKey } from "@xgovformbuilder/model";
 import { v4 as uuidv4 } from "uuid";
-import { ControllerError } from "../errors";
 
 export class SummaryPageController extends PageController {
   /**
@@ -92,6 +91,7 @@ export class SummaryPageController extends PageController {
       }
 
       const { progress = [] } = state;
+
       if (!this.disableBackLink) {
         viewModel.backLink =
           progress[progress.length - 1] ?? this.backLinkFallback;
@@ -168,9 +168,10 @@ export class SummaryPageController extends PageController {
         };
 
         if (!declaration) {
-          const errorMessage =
-            "You must declare to be able to submit this application";
-          request.yar.flash("declarationError", errorMessage);
+          request.yar.flash(
+            "declarationError",
+            "You must declare to be able to submit this application"
+          );
           const url = request.headers.referer ?? request.path;
           return redirectTo(request, h, `${url}#declaration`);
         }
@@ -196,39 +197,6 @@ export class SummaryPageController extends PageController {
       });
 
       const feesModel = FeesModel(model, state);
-
-      if (model.def?.provider === "trust-payments") {
-        const { trustPaymentsService } = request.service.getServices(
-          "trustPaymentsService"
-        );
-
-        if (!trustPaymentsService) {
-          throw new ControllerError("cannot find trust payments service", {
-            code: 500,
-          });
-        }
-
-        const url = new URL(request.url);
-
-        if (!feesModel)
-          throw new ControllerError("feesModel is undefined", {
-            code: 500,
-          });
-
-        // extract payment details from cache
-        const paymentDetails: TrustPaymentsDetails = {
-          billingFirstName: state.firstName ?? "",
-          billingLastName: state.lastName ?? "",
-          amount: feesModel.total,
-          redirectUrl: `${url.origin}/${request.params.id}/status`,
-        };
-
-        const html = await trustPaymentsService.createTrustPaymentsForm(
-          paymentDetails
-        );
-
-        return h.response(html).type("text/html");
-      }
 
       /**
        * If a user does not need to pay, redirect them to /status
