@@ -15,9 +15,11 @@ export type FormConfiguration = {
 
 export function loadFormFile(filePath: string): FormDefinition {
   const content = fs.readFileSync(filePath, "utf8");
+
   const stripped = filePath.endsWith(".jsonc")
     ? stripJsonComments(content)
     : content;
+
   return JSON.parse(stripped);
 }
 
@@ -39,22 +41,26 @@ export const loadPreConfiguredForms = (): FormConfiguration[] => {
     );
 
   const filesById = new Map<string, string>();
+
   configFiles.forEach((configFile) => {
     const id = idFromFilename(configFile);
     const existing = filesById.get(id);
+
     if (!existing) {
       filesById.set(id, configFile);
       return;
     }
+
     const [stale, current] = existing.endsWith(".jsonc")
       ? [configFile, existing]
       : [existing, configFile];
-    // eslint-disable-next-line no-console
+
     console.warn(
       `[loadPreConfiguredForms] Found both '${stale}' and '${current}' for form id '${id}'. ` +
         `Ignoring '${stale}' - this is likely a stale build artifact left behind after a rename. ` +
         `Delete it from the forms output directory.`
     );
+
     filesById.set(id, current);
   });
 

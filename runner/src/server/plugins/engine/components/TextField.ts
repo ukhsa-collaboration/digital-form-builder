@@ -86,9 +86,12 @@ export class TextField extends FormComponent {
     const schema: any = this.schema;
     const viewModel = super.getViewModel(formData, errors);
     const payload = formData.value;
+
     let value;
+
     if (payload) {
       value = this.getStateValueFromValidForm(payload);
+
       if (value) {
         if (options.format) {
           value = this.format(options.format, value);
