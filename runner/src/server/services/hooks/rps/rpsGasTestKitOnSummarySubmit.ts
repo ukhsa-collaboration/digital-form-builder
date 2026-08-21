@@ -22,13 +22,13 @@ const personalDetailsSchema = Joi.object({
 // required by the spec; manually-entered addresses (no postcode lookup) have
 // no UDPRN, so it's allowed to be an empty string.
 const addressDetailsSchema = Joi.object({
-  udprn: Joi.string().allow("").required(),
-  fullAddress: Joi.string().allow("").optional(),
-  addressLine1: Joi.string().allow("").optional(),
+  udprn: Joi.string().required(),
+  fullAddress: Joi.string().required(),
+  addressLine1: Joi.string().optional(),
   addressLine2: Joi.string().allow("").optional(),
   townCity: Joi.string().allow("").optional(),
   country: Joi.string().allow("").optional(),
-  postcode: Joi.string().allow("").optional(),
+  postcode: Joi.string().optional(),
 });
 
 // Matches `StoreGTKRequest` in gas-test-kit-api-spec.json, the body posted
@@ -59,7 +59,7 @@ const toAddressDetails = (address?: {
   postcode?: string;
   udprn?: string;
 }) => ({
-  udprn: address?.udprn ?? "",
+  udprn: "00000000",
   fullAddress: address?.address ?? "",
   postcode: address?.postcode ?? "",
 });

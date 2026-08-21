@@ -6,6 +6,7 @@ import {
 import { HapiRequest } from "../types";
 import { ControllerError } from "../plugins/engine/errors";
 import { getOrCreateCorrelationId } from "../utils/correlationId";
+import { BaseService } from "./BaseService";
 
 type ServiceEventFunctions = Record<string, (request: HapiRequest) => void>;
 
@@ -22,7 +23,7 @@ const onInvalidPaymentFunctions: ServiceEventFunctions = {
       method: "POST",
       body: JSON.stringify({
         uuid: currentState["sessionId"],
-        transactionId: "txn-789",
+        transactionId: request.query["transactionreference"],
         settle_status: "NOT_SETTLED",
       }),
     });
@@ -40,51 +41,88 @@ const onValidPaymentFunctions: ServiceEventFunctions = {
       method: "POST",
       body: JSON.stringify({
         uuid: getOrCreateCorrelationId(request),
-        transactionId: "txn-789",
+        transactionId: request.query["transactionreference"],
         settle_status: "SETTLED",
       }),
     });
   },
 };
 
-export class TrustPaymentsService {
+export class TrustPaymentsService extends BaseService {
   private config: TrustPaymentsConfig;
 
   constructor(config: TrustPaymentsConfig) {
+    super("TrustPaymentsService");
     this.config = config;
   }
 
   async onInvalidPayment(request: HapiRequest) {
-    if (!this.config.onInvalidPaymentFunction) return;
+    this.logger.trace("onInvalidPayment called");
+
+    if (!this.config.onInvalidPaymentFunction) {
+      this.logger.trace("no onInvalidPaymentFunction configured, skipping");
+      return;
+    }
 
     const onInvalidPaymentFunction =
       onInvalidPaymentFunctions[this.config.onInvalidPaymentFunction];
 
     if (!onInvalidPaymentFunction && this.config.onInvalidPaymentFunction) {
+      this.logger.trace(
+        { fn: this.config.onInvalidPaymentFunction },
+        "onInvalidPayment function not found"
+      );
       throw new ControllerError("cannot find onInvalidPayment function", {
         code: 500,
       });
     }
 
+    this.logger.trace(
+      { fn: this.config.onInvalidPaymentFunction },
+      "invoking onInvalidPayment function"
+    );
     await onInvalidPaymentFunction(request);
+    this.logger.trace("onInvalidPayment function completed");
   }
 
   async onValidPayment(request: HapiRequest) {
-    if (!this.config.onValidPaymentFunction) return;
+    this.logger.trace("onValidPayment called");
+
+    if (!this.config.onValidPaymentFunction) {
+      this.logger.trace("no onValidPaymentFunction configured, skipping");
+      return;
+    }
 
     const onValidPaymentFunction =
       onValidPaymentFunctions[this.config.onValidPaymentFunction];
 
     if (!onValidPaymentFunction && this.config.onValidPaymentFunction) {
+      this.logger.trace(
+        { fn: this.config.onValidPaymentFunction },
+        "onValidPayment function not found"
+      );
+
       throw new ControllerError("cannot find onValidPayment function", {
         code: 500,
       });
     }
 
+    this.logger.trace(
+      { fn: this.config.onValidPaymentFunction },
+      "invoking onValidPayment function"
+    );
+
     await onValidPaymentFunction(request);
+
+    this.logger.trace("onValidPayment function completed");
   }
 
   async createTrustPaymentsForm(details: TrustPaymentsDetails) {
+    this.logger.trace(
+      { amount: details.amount, siteReference: this.config.siteReference },
+      "createTrustPaymentsForm called"
+    );
+
     const currencyIso3a = "GBP";
     const amount = details.amount / 100;
     const siteReference = this.config.siteReference;
@@ -111,6 +149,11 @@ export class TrustPaymentsService {
 
     const hash =
       "h" + createHash("sha256").update(stringToHash, "utf8").digest("hex");
+
+    this.logger.trace(
+      { siteReference, siteSecurityTimestamp },
+      "trust payments form generated"
+    );
 
     const html = `
         <html>
@@ -143,15 +186,19 @@ export class TrustPaymentsService {
   }
 
   verifyRedirect(request: HapiRequest): boolean {
+    this.logger.trace("verifyRedirect called");
+
     const hashedReference = request.query["responsesitesecurity"];
 
-    if (!hashedReference)
+    if (!hashedReference) {
+      this.logger.trace("responsesitesecurity missing from redirect query");
       throw new ControllerError(
         "invalid redirect structure from trust payments",
         {
           code: 500,
         }
       );
+    }
 
     // validate hash with our password
     const paramsInAlphabeticalOrder = Object.entries(request.query)
@@ -171,8 +218,15 @@ export class TrustPaymentsService {
     const hashBuffer = new Uint8Array(Buffer.from(hash));
     const hashedReferenceBuffer = new Uint8Array(Buffer.from(hashedReference));
 
-    if (hashBuffer.length !== hashedReferenceBuffer.length) return false;
+    if (hashBuffer.length !== hashedReferenceBuffer.length) {
+      this.logger.trace("hash length mismatch, redirect verification failed");
+      return false;
+    }
 
-    return timingSafeEqual(hashBuffer, hashedReferenceBuffer);
+    const valid = timingSafeEqual(hashBuffer, hashedReferenceBuffer);
+
+    this.logger.trace({ valid }, "verifyRedirect result");
+
+    return valid;
   }
 }
