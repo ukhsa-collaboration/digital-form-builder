@@ -1,13 +1,11 @@
 import { HapiRequest } from "server/types";
 import { Hook } from "../types";
 
-export type RpsRiskReportInvalidPayment = Hook<void>;
-
 /**
  * Records a NOT_SETTLED payment against the current session's RPS backend
  * order when Trust Payments redirects back with an invalid/failed payment.
  */
-export const rpsRiskReportInvalidPayment: RpsRiskReportInvalidPayment = async (
+export const rpsRiskReportInvalidPayment: Hook<void> = async (
   request: HapiRequest
 ) => {
   const { cacheService, rpsBackendService } = request.service.getServices(

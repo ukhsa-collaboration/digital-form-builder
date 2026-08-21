@@ -4,8 +4,6 @@ import { resolveSelectedAddress } from "server/plugins/engine/utils/addressUtils
 import { ControllerError } from "server/plugins/engine/errors";
 import { Hook } from "../types";
 
-export type RpsGasTestKitOnSummarySubmit = Hook<void>;
-
 // Matches `PersonalDetails` in gas-test-kit-api-spec.json. This form doesn't
 // collect a phone number, so `telephone` defaults to a placeholder.
 const personalDetailsSchema = Joi.object({
@@ -70,7 +68,7 @@ const toAddressDetails = (address?: {
  * @param request
  * @param context
  */
-export const rpsGasTestKitOnSummarySubmit: RpsGasTestKitOnSummarySubmit = async (
+export const rpsGasTestKitOnSummarySubmit: Hook<void> = async (
   request,
   context
 ) => {

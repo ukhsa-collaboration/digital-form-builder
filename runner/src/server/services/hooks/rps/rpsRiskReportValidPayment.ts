@@ -2,13 +2,11 @@ import { HapiRequest } from "server/types";
 import { getOrCreateCorrelationId } from "server/utils/correlationId";
 import { Hook } from "../types";
 
-export type RpsRiskReportValidPayment = Hook<void>;
-
 /**
  * Records a SETTLED payment against the current session's RPS backend order
  * when Trust Payments redirects back with a successfully verified payment.
  */
-export const rpsRiskReportValidPayment: RpsRiskReportValidPayment = async (
+export const rpsRiskReportValidPayment: Hook<void> = async (
   request: HapiRequest
 ) => {
   const { rpsBackendService } = request.service.getServices(

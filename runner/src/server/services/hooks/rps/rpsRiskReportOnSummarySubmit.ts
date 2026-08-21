@@ -4,8 +4,6 @@ import { getOrCreateCorrelationId } from "server/utils/correlationId";
 import { Hook } from "../types";
 import { JsonApiIntegrationWithMsal } from "../../jsonApiIntegrationWithMsal";
 
-export type RpsRiskReportOnSummarySubmit = Hook<void>;
-
 export const saveRiskReportDetailsSchema = Joi.object({
   uuid: Joi.string().required(),
   firstName: Joi.string().required(),
@@ -35,9 +33,7 @@ export const saveRiskReportDetailsSchema = Joi.object({
  * @param request
  * @param context
  */
-export const rpsRiskReportOnSummarySubmit: RpsRiskReportOnSummarySubmit = async (
-  request
-) => {
+export const rpsRiskReportOnSummarySubmit: Hook<void> = async (request) => {
   const rpsBackendServiceName = request.service.getName("rpsBackendService");
 
   const { cacheService, ...rest } = request.services([]);
