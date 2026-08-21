@@ -236,6 +236,11 @@ export interface TrustPaymentsDetails {
   redirectUrl: string;
 }
 
+export interface TrustPaymentsConfig {
+  siteReference: string;
+  hashPassword: string;
+}
+
 /**
  * `FormDefinition` is a typescript representation of `Schema`
  */

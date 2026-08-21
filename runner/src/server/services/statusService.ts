@@ -1,5 +1,6 @@
 import { HapiRequest, HapiServer } from "../types";
 import { createHmacRaw } from "../utils/hmac";
+import { runHook } from "./hooks";
 import { getOrCreateCorrelationId } from "../utils/correlationId";
 import {
   CacheService,
@@ -153,13 +154,16 @@ export class StatusService {
     );
 
     const paymentErrorStatus = request.query["errorcode"];
+    const model = request.server.app.forms[request.params.id];
 
     if (
       !trustPaymentsService.verifyRedirect(request) ||
       (paymentErrorStatus && paymentErrorStatus !== "0")
     ) {
-      // call service event on invalid payment
-      await trustPaymentsService.onInvalidPayment(request);
+      // run the configured side effect for an invalid payment
+      await runHook("TrustPaymentsService.onInvalidPayment", request, {
+        model,
+      });
 
       // throw payment page error
       throw new ControllerError("cannot verify trust payment redirect", {
@@ -167,7 +171,7 @@ export class StatusService {
       });
     }
 
-    await trustPaymentsService.onValidPayment(request);
+    await runHook("TrustPaymentsService.onValidPayment", request, { model });
   }
 
   async outputRequests(request: HapiRequest) {

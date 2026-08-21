@@ -23,9 +23,12 @@ import { v4 as uuidv4 } from "uuid";
  * - **Hooks** (`onBeforeSubmit` / `onSubmit` / `onAfterSubmit`, run via
  *   {@link runHook}): form-specific side effects (e.g. posting to a backend
  *   service) are configured per-form in the form definition's `hooks` block
- *   and looked up in `hookRegistry` by name. Any of the three may return a
- *   Hapi response to short-circuit the submit flow (e.g. to show a bespoke
- *   error page); returning `undefined` lets it continue.
+ *   and looked up in `hookRegistry` by name. A hook never receives the
+ *   response toolkit and cannot redirect or short-circuit this controller
+ *   itself — it runs to completion or throws a `ControllerError` (handled
+ *   generically by the request lifecycle). If a hook's return value ever
+ *   needs to influence this controller's journey, that interpretation is
+ *   this controller's own explicit responsibility, added at the call site.
  * - **Payment provider adapters** (`paymentProviderRegistry`): payment
  *   creation and redirect behaviour is delegated to whichever
  *   `PaymentProviderService` implementation matches `model.def.paymentProvider`,
@@ -47,6 +50,7 @@ export class HeadlessSummaryPageController extends PageController {
         "HeadlessSummaryPageController.GET",
         "Handler entered",
       ]);
+
       this.langFromRequest(request);
 
       const { cacheService } = request.services([]);
@@ -150,22 +154,9 @@ export class HeadlessSummaryPageController extends PageController {
 
       // Extension point: form-specific side effects live in
       // hookRegistry, configured per-form, not as new logic in this method.
-      const beforeSubmitResponse = await runHook(
-        this.constructor.name,
-        "onBeforeSubmit",
-        request,
-        h,
-        { model }
-      );
-
-      if (beforeSubmitResponse) {
-        request.logger.trace([
-          "HeadlessSummaryPageController.POST",
-          "onBeforeSubmit hook returned a response, short-circuiting",
-        ]);
-
-        return beforeSubmitResponse;
-      }
+      await runHook("HeadlessSummaryPageController.onBeforeSubmit", request, {
+        model,
+      });
 
       if (model.def?.generateReference == true) {
         const reference = uuidv4();
@@ -187,37 +178,13 @@ export class HeadlessSummaryPageController extends PageController {
         "Marked summary as complete",
       ]);
 
-      const submitResponse = await runHook(
-        this.constructor.name,
-        "onSubmit",
-        request,
-        h,
-        { model }
-      );
+      await runHook("HeadlessSummaryPageController.onSubmit", request, {
+        model,
+      });
 
-      if (submitResponse) {
-        request.logger.trace([
-          "HeadlessSummaryPageController.POST",
-          "onSubmit hook returned a response, short-circuiting",
-        ]);
-        return submitResponse;
-      }
-
-      const afterSubmitResponse = await runHook(
-        this.constructor.name,
-        "onAfterSubmit",
-        request,
-        h,
-        { model }
-      );
-
-      if (afterSubmitResponse) {
-        request.logger.trace([
-          "HeadlessSummaryPageController.POST",
-          "onAfterSubmit hook returned a response, short-circuiting",
-        ]);
-        return afterSubmitResponse;
-      }
+      await runHook("HeadlessSummaryPageController.onAfterSubmit", request, {
+        model,
+      });
 
       const feesModel = FeesModel(model, state);
 

@@ -5,48 +5,7 @@ import {
 } from "@xgovformbuilder/model";
 import { HapiRequest } from "../types";
 import { ControllerError } from "../plugins/engine/errors";
-import { getOrCreateCorrelationId } from "../utils/correlationId";
 import { BaseService } from "./BaseService";
-
-type ServiceEventFunctions = Record<string, (request: HapiRequest) => void>;
-
-const onInvalidPaymentFunctions: ServiceEventFunctions = {
-  rpsRiskReportInvalidPayment: async (request: HapiRequest) => {
-    const { cacheService, rpsBackendService } = request.service.getServices(
-      "cacheService",
-      "rpsBackendService"
-    );
-
-    const currentState = await cacheService.getState(request);
-
-    await rpsBackendService.request("/storepayment", {
-      method: "POST",
-      body: JSON.stringify({
-        uuid: currentState["sessionId"],
-        transactionId: request.query["transactionreference"],
-        settle_status: "NOT_SETTLED",
-      }),
-    });
-  },
-};
-
-const onValidPaymentFunctions: ServiceEventFunctions = {
-  rpsRiskReportValidPayment: async (request: HapiRequest) => {
-    const { rpsBackendService } = request.service.getServices(
-      "cacheService",
-      "rpsBackendService"
-    );
-
-    await rpsBackendService.request("/storepayment", {
-      method: "POST",
-      body: JSON.stringify({
-        uuid: getOrCreateCorrelationId(request),
-        transactionId: request.query["transactionreference"],
-        settle_status: "SETTLED",
-      }),
-    });
-  },
-};
 
 export class TrustPaymentsService extends BaseService {
   private config: TrustPaymentsConfig;
@@ -54,67 +13,6 @@ export class TrustPaymentsService extends BaseService {
   constructor(config: TrustPaymentsConfig) {
     super("TrustPaymentsService");
     this.config = config;
-  }
-
-  async onInvalidPayment(request: HapiRequest) {
-    this.logger.trace("onInvalidPayment called");
-
-    if (!this.config.onInvalidPaymentFunction) {
-      this.logger.trace("no onInvalidPaymentFunction configured, skipping");
-      return;
-    }
-
-    const onInvalidPaymentFunction =
-      onInvalidPaymentFunctions[this.config.onInvalidPaymentFunction];
-
-    if (!onInvalidPaymentFunction && this.config.onInvalidPaymentFunction) {
-      this.logger.trace(
-        { fn: this.config.onInvalidPaymentFunction },
-        "onInvalidPayment function not found"
-      );
-      throw new ControllerError("cannot find onInvalidPayment function", {
-        code: 500,
-      });
-    }
-
-    this.logger.trace(
-      { fn: this.config.onInvalidPaymentFunction },
-      "invoking onInvalidPayment function"
-    );
-    await onInvalidPaymentFunction(request);
-    this.logger.trace("onInvalidPayment function completed");
-  }
-
-  async onValidPayment(request: HapiRequest) {
-    this.logger.trace("onValidPayment called");
-
-    if (!this.config.onValidPaymentFunction) {
-      this.logger.trace("no onValidPaymentFunction configured, skipping");
-      return;
-    }
-
-    const onValidPaymentFunction =
-      onValidPaymentFunctions[this.config.onValidPaymentFunction];
-
-    if (!onValidPaymentFunction && this.config.onValidPaymentFunction) {
-      this.logger.trace(
-        { fn: this.config.onValidPaymentFunction },
-        "onValidPayment function not found"
-      );
-
-      throw new ControllerError("cannot find onValidPayment function", {
-        code: 500,
-      });
-    }
-
-    this.logger.trace(
-      { fn: this.config.onValidPaymentFunction },
-      "invoking onValidPayment function"
-    );
-
-    await onValidPaymentFunction(request);
-
-    this.logger.trace("onValidPayment function completed");
   }
 
   async createTrustPaymentsForm(details: TrustPaymentsDetails) {

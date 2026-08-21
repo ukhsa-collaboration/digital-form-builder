@@ -6,6 +6,14 @@ import {
   rpsRiskReportOnSummarySubmit,
   RpsRiskReportOnSummarySubmit,
 } from "./rps/rpsRiskReportOnSummarySubmit";
+import {
+  rpsRiskReportInvalidPayment,
+  RpsRiskReportInvalidPayment,
+} from "./rps/rpsRiskReportInvalidPayment";
+import {
+  rpsRiskReportValidPayment,
+  RpsRiskReportValidPayment,
+} from "./rps/rpsRiskReportValidPayment";
 
 /**
  * Global registry of named hook handlers. Add entries here as hooks are
@@ -25,9 +33,20 @@ import {
 export interface HookRegistryEntries {
   rpsGasTestKitOnSummarySubmit: RpsGasTestKitOnSummarySubmit;
   rpsRiskReportOnSummarySubmit: RpsRiskReportOnSummarySubmit;
+  rpsRiskReportInvalidPayment: RpsRiskReportInvalidPayment;
+  rpsRiskReportValidPayment: RpsRiskReportValidPayment;
 }
 
 export const hookRegistry: HookRegistryEntries = {
   rpsGasTestKitOnSummarySubmit,
   rpsRiskReportOnSummarySubmit,
-} as HookRegistryEntries;
+  rpsRiskReportInvalidPayment,
+  rpsRiskReportValidPayment,
+};
+
+/** A registered hook's lookup key, i.e. one of `hookRegistry`'s own record keys. */
+export type HookAction = keyof HookRegistryEntries;
+
+export function isHookAction(action: string): action is HookAction {
+  return action in hookRegistry;
+}
