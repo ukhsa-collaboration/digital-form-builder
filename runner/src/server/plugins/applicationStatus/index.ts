@@ -1,6 +1,9 @@
 import { redirectTo } from "./../engine";
 import { HapiRequest, HapiResponseToolkit } from "../../types";
-import { getOrCreateCorrelationId } from "../../utils/correlationId";
+import {
+  getOrCreateCorrelationId,
+  destroySession,
+} from "../../utils/correlationId";
 import { retryPay } from "./retryPay";
 import { handleUserWithConfirmationViewModel } from "./handleUserWithConfirmationViewModel";
 import { checkUserCompletedSummary } from "./checkUserCompletedSummary";
@@ -67,7 +70,7 @@ const index = {
                 redirectUrl,
               });
 
-              await cacheService.clearState(request);
+              await destroySession(request, cacheService);
 
               return h.redirect(redirectUrl);
             }
@@ -77,6 +80,7 @@ const index = {
               form,
               newReference
             );
+
             viewModel.name = form.name;
             viewModel.feedbackLink = form.def.feedback.url;
 
@@ -90,7 +94,7 @@ const index = {
               confirmationTimeout
             );
 
-            await cacheService.clearState(request);
+            await destroySession(request, cacheService);
 
             h.unstate("magicLinkRetry", {
               path: "/",
@@ -137,6 +141,7 @@ const index = {
               meta,
             },
           });
+
           return redirectTo(request, h, res._links.next_url.href);
         },
       });

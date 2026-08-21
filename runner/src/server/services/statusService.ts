@@ -75,8 +75,10 @@ export class StatusService {
   async shouldShowPayErrorPage(request: HapiRequest): Promise<boolean> {
     const { pay, paymentProvider } = await this.cacheService.getState(request);
 
-    if (paymentProvider === "trust-payments")
+    if (paymentProvider === "trust-payments") {
       await this.verifyTrustPaymentRedirect(request);
+      return false;
+    }
 
     if (!pay) {
       this.logger.info(

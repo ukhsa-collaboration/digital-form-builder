@@ -38,6 +38,7 @@ services:
 
       - SESSION_COOKIE_PASSWORD
       - ENABLE_MOCK_API
+      - LOG_LEVEL
 
       # ------ Location services via UKHSA Azure ------
 

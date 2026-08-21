@@ -27,7 +27,6 @@ export const saveRiskReportDetailsSchema = Joi.object({
   }).default("test"),
 })
   .rename("emailAddress", "email")
-  .rename("deliveryAddress_selectedAddress", "fullAddress")
   .options({ stripUnknown: true });
 
 /**
@@ -62,6 +61,9 @@ export const rpsRiskReportOnSummarySubmit: RpsRiskReportOnSummarySubmit = async 
       code: 500,
     });
 
+  const selectedDeliveryAddress =
+    currentState["deliveryAddress_selectedAddress"];
+
   const rawRequestData = {
     uuid: getOrCreateCorrelationId(request),
     deliveryMethod: currentState["deliveryMethod"],
@@ -71,8 +73,9 @@ export const rpsRiskReportOnSummarySubmit: RpsRiskReportOnSummarySubmit = async 
     firstName: currentState["firstName"],
     lastName: currentState["lastName"],
     emailAddress: currentState["emailAddress"],
-    deliveryAddress_selectedAddress:
-      currentState["deliveryAddress_selectedAddress"],
+    ...(selectedDeliveryAddress
+      ? { fullAddress: selectedDeliveryAddress.address }
+      : {}),
   };
 
   request.logger.trace(
