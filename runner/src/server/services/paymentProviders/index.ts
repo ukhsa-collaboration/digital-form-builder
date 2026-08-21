@@ -3,6 +3,7 @@ import { isMultipleApiKey } from "@xgovformbuilder/model";
 import { HapiRequest, HapiResponseToolkit } from "server/types";
 import { ControllerError } from "server/plugins/engine/errors";
 import { BaseService } from "../BaseService";
+import { runHook } from "server/services/hooks";
 import { PaymentProviderService, PaymentResult } from "./types";
 
 /**
@@ -144,6 +145,30 @@ class TrustPaymentsAdapter
   }
 
   async cancelPayment(): Promise<void> {}
+
+  async verifyRedirect(request: HapiRequest): Promise<void> {
+    const { trustPaymentsService } = request.service.getServices(
+      "trustPaymentsService"
+    );
+
+    const paymentErrorStatus = request.query["errorcode"];
+    const model = request.server.app.forms[request.params.id];
+
+    if (
+      !trustPaymentsService.verifyRedirect(request) ||
+      (paymentErrorStatus && paymentErrorStatus !== "0")
+    ) {
+      await runHook("TrustPaymentsService.onInvalidPayment", request, {
+        model,
+      });
+
+      throw new ControllerError("cannot verify trust payment redirect", {
+        code: 500,
+      });
+    }
+
+    await runHook("TrustPaymentsService.onValidPayment", request, { model });
+  }
 }
 
 /** The lookup table callers resolve `model.def.paymentProvider` against. */

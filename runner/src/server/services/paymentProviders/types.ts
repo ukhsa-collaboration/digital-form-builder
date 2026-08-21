@@ -27,4 +27,6 @@ export interface PaymentProviderService {
     request: HapiRequest,
     state: Record<string, any>
   ): Promise<void>;
+
+  verifyRedirect?(request: HapiRequest): Promise<void>;
 }

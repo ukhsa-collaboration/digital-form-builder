@@ -1,6 +1,5 @@
 import { HapiRequest, HapiServer } from "../types";
 import { createHmacRaw } from "../utils/hmac";
-import { runHook } from "./hooks";
 import { getOrCreateCorrelationId } from "../utils/correlationId";
 import {
   CacheService,
@@ -24,7 +23,7 @@ import {
   OutputData,
   TNotifyModel,
 } from "../plugins/engine/models/submission/types";
-import { ControllerError } from "../plugins/engine/errors";
+import { paymentProviderRegistry } from "./paymentProviders";
 
 type WebhookModel = WebhookOutputConfiguration & {
   formData: object;
@@ -76,10 +75,9 @@ export class StatusService {
   async shouldShowPayErrorPage(request: HapiRequest): Promise<boolean> {
     const { pay, paymentProvider } = await this.cacheService.getState(request);
 
-    if (paymentProvider === "trust-payments") {
-      await this.verifyTrustPaymentRedirect(request);
-      return false;
-    }
+    const adapter = paymentProviderRegistry[paymentProvider];
+
+    if (adapter?.verifyRedirect) await adapter.verifyRedirect(request);
 
     if (!pay) {
       this.logger.info(
@@ -145,33 +143,6 @@ export class StatusService {
     );
 
     return shouldRetry;
-  }
-
-  async verifyTrustPaymentRedirect(request: HapiRequest) {
-    // verify redirect for trust payments
-    const { trustPaymentsService } = request.service.getServices(
-      "trustPaymentsService"
-    );
-
-    const paymentErrorStatus = request.query["errorcode"];
-    const model = request.server.app.forms[request.params.id];
-
-    if (
-      !trustPaymentsService.verifyRedirect(request) ||
-      (paymentErrorStatus && paymentErrorStatus !== "0")
-    ) {
-      // run the configured side effect for an invalid payment
-      await runHook("TrustPaymentsService.onInvalidPayment", request, {
-        model,
-      });
-
-      // throw payment page error
-      throw new ControllerError("cannot verify trust payment redirect", {
-        code: 500,
-      });
-    }
-
-    await runHook("TrustPaymentsService.onValidPayment", request, { model });
   }
 
   async outputRequests(request: HapiRequest) {
