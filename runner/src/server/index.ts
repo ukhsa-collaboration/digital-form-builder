@@ -14,6 +14,7 @@ import { configureCrumbPlugin } from "./plugins/crumb";
 import { configureInitialiseSessionPlugin } from "server/plugins/initialiseSession/configurePlugin";
 
 import pluginLocale from "./plugins/locale";
+import pluginServiceHelper from "./plugins/serviceHelper";
 import pluginSession from "./plugins/session";
 import pluginAuth from "./plugins/auth";
 import pluginViews from "./plugins/views";
@@ -45,6 +46,7 @@ import { QueueStatusService } from "server/services/queueStatusService";
 import { MySqlQueueService } from "server/services/mySqlQueueService";
 import { PgBossQueueService } from "server/services/pgBossQueueService";
 import { isValidSecureFormSubmissionConfig } from "./utils/isValidSecureFormSubmissionConfig";
+import { DynamicServices } from "./services/dynamicServices";
 
 const serverOptions = (): ServerOptions => {
   const hasCertificate = config.sslKey && config.sslCert;
@@ -94,6 +96,12 @@ async function createServer(routeConfig: RouteConfig) {
   const server = hapi.server(serverOptions());
   const { formFileName, formFilePath, options } = routeConfig;
 
+  if (config.enableMockApi) {
+    const { mockServer } = await import("./mocks/server");
+    mockServer.listen({ onUnhandledRequest: "bypass" });
+    server.events.on("stop", () => mockServer.close());
+  }
+
   if (config.rateLimit) {
     await server.register(configureRateLimitPlugin(routeConfig));
   }
@@ -110,6 +118,7 @@ async function createServer(routeConfig: RouteConfig) {
   await server.register(configureBlankiePlugin(config));
   await server.register(configureCrumbPlugin(config, routeConfig));
   await server.register(Schmervice);
+  await server.register(pluginServiceHelper);
   await server.register(pluginAuth);
 
   server.registerService([
@@ -122,6 +131,7 @@ async function createServer(routeConfig: RouteConfig) {
     ExitService,
     FormSecurityService,
   ]);
+
   if (!config.documentUploadApiUrl) {
     server.registerService([
       Schmervice.withName("uploadService", MockUploadService),
@@ -202,11 +212,11 @@ async function createServer(routeConfig: RouteConfig) {
     }
   }
 
+  const forms = configureEnginePlugin(formFileName, formFilePath, options);
+
   await server.register(pluginLocale);
   await server.register(pluginViews);
-  await server.register(
-    configureEnginePlugin(formFileName, formFilePath, options)
-  );
+  await server.register(forms);
   await server.register(pluginApplicationStatus);
   await server.register(pluginRouter);
   await server.register(pluginErrorPages);
@@ -217,6 +227,18 @@ async function createServer(routeConfig: RouteConfig) {
   });
 
   await server.register(pluginQueue);
+
+  const dynamicServices = new DynamicServices();
+  const dynamicServiceNames = new Set<string>();
+
+  for (const form of forms.options.configs) {
+    await dynamicServices.registerServices(
+      server,
+      form.id,
+      form.configuration.services,
+      dynamicServiceNames
+    );
+  }
 
   return server;
 }

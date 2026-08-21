@@ -22,7 +22,7 @@ export function mergeRows(
               ...item,
               name: to.toLowerCase().replace(" ", "_"),
               ...{ label: to, title: to, rawValue: to },
-              value: values.length === 0 ? null : values.join(joiner),
+              value: values.length === 0 ? "" : values.join(joiner),
             };
           }
           return item;

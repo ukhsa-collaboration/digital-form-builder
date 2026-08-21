@@ -2,7 +2,13 @@ import { merge, reach } from "@hapi/hoek";
 import * as querystring from "querystring";
 import { validationOptions } from "server/plugins/engine/pageControllers/validationOptions";
 
-import { feedbackReturnInfoKey, proceed, redirectTo } from "../helpers";
+import {
+  feedbackReturnInfoKey,
+  getBackLink,
+  getReturnUrl,
+  proceed,
+  redirectTo,
+} from "../helpers";
 import { ComponentCollection } from "../components/ComponentCollection";
 import {
   decodeFeedbackContextInfo,
@@ -60,6 +66,7 @@ export class PageControllerBase {
   sectionForMultiSummaryPages: any;
   sidebarContent: any;
   components: ComponentCollection;
+  componentsAfter: ComponentCollection;
   disableSingleComponentAsHeading: boolean;
   hasFormComponents: boolean;
   hasConditionalFormComponents: boolean;
@@ -68,6 +75,7 @@ export class PageControllerBase {
   disableBackLink?: boolean;
   returnUrl?: string;
   buttonText?: string;
+  hideContinueButton?: boolean;
 
   // TODO: pageDef type
   constructor(model: FormModel, pageDef: { [prop: string]: any } = {}) {
@@ -88,6 +96,7 @@ export class PageControllerBase {
     this.disableSingleComponentAsHeading =
       pageDef.disableSingleComponentAsHeading;
     this.buttonText = pageDef.customButtonText ?? this.defaultButtonText;
+    this.hideContinueButton = pageDef.options?.hideContinueButton ?? false;
 
     // Resolve section
     this.section = model.sections?.find(
@@ -123,6 +132,11 @@ export class PageControllerBase {
     this.hasFormComponents = !!components.formItems.length;
     this.hasConditionalFormComponents = !!conditionalFormComponents.length;
 
+    this.componentsAfter = new ComponentCollection(
+      pageDef.componentsAfter ?? [],
+      model
+    );
+
     this[FORM_SCHEMA] = this.components.formSchema;
     this[STATE_SCHEMA] = this.components.stateSchema;
 
@@ -137,13 +151,19 @@ export class PageControllerBase {
   }
 
   /**
+   * This method is called at the start of the getRouteHandler function. It can be overridden to retrieve state
+   * @param _request the http request object
+   */
+  async onMakeGetRouteHandler(_request: HapiRequest) {}
+
+  /**
    * Used for mapping FormData and errors to govuk-frontend's template api, so a page can be rendered
    * @param formData - contains a user's form payload, and any validation errors that may have occurred
    */
   getViewModel(
     formData: FormData,
-    iteration?: any, // TODO
-    errors?: any // TODO
+    iteration?: unknown,
+    errors?: FormSubmissionErrors
   ): {
     page: PageControllerBase;
     name: string;
@@ -151,13 +171,15 @@ export class PageControllerBase {
     sectionTitle: string;
     showTitle: boolean;
     components: ComponentCollectionViewModel;
-    errors: FormSubmissionErrors;
+    componentsAfter: ComponentCollectionViewModel;
+    errors?: FormSubmissionErrors;
     isStartPage: boolean;
     startPage?: HapiResponseObject;
     backLink?: string;
     phaseTag?: string | undefined;
     details?: any;
     returnUrl?: string | undefined;
+    allowExit?: boolean;
   } {
     let showTitle = true;
     let pageTitle = this.title;
@@ -206,6 +228,7 @@ export class PageControllerBase {
       sectionTitle,
       showTitle,
       components,
+      componentsAfter: this.componentsAfter.getViewModel(formData, errors),
       errors,
       isStartPage: false,
       details: this.details || undefined,
@@ -282,13 +305,15 @@ export class PageControllerBase {
     let defaultLink;
     const nextLink = this.next.find((link) => {
       const { condition } = link;
+
       if (!condition) {
         defaultLink = link;
       }
+
       const conditionPassed = this.model.conditions[condition]?.fn?.(state);
-      if (conditionPassed) {
-        return link;
-      }
+
+      if (conditionPassed) return link;
+
       return false;
     });
 
@@ -361,6 +386,7 @@ export class PageControllerBase {
         ),
       };
     }
+
     return {
       ...this.components.getFormDataFromState(pageState || {}),
       ...this.model.getContextState(state),
@@ -413,11 +439,11 @@ export class PageControllerBase {
    * @param value - user's answers
    * @param schema - which schema to validate against
    */
-  validate(value, schema) {
+  validate<T = unknown>(value, schema) {
     const result = schema.validate(value, this.validationOptions);
     const errors = result.error ? this.getErrors(result) : null;
 
-    return { value: result.value, errors };
+    return { value: result.value as T, errors };
   }
 
   validateForm(payload) {
@@ -447,10 +473,12 @@ export class PageControllerBase {
     //Note: This function does not support repeatFields right now
 
     let relevantState: FormSubmissionState = {};
+
     //Start at our startPage
     let nextPage = model.startPage;
 
     //While the current page isn't null
+    const checkedPages = new Set<PageControllerBase>();
     while (nextPage != null) {
       //Either get the current state or the current state of the section if this page belongs to a section
       const currentState =
@@ -487,6 +515,11 @@ export class PageControllerBase {
       }
 
       //If a nextPage is returned, we must have taken that route through the form so continue our iteration with the new page
+      if (checkedPages.has(nextPage)) {
+        nextPage = null;
+      } else {
+        checkedPages.add(nextPage);
+      }
     }
 
     return relevantState;
@@ -494,6 +527,8 @@ export class PageControllerBase {
 
   makeGetRouteHandler() {
     return async (request: HapiRequest, h: HapiResponseToolkit) => {
+      await this.onMakeGetRouteHandler(request);
+
       const { cacheService } = request.services([]);
       const lang = this.langFromRequest(request);
       const state = await cacheService.getState(request);
@@ -549,6 +584,7 @@ export class PageControllerBase {
       }
 
       formData.lang = lang;
+      formData.returnUrl = getReturnUrl(request);
       /**
        * We store the original filename for the user in a separate object (`originalFileNames`), however they are not used for any of the outputs. The S3 url is stored in the state.
        */
@@ -585,6 +621,19 @@ export class PageControllerBase {
         }
         return true;
       });
+
+      viewModel.componentsAfter = viewModel.componentsAfter.filter(
+        (component) => {
+          if (
+            (component.model.content || component.type === "Details") &&
+            component.model.condition
+          ) {
+            const condition = this.model.conditions[component.model.condition];
+            return condition.fn(relevantState);
+          }
+          return true;
+        }
+      );
       /**
        * For conditional reveal components (which we no longer support until GDS resolves the related accessibility issues {@link https://github.com/alphagov/govuk-frontend/issues/1991}
        */
@@ -624,13 +673,21 @@ export class PageControllerBase {
         }
       }
 
-      await cacheService.mergeState(request, { progress });
+      await cacheService.mergeState(request, {
+        progress,
+        ...(this.model.def.provider && {
+          paymentProvider: this.model.def.provider,
+        }),
+      });
 
       if (this.disableBackLink) {
         viewModel.backLink = undefined;
       } else {
-        viewModel.backLink =
-          progress[progress.length - 2] ?? this.backLinkFallback;
+        viewModel.backLink = getBackLink(
+          request,
+          progress,
+          this.backLinkFallback
+        );
       }
 
       viewModel.allowExit = this.model.allowExit;
@@ -667,6 +724,9 @@ export class PageControllerBase {
       .map((component) => component.model);
     const progress = state.progress || [];
     const { num } = request.query;
+    const formData = this.getFormDataFromState(state, num - 1);
+    const combined = { ...formData, ...payload } as FormData;
+    combined.returnUrl = getReturnUrl(request);
 
     // TODO:- Refactor this into a validation method
     if (hasFilesizeError) {
@@ -682,6 +742,7 @@ export class PageControllerBase {
       formResult.errors = Object.is(formResult.errors, null)
         ? { titleText: "There is a problem" }
         : formResult.errors;
+
       formResult.errors.errorList = reformattedErrors;
     }
 
@@ -690,6 +751,7 @@ export class PageControllerBase {
      */
     if (preHandlerErrors?.length) {
       const reformattedErrors: any[] = [];
+
       preHandlerErrors.forEach((error) => {
         const reformatted = error;
         const fieldMeta = fileFields.find((field) => field.id === error.name);
@@ -709,6 +771,7 @@ export class PageControllerBase {
       formResult.errors = Object.is(formResult.errors, null)
         ? { titleText: "There is a problem" }
         : formResult.errors;
+
       formResult.errors.errorList = reformattedErrors;
     }
 
@@ -727,7 +790,7 @@ export class PageControllerBase {
       return this.renderWithErrors(
         request,
         h,
-        payload,
+        combined,
         num,
         progress,
         formResult.errors
@@ -736,11 +799,12 @@ export class PageControllerBase {
 
     const newState = this.getStateFromValidForm(formResult.value);
     const stateResult = this.validateState(newState);
+
     if (stateResult.errors) {
       return this.renderWithErrors(
         request,
         h,
-        payload,
+        combined,
         num,
         progress,
         stateResult.errors
@@ -752,6 +816,7 @@ export class PageControllerBase {
     if (this.repeatField) {
       const updateValue = { [this.path]: update[this.section.name] };
       const sectionState = state[this.section.name];
+
       if (!sectionState) {
         update = { [this.section.name]: [updateValue] };
       } else if (!sectionState[num - 1]) {
@@ -764,9 +829,11 @@ export class PageControllerBase {
     }
 
     const { nullOverride, arrayMerge, modifyUpdate } = mergeOptions;
+
     if (modifyUpdate) {
       update = modifyUpdate(update);
     }
+
     await cacheService.mergeState(request, update, nullOverride, arrayMerge);
   }
 
@@ -776,9 +843,11 @@ export class PageControllerBase {
   makePostRouteHandler() {
     return async (request: HapiRequest, h: HapiResponseToolkit) => {
       const response = await this.handlePostRequest(request, h);
+
       if (response?.source?.context?.errors) {
         return response;
       }
+
       const { cacheService } = request.services([]);
 
       if (
@@ -799,10 +868,12 @@ export class PageControllerBase {
 
         if (authCookie) {
           const tokenArtifacts = Jwt.token.decode(authCookie);
+
           const { isValid, error } = verifyHmacToken(
             tokenArtifacts,
             this.model.def.jwtKey
           );
+
           if (!isValid) {
             // If the token is invalid, redirect to the start page
             if (currentPath !== `/${this.model.basePath}${startPage!}`) {
@@ -813,7 +884,8 @@ export class PageControllerBase {
       }
 
       const shouldGoToExitPage =
-        this.model.allowExit && request.payload?.action === "exit";
+        this.model.allowExit &&
+        (request.payload as { action?: string })?.action === "exit";
 
       if (shouldGoToExitPage) {
         await cacheService.setExitState(request, {
@@ -900,14 +972,32 @@ export class PageControllerBase {
   }
 
   /**
-   * TODO:- proceed is interfering with subclasses
+   * Navigates to the next page after a successful form submission.
+   *
+   * @param request - The incoming Hapi request.
+   * @param h - The Hapi response toolkit used to issue the redirect.
+   * @param state - Current form submission state, used to determine the next page.
+   * @param honourReturnUrl - Override whether the `returnUrl` query param is
+   *   respected. Defaults to `true` when the next path matches the return URL.
    */
-  proceed(request: HapiRequest, h: HapiResponseToolkit, state) {
+  proceed(
+    request: HapiRequest,
+    h: HapiResponseToolkit,
+    state,
+    honourReturnUrl?: boolean
+  ) {
     const nextPage = this.getNext(state);
-    if (nextPage?.redirect) {
-      return proceed(request, h, nextPage?.redirect);
-    }
-    return proceed(request, h, nextPage);
+    const nextUrl = nextPage?.redirect ?? nextPage;
+
+    const returnUrl = getReturnUrl(request);
+
+    const shouldHonourReturnUrl =
+      honourReturnUrl ??
+      (typeof nextUrl === "string" &&
+        returnUrl !== undefined &&
+        nextUrl.split("?")[0] === returnUrl.split("?")[0]);
+
+    return proceed(request, h, nextUrl, shouldHonourReturnUrl);
   }
 
   getPartialMergeState(value) {
@@ -992,14 +1082,16 @@ export class PageControllerBase {
     if (this.disableBackLink) {
       viewModel.backLink = undefined;
     } else {
-      viewModel.backLink =
-        progress[progress.length - 2] ?? this.backLinkFallback;
+      viewModel.backLink = getBackLink(
+        request,
+        progress,
+        this.backLinkFallback
+      );
     }
 
     this.setPhaseTag(viewModel);
     this.setFeedbackDetails(viewModel, request);
     viewModel.allowExit = this.model.allowExit;
-
     return h.view(this.viewName, viewModel);
   }
 }

@@ -28,6 +28,7 @@ const partition = "cache";
 
 enum ADDITIONAL_IDENTIFIER {
   Confirmation = ":confirmation",
+  Frozen = ":frozen",
 }
 
 export class CacheService {
@@ -40,6 +41,31 @@ export class CacheService {
   constructor(server: HapiServer) {
     this.cache = server.cache({ segment: "cache" });
     this.logger = server.logger;
+  }
+
+  async freezeState(request: Parameters<typeof this.Key>[0]): Promise<void> {
+    await this.cache.set(
+      this.Key(request, ADDITIONAL_IDENTIFIER.Frozen),
+      true,
+      sessionTimeout
+    );
+  }
+
+  async unfreezeState(request: Parameters<typeof this.Key>[0]): Promise<void> {
+    await this.cache.set(
+      this.Key(request, ADDITIONAL_IDENTIFIER.Frozen),
+      false,
+      sessionTimeout
+    );
+  }
+
+  async isStateFrozen(
+    request: Parameters<typeof this.Key>[0]
+  ): Promise<boolean> {
+    const frozen = await this.cache.get(
+      this.Key(request, ADDITIONAL_IDENTIFIER.Frozen)
+    );
+    return frozen === true;
   }
 
   async getState(
@@ -57,6 +83,11 @@ export class CacheService {
     arrayMerge = false
   ) {
     const key = this.Key(request);
+
+    if (await this.isStateFrozen(request)) {
+      throw new Error("Session state is frozen and cannot be modified");
+    }
+
     const state = await this.getState(request);
     let ttl = sessionTimeout;
     hoek.merge(state, value, nullOverride, arrayMerge);
@@ -168,12 +199,13 @@ export const catboxProvider = () => {
    * If redisHost doesn't exist, CatboxMemory will be used instead.
    * More information at {@link https://hapi.dev/module/catbox/api}
    */
+  const useRedis = redisHost && redisHost !== "${Redis.Host}";
   const provider = {
-    constructor: redisHost ? CatboxRedis.Engine : CatboxMemory.Engine,
+    constructor: useRedis ? CatboxRedis.Engine : CatboxMemory.Engine,
     options: {},
   };
 
-  if (redisHost) {
+  if (useRedis) {
     const redisOptions: {
       password?: string;
       tls?: {};

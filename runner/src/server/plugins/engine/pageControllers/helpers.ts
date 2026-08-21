@@ -21,6 +21,9 @@ import { MagicLinkStartPageController } from "./MagicLinkStartPageController";
 import { CustomSummaryPageController } from "./CustomSummaryPageController";
 import { DateComparisonPageController } from "./DateComparisonPageController";
 import { MagicLinkRedirectController } from "./MagicLinkRedirectController";
+import { FindAnAddressPageController } from "./FindAnAddressPageController";
+import { SelectAnAddressPageController } from "./SelectAnAddressPageController";
+import { DeliveryAddressSameAsReportPageController } from "./DeliveryAddressSameAsReportPageController";
 
 const PageControllers = {
   DobPageController,
@@ -43,6 +46,9 @@ const PageControllers = {
   CustomSummaryPageController,
   DateComparisonPageController,
   MagicLinkRedirectController,
+  FindAnAddressPageController,
+  SelectAnAddressPageController,
+  DeliveryAddressSameAsReportPageController,
 };
 
 export const controllerNameFromPath = (filePath: string) => {

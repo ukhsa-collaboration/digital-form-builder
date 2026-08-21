@@ -1,4 +1,8 @@
-import { NotifyOutputConfiguration, OutputType } from "@xgovformbuilder/model";
+import {
+  NotifyOutputConfiguration,
+  OutputType,
+  PayloadValueConfig,
+} from "@xgovformbuilder/model";
 
 export type TNotifyModel = Omit<
   NotifyOutputConfiguration,
@@ -37,6 +41,7 @@ type WebhookOutputData = {
     url: string;
     sendAdditionalPayMetadata?: boolean;
     allowRetry?: boolean;
+    payload?: Record<string, PayloadValueConfig>;
   };
 };
 

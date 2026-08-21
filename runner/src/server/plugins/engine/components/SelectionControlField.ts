@@ -2,7 +2,12 @@ import joi from "joi";
 import nunjucks from "nunjucks";
 
 import { ListFormComponent } from "server/plugins/engine/components/ListFormComponent";
-import { FormData, FormSubmissionErrors } from "server/plugins/engine/types";
+import {
+  FormData,
+  FormPayload,
+  FormSubmissionErrors,
+  FormSubmissionState,
+} from "server/plugins/engine/types";
 import { ListItem } from "server/plugins/engine/components/types";
 
 import { ComponentCollection } from "./ComponentCollection";
@@ -141,7 +146,9 @@ export class SelectionControlField extends ListFormComponent {
     viewModel.items = items.map((item: any) => {
       const itemModel: ListItem = {
         text: item.text,
+        html: item.html,
         value: item.value,
+        condition: item.condition,
         checked: `${item.value}` === `${formData[name]}`,
       };
 
