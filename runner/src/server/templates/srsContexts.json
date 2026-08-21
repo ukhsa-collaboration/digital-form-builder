@@ -1,10 +1,13 @@
 {
   "diseaseInfo": {
-    "001F00": {
-      "name": "bird (avian) flu"
+    "01F0": {
+      "name": "Avian (bird) flu"
     },
-    "001F01": {
+    "01F1": {
       "name": "Mers-Cov"
+    },
+    "01F2": {
+      "name": "Flu"
     }
   }
 }
