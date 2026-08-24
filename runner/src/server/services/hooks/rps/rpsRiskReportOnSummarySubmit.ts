@@ -17,12 +17,16 @@ export const saveRiskReportDetailsSchema = Joi.object({
       otherwise: Joi.required(),
     }),
   telephone: Joi.string().default("dummy-telephone"),
-  countryCode: Joi.string(),
+  udprn: Joi.string().optional().allow(""),
   fullAddress: Joi.when("deliveryMethod", {
     is: "post",
     then: Joi.alternatives().try(Joi.string(), Joi.object()).required(),
     otherwise: Joi.optional().allow(""),
   }).default("test"),
+  addressLine1: Joi.string().optional().allow(""),
+  addressLine2: Joi.string().optional().allow(""),
+  townCity: Joi.string().optional().allow(""),
+  postcode: Joi.string().optional().allow(""),
 })
   .rename("emailAddress", "email")
   .options({ stripUnknown: true });
@@ -63,14 +67,18 @@ export const rpsRiskReportOnSummarySubmit: Hook<void> = async (request) => {
   const rawRequestData = {
     uuid: getOrCreateCorrelationId(request),
     deliveryMethod: currentState["deliveryMethod"],
-    countryCode: selectedRiskReportAddress["countryCode"],
-    uprn: selectedRiskReportAddress["uprn"],
     udprn: selectedRiskReportAddress["udprn"],
     firstName: currentState["firstName"],
     lastName: currentState["lastName"],
     emailAddress: currentState["emailAddress"],
     ...(selectedDeliveryAddress
-      ? { fullAddress: selectedDeliveryAddress.address }
+      ? {
+          fullAddress: selectedDeliveryAddress.address,
+          addressLine1: selectedDeliveryAddress.addressLine1,
+          addressLine2: selectedDeliveryAddress.addressLine2,
+          townCity: selectedDeliveryAddress.townCity,
+          postcode: selectedDeliveryAddress.postcode,
+        }
       : {}),
   };
 
@@ -107,7 +115,7 @@ export const rpsRiskReportOnSummarySubmit: Hook<void> = async (request) => {
     "rpsRiskReportOnSummarySubmit.response"
   );
 
-  if (response.status !== 200 || body.error) {
+  if (response.status !== 200 || !body.success) {
     throw new ControllerError(`Request to save report details has failed`, {
       code: 500,
     });

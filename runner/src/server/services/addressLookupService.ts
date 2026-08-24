@@ -14,6 +14,9 @@ export interface Address {
   udprn: string;
   uprn: string;
   countryCode: string;
+  addressLine1?: string;
+  addressLine2?: string;
+  townCity?: string;
 }
 
 export interface AddressLookupResponse {

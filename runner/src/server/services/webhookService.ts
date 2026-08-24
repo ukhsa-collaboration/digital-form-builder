@@ -54,7 +54,7 @@ export class WebhookService {
       });
 
       if (typeof payload === "object" && !Buffer.isBuffer(payload)) {
-        return payload.reference;
+        return payload.reference ?? payload.caseNumber;
       }
 
       const Name = JSON.parse(payload)[0]?.Name;
@@ -65,7 +65,7 @@ export class WebhookService {
 
       this.logger.info(`Request status code: ${res.statusCode}`);
 
-      const { reference } = JSON.parse(payload);
+      const { reference, caseNumber } = JSON.parse(payload);
 
       this.logger.info(
         ["WebhookService", "postRequest"],
@@ -76,7 +76,7 @@ export class WebhookService {
       //   ["WebhookService", "postRequest", `REF: ${reference}`],
       //   JSON.stringify(payload)
       // );
-      return reference;
+      return reference ?? caseNumber;
     } catch (error: any) {
       this.logger.error(["WebhookService", "postRequest"], error);
       return "UNKNOWN";

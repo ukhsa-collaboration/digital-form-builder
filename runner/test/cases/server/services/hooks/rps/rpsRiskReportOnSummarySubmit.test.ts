@@ -14,7 +14,7 @@ describe("saveRiskReportDetailsSchema", () => {
     lastName: "Doe",
     deliveryMethod: "post",
     emailAddress: "",
-    deliveryAddress_selectedAddress: "10 Downing Street, London, SW1A 2AA",
+    fullAddress: "10 Downing Street, London, SW1A 2AA",
   };
 
   const baseEmailState = {
@@ -41,7 +41,6 @@ describe("saveRiskReportDetailsSchema", () => {
         fullAddress: "10 Downing Street, London, SW1A 2AA",
       });
       expect(value).to.not.include("emailAddress");
-      expect(value).to.not.include("deliveryAddress_selectedAddress");
     });
 
     it("renames keys and strips unknown fields for an email delivery", () => {
@@ -63,7 +62,7 @@ describe("saveRiskReportDetailsSchema", () => {
     it("accepts an address object when deliveryMethod is post", () => {
       const state = {
         ...basePostState,
-        deliveryAddress_selectedAddress: {
+        fullAddress: {
           address: "10 Downing Street",
           postcode: "SW1A 2AA",
         },
@@ -81,6 +80,36 @@ describe("saveRiskReportDetailsSchema", () => {
       delete (state as any).emailAddress;
       const { error } = saveRiskReportDetailsSchema.validate(state);
       expect(error).to.be.undefined();
+    });
+
+    it("includes udprn when provided for an email delivery", () => {
+      const state = { ...baseEmailState, udprn: "12345678" };
+      const { error, value } = saveRiskReportDetailsSchema.validate(state);
+      expect(error).to.be.undefined();
+      expect(value.udprn).to.equal("12345678");
+    });
+
+    it("includes address line breakdown fields when provided", () => {
+      const state = {
+        ...basePostState,
+        addressLine1: "10 Downing Street",
+        addressLine2: "Westminster",
+        townCity: "London",
+        postcode: "SW1A 2AA",
+      };
+      const { error, value } = saveRiskReportDetailsSchema.validate(state);
+      expect(error).to.be.undefined();
+      expect(value.addressLine1).to.equal("10 Downing Street");
+      expect(value.addressLine2).to.equal("Westminster");
+      expect(value.townCity).to.equal("London");
+      expect(value.postcode).to.equal("SW1A 2AA");
+    });
+
+    it("strips countryCode since it is no longer part of the contract", () => {
+      const state = { ...basePostState, countryCode: "E" };
+      const { error, value } = saveRiskReportDetailsSchema.validate(state);
+      expect(error).to.be.undefined();
+      expect(value).to.not.include("countryCode");
     });
   });
 
@@ -109,7 +138,7 @@ describe("saveRiskReportDetailsSchema", () => {
     it("errors when deliveryMethod is post and address is missing", () => {
       const state = {
         ...basePostState,
-        deliveryAddress_selectedAddress: undefined,
+        fullAddress: undefined,
       };
       const { error } = saveRiskReportDetailsSchema.validate(state);
       expect(error).to.exist();

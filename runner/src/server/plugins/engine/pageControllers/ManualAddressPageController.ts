@@ -12,7 +12,7 @@ type FormSubmission = {
   [x: string]: string;
 };
 
-const extractInputFromSubmission = (data: FormSubmission) => {
+export const extractInputFromSubmission = (data: FormSubmission) => {
   const { addressType, ...rest } = data;
 
   return {
@@ -25,15 +25,37 @@ const extractInputFromSubmission = (data: FormSubmission) => {
   };
 };
 
+export const buildManualSelectedAddress = ({
+  addressLine1,
+  addressLine2,
+  town,
+  county,
+  postcode,
+}: Omit<ReturnType<typeof extractInputFromSubmission>, "addressType">) => ({
+  address: [addressLine1, addressLine2, town, county, postcode]
+    .filter((part) => part)
+    .join(", "),
+  postcode,
+  udprn: "",
+  uprn: "00000000",
+  countryCode: "",
+  addressLine1,
+  addressLine2,
+  townCity: town,
+});
+
 /**
  * Handles pages that collect an address purely by manual text entry — no
  * postcode lookup, no "select an address" step. It stores the entered
  * address as `${addressType}_selectedAddress`, using the same shape
- * (`{ address, postcode, udprn, uprn, countryCode }`) that
- * `SelectAnAddressPageController` stores for a looked-up address, so
+ * (`{ address, postcode, udprn, uprn, countryCode, addressLine1, addressLine2, townCity }`)
+ * that `SelectAnAddressPageController` stores for a looked-up address, so
  * templates and the submit action can read either kind of address
  * identically. `udprn`/`uprn`/`countryCode` are empty strings since no
- * lookup ever took place.
+ * lookup ever took place. Unlike a looked-up address, the individual
+ * address lines and town/city are known here (the user typed them
+ * separately), so they're preserved rather than only folded into the
+ * concatenated `address` string.
  */
 export class ManualAddressPageController extends PageControllerBase {
   makePostRouteHandler() {
@@ -54,29 +76,16 @@ export class ManualAddressPageController extends PageControllerBase {
         return response;
       }
 
-      const {
-        addressType,
-        addressLine1,
-        addressLine2,
-        town,
-        county,
-        postcode,
-      } = extractInputFromSubmission(validation.value);
-
-      const address = [addressLine1, addressLine2, town, county, postcode]
-        .filter((part) => part)
-        .join(", ");
+      const { addressType, ...extracted } = extractInputFromSubmission(
+        validation.value
+      );
 
       const { cacheService } = request.services([]);
 
       const savedState = await cacheService.mergeState(request, {
-        [`${addressType}_selectedAddress`]: {
-          address,
-          postcode,
-          udprn: "",
-          uprn: "00000000",
-          countryCode: "",
-        },
+        [`${addressType}_selectedAddress`]: buildManualSelectedAddress(
+          extracted
+        ),
       });
 
       return this.proceed(request, h, savedState);

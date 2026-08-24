@@ -50,4 +50,44 @@ suite("Server WebhookService Service", () => {
     const result = await webHookeService.postRequest("/url", {});
     expect(result).to.equal("ABCD");
   });
+
+  test("Webhook falls back to caseNumber when reference is absent (object payload)", async () => {
+    sinon.stub(httpService, "post").returns(
+      Promise.resolve({
+        res: {},
+        payload: { success: true, caseId: "case-1", caseNumber: "CASE-001" },
+      })
+    );
+    const loggerSpy = {
+      error: () => sinon.spy(),
+      info: () => sinon.spy(),
+      debug: () => sinon.spy(),
+    };
+    const serverMock = { logger: loggerSpy };
+    const webHookeService = new WebhookService(serverMock);
+    const result = await webHookeService.postRequest("/url", {});
+    expect(result).to.equal("CASE-001");
+  });
+
+  test("Webhook falls back to caseNumber when reference is absent (string payload)", async () => {
+    sinon.stub(httpService, "post").returns(
+      Promise.resolve({
+        res: {},
+        payload: JSON.stringify({
+          success: true,
+          caseId: "case-1",
+          caseNumber: "CASE-002",
+        }),
+      })
+    );
+    const loggerSpy = {
+      error: () => sinon.spy(),
+      info: () => sinon.spy(),
+      debug: () => sinon.spy(),
+    };
+    const serverMock = { logger: loggerSpy };
+    const webHookeService = new WebhookService(serverMock);
+    const result = await webHookeService.postRequest("/url", {});
+    expect(result).to.equal("CASE-002");
+  });
 });

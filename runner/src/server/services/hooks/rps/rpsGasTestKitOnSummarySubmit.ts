@@ -16,12 +16,11 @@ const personalDetailsSchema = Joi.object({
   telephone: Joi.string().default("dummy-telephone"),
 });
 
-// Matches `AddressDetails` in gas-test-kit-api-spec.json. Only `udprn` is
-// required by the spec; manually-entered addresses (no postcode lookup) have
-// no UDPRN, so it's allowed to be an empty string.
+// Matches `AddressDetails` in gas-test-kit-api-spec.json. All fields are
+// optional; manually-entered addresses (no postcode lookup) have no UDPRN.
 const addressDetailsSchema = Joi.object({
-  udprn: Joi.string().required(),
-  fullAddress: Joi.string().required(),
+  udprn: Joi.string().allow("").optional(),
+  fullAddress: Joi.string().optional(),
   addressLine1: Joi.string().optional(),
   addressLine2: Joi.string().allow("").optional(),
   townCity: Joi.string().allow("").optional(),
@@ -56,10 +55,16 @@ const toAddressDetails = (address?: {
   address?: string;
   postcode?: string;
   udprn?: string;
+  addressLine1?: string;
+  addressLine2?: string;
+  townCity?: string;
 }) => ({
-  udprn: "00000000",
+  udprn: address?.udprn ?? "",
   fullAddress: address?.address ?? "",
   postcode: address?.postcode ?? "",
+  addressLine1: address?.addressLine1,
+  addressLine2: address?.addressLine2,
+  townCity: address?.townCity,
 });
 
 /**
@@ -169,7 +174,7 @@ export const rpsGasTestKitOnSummarySubmit: Hook<void> = async (
     "rpsGasTestKitOnSummarySubmit.response"
   );
 
-  if (response.status !== 200 || body.error) {
+  if (response.status !== 200 || !body.success) {
     throw new ControllerError(
       `Request to save gas test kit details has failed`,
       { code: 500 }

@@ -92,14 +92,13 @@ describe("saveGasTestKitDetailsSchema", () => {
       expect(error!.message).to.include("firstName");
     });
 
-    it("errors when an address is missing udprn", () => {
+    it("accepts an address missing udprn (now optional)", () => {
       const { udprn, ...addressWithoutUdprn } = address;
       const { error } = saveGasTestKitDetailsSchema.validate({
         ...basePayload,
         measurementAddress: addressWithoutUdprn,
       });
-      expect(error).to.exist();
-      expect(error!.message).to.include("udprn");
+      expect(error).to.be.undefined();
     });
 
     it("errors when prevTestedAddress is not a boolean", () => {
@@ -154,7 +153,10 @@ describe("rpsGasTestKitOnSummarySubmit", () => {
   };
 
   const buildRequest = () => {
-    const jsonStub = sinon.stub().resolves({ ok: true });
+    const jsonStub = sinon.stub().resolves({
+      success: true,
+      uuid: "343d10da-7d57-425e-8b2f-6891b1c563d6",
+    });
     const requestStub = sinon.stub().resolves({
       status: 200,
       headers: { "content-type": "application/json" },
@@ -320,5 +322,29 @@ describe("rpsGasTestKitOnSummarySubmit", () => {
     expect(body.resultsRecipientAddress).to.not.equal(
       toAddressDetails(resultsAddress)
     );
+  });
+
+  it("throws when the backend responds with success: false", async () => {
+    const { request } = buildRequest();
+    const jsonStub = sinon.stub().resolves({ success: false });
+    const requestStub = sinon.stub().resolves({
+      status: 200,
+      headers: { "content-type": "application/json" },
+      json: jsonStub,
+    });
+    request.service.getServices = sinon
+      .stub()
+      .returns({ rpsBackendService: { request: requestStub } });
+
+    const context: any = {
+      state: {
+        ...baseState,
+        kitAddressConfirmation: true,
+        resultsAddressConfirmation: true,
+        kitResultsConfirmation: true,
+      },
+    };
+
+    await expect(rpsGasTestKitOnSummarySubmit(request, context)).to.reject();
   });
 });

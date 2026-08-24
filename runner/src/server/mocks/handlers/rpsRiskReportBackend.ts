@@ -6,15 +6,12 @@ const logger = createChildLogger({ name: "rpsRiskReportBackend" });
 
 const lookupAddressRequestSchema = joi.object({
   uuid: joi.string().uuid().required(),
-  uprn: joi.string().required(),
   udprn: joi.string().required(),
+  countryCode: joi.string().valid("N", "E", "S", "W").required(),
 });
 
 interface RiskReportLookupResponse {
   requestId: string;
-  success: boolean;
-  UDPRN: string;
-  TemplateId?: string;
   found: boolean;
 }
 
@@ -22,20 +19,23 @@ const storeReportRequestSchema = joi.object({
   uuid: joi.string().uuid().required(),
   firstName: joi.string().required(),
   lastName: joi.string().required(),
+  deliveryMethod: joi.string().valid("email", "post").required(),
   email: joi
     .string()
     .email({ tlds: { allow: false } })
-    .optional(),
+    .optional()
+    .allow(""),
+  telephone: joi.string().optional().allow(""),
+  udprn: joi.string().allow("").optional(),
   fullAddress: joi.string().optional(),
   addressLine1: joi.string().optional(),
   addressLine2: joi.string().optional(),
   townCity: joi.string().optional(),
   postcode: joi.string().optional(),
-  countryCode: joi.string().valid("N", "E", "S", "W").required(),
 });
 
 interface StoreReportResponse {
-  message: string;
+  success: boolean;
   uuid: string;
 }
 
@@ -68,7 +68,7 @@ const storeReportDetailsEndpoint = http.post(
     }
 
     const response: StoreReportResponse = {
-      message: "",
+      success: true,
       uuid: validated.value.uuid,
     };
 
@@ -100,9 +100,6 @@ const storeRiskReportAddressEndpoint = http.post(
 
       case "20765140": {
         const response: RiskReportLookupResponse = {
-          success: false,
-          UDPRN: udprn,
-          TemplateId: "1",
           found: false,
           requestId: uuid,
         };
@@ -111,9 +108,6 @@ const storeRiskReportAddressEndpoint = http.post(
 
       default: {
         const response: RiskReportLookupResponse = {
-          success: true,
-          UDPRN: udprn,
-          TemplateId: "5",
           found: true,
           requestId: uuid,
         };

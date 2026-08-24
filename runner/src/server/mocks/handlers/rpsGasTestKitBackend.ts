@@ -9,11 +9,11 @@ const personDetailsSchema = joi.object({
   firstName: joi.string().required(),
   lastName: joi.string().required(),
   email: joi.string().required(),
-  telephone: joi.string().required(),
+  telephone: joi.string().allow("").optional(),
 });
 
 const addressDetailsSchema = joi.object({
-  udprn: joi.string().allow("").required(),
+  udprn: joi.string().allow("").optional(),
   fullAddress: joi.string().allow("").optional(),
   addressLine1: joi.string().allow("").optional(),
   addressLine2: joi.string().allow("").optional(),
@@ -52,7 +52,7 @@ export const storeGtkEndpoint = http.post("*/storegtk", async ({ request }) => {
     return HttpResponse.json(validated.error, { status: 500 });
   }
 
-  return HttpResponse.json({});
+  return HttpResponse.json({ success: true, uuid: validated.value.uuid });
 });
 
 export const rpsGasTestKitBackendHandlers = [storeGtkEndpoint];

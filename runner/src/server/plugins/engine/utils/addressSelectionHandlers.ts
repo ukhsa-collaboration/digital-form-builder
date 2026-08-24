@@ -25,21 +25,21 @@ const lookupUdprnInDatabase = async (
   rpsBackendService: JsonApiIntegrationWithMsal,
   {
     udprn,
-    uprn,
-    sessionId,
+    uuid,
+    countryCode,
     backLinkUrl,
   }: {
     udprn: string;
-    uprn: string;
-    sessionId: string;
+    uuid: string;
+    countryCode: string;
     backLinkUrl: string;
   }
 ) => {
   try {
     const request = {
-      sessionId: sessionId,
+      uuid,
       udprn: udprn.padStart(8, "0"),
-      uprn,
+      countryCode,
     };
 
     const checkUdprn = await rpsBackendService.request("/lookup", {
@@ -68,7 +68,7 @@ const lookupUdprnInDatabase = async (
       });
     }
 
-    return sessionId;
+    return uuid;
   } catch (error) {
     if (error instanceof ControllerError) throw error;
 
@@ -111,10 +111,10 @@ const rpsRiskReportOnAddressSelection: AddressSelectionHandler = async (
   const backLinkUrl = progress[progress.length - 1];
 
   await lookupUdprnInDatabase(rpsBackendService, {
-    sessionId: getOrCreateCorrelationId(request),
+    uuid: getOrCreateCorrelationId(request),
     backLinkUrl,
     udprn: address?.udprn,
-    uprn: address?.uprn,
+    countryCode: address?.countryCode,
   });
 };
 
