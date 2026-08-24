@@ -196,6 +196,7 @@
           "name": "organisation",
           "options": { "required": false },
           "type": "TextField",
+          "hint": "If your enquiry is related to a business",
           "title": "Your organisation name"
         },
         {
@@ -304,9 +305,9 @@
       "type": "string",
       "items": [
         {
-          "text": "I need radiation measurements, testing, or dosimetry",
-          "value": "I need radiation measurements, testing, or dosimetry",
-          "description": "Including personal dose monitoring, instrument calibration, dental X-ray equipment testing, laboratory analysis, radon measurement, chromosome dosimetry, or whole body monitoring"
+          "text": "I need radon services, radiation measurements, testing, or dosimetry",
+          "value": "I need radon services, radiation measurements, testing, or dosimetry",
+          "description": "Including radon measurement, personal dose monitoring, instrument calibration, dental X-ray equipment testing, laboratory analysis, chromosome dosimetry, or whole body monitoring"
         },
         {
           "text": "I work with radiation and need compliance or safety advice",
@@ -383,7 +384,7 @@
         {
           "text": "General enquiry",
           "value": "General",
-          "description": "Your enquiry will be reviewed and directed to the most appropriate team, tell us in more detail in the next"
+          "description": "No service matches your enquiry? Please provide more details in the next step and we will direct your enquiry to the most appropriate team"
         }
       ]
     },
@@ -425,7 +426,7 @@
         {
           "text": "General enquiry",
           "value": "General",
-          "description": "Your enquiry will be reviewed and directed to the most appropriate team, tell us in more detail in the next"
+          "description": "No service matches your enquiry? Please provide more details in the next step and we will direct your enquiry to the most appropriate team"
         }
       ]
     },
@@ -472,7 +473,7 @@
         {
           "text": "General enquiry",
           "value": "General",
-          "description": "Your enquiry will be reviewed and directed to the most appropriate team, tell us in more detail in the next"
+          "description": "No service matches your enquiry? Please provide more details in the next step and we will direct your enquiry to the most appropriate team"
         }
       ]
     },
@@ -504,7 +505,7 @@
         {
           "text": "General enquiry",
           "value": "General",
-          "description": "Your enquiry will be reviewed and directed to the most appropriate team, tell us in more detail in the next"
+          "description": "No service matches your enquiry? Please provide more details in the next step and we will direct your enquiry to the most appropriate team"
         }
       ]
     },
@@ -541,7 +542,7 @@
         {
           "text": "General enquiry",
           "value": "General",
-          "description": "Your enquiry will be reviewed and directed to the most appropriate team, tell us in more detail in the next"
+          "description": "No service matches your enquiry? Please provide more details in the next step and we will direct your enquiry to the most appropriate team"
         }
       ]
     }
