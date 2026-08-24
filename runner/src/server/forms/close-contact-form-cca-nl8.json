@@ -4423,6 +4423,6 @@
     "clientSecret": "${SRSCoreApimClientSecret}",
     "scopes": ["${SRSCoreApimScope1}"],
     "useAwsWafUserAgentWorkaround": true,
-    "routingKey": "${NL8RoutingKey}"
+    "routingKey": "${SRSNL8RoutingKey}"
   }
 }
