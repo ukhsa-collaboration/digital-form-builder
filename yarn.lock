@@ -5454,7 +5454,7 @@ __metadata:
     sass: ^1.49.9
     schmervice: ^1.6.0
     sinon: ^13.0.1
-    tmp: ^0.2.1
+    tmp: ^0.2.3
     typescript: ^5.x
     url-parse: ^1.5.10
     uuid: ^8.3.2
@@ -20776,7 +20776,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tmp@npm:^0.2.1, tmp@npm:~0.2.1":
+"tmp@npm:^0.2.3":
+  version: 0.2.7
+  resolution: "tmp@npm:0.2.7"
+  checksum: 45dec2fc288ad368eeff7268cb6d5d33452c6d35f4f7d9b1b5e023409a141dab57a3c08b5f505daf3af6d69667a5f544fc1a5b6a27c6f9396a5a1b4002912f1c
+  languageName: node
+  linkType: hard
+
+"tmp@npm:~0.2.1":
   version: 0.2.1
   resolution: "tmp@npm:0.2.1"
   dependencies:

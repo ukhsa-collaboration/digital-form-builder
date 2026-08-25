@@ -23,6 +23,7 @@ const closeContactParams = [
     joiner: "\n",
   },
 ];
+const closeContactRemoveParams = ["d", "r"];
 
 const klsRemoveParams = ["ZpmVWP"];
 
@@ -49,7 +50,11 @@ const summaryDetailsTransformations: SummaryDetailsTransformationMap = {
   },
   "close-contact-form-nl8": (details) => {
     const firstTransform = mergeRows(details, closeContactParams);
-    return filterSections(firstTransform);
+    const secondTransform = removeRows(
+      firstTransform,
+      closeContactRemoveParams
+    );
+    return filterSections(secondTransform);
   },
   "close-contact-form-uat": (details) => {
     const firstTransform = mergeRows(details, closeContactParams);
@@ -89,7 +94,11 @@ const summaryDetailsTransformations: SummaryDetailsTransformationMap = {
   },
   "close-contact-form-cca-nl8": (details) => {
     const firstTransform = mergeRows(details, closeContactParams);
-    return filterSections(firstTransform);
+    const secondTransform = removeRows(
+      firstTransform,
+      closeContactRemoveParams
+    );
+    return filterSections(secondTransform);
   },
   "close-contact-form-cca-uat": (details) => {
     const firstTransform = mergeRows(details, closeContactParams);

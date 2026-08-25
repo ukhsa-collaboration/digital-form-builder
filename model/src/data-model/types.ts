@@ -213,8 +213,8 @@ export interface MsalAuthorizerConfig {
 }
 
 export interface SecureFormSubmissionConfig extends MsalAuthorizerConfig {
-  /* Empty for now */
   useAwsWafUserAgentWorkaround?: boolean;
+  routingKey?: string;
 }
 
 export interface AddressLookupConfig extends MsalAuthorizerConfig {

@@ -3433,8 +3433,9 @@
       "name": "disease_code_list",
       "type": "string",
       "items": [
-        { "text": "001F00", "value": "001F00" },
-        { "text": "001F01", "value": "001F01" }
+        { "text": "01F0", "value": "01F0" },
+        { "text": "01F1", "value": "01F1" },
+        { "text": "01F2", "value": "01F2" }
       ]
     },
     {
@@ -4391,7 +4392,7 @@
       "title": "Execute API",
       "type": "webhook",
       "outputConfiguration": {
-        "url": "https://api.nl8.test.srs.test-and-trace.nhs.uk/v1/forms",
+        "url": "${SRSOutputUrl}",
         "allowRetry": true
       }
     }
@@ -4415,5 +4416,13 @@
         "referenceTitle": "Your reference number"
       }
     }
+  },
+  "secureFormSubmissionConfig": {
+    "tenantId": "${SRSCoreApimTenantId}",
+    "clientId": "${SRSCoreApimClientId}",
+    "clientSecret": "${SRSCoreApimClientSecret}",
+    "scopes": ["${SRSCoreApimScope1}"],
+    "useAwsWafUserAgentWorkaround": true,
+    "routingKey": "${SRSNL8RoutingKey}"
   }
 }
