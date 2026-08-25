@@ -6,6 +6,7 @@ import {
   addressTypeSchema,
   addressesToList,
   AddressType,
+  AddressLookupFields,
   deriveSelectedFieldName,
   findMatchingAddress,
   cleanAddresses,
@@ -23,12 +24,18 @@ type FormSubmission = {
 
 const extractInputFromSubmission = (data: FormSubmission) => {
   const { addressType, ...rest } = data;
+  const addressFields: AddressLookupFields = {
+    building: rest[`${addressType}_buildingLookup`],
+    addressLine1: rest[`${addressType}_addressLine1Lookup`],
+    addressLine2: rest[`${addressType}_addressLine2Lookup`],
+    town: rest[`${addressType}_townLookup`],
+    county: rest[`${addressType}_countyLookup`],
+    postcode: rest[`${addressType}_postcodeLookup`],
+  };
 
   return {
     addressType,
-    postcodeLookup: rest[`${addressType}_postcodeLookup`],
-    addressLine1Lookup: rest[`${addressType}_addressLine1Lookup`],
-    buildingLookup: rest[`${addressType}_buildingLookup`],
+    addressFields,
   };
 };
 
@@ -51,12 +58,9 @@ export class FindAnAddressPageController extends PageControllerBase {
         return response;
       }
 
-      const {
-        addressType,
-        postcodeLookup,
-        addressLine1Lookup,
-        buildingLookup,
-      } = extractInputFromSubmission(validation.value);
+      const { addressType, addressFields } = extractInputFromSubmission(
+        validation.value
+      );
 
       const { cacheService, ...rest } = request.services([]);
 
@@ -76,17 +80,12 @@ export class FindAnAddressPageController extends PageControllerBase {
 
       try {
         const addressResponse = await addressLookupService.lookupByPostcode(
-          postcodeLookup
+          addressFields.postcode
         );
 
         const addresses = cleanAddresses(addressResponse.addresses);
 
-        // TODO:- "Fuzzy check full address" integration point
-        const matchedAddress = findMatchingAddress(
-          addresses,
-          buildingLookup,
-          addressLine1Lookup
-        );
+        const matchedAddress = findMatchingAddress(addresses, addressFields);
 
         const list = this.model.lists.find(
           (list) => list.name === "addressesList"
@@ -98,9 +97,9 @@ export class FindAnAddressPageController extends PageControllerBase {
 
         const savedState = await cacheService.mergeState(request, {
           // save inputs
-          [`${addressType}_postcodeLookup`]: postcodeLookup,
-          [`${addressType}_buildingLookup`]: buildingLookup,
-          [`${addressType}_addressLine1Lookup`]: addressLine1Lookup,
+          [`${addressType}_postcodeLookup`]: addressFields.postcode,
+          [`${addressType}_buildingLookup`]: addressFields.building,
+          [`${addressType}_addressLine1Lookup`]: addressFields.addressLine1,
           // save data
           [`${addressType}_addresses`]: addresses,
           [`${addressType}_numberOfAddresses`]: addresses.length,

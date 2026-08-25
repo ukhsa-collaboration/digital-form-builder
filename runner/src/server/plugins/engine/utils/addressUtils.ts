@@ -1,6 +1,7 @@
 import { Item } from "@xgovformbuilder/model/dist/module/data-model/types";
 import Joi from "joi";
 import { Address } from "src/server/services/addressLookupService";
+import Fuse from "fuse.js";
 
 export type AddressType =
   | "reportAddress"
@@ -10,6 +11,15 @@ export type AddressType =
 export type SelectedFieldName =
   | "selectedReportAddress"
   | "selectedDeliveryAddress";
+
+export type AddressLookupFields = {
+  postcode: string;
+  building?: string;
+  addressLine1?: string;
+  addressLine2?: string;
+  town?: string;
+  county?: string;
+};
 
 export const addressTypeSchema = Joi.string().valid(
   "reportAddress",
@@ -68,37 +78,44 @@ const STREET_NUMBER_PATTERN = /(^|, )(\d+[A-Z]?([-\/]\d+)?[A-Z]?),/i;
  * @param addresses - a list of addresses
  * @param building - the building name
  * @param addressLine1 - the 1st line of the address
+ * @param addressLine2 - the 2nd line of the address
+ * @param town - the town of the address
+ * @param county - the county of the address
  * @returns an address or undefined
  */
+
 export const findMatchingAddress = (
   addresses: Address[],
-  building?: string,
-  addressLine1?: string
+  address: AddressLookupFields
 ): Address | undefined => {
-  const normalizedBuilding = building?.trim().toUpperCase();
-  const addressLine1Pattern = addressLine1
-    ? new RegExp(`^${addressLine1.trim().toUpperCase()}( |,)`)
-    : null;
+  const addressQuery = [
+    address.building,
+    address.addressLine1,
+    address.addressLine2,
+    address.town,
+    address.county,
+  ]
+    .filter(Boolean)
+    .map((part) => part?.trim().toUpperCase())
+    .join(", ");
+  return fuzzyMatchAddress(addresses, addressQuery);
+};
 
-  for (const address of addresses) {
-    const firstPart = address.address.split(",")[0].trim().toUpperCase();
+export const fuzzyMatchAddress = (
+  addresses: Address[],
+  query: string
+): Address | undefined => {
+  const fuse = new Fuse(addresses, {
+    threshold: 0.4,
+    includeScore: true,
+    includeMatches: true,
+    keys: ["address"],
+  });
 
-    if (normalizedBuilding) {
-      if (
-        firstPart.replace(/\s/g, "") ===
-          normalizedBuilding.replace(/\s/g, "") ||
-        firstPart.startsWith(normalizedBuilding + " ")
-      ) {
-        return address;
-      }
-    }
-
-    if (
-      addressLine1Pattern &&
-      addressLine1Pattern.test(address.address.toUpperCase())
-    ) {
-      return address;
-    }
+  const results = fuse.search(query);
+  // Return the best match
+  if (results.length > 0 && results[0].score < 0.38) {
+    return results[0].item;
   }
 
   return undefined;
