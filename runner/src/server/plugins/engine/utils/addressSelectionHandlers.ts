@@ -3,6 +3,10 @@ import { JsonApiIntegrationWithMsal } from "src/server/services/jsonApiIntegrati
 import { Address } from "src/server/services/addressLookupService";
 import { ControllerError } from "../errors";
 import { getOrCreateCorrelationId } from "server/utils/correlationId";
+import {
+  RiskReportLookupAddressRequest,
+  RiskReportLookupResponse,
+} from "@xgovformbuilder/model/dist/module/schema";
 
 /**
  * A handler invoked once a user confirms a selected address. Type-specific side
@@ -36,7 +40,7 @@ const lookupUdprnInDatabase = async (
   }
 ) => {
   try {
-    const request = {
+    const request: RiskReportLookupAddressRequest = {
       sessionId: sessionId,
       udprn: udprn.padStart(8, "0"),
       uprn,
@@ -50,9 +54,9 @@ const lookupUdprnInDatabase = async (
       body: JSON.stringify(request),
     });
 
-    const response = await checkUdprn.json();
+    const response: RiskReportLookupResponse = await checkUdprn.json();
 
-    if (response.error) {
+    if (response.success === undefined) {
       throw new ControllerError("database check not successful", {
         code: 500,
         page: "500-database-check-error",

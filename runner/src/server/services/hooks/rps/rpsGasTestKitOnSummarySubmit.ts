@@ -1,56 +1,11 @@
-import Joi from "joi";
 import { getOrCreateCorrelationId } from "server/utils/correlationId";
 import { resolveSelectedAddress } from "server/plugins/engine/utils/addressUtils";
 import { ControllerError } from "server/plugins/engine/errors";
 import { Hook } from "../types";
-
-// Matches `PersonalDetails` in gas-test-kit-api-spec.json. This form doesn't
-// collect a phone number, so `telephone` defaults to a placeholder.
-const personalDetailsSchema = Joi.object({
-  title: Joi.string().required(),
-  firstName: Joi.string().required(),
-  lastName: Joi.string().required(),
-  email: Joi.string()
-    .email({ tlds: { allow: false } })
-    .required(),
-  telephone: Joi.string().default("dummy-telephone"),
-});
-
-// Matches `AddressDetails` in gas-test-kit-api-spec.json. Only `udprn` is
-// required by the spec; manually-entered addresses (no postcode lookup) have
-// no UDPRN, so it's allowed to be an empty string.
-const addressDetailsSchema = Joi.object({
-  udprn: Joi.string().required(),
-  fullAddress: Joi.string().required(),
-  addressLine1: Joi.string().optional(),
-  addressLine2: Joi.string().allow("").optional(),
-  townCity: Joi.string().allow("").optional(),
-  country: Joi.string().allow("").optional(),
-  postcode: Joi.string().optional(),
-});
-
-// Matches `StoreGTKRequest` in gas-test-kit-api-spec.json, the body posted
-// to POST /storegtk.
-export const saveGasTestKitDetailsSchema = Joi.object({
-  uuid: Joi.string().required(),
-  orderNumber: Joi.string().required(),
-  customer: personalDetailsSchema.required(),
-  measurementAddress: addressDetailsSchema.required(),
-  kitRecipient: personalDetailsSchema.required(),
-  kitRecipientAddress: addressDetailsSchema.required(),
-  resultsRecipient: personalDetailsSchema.required(),
-  resultsRecipientAddress: addressDetailsSchema.required(),
-  prevTestedAddress: Joi.boolean().required(),
-  prevAboveActionLevel: Joi.boolean().required(),
-  remediationComplete: Joi.boolean().required(),
-}).options({ stripUnknown: true });
-
-type PersonalDetails = {
-  title: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-};
+import {
+  saveGasTestKitDetailsSchema,
+  StoreGtkRequest,
+} from "@xgovformbuilder/model/dist/module/schema/rps";
 
 const toAddressDetails = (address?: {
   address?: string;
@@ -77,11 +32,12 @@ export const rpsGasTestKitOnSummarySubmit: Hook<void> = async (
     "rpsBackendService"
   );
 
-  const customer: PersonalDetails = {
+  const customer: StoreGtkRequest["customer"] = {
     title: state["title"],
     firstName: state["firstName"],
     lastName: state["lastName"],
     email: state["emailAddress"],
+    telephone: "dummy-telephone",
   };
 
   const measurementAddress = resolveSelectedAddress(state, "propertyAddress");
@@ -90,13 +46,14 @@ export const rpsGasTestKitOnSummarySubmit: Hook<void> = async (
   const resultsSameAsProperty = state["resultsAddressConfirmation"] === true;
   const resultsSameAsKit = state["kitResultsConfirmation"] === true;
 
-  const kitRecipient: PersonalDetails = kitSameAsProperty
+  const kitRecipient: StoreGtkRequest["kitRecipient"] = kitSameAsProperty
     ? customer
     : {
         title: state["kitTitle"],
         firstName: state["kitFirstName"],
         lastName: state["kitLastName"],
         email: state["emailAddress"],
+        telephone: "dummy-telephone",
       };
 
   const kitRecipientAddress = kitSameAsProperty
@@ -107,13 +64,14 @@ export const rpsGasTestKitOnSummarySubmit: Hook<void> = async (
     ? resultsSameAsProperty
     : resultsSameAsKit;
 
-  const resultsRecipient: PersonalDetails = resultsUseKit
+  const resultsRecipient: StoreGtkRequest["resultsRecipient"] = resultsUseKit
     ? kitRecipient
     : {
         title: state["resultsTitle"],
         firstName: state["resultsFirstName"],
         lastName: state["resultsLastName"],
         email: state["emailAddress"],
+        telephone: "dummy-telephone",
       };
 
   const resultsRecipientAddress = resultsUseKit

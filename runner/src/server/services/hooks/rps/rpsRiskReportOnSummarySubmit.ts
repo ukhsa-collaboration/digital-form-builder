@@ -1,31 +1,11 @@
-import Joi from "joi";
 import { ControllerError } from "server/plugins/engine/errors";
 import { getOrCreateCorrelationId } from "server/utils/correlationId";
 import { Hook } from "../types";
 import { JsonApiIntegrationWithMsal } from "../../jsonApiIntegrationWithMsal";
-
-export const saveRiskReportDetailsSchema = Joi.object({
-  uuid: Joi.string().required(),
-  firstName: Joi.string().required(),
-  lastName: Joi.string().required(),
-  deliveryMethod: Joi.string().valid("email", "post").required(),
-  email: Joi.string()
-    .email({ tlds: { allow: false } })
-    .when("deliveryMethod", {
-      is: "post",
-      then: Joi.optional().allow("", null),
-      otherwise: Joi.required(),
-    }),
-  telephone: Joi.string().default("dummy-telephone"),
-  countryCode: Joi.string(),
-  fullAddress: Joi.when("deliveryMethod", {
-    is: "post",
-    then: Joi.alternatives().try(Joi.string(), Joi.object()).required(),
-    otherwise: Joi.optional().allow(""),
-  }).default("test"),
-})
-  .rename("emailAddress", "email")
-  .options({ stripUnknown: true });
+import {
+  StoreReportRequest,
+  storeReportRequestSchema,
+} from "@xgovformbuilder/model/dist/module/schema/rps";
 
 /**
  * The hook for the on submit event within the headless summary page
@@ -60,15 +40,14 @@ export const rpsRiskReportOnSummarySubmit: Hook<void> = async (request) => {
   const selectedDeliveryAddress =
     currentState["deliveryAddress_selectedAddress"];
 
-  const rawRequestData = {
+  const rawRequestData: StoreReportRequest = {
     uuid: getOrCreateCorrelationId(request),
     deliveryMethod: currentState["deliveryMethod"],
     countryCode: selectedRiskReportAddress["countryCode"],
-    uprn: selectedRiskReportAddress["uprn"],
-    udprn: selectedRiskReportAddress["udprn"],
     firstName: currentState["firstName"],
     lastName: currentState["lastName"],
-    emailAddress: currentState["emailAddress"],
+    email: currentState["emailAddress"],
+    telephone: "dummy-phone",
     ...(selectedDeliveryAddress
       ? { fullAddress: selectedDeliveryAddress.address }
       : {}),
@@ -79,7 +58,7 @@ export const rpsRiskReportOnSummarySubmit: Hook<void> = async (request) => {
     "rpsRiskReportOnSummarySubmit.rawRequestData"
   );
 
-  const { error, value: requestBody } = saveRiskReportDetailsSchema.validate(
+  const { error, value: requestBody } = storeReportRequestSchema.validate(
     rawRequestData,
     {
       abortEarly: false,
