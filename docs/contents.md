@@ -42,6 +42,8 @@ Features and configuration options for the runner.
   - Allow njks templating within html components and add previous answers to the render context
 - [mock API](runner/mock-api.md)
   - Intercept outbound HTTP calls in local development with mock responses
+- [global hooks](runner/hooks.md)
+  - Run named, per-form side effects at fixed points in a form's lifecycle without branching in controllers
 
 #### Components
 
