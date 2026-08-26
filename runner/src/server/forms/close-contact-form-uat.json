@@ -2,18 +2,18 @@
   "metadata": {},
   "startPage": "/start",
   "fullStartPage": "start",
-  "name": "Contact tracing CCA",
+  "name": "Contact tracing",
   "confirmationSessionTimeout": 2000,
   "pages": [
     {
-      "title": "Record close contact details for a member of the public",
+      "title": "Tell us about people you've been in close contact with",
       "path": "/start",
       "components": [
         {
           "name": "para1",
           "options": {},
           "type": "Para",
-          "content": "This service is for agents to contact members of the public in order to record their close contact details after they have tested positive for {{(srsContexts.diseaseInfo[d].name if srsContexts.diseaseInfo[d]) | default('bird (avian) flu', true) }}.",
+          "content": "To help us reduce the spread of {{ (srsContexts.diseaseInfo[d].name if srsContexts.diseaseInfo[d]) | default('bird (avian) flu', true) }}, it's important for us to know who you live with and who you've been in close contact with.",
           "schema": {}
         },
         {
@@ -27,7 +27,7 @@
           "name": "para3",
           "options": {},
           "type": "Para",
-          "content": "You can use this service for both inbound and outbound calls.",
+          "content": "You can use this service on behalf of someone else.",
           "schema": {}
         },
         {
@@ -41,7 +41,7 @@
           "name": "tKEFcw",
           "options": {},
           "type": "Para",
-          "content": "You will ask this person about:",
+          "content": "You'll be asked about:",
           "schema": {}
         },
         {
@@ -77,7 +77,7 @@
           "name": "jmslVl",
           "options": {},
           "type": "Para",
-          "content": "If you need help completing this form, contact <a href=\"tel:111\">111</a>.",
+          "content": "If you need help to complete this form, contact <a href=\"tel:111\">111</a>.",
           "schema": {}
         },
         {
@@ -114,7 +114,7 @@
       "controller": "./pages/start.js"
     },
     {
-      "title": "Have you received a positive test result for {{(srsContexts.diseaseInfo[d].name if srsContexts.diseaseInfo[d]) | default('bird (avian) flu', true) }}",
+      "title": "Who are you completing this form for?",
       "path": "/completing-form-for",
       "components": [
         {
@@ -122,13 +122,10 @@
           "options": {
             "hideTitle": true,
             "exposeToContext": true,
-            "disableChangingFromSummary": true,
-            "customValidationMessages": {
-              "any.required": "Select 'yes' if you have received a positive test result"
-            }
+            "disableChangingFromSummary": true
           },
           "type": "RadiosField",
-          "title": "Have you received a positive test result for {{ (srsContexts.diseaseInfo[d].name if srsContexts.diseaseInfo[d]) | default('bird (avian) flu', true) }}",
+          "title": "Who this form is for",
           "list": "ApjoNd"
         }
       ],
@@ -136,6 +133,7 @@
         { "path": "/do-you-live-with-other-people", "condition": "atPVdy" },
         { "path": "/do-they-live-with-other-people", "condition": "Dpirys" }
       ],
+
       "section": "PersonalInformation"
     },
     {
@@ -146,7 +144,7 @@
           "name": "doYouLiveWithOtherPeopleExplanation",
           "options": {},
           "type": "Para",
-          "content": "As you've tested positive for {{ (srsContexts.diseaseInfo[d].name if srsContexts.diseaseInfo[d]) | default('bird (avian) flu', true) }}, it's important for us to know who you live with, so we can help them receive the right guidance, such as how to get tested and other health advice."
+          "content": "As you've tested positive for {{(srsContexts.diseaseInfo[d].name if srsContexts.diseaseInfo[d]) | default('bird (avian) flu', true) }}, it's important for us to know who you live with, so we can help them receive the right guidance, such as how to get tested and other health advice."
         },
         {
           "name": "AdEVNK",
@@ -196,10 +194,16 @@
       "title": "Do they live with other people?",
       "components": [
         {
+          "name": "doYouLiveWithOtherPeopleExplanation",
+          "options": {},
+          "type": "Para",
+          "content": "As the person you are completing the form for has tested positive for {{ (srsContexts.diseaseInfo[d].name if srsContexts.diseaseInfo[d]) | default('bird (avian) flu', true) }}, it's important for us to know who they live with, so we can help them receive the right guidance, such as how to get tested and other health advice."
+        },
+        {
           "name": "AdEVNK",
           "options": {},
           "type": "Para",
-          "content": "This includes:"
+          "content": "This only includes people who:"
         },
         {
           "name": "kjpRbq",
@@ -226,7 +230,7 @@
           "options": {},
           "type": "Details",
           "title": "Why are we asking for this information?",
-          "content": "We ask this to identify people the person you're completing this form for lives with who may be at risk. We may contact them to offer advice and guidance on how to keep themselves and others safe."
+          "content": "We ask this to identify people they live with and may have passed {{ (srsContexts.diseaseInfo[d].name if srsContexts.diseaseInfo[d]) | default('bird (avian) flu', true) }} on to. This is so we can provide the right guidance to them or someone on their behalf, such as how to get tested and other health advice."
         }
       ],
       "next": [
@@ -246,7 +250,7 @@
           "name": "iulooA",
           "options": {},
           "type": "Para",
-          "content": "They can add more than one person. They will be asked if they want to add another person after they've added this one."
+          "content": "You can add more than one person. You will be asked if you want to add another person after you've added this one."
         },
         {
           "name": "CIzhtn",
@@ -284,13 +288,13 @@
           "name": "mWvTOY",
           "options": {},
           "type": "Html",
-          "content": "<br/><h2 class='govuk-heading-m'>Are they 16 and able to speak for themselves?</h2>"
+          "content": "<br/><h2 class='govuk-heading-m'>How should we contact this person to provide them with advice and guidance?</h2>"
         },
         {
           "name": "iulooD",
           "options": {},
           "type": "Para",
-          "content": "If not, provide the contact details of a parent, carer or guardian."
+          "content": "If the person is under 16 or unable to speak to us themselves, provide the contact details of a parent, carer or guardian."
         },
         {
           "name": "contact_directly",
@@ -406,7 +410,7 @@
           "name": "iulooA",
           "options": {},
           "type": "Para",
-          "content": "They can add more than one person. They will be asked if they want to add another person after they've added this one."
+          "content": "You can add more than one person. You will be asked if you want to add another person after you've added this one."
         },
         {
           "name": "CIzhtn",
@@ -444,13 +448,13 @@
           "name": "mWvTOY",
           "options": {},
           "type": "Html",
-          "content": "<br/><h2 class='govuk-heading-m'>Are they 16 and able to speak for themselves?</h2>"
+          "content": "<br/><h2 class='govuk-heading-m'>How should we contact this person to provide them with advice and guidance?</h2>"
         },
         {
           "name": "iulooD",
           "options": {},
           "type": "Para",
-          "content": "If not, provide the contact details of a parent, carer or guardian."
+          "content": "If the person is under 16 or unable to speak to us themselves, provide the contact details of a parent, carer or guardian."
         },
         {
           "name": "contact_directly",
@@ -566,7 +570,7 @@
           "name": "iulooA",
           "options": {},
           "type": "Para",
-          "content": "They can add more than one person. They will be asked if they want to add another person after they've added this one."
+          "content": "You can add more than one person. You will be asked if you want to add another person after you've added this one."
         },
         {
           "name": "CIzhtn",
@@ -604,13 +608,13 @@
           "name": "mWvTOY",
           "options": {},
           "type": "Html",
-          "content": "<br/><h2 class='govuk-heading-m'>Are they 16 and able to speak for themselves?</h2>"
+          "content": "<br/><h2 class='govuk-heading-m'>How should we contact this person to provide them with advice and guidance?</h2>"
         },
         {
           "name": "iulooD",
           "options": {},
           "type": "Para",
-          "content": "If not, provide the contact details of a parent, carer or guardian."
+          "content": "If the person is under 16 or unable to speak to us themselves, provide the contact details of a parent, carer or guardian."
         },
         {
           "name": "contact_directly",
@@ -726,7 +730,7 @@
           "name": "iulooA",
           "options": {},
           "type": "Para",
-          "content": "They can add more than one person. They will be asked if they want to add another person after they've added this one."
+          "content": "You can add more than one person. You will be asked if you want to add another person after you've added this one."
         },
         {
           "name": "CIzhtn",
@@ -764,13 +768,13 @@
           "name": "mWvTOY",
           "options": {},
           "type": "Html",
-          "content": "<br/><h2 class='govuk-heading-m'>Are they 16 and able to speak for themselves?</h2>"
+          "content": "<br/><h2 class='govuk-heading-m'>How should we contact this person to provide them with advice and guidance?</h2>"
         },
         {
           "name": "iulooD",
           "options": {},
           "type": "Para",
-          "content": "If not, provide the contact details of a parent, carer or guardian."
+          "content": "If the person is under 16 or unable to speak to us themselves, provide the contact details of a parent, carer or guardian."
         },
         {
           "name": "contact_directly",
@@ -886,7 +890,7 @@
           "name": "iulooA",
           "options": {},
           "type": "Para",
-          "content": "They can add more than one person. They will be asked if they want to add another person after they've added this one."
+          "content": "You can add more than one person. You will be asked if you want to add another person after you've added this one."
         },
         {
           "name": "CIzhtn",
@@ -924,13 +928,13 @@
           "name": "mWvTOY",
           "options": {},
           "type": "Html",
-          "content": "<br/><h2 class='govuk-heading-m'>Are they 16 and able to speak for themselves?</h2>"
+          "content": "<br/><h2 class='govuk-heading-m'>How should we contact this person to provide them with advice and guidance?</h2>"
         },
         {
           "name": "iulooD",
           "options": {},
           "type": "Para",
-          "content": "If not, provide the contact details of a parent, carer or guardian."
+          "content": "If the person is under 16 or unable to speak to us themselves, provide the contact details of a parent, carer or guardian."
         },
         {
           "name": "contact_directly",
@@ -1046,7 +1050,7 @@
           "name": "iulooA",
           "options": {},
           "type": "Para",
-          "content": "They can add more than one person. They will be asked if they want to add another person after they've added this one."
+          "content": "You can add more than one person. You will be asked if you want to add another person after you've added this one."
         },
         {
           "name": "CIzhtn",
@@ -1084,13 +1088,13 @@
           "name": "mWvTOY",
           "options": {},
           "type": "Html",
-          "content": "<br/><h2 class='govuk-heading-m'>Are they 16 and able to speak for themselves?</h2>"
+          "content": "<br/><h2 class='govuk-heading-m'>How should we contact this person to provide them with advice and guidance?</h2>"
         },
         {
           "name": "iulooD",
           "options": {},
           "type": "Para",
-          "content": "If not, provide the contact details of a parent, carer or guardian."
+          "content": "If the person is under 16 or unable to speak to us themselves, provide the contact details of a parent, carer or guardian."
         },
         {
           "name": "contact_directly",
@@ -1206,7 +1210,7 @@
           "name": "iulooA",
           "options": {},
           "type": "Para",
-          "content": "They can add more than one person. They will be asked if they want to add another person after they've added this one."
+          "content": "You can add more than one person. You will be asked if you want to add another person after you've added this one."
         },
         {
           "name": "CIzhtn",
@@ -1244,13 +1248,13 @@
           "name": "mWvTOY",
           "options": {},
           "type": "Html",
-          "content": "<br/><h2 class='govuk-heading-m'>Are they 16 and able to speak for themselves?</h2>"
+          "content": "<br/><h2 class='govuk-heading-m'>How should we contact this person to provide them with advice and guidance?</h2>"
         },
         {
           "name": "iulooD",
           "options": {},
           "type": "Para",
-          "content": "If not, provide the contact details of a parent, carer or guardian."
+          "content": "If the person is under 16 or unable to speak to us themselves, provide the contact details of a parent, carer or guardian."
         },
         {
           "name": "contact_directly",
@@ -1366,7 +1370,7 @@
           "name": "iulooA",
           "options": {},
           "type": "Para",
-          "content": "They can add more than one person. They will be asked if they want to add another person after they've added this one."
+          "content": "You can add more than one person. You will be asked if you want to add another person after you've added this one."
         },
         {
           "name": "CIzhtn",
@@ -1404,13 +1408,13 @@
           "name": "mWvTOY",
           "options": {},
           "type": "Html",
-          "content": "<br/><h2 class='govuk-heading-m'>Are they 16 and able to speak for themselves?</h2>"
+          "content": "<br/><h2 class='govuk-heading-m'>How should we contact this person to provide them with advice and guidance?</h2>"
         },
         {
           "name": "iulooD",
           "options": {},
           "type": "Para",
-          "content": "If not, provide the contact details of a parent, carer or guardian."
+          "content": "If the person is under 16 or unable to speak to us themselves, provide the contact details of a parent, carer or guardian."
         },
         {
           "name": "contact_directly",
@@ -1526,7 +1530,7 @@
           "name": "iulooA",
           "options": {},
           "type": "Para",
-          "content": "They can add more than one person. They will be asked if they want to add another person after they've added this one."
+          "content": "You can add more than one person. You will be asked if you want to add another person after you've added this one."
         },
         {
           "name": "CIzhtn",
@@ -1564,13 +1568,13 @@
           "name": "mWvTOY",
           "options": {},
           "type": "Html",
-          "content": "<br/><h2 class='govuk-heading-m'>Are they 16 and able to speak for themselves?</h2>"
+          "content": "<br/><h2 class='govuk-heading-m'>How should we contact this person to provide them with advice and guidance?</h2>"
         },
         {
           "name": "iulooD",
           "options": {},
           "type": "Para",
-          "content": "If not, provide the contact details of a parent, carer or guardian."
+          "content": "If the person is under 16 or unable to speak to us themselves, provide the contact details of a parent, carer or guardian."
         },
         {
           "name": "contact_directly",
@@ -1686,7 +1690,7 @@
           "name": "iulooA",
           "options": {},
           "type": "Para",
-          "content": "They can add more than one person. They will be asked if they want to add another person after they've added this one."
+          "content": "You can add more than one person. You will be asked if you want to add another person after you've added this one."
         },
         {
           "name": "CIzhtn",
@@ -1724,13 +1728,13 @@
           "name": "mWvTOY",
           "options": {},
           "type": "Html",
-          "content": "<br/><h2 class='govuk-heading-m'>Are they 16 and able to speak for themselves?</h2>"
+          "content": "<br/><h2 class='govuk-heading-m'>How should we contact this person to provide them with advice and guidance?</h2>"
         },
         {
           "name": "iulooD",
           "options": {},
           "type": "Para",
-          "content": "If not, provide the contact details of a parent, carer or guardian."
+          "content": "If the person is under 16 or unable to speak to us themselves, provide the contact details of a parent, carer or guardian."
         },
         {
           "name": "contact_directly",
@@ -1858,7 +1862,7 @@
           "name": "iulooA",
           "options": {},
           "type": "Para",
-          "content": "They can add more than one close contact. They will be asked if they want to add another after you've added this one."
+          "content": "You can add more than one close contact. You will be asked if you want to add another after you've added this one."
         },
         {
           "name": "CIzhtn",
@@ -1896,13 +1900,13 @@
           "name": "mWvTOY",
           "options": {},
           "type": "Html",
-          "content": "<br/><h2 class='govuk-heading-m'>Are they 16 and able to speak for themselves?</h2>"
+          "content": "<br/><h2 class='govuk-heading-m'>How should we contact this person to provide them with advice and guidance?</h2>"
         },
         {
           "name": "iulooD",
           "options": {},
           "type": "Para",
-          "content": "If not, provide the contact details of a parent, carer or guardian."
+          "content": "If the person is under 16 or unable to speak to us themselves, provide the contact details of a parent, carer or guardian."
         },
         {
           "name": "contact_directly",
@@ -2015,7 +2019,7 @@
           "name": "iulooA",
           "options": {},
           "type": "Para",
-          "content": "They can add more than one close contact. They will be asked if they want to add another after you've added this one."
+          "content": "You can add more than one close contact. You will be asked if you want to add another after you've added this one."
         },
         {
           "name": "CIzhtn",
@@ -2053,13 +2057,13 @@
           "name": "mWvTOY",
           "options": {},
           "type": "Html",
-          "content": "<br/><h2 class='govuk-heading-m'>Are they 16 and able to speak for themselves?</h2>"
+          "content": "<br/><h2 class='govuk-heading-m'>How should we contact this person to provide them with advice and guidance?</h2>"
         },
         {
           "name": "iulooD",
           "options": {},
           "type": "Para",
-          "content": "If not, provide the contact details of a parent, carer or guardian."
+          "content": "If the person is under 16 or unable to speak to us themselves, provide the contact details of a parent, carer or guardian."
         },
         {
           "name": "contact_directly",
@@ -2172,7 +2176,7 @@
           "name": "iulooA",
           "options": {},
           "type": "Para",
-          "content": "They can add more than one close contact. They will be asked if they want to add another after you've added this one."
+          "content": "You can add more than one close contact. You will be asked if you want to add another after you've added this one."
         },
         {
           "name": "CIzhtn",
@@ -2210,13 +2214,13 @@
           "name": "mWvTOY",
           "options": {},
           "type": "Html",
-          "content": "<br/><h2 class='govuk-heading-m'>Are they 16 and able to speak for themselves?</h2>"
+          "content": "<br/><h2 class='govuk-heading-m'>How should we contact this person to provide them with advice and guidance?</h2>"
         },
         {
           "name": "iulooD",
           "options": {},
           "type": "Para",
-          "content": "If not, provide the contact details of a parent, carer or guardian."
+          "content": "If the person is under 16 or unable to speak to us themselves, provide the contact details of a parent, carer or guardian."
         },
         {
           "name": "contact_directly",
@@ -2329,7 +2333,7 @@
           "name": "iulooA",
           "options": {},
           "type": "Para",
-          "content": "They can add more than one close contact. They will be asked if they want to add another after you've added this one."
+          "content": "You can add more than one close contact. You will be asked if you want to add another after you've added this one."
         },
         {
           "name": "CIzhtn",
@@ -2367,13 +2371,13 @@
           "name": "mWvTOY",
           "options": {},
           "type": "Html",
-          "content": "<br/><h2 class='govuk-heading-m'>Are they 16 and able to speak for themselves?</h2>"
+          "content": "<br/><h2 class='govuk-heading-m'>How should we contact this person to provide them with advice and guidance?</h2>"
         },
         {
           "name": "iulooD",
           "options": {},
           "type": "Para",
-          "content": "If not, provide the contact details of a parent, carer or guardian."
+          "content": "If the person is under 16 or unable to speak to us themselves, provide the contact details of a parent, carer or guardian."
         },
         {
           "name": "contact_directly",
@@ -2486,7 +2490,7 @@
           "name": "iulooA",
           "options": {},
           "type": "Para",
-          "content": "They can add more than one close contact. They will be asked if they want to add another after you've added this one."
+          "content": "You can add more than one close contact. You will be asked if you want to add another after you've added this one."
         },
         {
           "name": "CIzhtn",
@@ -2524,13 +2528,13 @@
           "name": "mWvTOY",
           "options": {},
           "type": "Html",
-          "content": "<br/><h2 class='govuk-heading-m'>Are they 16 and able to speak for themselves?</h2>"
+          "content": "<br/><h2 class='govuk-heading-m'>How should we contact this person to provide them with advice and guidance?</h2>"
         },
         {
           "name": "iulooD",
           "options": {},
           "type": "Para",
-          "content": "If not, provide the contact details of a parent, carer or guardian."
+          "content": "If the person is under 16 or unable to speak to us themselves, provide the contact details of a parent, carer or guardian."
         },
         {
           "name": "contact_directly",
@@ -2643,7 +2647,7 @@
           "name": "iulooA",
           "options": {},
           "type": "Para",
-          "content": "They can add more than one close contact. They will be asked if they want to add another after you've added this one."
+          "content": "You can add more than one close contact. You will be asked if you want to add another after you've added this one."
         },
         {
           "name": "CIzhtn",
@@ -2681,13 +2685,13 @@
           "name": "mWvTOY",
           "options": {},
           "type": "Html",
-          "content": "<br/><h2 class='govuk-heading-m'>Are they 16 and able to speak for themselves?</h2>"
+          "content": "<br/><h2 class='govuk-heading-m'>How should we contact this person to provide them with advice and guidance?</h2>"
         },
         {
           "name": "iulooD",
           "options": {},
           "type": "Para",
-          "content": "If not, provide the contact details of a parent, carer or guardian."
+          "content": "If the person is under 16 or unable to speak to us themselves, provide the contact details of a parent, carer or guardian."
         },
         {
           "name": "contact_directly",
@@ -2800,7 +2804,7 @@
           "name": "iulooA",
           "options": {},
           "type": "Para",
-          "content": "They can add more than one close contact. They will be asked if they want to add another after you've added this one."
+          "content": "You can add more than one close contact. You will be asked if you want to add another after you've added this one."
         },
         {
           "name": "CIzhtn",
@@ -2838,13 +2842,13 @@
           "name": "mWvTOY",
           "options": {},
           "type": "Html",
-          "content": "<br/><h2 class='govuk-heading-m'>Are they 16 and able to speak for themselves?</h2>"
+          "content": "<br/><h2 class='govuk-heading-m'>How should we contact this person to provide them with advice and guidance?</h2>"
         },
         {
           "name": "iulooD",
           "options": {},
           "type": "Para",
-          "content": "If not, provide the contact details of a parent, carer or guardian."
+          "content": "If the person is under 16 or unable to speak to us themselves, provide the contact details of a parent, carer or guardian."
         },
         {
           "name": "contact_directly",
@@ -2957,7 +2961,7 @@
           "name": "iulooA",
           "options": {},
           "type": "Para",
-          "content": "They can add more than one close contact. They will be asked if they want to add another after you've added this one."
+          "content": "You can add more than one close contact. You will be asked if you want to add another after you've added this one."
         },
         {
           "name": "CIzhtn",
@@ -2995,13 +2999,13 @@
           "name": "mWvTOY",
           "options": {},
           "type": "Html",
-          "content": "<br/><h2 class='govuk-heading-m'>Are they 16 and able to speak for themselves?</h2>"
+          "content": "<br/><h2 class='govuk-heading-m'>How should we contact this person to provide them with advice and guidance?</h2>"
         },
         {
           "name": "iulooD",
           "options": {},
           "type": "Para",
-          "content": "If not, provide the contact details of a parent, carer or guardian."
+          "content": "If the person is under 16 or unable to speak to us themselves, provide the contact details of a parent, carer or guardian."
         },
         {
           "name": "contact_directly",
@@ -3114,7 +3118,7 @@
           "name": "iulooA",
           "options": {},
           "type": "Para",
-          "content": "They can add more than one close contact. They will be asked if they want to add another after you've added this one."
+          "content": "You can add more than one close contact. You will be asked if you want to add another after you've added this one."
         },
         {
           "name": "CIzhtn",
@@ -3152,13 +3156,13 @@
           "name": "mWvTOY",
           "options": {},
           "type": "Html",
-          "content": "<br/><h2 class='govuk-heading-m'>Are they 16 and able to speak for themselves?</h2>"
+          "content": "<br/><h2 class='govuk-heading-m'>How should we contact this person to provide them with advice and guidance?</h2>"
         },
         {
           "name": "iulooD",
           "options": {},
           "type": "Para",
-          "content": "If not, provide the contact details of a parent, carer or guardian."
+          "content": "If the person is under 16 or unable to speak to us themselves, provide the contact details of a parent, carer or guardian."
         },
         {
           "name": "contact_directly",
@@ -3271,7 +3275,7 @@
           "name": "iulooA",
           "options": {},
           "type": "Para",
-          "content": "They can add more than one close contact. They will be asked if they want to add another after you've added this one."
+          "content": "You can add more than one close contact. You will be asked if you want to add another after you've added this one."
         },
         {
           "name": "CIzhtn",
@@ -3309,13 +3313,13 @@
           "name": "mWvTOY",
           "options": {},
           "type": "Html",
-          "content": "<br/><h2 class='govuk-heading-m'>Are they 16 and able to speak for themselves?</h2>"
+          "content": "<br/><h2 class='govuk-heading-m'>How should we contact this person to provide them with advice and guidance?</h2>"
         },
         {
           "name": "iulooD",
           "options": {},
           "type": "Para",
-          "content": "If not, provide the contact details of a parent, carer or guardian."
+          "content": "If the person is under 16 or unable to speak to us themselves, provide the contact details of a parent, carer or guardian."
         },
         {
           "name": "contact_directly",
@@ -3407,12 +3411,12 @@
       "type": "string",
       "items": [
         {
-          "text": "the name and contact details of people they live with",
-          "value": "the name and contact details of people they live with"
+          "text": "the name and contact details of people you live with",
+          "value": "the name and contact details of people you live with"
         },
         {
-          "text": "the name and contact details of other people they were in close contact with in the last 14 days",
-          "value": "the name and contact details of other people they were in close contact with in the last 14 days"
+          "text": "the name and contact details of other people you were in close contact with in the last 14 days",
+          "value": "the name and contact details of other people you were in close contact with in the last 14 days"
         }
       ]
     },
@@ -3421,11 +3425,8 @@
       "name": "ApjoNd",
       "type": "string",
       "items": [
-        { "text": "Yes", "value": "you" },
-        {
-          "text": "They are completing it on behalf of someone who has",
-          "value": "they"
-        }
+        { "text": "Myself", "value": "you" },
+        { "text": "On behalf of someone else", "value": "they" }
       ]
     },
     {
@@ -3443,9 +3444,9 @@
       "name": "TQfrjB",
       "type": "string",
       "items": [
-        { "text": "Yes, contact them directly", "value": "Yes" },
+        { "text": "Contact them directly", "value": "Yes" },
         {
-          "text": "No, contact their parent, carer or legal guardian",
+          "text": "Contact their parent, carer or legal guardian",
           "value": "No"
         }
       ]
@@ -3456,12 +3457,16 @@
       "type": "string",
       "items": [
         {
-          "text": "people who live at the same address as you",
-          "value": "people who live at the same address as you"
+          "text": "usually live in the same address as you",
+          "value": "usually live in the same address as you"
         },
         {
-          "text": "people who have stayed overnight in the last 14 days",
-          "value": "people who have stayed overnight in the last 14 days"
+          "text": "people who have stayed overnight in the last 7 days",
+          "value": "people who have stayed overnight in the last 7 days"
+        },
+        {
+          "text": "you can provide contact details for, or receive communications on behalf of",
+          "value": "you can provide contact details for, or receive communications on behalf of"
         }
       ]
     },
@@ -3471,12 +3476,16 @@
       "type": "string",
       "items": [
         {
-          "text": "people who live at the same address as them",
-          "value": "people who live at the same address as them"
+          "text": "usually live in the same address as them",
+          "value": "usually live in the same address as them"
         },
         {
-          "text": "people who have stayed overnight in the last 14 days",
-          "value": "people who have stayed overnight in the last 14 days"
+          "text": "people who have stayed overnight in the last 7 days",
+          "value": "people who have stayed overnight in the last 7 days"
+        },
+        {
+          "text": "you can provide contact details for, or receive communications on behalf of",
+          "value": "you can provide contact details for, or receive communications on behalf of"
         }
       ]
     },
@@ -4411,7 +4420,7 @@
   "specialPages": {
     "confirmationPage": {
       "customText": {
-        "nextSteps": "<h2 class='govuk-heading-m'>What happens next</h2><p class='govuk-body'>We may contact the close contacts listed to ask for more information and to give them advice on what to do next.</p><h2 class='govuk-heading-m'>More information on avian flu</h2><p class='govuk-body'>If anyone they know develops symptoms of {{ (srsContexts.diseaseInfo[d].name if srsContexts.diseaseInfo[d]) | default('bird (avian) flu', true) }}, ask them to order a test kit. For urgent medical advice, they can call NHS 111 or visit 111.nhs.uk. For life-threatening emergencies, call 999.</p><p class='govuk-body'>For more advice and information on the virus visit the NHS website.</p><h2 class='govuk-heading-m'>If they need to contact us</h2><p class='govuk-body'>If they have any concerns or questions they can contact us at <a class='govuk-link' href='mailto:surgeresponse@ukhsa.gov.uk'>surgeresponse@ukhsa.gov.uk</a>.</p>",
+        "nextSteps": "<h2 class='govuk-heading-m'>What happens next</h2><p class='govuk-body'>We may contact the close contacts you listed to ask for more information and to give them advice on what to do next.</p><h2 class='govuk-heading-m'>More information on avian flu</h2><p class='govuk-body'>If anyone you know develops symptoms of {{ (srsContexts.diseaseInfo[d].name if srsContexts.diseaseInfo[d]) | default('bird (avian) flu', true) }}, ask them to <a class='govuk-link' href='#'>order a test kit</a>. For urgent medical advice, you can call NHS 111 or visit <a class='govuk-link' href='https://111.nhs.uk/'>111.nhs.uk</a>. For life-threatening emergencies, call 999.</p><p class='govuk-body'>For more advice and information on the virus visit <a class='govuk-link' href='www.nhs.uk/conditions/bird-flu'>www.nhs.uk/conditions/bird-flu</a>.</p><h2 class='govuk-heading-m'>If you need to contact us</h2><p class='govuk-body'>If you have any concerns or questions about this form, you can contact us at <a class='govuk-link' href='mailto:surgeresponse@ukhsa.gov.uk'>surgeresponse@ukhsa.gov.uk</a>.</p>",
         "title": "Form submitted",
         "referenceTitle": "Your reference number"
       }
