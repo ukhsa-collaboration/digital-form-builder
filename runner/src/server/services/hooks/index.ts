@@ -1,4 +1,4 @@
-import { HapiRequest } from "server/types";
+import { HapiRequest, HapiServer } from "server/types";
 import { ControllerError } from "server/plugins/engine/errors";
 import { hookRegistry, isHookAction } from "./registry";
 import { HookModel, HookState } from "./types";
@@ -8,8 +8,8 @@ import { HookModel, HookState } from "./types";
  * under `hookName`, if any. Returns `undefined` when no hook is configured or
  * the value is `"void"`.
  *
- * Callers pass their own lookup key, typically `"<ControllerName|ServiceName>.<event>"`:
- *   runHook("HeadlessSummaryPageController.onSubmit", request, { model, state })
+ * Called through the decorated `request.hook.run`, e.g.
+ *   request.hook.run("HeadlessSummaryPageController.onSubmit", { model, state })
  */
 export async function runHook(
   hookName: string,
@@ -63,5 +63,21 @@ export async function runHook(
   return result;
 }
 
-export { hookRegistry } from "./registry";
-export type { Hook, HookContext } from "./types";
+export default {
+  plugin: {
+    name: "hooks",
+    register: (server: HapiServer) => {
+      server.decorate(
+        "request",
+        "hook",
+        (request: HapiRequest) => ({
+          run: (
+            hookName: string,
+            context: { model: HookModel; state?: HookState }
+          ) => runHook(hookName, request, context),
+        }),
+        { apply: true }
+      );
+    },
+  },
+};

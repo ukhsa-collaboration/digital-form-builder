@@ -5,7 +5,6 @@ import { HapiRequest, HapiResponseToolkit } from "server/types";
 import { ControllerError } from "../errors";
 import { gatherRepeatPages } from "server/utils/gatherRepeatPages";
 import { paymentProviderRegistry } from "server/services/paymentProviders";
-import { runHook } from "server/services/hooks";
 import { v4 as uuidv4 } from "uuid";
 
 /**
@@ -21,7 +20,7 @@ import { v4 as uuidv4 } from "uuid";
  * form-specific out to two indirections instead of growing the class:
  *
  * - **Hooks** (`onBeforeSubmit` / `onSubmit` / `onAfterSubmit`, run via
- *   {@link runHook}): form-specific side effects (e.g. posting to a backend
+ *   `request.hook.run`): form-specific side effects (e.g. posting to a backend
  *   service) are configured per-form in the form definition's `hooks` block
  *   and looked up in `hookRegistry` by name. A hook never receives the
  *   response toolkit and cannot redirect or short-circuit this controller
@@ -154,7 +153,7 @@ export class HeadlessSummaryPageController extends PageController {
 
       // Extension point: form-specific side effects live in
       // hookRegistry, configured per-form, not as new logic in this method.
-      await runHook("HeadlessSummaryPageController.onBeforeSubmit", request, {
+      await request.hook.run("HeadlessSummaryPageController.onBeforeSubmit", {
         model,
       });
 
@@ -178,11 +177,11 @@ export class HeadlessSummaryPageController extends PageController {
         "Marked summary as complete",
       ]);
 
-      await runHook("HeadlessSummaryPageController.onSubmit", request, {
+      await request.hook.run("HeadlessSummaryPageController.onSubmit", {
         model,
       });
 
-      await runHook("HeadlessSummaryPageController.onAfterSubmit", request, {
+      await request.hook.run("HeadlessSummaryPageController.onAfterSubmit", {
         model,
       });
 

@@ -2,7 +2,6 @@ import config from "server/config";
 import { isMultipleApiKey } from "@xgovformbuilder/model";
 import { ControllerError } from "server/plugins/engine/errors";
 import { BaseService } from "../BaseService";
-import { runHook } from "server/services/hooks";
 import { PaymentProviderService, PaymentResult } from "./types";
 import { FormModel } from "src/server/plugins/engine/models";
 
@@ -185,7 +184,7 @@ class TrustPaymentsAdapter
       !trustPaymentsService.verifyRedirect(request) ||
       (paymentErrorStatus && paymentErrorStatus !== "0")
     ) {
-      await runHook("TrustPaymentsService.onInvalidPayment", request, {
+      await request.hook.run("TrustPaymentsService.onInvalidPayment", {
         model,
       });
 
@@ -194,7 +193,7 @@ class TrustPaymentsAdapter
       });
     }
 
-    await runHook("TrustPaymentsService.onValidPayment", request, { model });
+    await request.hook.run("TrustPaymentsService.onValidPayment", { model });
   }
 }
 
