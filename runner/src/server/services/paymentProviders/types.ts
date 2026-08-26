@@ -1,5 +1,7 @@
 import { Lifecycle } from "@hapi/hapi";
 import { HapiRequest, HapiResponseToolkit } from "server/types";
+import { FormModel } from "src/server/plugins/engine/models";
+import { FeesModel } from "src/server/plugins/engine/models/submission";
 
 export type PaymentResult = Record<string, unknown>;
 
@@ -9,23 +11,23 @@ export type PaymentResult = Record<string, unknown>;
  * gateway-specific detail (API shape, redirect vs. rendered HTML) stays
  * inside the adapter and out of the calling controller.
  */
-export interface PaymentProviderService {
+export interface PaymentProviderService<T = PaymentResult> {
   createPayment(
     request: HapiRequest,
-    state: Record<string, any>,
-    feesModel: any,
-    model: any
-  ): Promise<PaymentResult>;
+    state: Record<string, unknown>,
+    feesModel: FeesModel,
+    model: FormModel
+  ): Promise<T>;
 
   redirectUser(
     request: HapiRequest,
     h: HapiResponseToolkit,
-    result: PaymentResult
+    result: T
   ): Promise<Lifecycle.ReturnValue>;
 
   cancelPayment(
     request: HapiRequest,
-    state: Record<string, any>
+    state: Record<string, unknown>
   ): Promise<void>;
 
   verifyRedirect?(request: HapiRequest): Promise<void>;

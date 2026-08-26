@@ -1,10 +1,10 @@
 import config from "server/config";
 import { isMultipleApiKey } from "@xgovformbuilder/model";
-import { HapiRequest, HapiResponseToolkit } from "server/types";
 import { ControllerError } from "server/plugins/engine/errors";
 import { BaseService } from "../BaseService";
 import { runHook } from "server/services/hooks";
 import { PaymentProviderService, PaymentResult } from "./types";
+import { FormModel } from "src/server/plugins/engine/models";
 
 /**
  * Each payment provider is an adapter implementing the common
@@ -20,18 +20,22 @@ import { PaymentProviderService, PaymentResult } from "./types";
  * under its id. Nothing outside this file should change.
  */
 
+type GovUkPayAdapterService = PaymentProviderService<{
+  redirectUrl: string;
+  reference: string;
+}>;
+
 /** Adapter for GOV.UK Pay, registered under `"gov-uk-pay"`. */
-class GovUkPayAdapter extends BaseService implements PaymentProviderService {
+class GovUkPayAdapter extends BaseService implements GovUkPayAdapterService {
   constructor() {
     super("GovUkPayAdapter");
   }
 
   async createPayment(
-    request: HapiRequest,
-    _state: Record<string, any>,
-    feesModel: any,
-    model: any
-  ): Promise<PaymentResult> {
+    ...[request, _state, feesModel, model]: Parameters<
+      GovUkPayAdapterService["createPayment"]
+    >
+  ) {
     this.logger.trace({ formId: request.params.id }, "createPayment start");
 
     const { payService, cacheService } = request.services([]);
@@ -71,20 +75,23 @@ class GovUkPayAdapter extends BaseService implements PaymentProviderService {
       "createPayment complete"
     );
 
-    return { redirectUrl: payState.pay.next_url, reference: res.reference };
+    return {
+      redirectUrl: payState.pay.next_url,
+      reference: res.reference,
+    };
   }
 
   async redirectUser(
-    _request: HapiRequest,
-    h: HapiResponseToolkit,
-    result: PaymentResult
+    ...[_request, h, result]: Parameters<GovUkPayAdapterService["redirectUser"]>
   ) {
-    return h.redirect(result.redirectUrl as string);
+    return h.redirect(result.redirectUrl);
   }
 
-  async cancelPayment(): Promise<void> {}
+  async cancelPayment(
+    ...[_request, _state]: Parameters<GovUkPayAdapterService["cancelPayment"]>
+  ): Promise<void> {}
 
-  private resolvePayApiKey(model: any): string {
+  private resolvePayApiKey(model: FormModel): string {
     const modelDef = model.def;
     const payApiKey = modelDef.feeOptions?.payApiKey ?? modelDef.payApiKey;
 
@@ -95,20 +102,23 @@ class GovUkPayAdapter extends BaseService implements PaymentProviderService {
   }
 }
 
+type TrustPaymentsAdapterService = PaymentProviderService<{
+  html: string;
+}>;
+
 /** Adapter for Trust Payments, registered under `"trust-payments"`. */
 class TrustPaymentsAdapter
   extends BaseService
-  implements PaymentProviderService {
+  implements TrustPaymentsAdapterService {
   constructor() {
     super("TrustPaymentsAdapter");
   }
 
   async createPayment(
-    request: HapiRequest,
-    state: Record<string, any>,
-    feesModel: any,
-    _model: any
-  ): Promise<PaymentResult> {
+    ...[request, state, feesModel, _model]: Parameters<
+      TrustPaymentsAdapterService["createPayment"]
+    >
+  ) {
     this.logger.trace({ formId: request.params.id }, "createPayment start");
 
     const { trustPaymentsService } = request.service.getServices(
@@ -124,6 +134,15 @@ class TrustPaymentsAdapter
     const url = new URL(request.url);
     const redirectUrl = `${url.origin}/${request.params.id}/status`;
 
+    if (
+      typeof state["firstName"] !== "string" ||
+      typeof state["lastName"] !== "string"
+    ) {
+      throw new ControllerError("invalid billing first name & last name", {
+        code: 500,
+      });
+    }
+
     const html = await trustPaymentsService.createTrustPaymentsForm({
       billingFirstName: state["firstName"] ?? "",
       billingLastName: state["lastName"] ?? "",
@@ -137,16 +156,24 @@ class TrustPaymentsAdapter
   }
 
   async redirectUser(
-    _request: HapiRequest,
-    h: HapiResponseToolkit,
-    result: PaymentResult
+    ...[_request, h, result]: Parameters<
+      TrustPaymentsAdapterService["redirectUser"]
+    >
   ) {
-    return h.response(result.html as string).type("text/html");
+    return h.response(result.html).type("text/html");
   }
 
-  async cancelPayment(): Promise<void> {}
+  async cancelPayment(
+    ...[_request, _state]: Parameters<
+      TrustPaymentsAdapterService["cancelPayment"]
+    >
+  ): Promise<void> {}
 
-  async verifyRedirect(request: HapiRequest): Promise<void> {
+  async verifyRedirect(
+    ...[request]: Parameters<
+      NonNullable<TrustPaymentsAdapterService["verifyRedirect"]>
+    >
+  ): Promise<void> {
     const { trustPaymentsService } = request.service.getServices(
       "trustPaymentsService"
     );
