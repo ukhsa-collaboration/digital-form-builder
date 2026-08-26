@@ -7,9 +7,11 @@ import {
   AddressType,
   deriveSelectedFieldName,
   resolveAddressByUdprn,
+  addressTypeFormSchema,
 } from "../utils/addressUtils";
 import { addressSelectionHandlers } from "../utils/addressSelectionHandlers";
 import { ControllerError } from "../errors";
+import { Address } from "src/server/services/addressLookupService";
 
 type FormSubmission = {
   addressType: AddressType;
@@ -20,10 +22,6 @@ type FormSubmission = {
 const COMPONENT_ADDRESS_TYPE = "addressType";
 const COMPONENT_ADDRESSES_HEADING = "addressesFoundHeading";
 const COMPONENT_MATCHED_ADDRESS_DISPLAY = "matchedAddressDisplay";
-
-const formSchema = Joi.object({
-  addressType: addressTypeSchema,
-}).unknown(true);
 
 /**
  * Returns a `getDisplayStringFromState` implementation for the given address type.
@@ -165,7 +163,10 @@ export class SelectAnAddressPageController extends PageControllerBase {
     return async (request: HapiRequest, h: HapiResponseToolkit) => {
       const response = await this.handlePostRequest(request, h);
       const payload = (request.payload || {}) as Record<string, unknown>;
-      const validation = this.validate<FormSubmission>(payload, formSchema);
+      const validation = this.validate<FormSubmission>(
+        payload,
+        addressTypeFormSchema
+      );
 
       const formResult = this.validateForm(payload);
 
@@ -222,7 +223,8 @@ export class SelectAnAddressPageController extends PageControllerBase {
         return this.proceed(request, h, savedState, honourReturnUrl);
       }
 
-      const addresses: any[] = currentState[`${addressType}_addresses`] || [];
+      const addresses: Address[] =
+        currentState[`${addressType}_addresses`] || [];
 
       const resolvedMatchedAddress = resolveAddressByUdprn(
         addresses,

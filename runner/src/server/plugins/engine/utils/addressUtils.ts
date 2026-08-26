@@ -19,6 +19,14 @@ export const addressTypeSchema = Joi.string()
   .max(64);
 
 /**
+ * specific schema for the select an address form.
+ * Required to identity what type of address we are selecting
+ */
+export const addressTypeFormSchema = Joi.object({
+  addressType: addressTypeSchema,
+}).unknown(true);
+
+/**
  * Returns the selected address radios field name for a given address type.
  * State keys are namespaced by address type, so the field name is derived by
  * pure string construction and works for any type without a lookup table.
@@ -217,8 +225,10 @@ export const fuzzyMatchAddress = (
 
   const results = fuse.search(query);
 
+  const result = results[0];
+
   // Return the best match
-  if (results.length > 0 && results[0].score < 0.38) {
+  if (result?.score && result?.score < 0.38) {
     return results[0].item;
   }
 

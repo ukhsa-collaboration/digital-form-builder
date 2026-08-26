@@ -6,7 +6,7 @@ import { JsonApiIntegrationWithMsal } from "./jsonApiIntegrationWithMsal";
 import { AddressLookupService } from "./addressLookupService";
 import { TrustPaymentsService } from "./trustPaymentsService";
 
-type ServiceConstructor = new (parameters: any) => unknown;
+type ServiceConstructor = new (name: string, parameters: any) => unknown;
 
 export const serviceRegistry: Record<string, ServiceConstructor> = {
   jsonApiIntegrationWithMsal: JsonApiIntegrationWithMsal,
@@ -49,7 +49,10 @@ export class DynamicServices implements IDynamicServices {
         );
       }
 
-      const instance = new ServiceClass(serviceConfig.parameters);
+      const instance = new ServiceClass(
+        serviceConfig.name,
+        serviceConfig.parameters
+      );
 
       await server.registerService(Schmervice.withName(instanceName, instance));
 

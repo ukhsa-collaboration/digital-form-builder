@@ -2,7 +2,6 @@ import { BaseService } from "./BaseService";
 import { MsalAuthorizer } from "./msalAuthorizerService";
 
 export interface JsonApiIntegrationWithMsalConfig {
-  name: string;
   apimBaseUrl: string;
   callingApplication: string;
   tenantId: string;
@@ -15,8 +14,8 @@ export class JsonApiIntegrationWithMsal extends BaseService {
   private readonly auth: MsalAuthorizer;
   private readonly config: JsonApiIntegrationWithMsalConfig;
 
-  constructor(config: JsonApiIntegrationWithMsalConfig) {
-    super(config.name);
+  constructor(name: string, config: JsonApiIntegrationWithMsalConfig) {
+    super(name);
 
     this.config = config;
     this.auth = new MsalAuthorizer(config);

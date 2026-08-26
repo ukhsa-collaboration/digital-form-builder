@@ -6,11 +6,13 @@ import {
   SummaryContentOptions,
 } from "../summaryContentToSummaryLists";
 import { FeesModel } from "../models/submission/FeesModel";
+import { FormModel } from "../models";
+import { SummaryListsComponent } from "@xgovformbuilder/model";
 
 export class SummaryLists extends ComponentBase {
   sections: SummaryContentSection[];
 
-  constructor(def: any, model: any) {
+  constructor(def: SummaryListsComponent, model: FormModel) {
     super(def, model);
     this.sections = Array.isArray(def.content) ? def.content : [];
   }

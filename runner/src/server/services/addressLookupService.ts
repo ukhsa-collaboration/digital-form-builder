@@ -24,7 +24,7 @@ export class AddressLookupService extends BaseService {
   private readonly auth: MsalAuthorizer;
   private readonly config: AddressLookupConfig;
 
-  constructor(config: AddressLookupConfig) {
+  constructor(_, config: AddressLookupConfig) {
     super(`addressLookupService.${config.callingApplication}`);
 
     this.config = config;

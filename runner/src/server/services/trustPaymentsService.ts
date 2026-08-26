@@ -10,7 +10,7 @@ import { BaseService } from "./BaseService";
 export class TrustPaymentsService extends BaseService {
   private config: TrustPaymentsConfig;
 
-  constructor(config: TrustPaymentsConfig) {
+  constructor(_, config: TrustPaymentsConfig) {
     super("TrustPaymentsService");
     this.config = config;
   }
@@ -62,11 +62,15 @@ export class TrustPaymentsService extends BaseService {
               <input type="hidden" name="mainamount" value="${amount}">
               <input type="hidden" name="billingfirstname" value="${billingFirstName}">
               <input type="hidden" name="billinglastname" value="${billingLastName}">
+            
               <input type="hidden" name="strequiredfields" value="billingfirstname">
               <input type="hidden" name="strequiredfields" value="billinglastname">
+      
               <input type="hidden" name="ruleidentifier" value="STR-6">
               <input type="hidden" name="successfulurlredirect" value="${successfulUrlRedirect}">
+            
               <input type="hidden" name="version" value="${version}">
+            
               <input type="hidden" name="stprofile" value="default">
               <input type="hidden" name="stdefaultprofile" value="st_cardonly">
               <input type="hidden" name="sitesecurity" value="${hash}">

@@ -1,11 +1,6 @@
 import { PageControllerBase } from "./PageControllerBase";
 import { HapiRequest, HapiResponseToolkit } from "server/types";
-import Joi from "joi";
-import { addressTypeSchema, AddressType } from "../utils/addressUtils";
-
-const formSchema = Joi.object({
-  addressType: addressTypeSchema,
-}).unknown(true);
+import { addressTypeFormSchema, AddressType } from "../utils/addressUtils";
 
 type FormSubmission = {
   addressType: AddressType;
@@ -48,7 +43,10 @@ export class ManualAddressPageController extends PageControllerBase {
         return response;
       }
 
-      const validation = this.validate<FormSubmission>(payload, formSchema);
+      const validation = this.validate<FormSubmission>(
+        payload,
+        addressTypeFormSchema
+      );
 
       if (validation.errors) {
         return response;
