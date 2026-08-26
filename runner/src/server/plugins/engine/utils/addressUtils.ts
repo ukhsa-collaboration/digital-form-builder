@@ -1,6 +1,7 @@
 import { Item } from "@xgovformbuilder/model/dist/module/data-model/types";
 import Joi from "joi";
 import { Address } from "src/server/services/addressLookupService";
+import Fuse from "fuse.js";
 
 /**
  * An address type is any identifier-safe string declared in the form JSON. It
@@ -49,6 +50,15 @@ export const ADDRESS_CONTEXT_SUFFIXES = [
 
 const SELECTED_ADDRESS_SUFFIX = "_selectedAddress";
 
+export type AddressLookupFields = {
+  postcode: string;
+  building?: string;
+  addressLine1?: string;
+  addressLine2?: string;
+  town?: string;
+  county?: string;
+};
+
 /**
  * Resolves the full single-line address string for an address type, regardless
  * of whether the selected address is stored as the full object (post-confirm)
@@ -69,12 +79,14 @@ function resolveFullSelectedAddress(
 
   // value is a UDPRN string — resolve it to the full object.
   const matched = state[`${addressType}_matchedAddress`];
+
   if (matched && String(matched.udprn) === String(value)) {
     return matched.address;
   }
 
   const addresses: Address[] = state[`${addressType}_addresses`] || [];
   const found = addresses.find((addr) => String(addr.udprn) === String(value));
+
   return found ? found.address : String(value);
 }
 
@@ -147,13 +159,16 @@ export function resolveSelectedAddress(
   addressType: string
 ): Address | undefined {
   const value = state[`${addressType}${SELECTED_ADDRESS_SUFFIX}`];
+
   if (!value) return undefined;
   if (typeof value === "object") return value as Address;
 
   const matched = state[`${addressType}_matchedAddress`];
+
   if (matched && String(matched.udprn) === String(value)) return matched;
 
   const addresses: Address[] = state[`${addressType}_addresses`] || [];
+
   return resolveAddressByUdprn(addresses, value);
 }
 
@@ -165,37 +180,46 @@ const STREET_NUMBER_PATTERN = /(^|, )(\d+[A-Z]?([-\/]\d+)?[A-Z]?),/i;
  * @param addresses - a list of addresses
  * @param building - the building name
  * @param addressLine1 - the 1st line of the address
+ * @param addressLine2 - the 2nd line of the address
+ * @param town - the town of the address
+ * @param county - the county of the address
  * @returns an address or undefined
  */
+
 export const findMatchingAddress = (
   addresses: Address[],
-  building?: string,
-  addressLine1?: string
+  address: AddressLookupFields
 ): Address | undefined => {
-  const normalizedBuilding = building?.trim().toUpperCase();
-  const addressLine1Pattern = addressLine1
-    ? new RegExp(`^${addressLine1.trim().toUpperCase()}( |,)`)
-    : null;
+  const addressQuery = [
+    address.building,
+    address.addressLine1,
+    address.addressLine2,
+    address.town,
+    address.county,
+  ]
+    .filter(Boolean)
+    .map((part) => part?.trim().toUpperCase())
+    .join(", ");
 
-  for (const address of addresses) {
-    const firstPart = address.address.split(",")[0].trim().toUpperCase();
+  return fuzzyMatchAddress(addresses, addressQuery);
+};
 
-    if (normalizedBuilding) {
-      if (
-        firstPart.replace(/\s/g, "") ===
-          normalizedBuilding.replace(/\s/g, "") ||
-        firstPart.startsWith(normalizedBuilding + " ")
-      ) {
-        return address;
-      }
-    }
+export const fuzzyMatchAddress = (
+  addresses: Address[],
+  query: string
+): Address | undefined => {
+  const fuse = new Fuse(addresses, {
+    threshold: 0.4,
+    includeScore: true,
+    includeMatches: true,
+    keys: ["address"],
+  });
 
-    if (
-      addressLine1Pattern &&
-      addressLine1Pattern.test(address.address.toUpperCase())
-    ) {
-      return address;
-    }
+  const results = fuse.search(query);
+
+  // Return the best match
+  if (results.length > 0 && results[0].score < 0.38) {
+    return results[0].item;
   }
 
   return undefined;
