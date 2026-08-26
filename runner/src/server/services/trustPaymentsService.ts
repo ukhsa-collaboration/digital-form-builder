@@ -16,15 +16,16 @@ export class TrustPaymentsService extends BaseService {
   }
 
   async createTrustPaymentsForm(details: TrustPaymentsDetails) {
-    this.logger.trace(
-      { amount: details.amount, siteReference: this.config.siteReference },
-      "createTrustPaymentsForm called"
-    );
+    this.log.trace("createTrustPaymentsForm", {
+      amount: details.amount,
+      siteReference: this.config.siteReference,
+    });
 
+    const version = 2;
     const currencyIso3a = "GBP";
     const amount = details.amount / 100;
     const siteReference = this.config.siteReference;
-    const version = 2;
+    // const orderReference = details.orderReference;
     const billingFirstName = details.billingFirstName;
     const billingLastName = details.billingLastName;
     const successfulUrlRedirect = details.redirectUrl;
@@ -48,52 +49,55 @@ export class TrustPaymentsService extends BaseService {
     const hash =
       "h" + createHash("sha256").update(stringToHash, "utf8").digest("hex");
 
-    this.logger.trace(
-      { siteReference, siteSecurityTimestamp },
-      "trust payments form generated"
-    );
+    this.log.trace("createTrustPaymentsForm", {
+      siteReference,
+      siteSecurityTimestamp,
+    });
 
     const html = `
-        <html>
-          <body>
-            <form id="payform" method="POST" action="https://payments.securetrading.net/process/payments/details">
-              <input type="hidden" name="sitereference" value="${siteReference}">
-              <input type="hidden" name="currencyiso3a" value="${currencyIso3a}">
-              <input type="hidden" name="mainamount" value="${amount}">
-              <input type="hidden" name="billingfirstname" value="${billingFirstName}">
-              <input type="hidden" name="billinglastname" value="${billingLastName}">
+      <html>
+        <body>
+          <form method="POST" id="payform" action="https://payments.securetrading.net/process/payments/details">
+            <input type="hidden" name="sitereference" value="${siteReference}">
+            <input type="hidden" name="currencyiso3a" value="${currencyIso3a}">
+            <input type="hidden" name="mainamount" value="${amount}">
+            <input type="hidden" name="billingfirstname" value="${billingFirstName}">
+            <input type="hidden" name="billinglastname" value="${billingLastName}">
             
-              <input type="hidden" name="strequiredfields" value="billingfirstname">
-              <input type="hidden" name="strequiredfields" value="billinglastname">
+            <input type="hidden" name="strequiredfields" value="billingfirstname">
+            <input type="hidden" name="strequiredfields" value="billinglastname">
       
-              <input type="hidden" name="ruleidentifier" value="STR-6">
-              <input type="hidden" name="successfulurlredirect" value="${successfulUrlRedirect}">
+            <input type="hidden" name="ruleidentifier" value="STR-6">
+            <input type="hidden" name="successfulurlredirect" value="${successfulUrlRedirect}">
             
-              <input type="hidden" name="version" value="${version}">
+            <input type="hidden" name="version" value="${version}">
             
-              <input type="hidden" name="stprofile" value="default">
-              <input type="hidden" name="stdefaultprofile" value="st_cardonly">
-              <input type="hidden" name="sitesecurity" value="${hash}">
-              <input type="hidden" name="sitesecuritytimestamp" value="${siteSecurityTimestamp}">
-            </form>
+            <input type="hidden" name="stprofile" value="default">
+            <input type="hidden" name="stdefaultprofile" value="st_cardonly">
+            <input type="hidden" name="sitesecurity" value="h${hash}">
+            <input type="hidden" name="sitesecuritytimestamp" value="${siteSecurityTimestamp}">
+          </form>
 
-            <script>
-              document.getElementById("payform").submit()
-            </script>
-          </body>
-        </html>
+          <script>
+            document.getElementById("payform").submit()
+          </script>
+        </body>
+      </html>
     `;
 
     return html;
   }
 
   verifyRedirect(request: HapiRequest): boolean {
-    this.logger.trace("verifyRedirect called");
+    this.log.trace("verifyRedirect", { message: "start" });
 
     const hashedReference = request.query["responsesitesecurity"];
 
     if (!hashedReference) {
-      this.logger.trace("responsesitesecurity missing from redirect query");
+      this.log.error("verifyRedirect", {
+        error: "responsesitesecurity missing from redirect query",
+      });
+
       throw new ControllerError(
         "invalid redirect structure from trust payments",
         {
@@ -121,13 +125,16 @@ export class TrustPaymentsService extends BaseService {
     const hashedReferenceBuffer = new Uint8Array(Buffer.from(hashedReference));
 
     if (hashBuffer.length !== hashedReferenceBuffer.length) {
-      this.logger.trace("hash length mismatch, redirect verification failed");
+      this.log.error("verifyRedirect", {
+        error: "hash length mismatch, redirect verification failed",
+      });
+
       return false;
     }
 
     const valid = timingSafeEqual(hashBuffer, hashedReferenceBuffer);
 
-    this.logger.trace({ valid }, "verifyRedirect result");
+    this.log.trace("verifyRedirect", { valid });
 
     return valid;
   }
