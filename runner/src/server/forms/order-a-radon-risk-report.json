@@ -1324,6 +1324,32 @@
     "feedbackForm": false,
     "url": ""
   },
+  "footer": [
+    {
+      "href": "https://www.ukhsa-protectionservices.org.uk/tc/help",
+      "text": "Help"
+    },
+    {
+      "href": "https://www.ukhsa-protectionservices.org.uk/tc/privacy-policy",
+      "text": "Privacy"
+    },
+    {
+      "href": "https://www.ukhsa-protectionservices.org.uk/tc/cookies",
+      "text": "Cookies"
+    },
+    {
+      "href": "https://www.ukhsa-protectionservices.org.uk/tc/accessibility-statement",
+      "text": "Accessibility Statement"
+    },
+    {
+      "href": "https://www.ukhsa-protectionservices.org.uk/contact/",
+      "text": "Contact"
+    },
+    {
+      "href": "https://www.ukhsa-protectionservices.org.uk/tc/terms-conditions",
+      "text": "Terms and Conditions"
+    }
+  ],
   "fees": [
     {
       "description": "Email delivery",

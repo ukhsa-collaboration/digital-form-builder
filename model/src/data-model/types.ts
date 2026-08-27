@@ -365,6 +365,6 @@ export type FormDefinition = {
   generateReference?: boolean | undefined;
   services?: DynamicServiceConfig[];
   provider?: string;
-  trustPayementsConfig?: TrustPaymentsConfig;
   featureFlags?: string[];
+  footer?: { href: string; text: string }[];
 };
