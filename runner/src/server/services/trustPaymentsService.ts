@@ -73,7 +73,7 @@ export class TrustPaymentsService extends BaseService {
             
             <input type="hidden" name="stprofile" value="default">
             <input type="hidden" name="stdefaultprofile" value="st_cardonly">
-            <input type="hidden" name="sitesecurity" value="h${hash}">
+            <input type="hidden" name="sitesecurity" value="${hash}">
             <input type="hidden" name="sitesecuritytimestamp" value="${siteSecurityTimestamp}">
           </form>
 
