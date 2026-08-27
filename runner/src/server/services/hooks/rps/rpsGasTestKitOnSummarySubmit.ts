@@ -28,9 +28,8 @@ export const rpsGasTestKitOnSummarySubmit: Hook<void> = async (
   context
 ) => {
   const { state } = context;
-  const { rpsBackendService } = request.service.getServices(
-    "rpsBackendService"
-  );
+  const { rpsBackendService } =
+    request.service.getServices("rpsBackendService");
 
   const customer: StoreGtkRequest["customer"] = {
     title: state["title"],
@@ -64,8 +63,16 @@ export const rpsGasTestKitOnSummarySubmit: Hook<void> = async (
     ? resultsSameAsProperty
     : resultsSameAsKit;
 
+  // When the kit goes to a different address but results should still go to the
+  // measurement address, the kit-address-results-confirm page is never shown
+  // (the form routes directly to /summary), so kitResultsConfirmation is never
+  // set. We must check resultsSameAsProperty independently of kitSameAsProperty.
+  const resultsUseMeasurement = !kitSameAsProperty && resultsSameAsProperty;
+
   const resultsRecipient: StoreGtkRequest["resultsRecipient"] = resultsUseKit
     ? kitRecipient
+    : resultsUseMeasurement
+    ? customer
     : {
         title: state["resultsTitle"],
         firstName: state["resultsFirstName"],
@@ -76,6 +83,8 @@ export const rpsGasTestKitOnSummarySubmit: Hook<void> = async (
 
   const resultsRecipientAddress = resultsUseKit
     ? kitRecipientAddress
+    : resultsUseMeasurement
+    ? measurementAddress
     : resolveSelectedAddress(state, "resultsAddress");
 
   const uuid = getOrCreateCorrelationId(request);

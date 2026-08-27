@@ -25,7 +25,6 @@ export class TrustPaymentsService extends BaseService {
     const currencyIso3a = "GBP";
     const amount = details.amount / 100;
     const siteReference = this.config.siteReference;
-    // const orderReference = details.orderReference;
     const billingFirstName = details.billingFirstName;
     const billingLastName = details.billingLastName;
     const successfulUrlRedirect = details.redirectUrl;

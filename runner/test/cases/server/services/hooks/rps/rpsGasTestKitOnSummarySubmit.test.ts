@@ -1,10 +1,8 @@
 import * as Code from "@hapi/code";
 import * as Lab from "@hapi/lab";
 import sinon from "sinon";
-import {
-  rpsGasTestKitOnSummarySubmit,
-  saveGasTestKitDetailsSchema,
-} from "../../../../../../src/server/services/hooks/rps/rpsGasTestKitOnSummarySubmit";
+import { rpsGasTestKitOnSummarySubmit } from "../../../../../../src/server/services/hooks/rps/rpsGasTestKitOnSummarySubmit";
+import { saveGasTestKitDetailsSchema } from "@xgovformbuilder/model/src/schema/rps";
 
 const { expect } = Code;
 const lab = Lab.script();
@@ -47,9 +45,8 @@ describe("saveGasTestKitDetailsSchema", () => {
 
   describe("valid payloads", () => {
     it("accepts a fully populated payload", () => {
-      const { error, value } = saveGasTestKitDetailsSchema.validate(
-        basePayload
-      );
+      const { error, value } =
+        saveGasTestKitDetailsSchema.validate(basePayload);
       expect(error).to.be.undefined();
       expect(value.customer.telephone).to.equal("dummy-telephone");
       expect(value.resultsRecipientAddress.udprn).to.equal("");
@@ -246,13 +243,80 @@ describe("rpsGasTestKitOnSummarySubmit", () => {
     expect(body.resultsRecipientAddress).to.not.equal(body.kitRecipientAddress);
   });
 
-  it("ignores results-same-as-measurement when the kit itself isn't confirmed as the same as the measurement address", async () => {
+  it("sends results to the measurement address when kit goes to a different address but results are confirmed as the same as measurement", async () => {
     const { request, requestStub } = buildRequest();
     const context: any = {
       state: {
         ...baseState,
         kitAddressConfirmation: false,
         resultsAddressConfirmation: true,
+        // kitResultsConfirmation is never shown in this form path, so it is absent
+        kitTitle: "Dr",
+        kitFirstName: "Ken",
+        kitLastName: "Adams",
+        kitAddress_selectedAddress: kitAddress,
+      },
+    };
+
+    await rpsGasTestKitOnSummarySubmit(request, context);
+
+    const body = getPostedBody(requestStub);
+
+    expect(body.kitRecipient).to.equal({
+      title: "Dr",
+      firstName: "Ken",
+      lastName: "Adams",
+      email: "john.smith@email.com",
+      telephone: "dummy-telephone",
+    });
+    expect(body.kitRecipientAddress).to.equal(toAddressDetails(kitAddress));
+    expect(body.resultsRecipient.firstName).to.equal("John");
+    expect(body.resultsRecipientAddress).to.equal(
+      toAddressDetails(measurementAddress)
+    );
+    expect(body.resultsRecipientAddress).to.not.equal(
+      toAddressDetails(kitAddress)
+    );
+  });
+
+  it("sends results to the kit address when kit goes to a different address and kitResultsConfirmation is yes", async () => {
+    const { request, requestStub } = buildRequest();
+    const context: any = {
+      state: {
+        ...baseState,
+        kitAddressConfirmation: false,
+        resultsAddressConfirmation: false,
+        kitResultsConfirmation: true,
+        kitTitle: "Dr",
+        kitFirstName: "Ken",
+        kitLastName: "Adams",
+        kitAddress_selectedAddress: kitAddress,
+      },
+    };
+
+    await rpsGasTestKitOnSummarySubmit(request, context);
+
+    const body = getPostedBody(requestStub);
+
+    expect(body.kitRecipient).to.equal({
+      title: "Dr",
+      firstName: "Ken",
+      lastName: "Adams",
+      email: "john.smith@email.com",
+      telephone: "dummy-telephone",
+    });
+    expect(body.kitRecipientAddress).to.equal(toAddressDetails(kitAddress));
+    expect(body.resultsRecipient).to.equal(body.kitRecipient);
+    expect(body.resultsRecipientAddress).to.equal(toAddressDetails(kitAddress));
+  });
+
+  it("sends results to a separate address when kit goes to a different address and kitResultsConfirmation is no", async () => {
+    const { request, requestStub } = buildRequest();
+    const context: any = {
+      state: {
+        ...baseState,
+        kitAddressConfirmation: false,
+        resultsAddressConfirmation: false,
         kitResultsConfirmation: false,
         kitTitle: "Dr",
         kitFirstName: "Ken",
@@ -286,9 +350,6 @@ describe("rpsGasTestKitOnSummarySubmit", () => {
     });
     expect(body.resultsRecipientAddress).to.equal(
       toAddressDetails(resultsAddress)
-    );
-    expect(body.resultsRecipientAddress).to.not.equal(
-      toAddressDetails(measurementAddress)
     );
   });
 
