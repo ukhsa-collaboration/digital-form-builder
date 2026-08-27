@@ -1,55 +1,15 @@
 import { http, HttpResponse, RequestHandler } from "msw";
-import joi from "joi";
-import pino from "pino";
+import { createChildLogger } from "../../utils/logger";
+import {
+  lookupAddressRequestSchema,
+  RiskReportLookupResponse,
+  storePaymentDetailsRequestSchema,
+  StorePaymentDetailsResponse,
+  storeReportRequestSchema,
+  StoreReportResponse,
+} from "@xgovformbuilder/model/dist/module/schema/rps";
 
-const logger = pino().child({ name: "rpsRiskReportBackend" });
-
-const lookupAddressRequestSchema = joi.object({
-  uuid: joi.string().uuid().required(),
-  uprn: joi.string().required(),
-  udprn: joi.string().required(),
-});
-
-interface RiskReportLookupResponse {
-  requestId: string;
-  success: boolean;
-  UDPRN: string;
-  TemplateId?: string;
-  found: boolean;
-}
-
-const storeReportRequestSchema = joi.object({
-  uuid: joi.string().uuid().required(),
-  firstName: joi.string().required(),
-  lastName: joi.string().required(),
-  email: joi
-    .string()
-    .email({ tlds: { allow: false } })
-    .optional(),
-  fullAddress: joi.string().optional(),
-  addressLine1: joi.string().optional(),
-  addressLine2: joi.string().optional(),
-  townCity: joi.string().optional(),
-  postcode: joi.string().optional(),
-  countryCode: joi.string().valid("N", "E", "S", "W").required(),
-});
-
-interface StoreReportResponse {
-  message: string;
-  uuid: string;
-}
-
-const storePaymentDetailsRequestSchema = joi.object({
-  uuid: joi.string().required(),
-  transactionId: joi.string().required(),
-  settle_status: joi.string().valid("SETTLED", "NOT_SETTLED"),
-});
-
-interface StorePaymentDetailsResponse {
-  uuid: string;
-  transactionId: string;
-  message: string;
-}
+const logger = createChildLogger({ name: "rpsRiskReportBackend" });
 
 /**
  * Post request to store customer details & delivery address (if delivery method is `Post`).

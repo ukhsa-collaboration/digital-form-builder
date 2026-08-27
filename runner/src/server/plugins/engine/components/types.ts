@@ -52,6 +52,7 @@ export type ViewModel = {
     multiple?: string;
     accept?: string;
     step?: string;
+    inset?: boolean;
   };
   content?: Content | Content[] | string;
   rows?: number;

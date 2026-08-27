@@ -38,12 +38,12 @@ Features and configuration options for the runner.
   - Submit data to a queue after the user has completed the form
 - [summary details transforms](runner/summary-details-transforms.md)
   - Modify the details on summary pages before they are displayed to the user
-- [summary page onSubmit actions](runner/summary-on-submit.md)
-  - Run a server-side action when the summary page is submitted, before the normal outputs/payment flow
 - [templating](runner/templating.md)
   - Allow njks templating within html components and add previous answers to the render context
 - [mock API](runner/mock-api.md)
   - Intercept outbound HTTP calls in local development with mock responses
+- [global hooks](runner/hooks.md)
+  - Run named, per-form side effects at fixed points in a form's lifecycle without branching in controllers
 
 #### Components
 
@@ -51,6 +51,8 @@ Features and configuration options for the runner.
   - Embed non-visible data in a form page for use in submissions or later pages
 - [display address](runner/components/display-address.md)
   - Render a previously collected address from form state with each line on its own line
+- [summary lists](runner/components/summary-lists.md)
+  - Render one or more GOV.UK summary lists from form state with optional change links and summary cards
 
 ### Designer
 

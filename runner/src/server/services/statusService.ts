@@ -1,5 +1,6 @@
 import { HapiRequest, HapiServer } from "../types";
 import { createHmacRaw } from "../utils/hmac";
+import { getOrCreateCorrelationId } from "../utils/correlationId";
 import {
   CacheService,
   FormSecurityService,
@@ -22,7 +23,7 @@ import {
   OutputData,
   TNotifyModel,
 } from "../plugins/engine/models/submission/types";
-import { ControllerError } from "../plugins/engine/errors";
+import { paymentProviderRegistry } from "./paymentProviders";
 
 type WebhookModel = WebhookOutputConfiguration & {
   formData: object;
@@ -74,8 +75,9 @@ export class StatusService {
   async shouldShowPayErrorPage(request: HapiRequest): Promise<boolean> {
     const { pay, paymentProvider } = await this.cacheService.getState(request);
 
-    if (paymentProvider === "trust-payments")
-      await this.verifyTrustPaymentRedirect(request);
+    const adapter = paymentProviderRegistry[paymentProvider];
+
+    if (adapter?.verifyRedirect) await adapter.verifyRedirect(request);
 
     if (!pay) {
       this.logger.info(
@@ -95,7 +97,9 @@ export class StatusService {
     if (state.status === "success") {
       this.logger.info(
         ["StatusService", "shouldShowPayErrorPage"],
-        `user ${request.yar.id} - shouldShowPayErrorPage: User has succeeded, setting paymentSkipped to false and continuing`
+        `user ${getOrCreateCorrelationId(
+          request
+        )} - shouldShowPayErrorPage: User has succeeded, setting paymentSkipped to false and continuing`
       );
 
       pay.paymentSkipped = false;
@@ -110,7 +114,9 @@ export class StatusService {
 
     this.logger.info(
       ["StatusService", "shouldShowPayErrorPage"],
-      `user ${request.yar.id} - shouldShowPayErrorPage: User has failed ${meta.attempts} payments`
+      `user ${getOrCreateCorrelationId(
+        request
+      )} - shouldShowPayErrorPage: User has failed ${meta.attempts} payments`
     );
 
     if (!allowSubmissionWithoutPayment) {
@@ -131,34 +137,12 @@ export class StatusService {
 
     this.logger.info(
       ["StatusService", "shouldShowPayErrorPage"],
-      `user ${request.yar.id} - shouldShowPayErrorPage: ${shouldRetry}`
+      `user ${getOrCreateCorrelationId(
+        request
+      )} - shouldShowPayErrorPage: ${shouldRetry}`
     );
 
     return shouldRetry;
-  }
-
-  async verifyTrustPaymentRedirect(request: HapiRequest) {
-    // verify redirect for trust payments
-    const { trustPaymentsService } = request.service.getServices(
-      "trustPaymentsService"
-    );
-
-    const paymentErrorStatus = request.query["errorcode"];
-
-    if (
-      !trustPaymentsService.verifyRedirect(request) ||
-      (paymentErrorStatus && paymentErrorStatus !== "0")
-    ) {
-      // call service event on invalid payment
-      await trustPaymentsService.onInvalidPayment(request);
-
-      // throw payment page error
-      throw new ControllerError("cannot verify trust payment redirect", {
-        code: 500,
-      });
-    }
-
-    await trustPaymentsService.onValidPayment(request);
   }
 
   async outputRequests(request: HapiRequest) {
@@ -181,12 +165,13 @@ export class StatusService {
     let customSecurityHeaders: Record<string, string> = {};
 
     if (hmacKey) {
+      const correlationId = getOrCreateCorrelationId(request);
       const [hmacSignature, requestTime, hmacExpiryTime] = await createHmacRaw(
-        request.yar.id,
+        correlationId,
         hmacKey
       );
       customSecurityHeaders = {
-        "X-Request-ID": request.yar.id.toString(),
+        "X-Request-ID": correlationId,
         "X-HMAC-Signature": hmacSignature.toString(),
         "X-HMAC-Time": requestTime.toString(),
       };
@@ -202,7 +187,9 @@ export class StatusService {
     if (callback) {
       this.logger.info(
         ["StatusService", "outputRequests"],
-        `Callback detected for ${request.yar.id} - PUT to ${callback.callbackUrl}`
+        `Callback detected for ${getOrCreateCorrelationId(request)} - PUT to ${
+          callback.callbackUrl
+        }`
       );
 
       try {

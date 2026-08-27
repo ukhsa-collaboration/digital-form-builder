@@ -244,4 +244,13 @@ export const ComponentTypes: ComponentDef[] = [
     options: {},
     schema: {},
   },
+  {
+    name: "SummaryLists",
+    type: "SummaryLists",
+    title: "Summary lists",
+    subType: "content",
+    content: [],
+    options: {},
+    schema: {},
+  },
 ];

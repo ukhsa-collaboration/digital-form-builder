@@ -1,5 +1,6 @@
 import { HapiRequest, HapiResponseToolkit } from "server/types";
 import { ReadableStreamEntry } from "server/services/upload/uploadService";
+import { getOrCreateCorrelationId } from "server/utils/correlationId";
 
 /**
  * This prehandler must follow {@link getFiles}. This prehandler checks if the content-type in the FormData is correct
@@ -17,7 +18,10 @@ export async function validateContentTypes(
 
   const { uploadService, cacheService } = request.services([]);
   const logger = request.server.logger;
-  const loggerIdentifier = { id: request.yar.id, path: request.path };
+  const loggerIdentifier = {
+    id: getOrCreateCorrelationId(request),
+    path: request.path,
+  };
 
   const validFields: ReadableStreamEntry[] = [];
   const erroredFields: {
