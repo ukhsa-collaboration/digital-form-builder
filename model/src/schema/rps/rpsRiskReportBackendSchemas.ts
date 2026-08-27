@@ -22,36 +22,37 @@ export type RiskReportLookupResponse = {
 
 export const storeReportRequestSchema = joi.object({
   uuid: joi.string().uuid().required(),
-  deliveryMethod: joi.string().required(),
+  deliveryMethod: joi.string().valid("email", "post").required(),
   firstName: joi.string().required(),
   lastName: joi.string().required(),
-  telephone: joi.string().optional(),
-  email: joi
-    .string()
-    .email({ tlds: { allow: false } })
-    .optional(),
-  fullAddress: joi.string().optional(),
-  addressLine1: joi.string().optional(),
-  addressLine2: joi.string().optional(),
-  townCity: joi.string().optional(),
-  postcode: joi.string().optional(),
+  telephone: joi.string().required(),
+  email: joi.when("deliveryMethod", {
+    is: "email",
+    then: joi
+      .string()
+      .email({ tlds: { allow: false } })
+      .required(),
+    otherwise: joi
+      .string()
+      .email({ tlds: { allow: false } })
+      .optional(),
+  }),
+  fullAddress: joi.string().required(),
   countryCode: joi.string().valid("N", "E", "S", "W").required(),
 });
 
-export type StoreReportRequest = {
+type StoreReportRequestBase = {
   uuid: string;
-  deliveryMethod: string;
   firstName: string;
   lastName: string;
   telephone: string;
-  email?: string;
-  fullAddress?: string;
-  addressLine1?: string;
-  addressLine2?: string;
-  townCity?: string;
-  postcode?: string;
+  fullAddress: string;
   countryCode: string;
 };
+
+export type StoreReportRequest =
+  | (StoreReportRequestBase & { deliveryMethod: "email"; email: string })
+  | (StoreReportRequestBase & { deliveryMethod: "post"; email?: string });
 
 export type StoreReportResponse = {
   message: string;

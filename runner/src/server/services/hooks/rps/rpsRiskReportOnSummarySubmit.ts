@@ -40,17 +40,17 @@ export const rpsRiskReportOnSummarySubmit: Hook<void> = async (request) => {
   const selectedDeliveryAddress =
     currentState["deliveryAddress_selectedAddress"];
 
+  const deliveryMethod = currentState["deliveryMethod"] as "email" | "post";
+
   const rawRequestData: StoreReportRequest = {
     uuid: getOrCreateCorrelationId(request),
-    deliveryMethod: currentState["deliveryMethod"],
-    countryCode: selectedRiskReportAddress["countryCode"],
+    deliveryMethod,
     firstName: currentState["firstName"],
     lastName: currentState["lastName"],
-    email: currentState["emailAddress"],
     telephone: "dummy-phone",
-    ...(selectedDeliveryAddress
-      ? { fullAddress: selectedDeliveryAddress.address }
-      : {}),
+    fullAddress: selectedDeliveryAddress?.address ?? "dummy-address",
+    countryCode: selectedRiskReportAddress["countryCode"],
+    email: currentState["emailAddress"] ?? undefined,
   };
 
   request.logger.trace(
