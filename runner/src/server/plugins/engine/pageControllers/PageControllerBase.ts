@@ -101,7 +101,7 @@ export class PageControllerBase {
     this.buttonText =
       pageDef?.options?.customButtonText ?? this.defaultButtonText;
     this.honorReturnURL = pageDef?.options?.honorReturnURL ?? true;
-    this.hideContinueButton = pageDef.options?.hideContinueButton ?? false;
+    this.hideContinueButton = pageDef.options?.hideContinueButton;
 
     // Resolve section
     this.section = model.sections?.find(

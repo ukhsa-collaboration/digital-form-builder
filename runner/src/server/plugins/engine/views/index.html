@@ -18,7 +18,7 @@
 
       {% include "partials/heading.html" %}
 
-      {% if page.hasNext or not page.hideContinueButton %}
+      {% if page.hasNext or page.hideContinueButton === false %}
         {% include "partials/form.html" %}
       {% else %}
         {{ componentList(components) }}
