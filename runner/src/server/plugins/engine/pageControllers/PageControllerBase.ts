@@ -35,6 +35,7 @@ import Joi from "joi";
 import Jwt from "@hapi/jwt";
 import { verifyHmacToken } from "../../initialiseSession/helpers";
 import { extractAddressContext } from "../utils/addressUtils";
+import { PageDefinition } from "@xgovformbuilder/model";
 import { ConditionalCase, resolveConditionalValue } from "../conditionalValue";
 
 const FORM_SCHEMA = Symbol("FORM_SCHEMA");
@@ -57,7 +58,7 @@ export class PageControllerBase {
   };
   name: string;
   model: FormModel;
-  pageDef: any; // TODO
+  pageDef: PageDefinition;
   path: string;
   title: string;
   condition: any; // TODO
@@ -77,12 +78,14 @@ export class PageControllerBase {
   disableBackLink?: boolean;
   returnUrl?: string;
   buttonText?: string;
-  honorReturnURL?: boolean | ConditionalCase<boolean>[];
+  honorReturnURL?: boolean | ConditionalCase<boolean>[] | undefined;
   hideContinueButton?: boolean;
   showContinueButton?: boolean;
 
-  // TODO: pageDef type
-  constructor(model: FormModel, pageDef: { [prop: string]: any } = {}) {
+  constructor(
+    model: FormModel,
+    pageDef: PageDefinition = {} as PageDefinition
+  ) {
     const { def } = model;
 
     // @ts-ignore
@@ -97,8 +100,7 @@ export class PageControllerBase {
     this.repeatField = pageDef.repeatField;
     this.backLinkFallback = pageDef.backLinkFallback;
     this.disableBackLink = pageDef.disableBackLink;
-    this.disableSingleComponentAsHeading =
-      pageDef.disableSingleComponentAsHeading;
+    this.disableSingleComponentAsHeading = !!pageDef.disableSingleComponentAsHeading;
     this.buttonText =
       pageDef?.options?.customButtonText ?? this.defaultButtonText;
     this.honorReturnURL = pageDef?.options?.honorReturnURL ?? true;

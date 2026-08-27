@@ -20,7 +20,7 @@
       "ES2019.Array"
     ],
     "skipLibCheck": true,
-    "types": ["jest"]
+    "types": ["jest", "./@types/joi.d.ts"]
   },
   "include": ["src", "package.json"]
 }

@@ -124,12 +124,32 @@ const pageSchema = joi.object().keys({
   disableSingleComponentAsHeading: joi.boolean(),
   next: joi.array().items(nextSchema),
   repeatField: joi.string().optional(),
-  options: joi.object().optional(),
+  options: joi
+    .object()
+    .keys({
+      customButtonText: joi.string().optional(),
+      hideContinueButton: joi.boolean().optional(),
+      honorReturnURL: joi
+        .alternatives()
+        .try(
+          joi.boolean(),
+          joi.array().items(
+            joi.object().keys({
+              condition: joi.string().optional(),
+              value: joi.boolean().required(),
+            })
+          )
+        )
+        .optional(),
+    })
+    .optional(),
   backLinkFallback: joi.string().optional(),
   disableBackLink: joi.bool().optional(),
   hideContinueButton: joi.boolean().optional(),
   showContinueButton: joi.boolean().optional(),
 });
+
+export type PageDefinition = NonNullable<joi.extractType<typeof pageSchema>>;
 
 const startNavigationLinkSchema = joi.object().keys({
   href: joi.string().required(),
