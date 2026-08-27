@@ -1557,7 +1557,9 @@
       "service": "trustPaymentsService",
       "parameters": {
         "siteReference": "${RPS_GTK_TRUST_PAYMENTS_SITE_REFERENCE}",
-        "hashPassword": "${RPS_GTK_TRUST_PAYMENTS_HASH_PASSWORD}"
+        "hashPassword": "${RPS_GTK_TRUST_PAYMENTS_HASH_PASSWORD}",
+        "successWebhookUrl": "${RPS_AWS_APIGW_BASE_URL}/storepayment",
+        "failureWebhookUrl": "${RPS_AWS_APIGW_BASE_URL}/storepayment"
       }
     },
     {

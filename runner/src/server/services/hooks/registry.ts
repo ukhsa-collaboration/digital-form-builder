@@ -1,7 +1,5 @@
 import { rpsGasTestKitOnSummarySubmit } from "./rps/rpsGasTestKitOnSummarySubmit";
 import { rpsRiskReportOnSummarySubmit } from "./rps/rpsRiskReportOnSummarySubmit";
-import { rpsRiskReportInvalidPayment } from "./rps/rpsRiskReportInvalidPayment";
-import { rpsRiskReportValidPayment } from "./rps/rpsRiskReportValidPayment";
 
 /**
  * Global registry of named hook handlers. Add entries here as hooks are
@@ -21,8 +19,6 @@ import { rpsRiskReportValidPayment } from "./rps/rpsRiskReportValidPayment";
 export const hookRegistry = {
   rpsGasTestKitOnSummarySubmit,
   rpsRiskReportOnSummarySubmit,
-  rpsRiskReportInvalidPayment,
-  rpsRiskReportValidPayment,
 } as const;
 
 export type HookRegistryEntries = typeof hookRegistry;

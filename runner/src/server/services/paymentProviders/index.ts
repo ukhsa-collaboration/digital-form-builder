@@ -4,6 +4,7 @@ import { ControllerError } from "server/plugins/engine/errors";
 import { BaseService } from "../BaseService";
 import { PaymentProviderService } from "./types";
 import { FormModel } from "src/server/plugins/engine/models";
+import { getOrCreateCorrelationId } from "src/server/utils/correlationId";
 
 /**
  * Each payment provider is an adapter implementing the common
@@ -153,6 +154,7 @@ class TrustPaymentsAdapter
       billingFirstName: state["firstName"] ?? "",
       billingLastName: state["lastName"] ?? "",
       amount: feesModel.total,
+      orderReference: getOrCreateCorrelationId(request),
       redirectUrl,
     });
 

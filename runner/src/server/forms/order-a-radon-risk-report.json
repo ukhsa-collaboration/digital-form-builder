@@ -26,9 +26,7 @@
     "url": ""
   },
   "hooks": {
-    "HeadlessSummaryPageController.onSubmit": "rpsRiskReportOnSummarySubmit",
-    "TrustPaymentsService.onInvalidPayment": "rpsRiskReportInvalidPayment",
-    "TrustPaymentsService.onValidPayment": "rpsRiskReportValidPayment"
+    "HeadlessSummaryPageController.onSubmit": "rpsRiskReportOnSummarySubmit"
   },
   "pages": [
     {
@@ -1418,7 +1416,9 @@
       "service": "trustPaymentsService",
       "parameters": {
         "siteReference": "${RPS_ORR_TRUST_PAYMENTS_SITE_REFERENCE}",
-        "hashPassword": "${RPS_ORR_TRUST_PAYMENTS_HASH_PASSWORD}"
+        "hashPassword": "${RPS_ORR_TRUST_PAYMENTS_HASH_PASSWORD}",
+        "successWebhookUrl": "${RPS_AWS_APIGW_BASE_URL}/storepayment",
+        "failureWebhookUrl": "${RPS_AWS_APIGW_BASE_URL}/storepayment"
       }
     },
     {
