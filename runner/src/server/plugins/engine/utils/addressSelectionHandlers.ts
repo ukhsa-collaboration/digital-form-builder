@@ -96,19 +96,16 @@ const rpsRiskReportOnAddressSelection: AddressSelectionHandler = async (
   request,
   address
 ) => {
-  const rpsBackendServiceName = request.service.getName("rpsBackendService");
+  const { rpsBackendService, cacheService } = request.service.getServices(
+    "rpsBackendService",
+    "cacheService"
+  );
 
-  const { cacheService, ...rest } = request.services([]);
-
-  if (rpsBackendServiceName in rest === false) {
-    throw new ControllerError("cannot find rps backend service", {
+  if (await cacheService.isStateFrozen(request)) {
+    throw new ControllerError("state is frozen", {
       code: 500,
     });
   }
-
-  const rpsBackendService = rest[
-    rpsBackendServiceName
-  ] as JsonApiIntegrationWithMsal;
 
   const currentState = await cacheService.getState(request);
   const progress = currentState.progress || [];
@@ -126,9 +123,7 @@ const rpsRiskReportOnAddressSelection: AddressSelectionHandler = async (
  * Registry of handlers that run once an address is confirmed. A form opts a
  * page in via `options.onAddressSelection: "<handlerName>"`.
  */
-export const addressSelectionHandlers: Record<
-  string,
-  AddressSelectionHandler
-> = {
-  rpsRiskReportOnAddressSelection,
-};
+export const addressSelectionHandlers: Record<string, AddressSelectionHandler> =
+  {
+    rpsRiskReportOnAddressSelection,
+  };

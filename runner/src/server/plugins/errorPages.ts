@@ -75,7 +75,10 @@ export const handleApplicationError = (
     findView(folders, code);
 
   return response
-    .view(view || code, data.backUrl ? { backLink: data.backUrl } : {})
+    .view(view || code, {
+      ...(data.backUrl ? { backLink: data.backUrl } : {}),
+      ...(formId ? { startPage: `/${formId}` } : {}),
+    })
     .code(data.code);
 };
 

@@ -5,9 +5,9 @@ import { HapiRequest, HapiResponseToolkit } from "server/types";
 import { ControllerError } from "../errors";
 import { gatherRepeatPages } from "server/utils/gatherRepeatPages";
 import { paymentProviderRegistry } from "server/services/paymentProviders";
-import { v4 as uuidv4 } from "uuid";
 import { FormModel } from "../models";
 import { Page } from "@xgovformbuilder/model";
+import { getOrCreateCorrelationId } from "src/server/utils/correlationId";
 
 /**
  * A summary controller for forms that have no summary *view* — there is no
@@ -159,18 +159,9 @@ export class HeadlessSummaryPageController extends PageController {
         model,
       });
 
-      if (model.def?.generateReference == true) {
-        const reference = uuidv4();
-
-        request.logger.trace([
-          "HeadlessSummaryPageController.POST",
-          `Generated reference '${reference}'`,
-        ]);
-
-        await cacheService.mergeState(request, {
-          generatedReference: reference,
-        });
-      }
+      await cacheService.mergeState(request, {
+        generatedReference: getOrCreateCorrelationId(request),
+      });
 
       await cacheService.mergeState(request, { userCompletedSummary: true });
 
@@ -220,6 +211,9 @@ export class HeadlessSummaryPageController extends PageController {
         feesModel,
         model
       );
+
+      // freeze state so no changes can occur
+      await cacheService.freezeState(request);
 
       return paymentService.redirectUser(request, h, paymentResult);
     };

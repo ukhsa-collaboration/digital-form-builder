@@ -27,9 +27,18 @@ export const rpsGasTestKitOnSummarySubmit: Hook<void> = async (
   request,
   context
 ) => {
+  const { rpsBackendService, cacheService } = request.service.getServices(
+    "rpsBackendService",
+    "cacheService"
+  );
+
+  if (await cacheService.isStateFrozen(request)) {
+    throw new ControllerError("state is frozen", {
+      code: 500,
+    });
+  }
+
   const { state } = context;
-  const { rpsBackendService } =
-    request.service.getServices("rpsBackendService");
 
   const customer: StoreGtkRequest["customer"] = {
     title: state["title"],

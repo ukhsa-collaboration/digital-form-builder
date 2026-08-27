@@ -469,10 +469,10 @@
         {
           "name": "continueWithoutFreeRetestLink",
           "type": "Para",
-          "content": "<a href=\"your-details\" target=\"_blank\">Continue without a free retest</a>"
+          "content": "<a href=\"your-details\">Continue without a free retest</a>"
         }
       ],
-      "next": []
+      "next": [{ "path": "/your-details" }]
     },
     {
       "path": "/your-details",
