@@ -2,7 +2,7 @@ import config from "server/config";
 import { isMultipleApiKey } from "@xgovformbuilder/model";
 import { ControllerError } from "server/plugins/engine/errors";
 import { BaseService } from "../BaseService";
-import { PaymentProviderService, PaymentResult } from "./types";
+import { PaymentProviderService } from "./types";
 import { FormModel } from "src/server/plugins/engine/models";
 
 /**
@@ -35,7 +35,10 @@ class GovUkPayAdapter extends BaseService implements GovUkPayAdapterService {
       GovUkPayAdapterService["createPayment"]
     >
   ) {
-    this.logger.trace({ formId: request.params.id }, "createPayment start");
+    this.log.trace("createPayment", {
+      message: "start",
+      formId: request.params.id,
+    });
 
     const { payService, cacheService } = request.services([]);
 
@@ -45,7 +48,7 @@ class GovUkPayAdapter extends BaseService implements GovUkPayAdapterService {
       `${payReturnUrl}/${request.params.id}/status`
     ).toString();
 
-    this.logger.info(`payReturnUrl configured to ${payReturnUrl}`);
+    this.log.info(`payReturnUrl configured to ${payReturnUrl}`);
 
     const payStateMeta = payService.createPayStateMeta({
       feesModel,
@@ -69,10 +72,10 @@ class GovUkPayAdapter extends BaseService implements GovUkPayAdapterService {
     request.yar.set("basePath", model.basePath);
     await cacheService.mergeState(request, payState);
 
-    this.logger.trace(
-      { paymentId: res.payment_id, reference: res.reference },
-      "createPayment complete"
-    );
+    this.log.trace("createPayment", {
+      paymentId: res.payment_id,
+      reference: res.reference,
+    });
 
     return {
       redirectUrl: payState.pay.next_url,
@@ -108,7 +111,8 @@ type TrustPaymentsAdapterService = PaymentProviderService<{
 /** Adapter for Trust Payments, registered under `"trust-payments"`. */
 class TrustPaymentsAdapter
   extends BaseService
-  implements TrustPaymentsAdapterService {
+  implements TrustPaymentsAdapterService
+{
   constructor() {
     super("TrustPaymentsAdapter");
   }
@@ -118,7 +122,10 @@ class TrustPaymentsAdapter
       TrustPaymentsAdapterService["createPayment"]
     >
   ) {
-    this.logger.trace({ formId: request.params.id }, "createPayment start");
+    this.log.trace("createPayment", {
+      message: "start",
+      formId: request.params.id,
+    });
 
     const { trustPaymentsService } = request.service.getServices(
       "trustPaymentsService"
@@ -149,7 +156,10 @@ class TrustPaymentsAdapter
       redirectUrl,
     });
 
-    this.logger.trace({ formId: request.params.id }, "createPayment complete");
+    this.log.trace("createPayment", {
+      message: "complete",
+      formId: request.params.id,
+    });
 
     return { html };
   }
@@ -198,9 +208,9 @@ class TrustPaymentsAdapter
 }
 
 /** The lookup table callers resolve `model.def.paymentProvider` against. */
-export const paymentProviderRegistry: Record<string, PaymentProviderService> = {
+export const paymentProviderRegistry = {
   "gov-uk-pay": new GovUkPayAdapter(),
   "trust-payments": new TrustPaymentsAdapter(),
-};
+} as const satisfies Record<string, PaymentProviderService<unknown>>;
 
-export type { PaymentProviderService, PaymentResult };
+export type { PaymentProviderService };

@@ -163,9 +163,9 @@ export class FormModel {
             (page) => page.pageDef.repeatField
           );
 
-          let sectionSchema:
-            | joi.ObjectSchema<any>
-            | joi.ArraySchema = joi.object().required();
+          let sectionSchema: joi.ObjectSchema<any> | joi.ArraySchema = joi
+            .object()
+            .required();
 
           sectionPages.forEach((sectionPage) => {
             sectionSchema = sectionSchema.concat(sectionPage.stateSchema);
@@ -278,9 +278,9 @@ export class FormModel {
 
   getRelevantPages(state: FormSubmissionState) {
     let nextPage = this.startPage;
-    const relevantPages: any[] = [];
+    const relevantPages: PageControllerBase[] = [];
     const visitedPages = new Set<PageControllerBase>();
-    let endPage = null;
+    let endPage: PageControllerBase | undefined;
 
     while (nextPage != null && !visitedPages.has(nextPage)) {
       visitedPages.add(nextPage);

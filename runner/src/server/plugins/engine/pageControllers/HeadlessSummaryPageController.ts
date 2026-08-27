@@ -6,6 +6,8 @@ import { ControllerError } from "../errors";
 import { gatherRepeatPages } from "server/utils/gatherRepeatPages";
 import { paymentProviderRegistry } from "server/services/paymentProviders";
 import { v4 as uuidv4 } from "uuid";
+import { FormModel } from "../models";
+import { Page } from "@xgovformbuilder/model";
 
 /**
  * A summary controller for forms that have no summary *view* — there is no
@@ -62,9 +64,9 @@ export class HeadlessSummaryPageController extends PageController {
       if (endPage && endPage !== this) {
         request.logger.trace([
           "HeadlessSummaryPageController.GET",
-          `Redirecting to end page '${(endPage as any).path}'`,
+          `Redirecting to end page '${endPage.path}'`,
         ]);
-        return h.redirect(`/${model.basePath}${(endPage as any).path}`);
+        return h.redirect(`/${model.basePath}${endPage.path}`);
       }
 
       const schema = model.makeFilteredSchema(state, pagesBeforeSummary);
@@ -226,7 +228,7 @@ export class HeadlessSummaryPageController extends PageController {
   private redirectToStartPage(
     _request: HapiRequest,
     h: HapiResponseToolkit,
-    model: any
+    model: FormModel
   ) {
     const startPage = model.def.startPage;
 
@@ -234,7 +236,7 @@ export class HeadlessSummaryPageController extends PageController {
       return h.redirect(startPage);
     }
 
-    if (model.def.pages.find((page: any) => page.path === startPage)) {
+    if (model.def.pages.find((page: Page) => page.path === startPage)) {
       return h.redirect(`/${model.basePath}${startPage}`);
     }
 

@@ -1,9 +1,7 @@
-import { PageControllerBase } from "./PageControllerBase";
+import { PageControllerBase, PageViewModel } from "./PageControllerBase";
 import { FormModel } from "../models";
 import { HapiRequest, HapiResponseToolkit } from "server/types";
-import Joi from "joi";
 import {
-  addressTypeSchema,
   AddressType,
   deriveSelectedFieldName,
   resolveAddressByUdprn,
@@ -12,6 +10,9 @@ import {
 import { addressSelectionHandlers } from "../utils/addressSelectionHandlers";
 import { ControllerError } from "../errors";
 import { Address } from "src/server/services/addressLookupService";
+import { FormData, FormSubmissionErrors, FormSubmissionState } from "../types";
+import { FormComponent } from "../components/FormComponent";
+import { isPlainObject } from "server/utils/object";
 
 type FormSubmission = {
   addressType: AddressType;
@@ -32,12 +33,12 @@ const COMPONENT_MATCHED_ADDRESS_DISPLAY = "matchedAddressDisplay";
  */
 function buildDisplayStringFromState(
   pageAddressType: AddressType
-): (state: Record<string, any>) => string {
+): (state: FormSubmissionState) => string {
   return function (state) {
     const value = state[`${pageAddressType}_selectedAddress`];
     if (!value) return "";
     if (typeof value === "object" && value.address) return value.address;
-    const addresses: any[] = state[`${pageAddressType}_addresses`] || [];
+    const addresses: Address[] = state[`${pageAddressType}_addresses`] || [];
     const match = addresses.find(
       (addr) => String(addr.udprn) === String(value)
     );
@@ -56,7 +57,7 @@ const extractInputFromSubmission = (data: FormSubmission) => {
 };
 
 export class SelectAnAddressPageController extends PageControllerBase {
-  private addresses: any[] = [];
+  private addresses: Address[] = [];
   private postcodeLookup: string = "";
   private address: string = "";
 
@@ -64,7 +65,7 @@ export class SelectAnAddressPageController extends PageControllerBase {
   private readonly selectedFieldName: string;
   private readonly onAddressSelection?: string;
 
-  constructor(model: FormModel, pageDef: any) {
+  constructor(model: FormModel, pageDef: { [prop: string]: any }) {
     super(model, pageDef);
 
     // Optional handler name (from page config) run once an address is
@@ -74,16 +75,16 @@ export class SelectAnAddressPageController extends PageControllerBase {
     // pageAddressType is declared on the hidden `addressType` component in the
     // form JSON via options.value, so one controller class serves both the
     // report-address and delivery-address selection pages.
-    const addressTypeComponent: any = this.components.items.find(
-      (c: any) => c.name === COMPONENT_ADDRESS_TYPE
-    );
-
+    const rawComponents: { name: string; options?: { value?: AddressType } }[] =
+      pageDef.components ?? [];
     this.pageAddressType =
-      (addressTypeComponent?.options?.value as AddressType) || "reportAddress";
+      rawComponents.find((c) => c.name === COMPONENT_ADDRESS_TYPE)?.options
+        ?.value ?? "reportAddress";
     this.selectedFieldName = deriveSelectedFieldName(this.pageAddressType);
 
-    const component: any = this.components.items.find(
-      (c: any) => c.name === this.selectedFieldName
+    const component = this.components.items.find(
+      (c): c is FormComponent =>
+        c instanceof FormComponent && c.name === this.selectedFieldName
     );
 
     if (component) {
@@ -104,7 +105,11 @@ export class SelectAnAddressPageController extends PageControllerBase {
       currentState?.[`${this.pageAddressType}_matchedAddress`]?.address;
   }
 
-  getViewModel(formData: any, iteration?: any, errors?: any) {
+  getViewModel(
+    formData: FormData,
+    iteration?: unknown,
+    errors?: FormSubmissionErrors
+  ) {
     const viewModel = super.getViewModel(formData, iteration, errors);
     this.populateAddressRadios(viewModel, formData);
     this.updateAddressesHeading(viewModel);
@@ -112,16 +117,19 @@ export class SelectAnAddressPageController extends PageControllerBase {
     return viewModel;
   }
 
-  private populateAddressRadios(viewModel: any, formData: any): void {
+  private populateAddressRadios(
+    viewModel: PageViewModel,
+    formData: FormData
+  ): void {
     const addresses = this.addresses || [];
     const radiosIndex = this.components.items.findIndex(
-      (c: any) => c.name === this.selectedFieldName
+      (c) => "name" in c && c.name === this.selectedFieldName
     );
 
     if (radiosIndex === -1 || !viewModel.components[radiosIndex]) return;
 
     viewModel.components[radiosIndex].model.items = addresses.map(
-      (addr: any) => ({
+      (addr: Address) => ({
         text: addr.address,
         value: addr.udprn,
         checked: `${addr.udprn}` === `${formData[this.selectedFieldName]}`,
@@ -129,10 +137,10 @@ export class SelectAnAddressPageController extends PageControllerBase {
     );
   }
 
-  private updateAddressesHeading(viewModel: any): void {
+  private updateAddressesHeading(viewModel: PageViewModel): void {
     const addresses = this.addresses || [];
     const headingIndex = this.components.items.findIndex(
-      (c: any) => c.name === COMPONENT_ADDRESSES_HEADING
+      (c) => "name" in c && c.name === COMPONENT_ADDRESSES_HEADING
     );
 
     if (headingIndex === -1 || !viewModel.components[headingIndex]?.model)
@@ -143,11 +151,12 @@ export class SelectAnAddressPageController extends PageControllerBase {
     ].model.content = `${addresses.length} addresses found for '${this.postcodeLookup}'`;
   }
 
-  private updateMatchedAddressDisplay(viewModel: any): void {
+  private updateMatchedAddressDisplay(viewModel: PageViewModel): void {
     const matchedDisplayIndex = this.components.items.findIndex(
-      (c: any) =>
+      (c) =>
+        "name" in c &&
         c.name ===
-        `${this.pageAddressType}_${COMPONENT_MATCHED_ADDRESS_DISPLAY}`
+          `${this.pageAddressType}_${COMPONENT_MATCHED_ADDRESS_DISPLAY}`
     );
 
     if (
@@ -162,7 +171,10 @@ export class SelectAnAddressPageController extends PageControllerBase {
   makePostRouteHandler() {
     return async (request: HapiRequest, h: HapiResponseToolkit) => {
       const response = await this.handlePostRequest(request, h);
-      const payload = (request.payload || {}) as Record<string, unknown>;
+      const payload: Record<string, unknown> = isPlainObject(request.payload)
+        ? request.payload
+        : {};
+
       const validation = this.validate<FormSubmission>(
         payload,
         addressTypeFormSchema
@@ -178,11 +190,8 @@ export class SelectAnAddressPageController extends PageControllerBase {
         return response;
       }
 
-      const {
-        addressType,
-        isCorrectAddress,
-        selectedAddress,
-      } = extractInputFromSubmission(validation.value);
+      const { addressType, isCorrectAddress, selectedAddress } =
+        extractInputFromSubmission(validation.value);
 
       const { cacheService } = request.services([]);
       const currentState = await cacheService.getState(request);
