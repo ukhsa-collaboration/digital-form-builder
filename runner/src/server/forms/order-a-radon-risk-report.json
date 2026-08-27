@@ -40,7 +40,7 @@
           "name": "introText",
           "options": {},
           "type": "Para",
-          "content": "<p class=\"govuk-body-m\">Use this service to find out the risk of radon at your address.</p><p class=\"govuk-body-m\">The report shows the likelihood, as a percentage, of a property having radon levels above the Action Level advised by the UK Health Security Agency</p>"
+          "content": "<p class=\"govuk-body-m\">Use this service to find out the risk of radon at your address.</p><p class=\"govuk-body-m\">The report shows the likelihood, as a percentage, of a property having radon levels above the Action Level advised by the UK Health Security Agency.</p>"
         },
         {
           "name": "actionLevelInset",
@@ -614,7 +614,14 @@
           "name": "postalCostNote",
           "type": "Para",
           "options": {},
-          "content": "It costs £5.51 to send your results by post.<p class=\"govuk-body-m\">You will receive the report to your delivery address by Royal Mail 1st Class.</p>"
+
+          "content": "It costs £5.51 to send your results by post."
+        },
+        {
+          "name": "postalDeliveryNote",
+          "type": "Para",
+          "options": {},
+          "content": "You will receive the report to your delivery address by Royal Mail 1st Class."
         },
         {
           "name": "deliveryAddress_addressLine1Lookup",
@@ -682,12 +689,6 @@
           "type": "TextField",
           "title": "Postcode",
           "hint": "For example, AA3 1AB"
-        },
-        {
-          "name": "deliveryTimeNote",
-          "options": {},
-          "type": "Para",
-          "content": "You will receive the report to your delivery address by Royal Mail 1st Class."
         }
       ],
       "controller": "FindAnAddressPageController",
@@ -933,7 +934,7 @@
           "name": "searchAgain",
           "options": {},
           "type": "Html",
-          "content": "<p class=\"govuk-body-m\"><a href=\"order-risk-report-find-a-delivery-address{% if returnUrl %}?returnUrl={{ returnUrl | urlencode }}{% endif %}\">Change your search</a> or <a href=\"order-risk-report-enter-delivery-address-manually{% if returnUrl %}?returnUrl={{ returnUrl | urlencode }}{% endif %}\">enter address manually</a></p>"
+          "content": "<a href=\"order-risk-report-enter-delivery-address-manually{% if returnUrl %}?returnUrl={{ returnUrl | urlencode }}{% endif %}\">enter address again</a></p>"
         }
       ],
       "next": [
