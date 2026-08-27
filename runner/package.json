@@ -32,7 +32,7 @@
     "url": "https://github.com/XGovFormBuilder/digital-form-builder/tree/main/builder"
   },
   "engines": {
-    "node": ">=18"
+    "node": ">=20"
   },
   "license": "SEE LICENSE IN LICENSE",
   "dependencies": {
@@ -77,8 +77,10 @@
     "nanoid": "^3.3.4",
     "notifications-node-client": "^7.0.4",
     "nunjucks": "^3.2.3",
+    "openredaction": "1.1.5",
     "pg-boss": "^10.1.3",
     "pino": "8.15.1",
+    "pino-abstract-transport": "1.1.0",
     "resolve": "^1.19.0",
     "schmervice": "^1.6.0",
     "strip-json-comments": "^3.1.1",

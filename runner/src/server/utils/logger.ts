@@ -11,9 +11,41 @@ const lowercaseHeaderKeys = (
     Object.entries(headers ?? {}).map(([k, v]) => [k.toLowerCase(), v])
   );
 
+const enableLogRedaction =
+  config.enableLogRedaction === true ||
+  (config.enableLogRedaction as unknown) === "true";
+
+const skipPaths: string[] = [
+  "id",
+  "pid",
+  "hostname",
+  "level",
+  "time",
+  "req.id",
+  "req.method",
+  "req.url",
+  "res.statusCode",
+  "responseTime",
+];
+
 const options: pino.LoggerOptions = {
   level: config.logLevel,
-  ...(isPretty && { transport: { target: "pino-pretty" } }),
+  transport: {
+    pipeline: [
+      ...(enableLogRedaction
+        ? [
+            {
+              target: require.resolve("./redactionTransport"),
+              // Dot-paths never scanned for PII - structural/internal fields that
+              // can look PII-shaped to the detector but aren't. Extend here if it
+              // flags another non-PII field.
+              options: { skipPaths },
+            },
+          ]
+        : []),
+      isPretty ? { target: "pino-pretty" } : { target: "pino/file" },
+    ],
+  },
   formatters: {
     level: (label) => ({ level: label }),
   },
