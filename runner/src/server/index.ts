@@ -15,6 +15,7 @@ import { configureInitialiseSessionPlugin } from "server/plugins/initialiseSessi
 
 import pluginLocale from "./plugins/locale";
 import pluginServiceHelper from "./plugins/serviceHelper";
+import pluginHooks from "server/services/hooks";
 import pluginSession from "./plugins/session";
 import pluginAuth from "./plugins/auth";
 import pluginViews from "./plugins/views";
@@ -119,6 +120,7 @@ async function createServer(routeConfig: RouteConfig) {
   await server.register(configureCrumbPlugin(config, routeConfig));
   await server.register(Schmervice);
   await server.register(pluginServiceHelper);
+  await server.register(pluginHooks);
   await server.register(pluginAuth);
 
   server.registerService([

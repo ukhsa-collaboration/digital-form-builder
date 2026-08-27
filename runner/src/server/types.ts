@@ -26,6 +26,7 @@ import { QueueStatusService } from "server/services/queueStatusService";
 import { QueueService } from "./services/QueueService";
 import { FormModel } from "server/plugins/engine/models";
 import { JsonApiIntegrationWithMsal } from "./services/jsonApiIntegrationWithMsal";
+import { HookModel, HookState } from "server/services/hooks/types";
 
 type Services = (
   services: string[]
@@ -67,6 +68,13 @@ declare module "@hapi/hapi" {
       getServices<K extends keyof KnownServicesMap>(
         ...services: K[]
       ): Pick<KnownServicesMap, K>;
+    };
+    hook: {
+      // plugin hooks
+      run(
+        hookName: string,
+        context: { model: HookModel; state?: HookState }
+      ): Promise<unknown>;
     };
     i18n: {
       // plugin locale

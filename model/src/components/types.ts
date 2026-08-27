@@ -28,6 +28,7 @@ export enum ComponentTypeEnum {
   ContentWithState = "ContentWithState",
   DisplayAddress = "DisplayAddress",
   HiddenField = "HiddenField",
+  SummaryLists = "SummaryLists",
 }
 
 export type ComponentType =
@@ -60,7 +61,8 @@ export type ComponentType =
   | "ContextComponent"
   | "ContentWithState"
   | "DisplayAddress"
-  | "HiddenField";
+  | "HiddenField"
+  | "SummaryLists";
 
 export type ComponentSubType = "field" | "content";
 
@@ -323,6 +325,43 @@ export interface HiddenFieldComponent {
   schema?: {};
 }
 
+export interface ConditionalValue {
+  condition?: string;
+  value: string;
+}
+
+export interface SummaryListComponentValue {
+  name: string;
+  type: string;
+  content: string | ConditionalValue[];
+  options?: Record<string, any>;
+}
+
+export interface SummaryListRow {
+  title: string;
+  value: string | SummaryListComponentValue;
+  changeUrl: string | false | ConditionalValue[];
+  type?: "component";
+}
+
+export interface SummaryListSection {
+  title: string;
+  content: SummaryListRow[];
+}
+
+export interface SummaryListsComponent {
+  type: "SummaryLists";
+  name: string;
+  title?: string;
+  content: SummaryListSection[];
+  subType?: "content";
+  options: {
+    enableCards?: boolean | "true" | "false";
+    condition?: string;
+  };
+  schema?: {};
+}
+
 // List Fields
 export interface ListComponent extends ListFieldBase {
   type: "List";
@@ -391,7 +430,8 @@ export type ComponentDef =
   | ContextComponent
   | ContentWithStateComponent
   | DisplayAddressComponent
-  | HiddenFieldComponent;
+  | HiddenFieldComponent
+  | SummaryListsComponent;
 
 // Components that render inputs.
 export type InputFieldsComponentsDef =

@@ -3,7 +3,6 @@ import CatboxRedis from "@hapi/catbox-redis";
 import CatboxMemory from "@hapi/catbox-memory";
 import Jwt from "@hapi/jwt";
 import Redis from "ioredis";
-
 import config from "../config";
 import { HapiRequest, HapiServer } from "../types";
 import { ExitState, FormSubmissionState } from "../plugins/engine/types";
@@ -12,7 +11,6 @@ import {
   InitialiseSessionOptions,
 } from "server/plugins/initialiseSession/types";
 import { WebhookSchema } from "../schemas/types";
-import { ExitResponse } from "server/services/ExitService";
 
 const {
   redisHost,

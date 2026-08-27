@@ -32,8 +32,10 @@ import { format, parseISO } from "date-fns";
 import config from "server/config";
 import nunjucks from "nunjucks";
 import Joi from "joi";
-import Jwt, { HapiJwt } from "@hapi/jwt";
+import Jwt from "@hapi/jwt";
 import { verifyHmacToken } from "../../initialiseSession/helpers";
+import { extractAddressContext } from "../utils/addressUtils";
+import { ConditionalCase, resolveConditionalValue } from "../conditionalValue";
 
 const FORM_SCHEMA = Symbol("FORM_SCHEMA");
 const STATE_SCHEMA = Symbol("STATE_SCHEMA");
@@ -75,6 +77,7 @@ export class PageControllerBase {
   disableBackLink?: boolean;
   returnUrl?: string;
   buttonText?: string;
+  honorReturnURL?: boolean | ConditionalCase<boolean>[];
   hideContinueButton?: boolean;
 
   // TODO: pageDef type
@@ -95,7 +98,9 @@ export class PageControllerBase {
     this.disableBackLink = pageDef.disableBackLink;
     this.disableSingleComponentAsHeading =
       pageDef.disableSingleComponentAsHeading;
-    this.buttonText = pageDef.customButtonText ?? this.defaultButtonText;
+    this.buttonText =
+      pageDef?.options?.customButtonText ?? this.defaultButtonText;
+    this.honorReturnURL = pageDef?.options?.honorReturnURL ?? true;
     this.hideContinueButton = pageDef.options?.hideContinueButton ?? false;
 
     // Resolve section
@@ -303,14 +308,18 @@ export class PageControllerBase {
     }
 
     let defaultLink;
+    const conditionResults: { condition: string; passed: boolean }[] = [];
     const nextLink = this.next.find((link) => {
       const { condition } = link;
 
       if (!condition) {
         defaultLink = link;
+        return false;
       }
 
       const conditionPassed = this.model.conditions[condition]?.fn?.(state);
+
+      conditionResults.push({ condition, passed: !!conditionPassed });
 
       if (conditionPassed) return link;
 
@@ -390,6 +399,7 @@ export class PageControllerBase {
     return {
       ...this.components.getFormDataFromState(pageState || {}),
       ...this.model.getContextState(state),
+      ...extractAddressContext(state),
     };
   }
 
@@ -403,7 +413,8 @@ export class PageControllerBase {
    */
   getErrors(validationResult): FormSubmissionErrors | undefined {
     if (validationResult && validationResult.error) {
-      const isoRegex = /\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z)/;
+      const isoRegex =
+        /\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z)/;
 
       const errorList = validationResult.error.details.map((err) => {
         const name = err.path
@@ -459,10 +470,12 @@ export class PageControllerBase {
    */
   langFromRequest(request: HapiRequest) {
     const lang = request.query.lang || request.yar.get("lang") || "en";
+
     if (lang !== request.yar.get("lang")) {
       request.i18n.setLocale(lang);
       request.yar.set("lang", lang);
     }
+
     return request.yar.get("lang");
   }
 
@@ -569,7 +582,7 @@ export class PageControllerBase {
         }
         if (authCookie) {
           const tokenArtifacts = Jwt.token.decode(authCookie);
-          const { isValid, error } = verifyHmacToken(
+          const { isValid } = verifyHmacToken(
             tokenArtifacts,
             this.model.def.jwtKey
           );
@@ -617,8 +630,10 @@ export class PageControllerBase {
           component.model.condition
         ) {
           const condition = this.model.conditions[component.model.condition];
+
           return condition.fn(relevantState);
         }
+
         return true;
       });
 
@@ -629,11 +644,14 @@ export class PageControllerBase {
             component.model.condition
           ) {
             const condition = this.model.conditions[component.model.condition];
+
             return condition.fn(relevantState);
           }
+
           return true;
         }
       );
+
       /**
        * For conditional reveal components (which we no longer support until GDS resolves the related accessibility issues {@link https://github.com/alphagov/govuk-frontend/issues/1991}
        */
@@ -663,11 +681,18 @@ export class PageControllerBase {
 
       /**
        * used for when a user clicks the "back" link. Progress is stored in the state. This is a safer alternative to running javascript that pops the history `onclick`.
+       *
+       * If we're revisiting a page already further down the stack (e.g. returning to
+       * a summary page after a multi-hop detour like an address lookup or a
+       * change-link sub-journey), truncate back to that point rather than pushing a
+       * duplicate - otherwise the detour pages linger forever and the back link
+       * cycles through stale pages instead of leaving the loop.
        */
       const lastVisited = progress[progress.length - 1];
       if (!lastVisited || !lastVisited.startsWith(currentPath)) {
-        if (progress[progress.length - 2] === currentPath) {
-          progress.pop();
+        const priorIndex = progress.lastIndexOf(currentPath);
+        if (priorIndex !== -1) {
+          progress.length = priorIndex + 1;
         } else {
           progress.push(currentPath);
         }
@@ -869,7 +894,7 @@ export class PageControllerBase {
         if (authCookie) {
           const tokenArtifacts = Jwt.token.decode(authCookie);
 
-          const { isValid, error } = verifyHmacToken(
+          const { isValid } = verifyHmacToken(
             tokenArtifacts,
             this.model.def.jwtKey
           );
@@ -991,11 +1016,15 @@ export class PageControllerBase {
 
     const returnUrl = getReturnUrl(request);
 
+    const resolvedHonorReturnURL = resolveConditionalValue(
+      this.honorReturnURL,
+      state,
+      this.model.conditions,
+      true
+    );
+
     const shouldHonourReturnUrl =
-      honourReturnUrl ??
-      (typeof nextUrl === "string" &&
-        returnUrl !== undefined &&
-        nextUrl.split("?")[0] === returnUrl.split("?")[0]);
+      honourReturnUrl ?? resolvedHonorReturnURL ?? returnUrl !== undefined;
 
     return proceed(request, h, nextUrl, shouldHonourReturnUrl);
   }
@@ -1095,3 +1124,5 @@ export class PageControllerBase {
     return h.view(this.viewName, viewModel);
   }
 }
+
+export type PageViewModel = ReturnType<PageControllerBase["getViewModel"]>;

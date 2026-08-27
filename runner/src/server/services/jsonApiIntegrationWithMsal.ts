@@ -1,3 +1,4 @@
+import { BaseService } from "./BaseService";
 import { MsalAuthorizer } from "./msalAuthorizerService";
 
 export interface JsonApiIntegrationWithMsalConfig {
@@ -9,11 +10,13 @@ export interface JsonApiIntegrationWithMsalConfig {
   scopes: string[];
 }
 
-export class JsonApiIntegrationWithMsal {
+export class JsonApiIntegrationWithMsal extends BaseService {
   private readonly auth: MsalAuthorizer;
   private readonly config: JsonApiIntegrationWithMsalConfig;
 
-  constructor(config: JsonApiIntegrationWithMsalConfig) {
+  constructor(name: string, config: JsonApiIntegrationWithMsalConfig) {
+    super(name);
+
     this.config = config;
     this.auth = new MsalAuthorizer(config);
   }
@@ -21,10 +24,26 @@ export class JsonApiIntegrationWithMsal {
   async request(path: string, init: RequestInit = {}): Promise<Response> {
     const headers = {
       ...init.headers,
+      "User-Agent": "X-GOV-Forms/1.0",
       "Content-Type": "application/json",
       Authorization: `Bearer ${await this.auth.getToken()}`,
     };
 
-    return fetch(`${this.config.apimBaseUrl}${path}`, { ...init, headers });
+    const url = `${this.config.apimBaseUrl}${path}`;
+
+    this.log.trace("request", { url, headers, init });
+
+    const response = await fetch(url, { ...init, headers });
+
+    const body = await response.json();
+
+    this.log.trace("response", {
+      status: response.status,
+      statusText: response.statusText,
+      headers: response.headers,
+      body,
+    });
+
+    return Promise.resolve(new Response(JSON.stringify(body), response));
   }
 }

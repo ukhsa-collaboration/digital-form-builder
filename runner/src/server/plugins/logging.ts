@@ -1,5 +1,6 @@
 import config from "../config";
 import pino from "hapi-pino";
+import { logger } from "../utils/logger";
 
 const logFilter = config.isDev
   ? (request: any) => !request.path.startsWith("/assets")
@@ -8,20 +9,9 @@ const logFilter = config.isDev
 export default {
   plugin: pino,
   options: {
-    prettyPrint:
-      config.logPrettyPrint === "true" || config.logPrettyPrint === true,
-    level: config.logLevel,
-    formatters: {
-      level: (label) => {
-        return { level: label };
-      },
-    },
+    instance: logger,
     debug: config.isDev,
     logRequestStart: logFilter,
     logRequestComplete: logFilter,
-    redact: {
-      paths: config.logRedactPaths,
-      censor: "REDACTED",
-    },
   },
 };

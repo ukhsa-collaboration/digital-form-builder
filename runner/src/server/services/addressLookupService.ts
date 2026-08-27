@@ -1,3 +1,4 @@
+import { BaseService } from "./BaseService";
 import { MsalAuthorizer } from "./msalAuthorizerService";
 import { AddressLookupConfig } from "@xgovformbuilder/model";
 
@@ -19,11 +20,13 @@ export interface AddressLookupResponse {
   addresses: Address[];
 }
 
-export class AddressLookupService {
+export class AddressLookupService extends BaseService {
   private readonly auth: MsalAuthorizer;
   private readonly config: AddressLookupConfig;
 
-  constructor(config: AddressLookupConfig) {
+  constructor(_, config: AddressLookupConfig) {
+    super(`addressLookupService.${config.callingApplication}`);
+
     this.config = config;
     this.auth = new MsalAuthorizer(config);
   }
@@ -52,19 +55,29 @@ export class AddressLookupService {
       }),
     };
 
-    const res = await fetch(
-      `${this.config.apimBaseUrl}/matchAddress?${params}`,
-      { headers }
-    );
+    const url = `${this.config.apimBaseUrl}/matchAddress?${params}`;
 
-    if (!res.ok) {
-      throw new Error(`Location lookup failed with status code ${res.status}`);
+    this.log.trace("lookupByPostcode.request", { url, headers });
+
+    const response = await fetch(url, { headers });
+
+    const body = await response.json();
+
+    this.log.trace("lookupByPostcode.response", {
+      status: response.status,
+      statusText: response.statusText,
+      headers: response.headers,
+      body,
+    });
+
+    if (!response.ok) {
+      throw new Error(
+        `Location lookup failed with status code ${response.status}`
+      );
     }
 
-    const jsonRes = await res.json();
-
     return {
-      addresses: jsonRes.matchedAddresses.map(
+      addresses: body.matchedAddresses.map(
         (item: any): Address => ({
           address: item.addressString,
           postcode: item.postcode,
