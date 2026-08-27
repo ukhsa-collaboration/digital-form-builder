@@ -2,8 +2,8 @@
   "formGroup": "radon",
   "version": 2,
   "metadata": {},
-  "startPage": "/order-a-radon-risk-report-start-now",
-  "fullStartPage": "order-a-radon-risk-report-start-now",
+  "startPage": "/order-risk-report-start",
+  "fullStartPage": "order-risk-report-start",
   "name": "Order a radon risk report",
   "serviceName": "Order a radon risk report",
   "confirmationSessionTimeout": 2000,
@@ -17,7 +17,7 @@
     },
     {
       "description": "Post delivery",
-      "amount": 524,
+      "amount": 551,
       "condition": "isPostDelivery"
     }
   ],
@@ -33,14 +33,14 @@
   "pages": [
     {
       "title": "Order a radon risk report",
-      "path": "/order-a-radon-risk-report-start-now",
+      "path": "/order-risk-report-start",
       "backLinkFallback": "https://www.ukhsa-protectionservices.org.uk/",
       "components": [
         {
           "name": "introText",
           "options": {},
           "type": "Para",
-          "content": "<p class=\"govuk-body-m\">Use this service to find out the risk of radon at your address.</p><p class=\"govuk-body-m\">The report shows the likelihood, as a percentage, of a property having radon levels above the Action Level advised by the UK Health Security Agency</p>"
+          "content": "<p class=\"govuk-body-m\">Use this service to find out the risk of radon at your address.</p><p class=\"govuk-body-m\">The report shows the likelihood, as a percentage, of a property having radon levels above the Action Level advised by the UK Health Security Agency.</p>"
         },
         {
           "name": "actionLevelInset",
@@ -52,7 +52,7 @@
           "name": "reportDetailsText",
           "options": {},
           "type": "Para",
-          "content": "<p class=\"govuk-body-m\">The report does not tell you the radon level inside the property. To find this out, you need to do a 3‑month test using a <a href=\"/order-a-radon-home-test-kit\">radon gas test pack</a>.</p><p class=\"govuk-body-m\">Basements and cellar rooms are at a higher risk of radon. If a room you use frequently is below ground level, such as a kitchen or office, you should do a radon test, even if the property is not in a radon Affected Area.</p><p class=\"govuk-body-m\">Each report costs £3.90 and will be sent to an email address you provide. Alternatively, you can request a physical report to be sent by post for an additional fee.</p><p class=\"govuk-body-m\"><a href=\"https://www.ukradon.org/cms/assets/gfx/content/resource_5095cs45be58330c.pdf\">Read a sample report</a></p><h3 class=\"govuk-heading-m\">Before you start</h3><p class=\"govuk-body-m\">This service is for buildings up to 25 metres in any direction.</p><p class=\"govuk-body-m\">This report is not suitable for larger buildings. In this case, contact the <a href=\"http://shop.bgs.ac.uk/georeports\">British Geological Survey (BGS)</a>.</p><p class=\"govuk-body-m\">You'll need:</p><p class=\"govuk-body-m\"><ul class=\"govuk-list govuk-list--bullet\"><li>a valid UK address for the risk report</li><li>a valid email address or a UK postal delivery address</li><li>your payment details</li></ul></p>"
+          "content": "<p class=\"govuk-body-m\">The report does not tell you the radon level inside the property. To find this out, you need to do a 3‑month test using a <a href=\"/order-a-radon-home-test-kit\">radon gas test pack</a>.</p><p class=\"govuk-body-m\">Basements and cellar rooms are at a higher risk of radon. If a room you use frequently is below ground level, such as a kitchen or office, you should do a radon test, even if the property is not in a radon Affected Area.</p><p class=\"govuk-body-m\">Each report costs £3.90 and will be sent to an email address you provide. Alternatively, you can request a physical report to be sent by Royal Mail 1st Class for £5.51.</p><p class=\"govuk-body-m\"><a href=\"https://www.ukradon.org/cms/assets/gfx/content/resource_5095cs45be58330c.pdf\">Read a sample report</a></p><h3 class=\"govuk-heading-m\">Before you start</h3><p class=\"govuk-body-m\">This service is for buildings up to 25 metres in any direction.</p><p class=\"govuk-body-m\">This report is not suitable for larger buildings. In this case, contact the <a href=\"http://shop.bgs.ac.uk/georeports\">British Geological Survey (BGS)</a>.</p><p class=\"govuk-body-m\">You'll need:</p><p class=\"govuk-body-m\"><ul class=\"govuk-list govuk-list--bullet\"><li>a valid UK address for the risk report</li><li>a valid email address or a UK postal delivery address</li><li>your payment details</li></ul></p>"
         }
       ],
       "next": [{ "path": "/order-risk-report-find-a-report-address" }],
@@ -128,7 +128,7 @@
           "path": "/order-risk-report-is-this-the-correct-report-address",
           "condition": "hasMatchedReportAddressCondition"
         },
-        { "path": "/order-risk-report-select-a-report-address" },
+        { "path": "/order-risk-report-more-than-one-address-found" },
         {
           "path": "/order-risk-report-no-report-addresses-found",
           "condition": "noReportAddressesCondition"
@@ -189,18 +189,18 @@
       ],
       "next": [
         {
-          "path": "/how-would-you-like-to-receive-your-report",
+          "path": "/order-risk-report-receive-report-preference",
           "condition": "isCorrectReportAddress"
         },
         {
           "path": "/order-risk-report-no-report-addresses-found",
           "condition": "reportAddressOnlyOneAddressCondition"
         },
-        { "path": "/order-risk-report-select-a-report-address" }
+        { "path": "/order-risk-report-more-than-one-address-found" }
       ]
     },
     {
-      "path": "/order-risk-report-select-a-report-address",
+      "path": "/order-risk-report-more-than-one-address-found",
       "title": "Select an address",
       "components": [
         {
@@ -213,7 +213,7 @@
           "name": "searchAgain",
           "options": {},
           "type": "Html",
-          "content": "<p class=\"govuk-body-m\"><a href=\"order-risk-report-find-a-report-address{% if returnUrl %}?returnUrl={{ returnUrl | urlencode }}{% endif %}\">Change your search</a> if the address you're looking for is not listed.</p>"
+          "content": "<p class=\"govuk-body-m\"><a href=\"order-risk-report-find-a-report-address{% if returnUrl %}?returnUrl={{ returnUrl | urlencode }}{% endif %}\">Change your search</a> if the address you're looking for is not listed.</p><p class=\"govuk-body-m\"><a href=\"order-risk-report-enter-report-address-manually{% if returnUrl %}?returnUrl={{ returnUrl | urlencode }}{% endif %}\">Enter address manually</a></p>"
         },
         {
           "name": "addressType",
@@ -242,14 +242,6 @@
       },
       "next": [
         { "path": "/order-risk-report-is-this-the-correct-report-address" }
-      ],
-      "componentsAfter": [
-        {
-          "name": "enterManuallyLink",
-          "options": {},
-          "type": "Html",
-          "content": "<br><a href=\"order-risk-report-enter-report-address-manually{% if returnUrl %}?returnUrl={{ returnUrl | urlencode }}{% endif %}\">Enter address manually</a>"
-        }
       ]
     },
     {
@@ -364,7 +356,7 @@
           "path": "/order-risk-report-is-this-the-correct-report-address",
           "condition": "hasMatchedReportAddressCondition"
         },
-        { "path": "/order-risk-report-select-a-report-address" },
+        { "path": "/order-risk-report-more-than-one-address-found" },
         {
           "path": "/order-risk-report-cannot-find-report-address",
           "condition": "noReportAddressesCondition"
@@ -393,10 +385,9 @@
       ],
       "next": [{ "path": "/order-risk-report-enter-report-address-manually" }]
     },
-
     {
       "title": "How would you like to receive your report?",
-      "path": "/how-would-you-like-to-receive-your-report",
+      "path": "/order-risk-report-receive-report-preference",
       "components": [
         {
           "name": "deliveryMethod",
@@ -551,7 +542,7 @@
           "name": "emailConfirmationNote",
           "options": {},
           "type": "InsetText",
-          "content": "We will send your payment confirmation and the report to the email address provided."
+          "content": "We will use your email address to send your order and payment confirmation."
         }
       ],
       "next": [
@@ -623,7 +614,14 @@
           "name": "postalCostNote",
           "type": "Para",
           "options": {},
-          "content": "It costs £5.24 to send your results by post."
+
+          "content": "It costs £5.51 to send your results by post."
+        },
+        {
+          "name": "postalDeliveryNote",
+          "type": "Para",
+          "options": {},
+          "content": "You will receive the report to your delivery address by Royal Mail 1st Class."
         },
         {
           "name": "deliveryAddress_addressLine1Lookup",
@@ -691,12 +689,6 @@
           "type": "TextField",
           "title": "Postcode",
           "hint": "For example, AA3 1AB"
-        },
-        {
-          "name": "deliveryTimeNote",
-          "options": {},
-          "type": "Para",
-          "content": "You will receive the report to your delivery address within 3 to 5 working days."
         }
       ],
       "controller": "FindAnAddressPageController",
@@ -707,10 +699,32 @@
         },
         { "path": "/order-risk-report-select-a-delivery-address" },
         {
-          "path": "/order-risk-report-no-delivery-addresses-found",
+          "path": "/order-risk-report-cannot-find-delivery-address",
           "condition": "noDeliveryAddressesCondition"
         }
       ]
+    },
+    {
+      "path": "/order-risk-report-cannot-find-delivery-address",
+      "title": "We cannot find your address",
+      "options": {
+        "hideContinueButton": true
+      },
+      "components": [
+        {
+          "name": "noAddressesFoundMessage",
+          "options": {},
+          "type": "Para",
+          "content": "No address found for {{ deliveryAddress_addressLine1Lookup }}{% if deliveryAddress_addressLine2Lookup %}, {{ deliveryAddress_addressLine2Lookup }}{% endif %}{% if deliveryAddress_townLookup %}, {{ deliveryAddress_townLookup }}{% endif %}{% if deliveryAddress_countyLookup %}, {{ deliveryAddress_countyLookup }}{% endif %}{% if deliveryAddress_postcodeLookup %}, {{ deliveryAddress_postcodeLookup }}{% endif %}<br><br>Check your address for mistakes, then try again.<br><br>Check you have entered the address correctly, then try again."
+        },
+        {
+          "name": "searchAgain",
+          "options": {},
+          "type": "Html",
+          "content": "<p class=\"govuk-body-m\"><a href=\"order-risk-report-find-a-delivery-address{% if returnUrl %}?returnUrl={{ returnUrl | urlencode }}{% endif %}\">Change your search</a> or <a href=\"order-risk-report-enter-delivery-address-manually{% if returnUrl %}?returnUrl={{ returnUrl | urlencode }}{% endif %}\">enter address manually</a></p>"
+        }
+      ],
+      "next": [{ "path": "/order-risk-report-enter-delivery-address-manually" }]
     },
     {
       "path": "/order-risk-report-find-a-delivery-address",
@@ -830,7 +844,7 @@
           "name": "deliveryTimeNote",
           "options": {},
           "type": "Para",
-          "content": "You will receive the report to your delivery address within 3 to 5 working days."
+          "content": "You will receive the report to your delivery address by Royal Mail 1st Class."
         }
       ],
       "controller": "SelectAnAddressPageController",
@@ -871,7 +885,7 @@
           "name": "searchAgain",
           "options": {},
           "type": "Html",
-          "content": "<p class=\"govuk-body-m\"><a href=\"order-risk-report-find-a-delivery-address{% if returnUrl %}?returnUrl={{ returnUrl | urlencode }}{% endif %}\">Change your search</a> if the address you're looking for is not listed.</p>"
+          "content": "<p class=\"govuk-body-m\"><a href=\"order-risk-report-find-a-delivery-address{% if returnUrl %}?returnUrl={{ returnUrl | urlencode }}{% endif %}\">Change your search</a> if the address you're looking for is not listed.</p><p class=\"govuk-body-m\"><a href=\"order-risk-report-enter-delivery-address-manually{% if returnUrl %}?returnUrl={{ returnUrl | urlencode }}{% endif %}\">Enter address manually</a></p>"
         },
         {
           "name": "addressType",
@@ -901,14 +915,6 @@
       },
       "next": [
         { "path": "/order-risk-report-is-this-the-correct-delivery-address" }
-      ],
-      "componentsAfter": [
-        {
-          "name": "enterManuallyLink",
-          "options": {},
-          "type": "Html",
-          "content": "<br><a href=\"order-risk-report-enter-delivery-address-manually{% if returnUrl %}?returnUrl={{ returnUrl | urlencode }}{% endif %}\">Enter address manually</a>"
-        }
       ]
     },
     {
@@ -928,7 +934,7 @@
           "name": "searchAgain",
           "options": {},
           "type": "Html",
-          "content": "<p class=\"govuk-body-m\"><a href=\"order-risk-report-find-a-delivery-address{% if returnUrl %}?returnUrl={{ returnUrl | urlencode }}{% endif %}\">Change your search</a> or <a href=\"order-risk-report-enter-delivery-address-manually{% if returnUrl %}?returnUrl={{ returnUrl | urlencode }}{% endif %}\">enter address manually</a></p>"
+          "content": "<a href=\"order-risk-report-enter-delivery-address-manually{% if returnUrl %}?returnUrl={{ returnUrl | urlencode }}{% endif %}\">enter address again</a></p>"
         }
       ],
       "next": [
@@ -963,10 +969,6 @@
                     "name": "displayReportAddress",
                     "type": "Para",
                     "content": [
-                      {
-                        "condition": "reportAddressEnteredManuallyCondition",
-                        "value": "{{reportAddress_addressLine1Lookup}}, {{reportAddress_addressLine2Lookup}}, {{reportAddress_townLookup}}, {{reportAddress_countyLookup}}, {{reportAddress_postcodeLookup}}"
-                      },
                       { "value": "{{reportAddress_fullSelectedAddress}}" }
                     ]
                   }
@@ -974,7 +976,7 @@
                 {
                   "type": "component",
                   "title": "Delivery method",
-                  "changeUrl": "/how-would-you-like-to-receive-your-report",
+                  "changeUrl": "/order-risk-report-receive-report-preference",
                   "value": {
                     "name": "deliveryMethodDisplay",
                     "type": "Para",
@@ -1027,16 +1029,8 @@
                     "type": "Para",
                     "content": [
                       {
-                        "condition": "isSameDeliveryAddressWithManualReport",
-                        "value": "{{reportAddress_addressLine1Lookup}}, {{reportAddress_addressLine2Lookup}}, {{reportAddress_townLookup}}, {{reportAddress_countyLookup}}, {{reportAddress_postcodeLookup}}"
-                      },
-                      {
                         "condition": "isDeliveryAddressSameAsReport",
                         "value": "{{reportAddress_fullSelectedAddress}}"
-                      },
-                      {
-                        "condition": "deliveryAddressEnteredManuallyCondition",
-                        "value": "{{deliveryAddress_addressLine1Lookup}}, {{deliveryAddress_addressLine2Lookup}}, {{deliveryAddress_townLookup}}, {{deliveryAddress_countyLookup}}, {{deliveryAddress_postcodeLookup}}"
                       },
                       { "value": "{{deliveryAddress_fullSelectedAddress}}" }
                     ]
@@ -1093,12 +1087,12 @@
           "options": {
             "condition": "isPostDelivery"
           },
-          "content": "<p class=\"govuk-body-m\">Your radon risk report will be sent to {{ deliveryAddress_matchedAddress.address }} within 3 to 6 working days.</p>"
+          "content": "<p class=\"govuk-body-m\">Your radon risk report will be sent to {{ deliveryAddress_matchedAddress.address }} by Royal Mail 1st Class.</p>"
         },
         {
           "name": "final links",
           "type": "Para",
-          "content": "<p class=\"govuk-body-m\"><a href=\"https://www.gov.uk/health-protection-team\" target=”_blank”>What did you think of this service?</a> (takes 30 seconds)</p><p class=\"govuk-body-m\"><a href=\"https://www.gov.uk/health-protection-team\" target=”_blank”>Go to Radon services for homeowners or householders</a></p>"
+          "content": "<p class=\"govuk-body-m\"><a href=\"https://www.gov.uk/health-protection-team\" target=”_blank”>What did you think of this service?</a> (takes 30 seconds)</p><p class=\"govuk-body-m\"><a href=\"#\" target=”_blank”>Contact Radon Measurement Service team</a></p><p class=\"govuk-body-m\"><a href=\"#\" target=”_blank”>Go to radon services for homeowners or householders</a></p>"
         }
       ]
     }
@@ -1114,7 +1108,7 @@
           "value": "email"
         },
         {
-          "text": "Printed report (£5.24) - delivered within 3 to 6 working days",
+          "text": "Printed report (£5.51) - delivered by Royal Mail 1st Class",
           "value": "post"
         }
       ]
