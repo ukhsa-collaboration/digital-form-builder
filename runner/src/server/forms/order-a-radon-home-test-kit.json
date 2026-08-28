@@ -607,15 +607,16 @@
       "components": [
         {
           "name": "resultsTitle",
-          "type": "TextField",
+          "type": "RadiosField",
           "title": "Title",
-          "hint": "e.g. Mr, Mrs, Dr",
           "options": {
             "exposeToContext": true,
             "customValidationMessages": {
-              "string.empty": "Enter the title of the recipient of the radon gas test results"
-            }
-          }
+              "any.required": "Select a title"
+            },
+            "divider": true
+          },
+          "list": "titleList"
         },
         {
           "name": "resultsFirstName",
@@ -730,15 +731,16 @@
       "components": [
         {
           "name": "kitTitle",
-          "type": "TextField",
+          "type": "RadiosField",
           "title": "Title",
-          "hint": "e.g. Mr, Mrs, Dr",
           "options": {
             "exposeToContext": true,
             "customValidationMessages": {
-              "string.empty": "Enter the title of the recipient of the kit"
-            }
-          }
+              "any.required": "Select a title"
+            },
+            "divider": true
+          },
+          "list": "titleList"
         },
         {
           "name": "kitFirstName",
