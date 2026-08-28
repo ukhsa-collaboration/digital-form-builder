@@ -208,6 +208,10 @@
           "content": "<p class=\"govuk-body-m\"><a href=\"/property-address{% if returnUrl %}?returnUrl={{ returnUrl | urlencode }}{% endif %}\">Change your search</a> if the address you're looking for is not listed.</p>"
         },
         {
+          "type": "Html",
+          "content": "<p class=\"govuk-body-m\"><a href=\"property-address-manual{% if returnUrl %}?returnUrl={{ returnUrl | urlencode }}{% endif %}\">Enter address manually</a></p><br>"
+        },
+        {
           "name": "addressType",
           "type": "HiddenField",
           "options": {
@@ -229,10 +233,7 @@
         }
       ],
       "componentsAfter": [
-        {
-          "type": "Html",
-          "content": "<br><a href=\"property-address-manual{% if returnUrl %}?returnUrl={{ returnUrl | urlencode }}{% endif %}\">Enter address manually</a>"
-        }
+        
       ],
       "next": [
         {
