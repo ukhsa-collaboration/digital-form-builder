@@ -1,7 +1,10 @@
 import { OpenRedaction, createJsonProcessor } from "openredaction";
 import { logger } from "./logger";
 
-const detector = new OpenRedaction();
+const detector = new OpenRedaction({
+  preset: "gdpr",
+});
+
 const jsonProcessor = createJsonProcessor();
 
 /**
@@ -20,6 +23,7 @@ export async function redactJson<T>(
     const detection = await jsonProcessor.detect(value, detector, {
       scanKeys: true,
       skipPaths,
+      piiIndicatorKeys: ["firstName", "lastName"],
     });
 
     return jsonProcessor.redact(value, detection, {

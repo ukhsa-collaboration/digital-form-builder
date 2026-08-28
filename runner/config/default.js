@@ -8,16 +8,27 @@ if (process.env.NODE_ENV !== "test") {
 }
 
 /**
- * Creates log redaction paths for headers
+ * Creates log redaction paths for headers, covering common header name casings
+ * (lower, upper, and title-case) since pino/fast-redact path matching is exact.
+ * Node.js normalises incoming HTTP headers to lowercase, but middleware or
+ * manual log calls may preserve the original casing.
  * @param {string} name
  * @returns
  */
 const createRedactedHeaderLogPath = (name) => {
-  return [
-    `req.headers['${name}']`,
-    `request.headers['${name}']`,
-    `headers['${name}']`,
+  const titleCase = name
+    .split("-")
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1).toLowerCase())
+    .join("-");
+
+  const variants = [
+    ...new Set([name, name.toLowerCase(), name.toUpperCase(), titleCase]),
   ];
+  const roots = ["*.headers", "headers"];
+
+  return roots.flatMap((root) =>
+    variants.map((variant) => `${root}['${variant}']`)
+  );
 };
 
 module.exports = {

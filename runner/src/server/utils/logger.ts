@@ -21,9 +21,12 @@ const skipPaths: string[] = [
   "hostname",
   "level",
   "time",
-  "req.id",
-  "req.method",
-  "req.url",
+  "*.id",
+  "*.method",
+  "*.url",
+  "*.statusCode",
+  "method",
+  "url",
   "res.statusCode",
   "responseTime",
 ];
@@ -58,7 +61,7 @@ const options: pino.LoggerOptions = {
     ? {
         redact: {
           paths: config.logRedactPaths,
-          censor: "REDACTED",
+          censor: "[REDACTED]",
         },
       }
     : {}),

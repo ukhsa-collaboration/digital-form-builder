@@ -114,7 +114,7 @@ export const rpsGasTestKitOnSummarySubmit: Hook<void> = async (
   };
 
   request.logger.trace(
-    await redactJson(rawRequestData),
+    { rawRequestData: await redactJson(rawRequestData) },
     "rpsGasTestKitOnSummarySubmit.rawRequestData"
   );
 

@@ -53,7 +53,7 @@ export const rpsRiskReportOnSummarySubmit: Hook<void> = async (
   };
 
   request.logger.trace(
-    await redactJson(rawRequestData),
+    { rawRequestData: await redactJson(rawRequestData) },
     "rpsRiskReportOnSummarySubmit.rawRequestData"
   );
 

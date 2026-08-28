@@ -39,7 +39,9 @@ function expandJsonStrings(value) {
  * free text). Runs in pino's worker thread, upstream of pino-pretty/pino-file.
  */
 module.exports = function redactionTransport(opts = {}) {
-  const detector = new OpenRedaction();
+  const detector = new OpenRedaction({
+    preset: "gdpr",
+  });
 
   const jsonProcessor = createJsonProcessor();
 
@@ -57,6 +59,7 @@ module.exports = function redactionTransport(opts = {}) {
           const detection = await jsonProcessor.detect(expanded, detector, {
             scanKeys: true,
             skipPaths,
+            piiIndicatorKeys: ["firstName", "lastName"],
           });
 
           const redacted = jsonProcessor.redact(expanded, detection, {
