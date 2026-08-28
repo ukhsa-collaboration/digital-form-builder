@@ -69,6 +69,9 @@ const lookupUdprnInDatabase = async (
         code: 404,
         page: "404-address-not-in-db",
         backUrl: backLinkUrl,
+        data: {
+          findAnAddressUrl: "./find-a-report-address",
+        },
       });
     }
 
@@ -126,9 +129,7 @@ const rpsRiskReportOnAddressSelection: AddressSelectionHandler = async (
  * Registry of handlers that run once an address is confirmed. A form opts a
  * page in via `options.onAddressSelection: "<handlerName>"`.
  */
-export const addressSelectionHandlers: Record<
-  string,
-  AddressSelectionHandler
-> = {
-  rpsRiskReportOnAddressSelection,
-};
+export const addressSelectionHandlers: Record<string, AddressSelectionHandler> =
+  {
+    rpsRiskReportOnAddressSelection,
+  };
