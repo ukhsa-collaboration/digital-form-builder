@@ -6,6 +6,7 @@ import {
   saveGasTestKitDetailsSchema,
   StoreGtkRequest,
 } from "@xgovformbuilder/model/dist/module/schema/rps";
+import { redactJson } from "src/server/utils/redactJson";
 
 const toAddressDetails = (address?: {
   address?: string;
@@ -113,7 +114,7 @@ export const rpsGasTestKitOnSummarySubmit: Hook<void> = async (
   };
 
   request.logger.trace(
-    rawRequestData,
+    await redactJson(rawRequestData),
     "rpsGasTestKitOnSummarySubmit.rawRequestData"
   );
 
@@ -131,19 +132,12 @@ export const rpsGasTestKitOnSummarySubmit: Hook<void> = async (
     );
   }
 
-  request.logger.trace(requestBody, "rpsGasTestKitOnSummarySubmit.requestBody");
-
   const response = await rpsBackendService.request("/storegtk", {
     method: "POST",
     body: JSON.stringify(requestBody),
   });
 
   const body = await response.json();
-
-  request.logger.trace(
-    { status: response.status, body },
-    "rpsGasTestKitOnSummarySubmit.response"
-  );
 
   if (response.status !== 200 || body.error) {
     throw new ControllerError(

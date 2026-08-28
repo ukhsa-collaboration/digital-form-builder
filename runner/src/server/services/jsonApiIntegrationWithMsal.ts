@@ -1,5 +1,6 @@
 import { BaseService } from "./BaseService";
 import { MsalAuthorizer } from "./msalAuthorizerService";
+import { redactJson } from "../utils/redactJson";
 
 export interface JsonApiIntegrationWithMsalConfig {
   apimBaseUrl: string;
@@ -31,7 +32,11 @@ export class JsonApiIntegrationWithMsal extends BaseService {
 
     const url = `${this.config.apimBaseUrl}${path}`;
 
-    this.log.trace("request", { url, headers, init });
+    this.log.trace("request", {
+      url,
+      headers: await redactJson(headers),
+      body: await redactJson(init.body),
+    });
 
     const response = await fetch(url, { ...init, headers });
 
@@ -40,8 +45,8 @@ export class JsonApiIntegrationWithMsal extends BaseService {
     this.log.trace("response", {
       status: response.status,
       statusText: response.statusText,
-      headers: response.headers,
-      body,
+      headers: await redactJson(response.headers),
+      body: await redactJson(body),
     });
 
     return Promise.resolve(new Response(JSON.stringify(body), response));

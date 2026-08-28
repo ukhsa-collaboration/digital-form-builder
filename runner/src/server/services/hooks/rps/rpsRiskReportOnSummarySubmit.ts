@@ -5,6 +5,7 @@ import {
   StoreReportRequest,
   storeReportRequestSchema,
 } from "@xgovformbuilder/model/dist/module/schema/rps";
+import { redactJson } from "src/server/utils/redactJson";
 
 /**
  * The hook for the on submit event within the headless summary page
@@ -52,7 +53,7 @@ export const rpsRiskReportOnSummarySubmit: Hook<void> = async (
   };
 
   request.logger.trace(
-    rawRequestData,
+    await redactJson(rawRequestData),
     "rpsRiskReportOnSummarySubmit.rawRequestData"
   );
 
@@ -70,19 +71,12 @@ export const rpsRiskReportOnSummarySubmit: Hook<void> = async (
     );
   }
 
-  request.logger.trace(requestBody, "rpsRiskReportOnSummarySubmit.requestBody");
-
   const response = await rpsBackendService.request("/storereport", {
     method: "POST",
     body: JSON.stringify(requestBody),
   });
 
   const body = await response.json();
-
-  request.logger.trace(
-    { status: response.status, body },
-    "rpsRiskReportOnSummarySubmit.response"
-  );
 
   if (response.status !== 200 || body.error) {
     throw new ControllerError(`Request to save report details has failed`, {

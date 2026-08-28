@@ -1,3 +1,4 @@
+import { redactJson } from "../utils/redactJson";
 import { BaseService } from "./BaseService";
 import { MsalAuthorizer } from "./msalAuthorizerService";
 import { AddressLookupConfig } from "@xgovformbuilder/model";
@@ -57,7 +58,10 @@ export class AddressLookupService extends BaseService {
 
     const url = `${this.config.apimBaseUrl}/matchAddress?${params}`;
 
-    this.log.trace("lookupByPostcode.request", { url, headers });
+    this.log.trace("lookupByPostcode.request", {
+      url,
+      headers: await redactJson(headers),
+    });
 
     const response = await fetch(url, { headers });
 
@@ -66,8 +70,8 @@ export class AddressLookupService extends BaseService {
     this.log.trace("lookupByPostcode.response", {
       status: response.status,
       statusText: response.statusText,
-      headers: response.headers,
-      body,
+      headers: await redactJson(response.headers),
+      body: await redactJson(body),
     });
 
     if (!response.ok) {
