@@ -54,10 +54,14 @@ const options: pino.LoggerOptions = {
     // only need one case variant regardless of how the caller set the header name.
     headers: lowercaseHeaderKeys,
   },
-  redact: {
-    paths: config.logRedactPaths,
-    censor: "REDACTED",
-  },
+  ...(enableLogRedaction
+    ? {
+        redact: {
+          paths: config.logRedactPaths,
+          censor: "REDACTED",
+        },
+      }
+    : {}),
 };
 
 export const logger = pino(options);
@@ -78,7 +82,8 @@ export type Logger = pino.Logger;
  * | `formId`  | `string` | Form or configuration identifier                      | `{ formId: "rps-risk-report" }`  |
  *
  * Any additional string-keyed, JSON-serializable values are valid. Bindings containing paths
- * listed in `logRedactPaths` will be redacted as `"REDACTED"` automatically.
+ * listed in `logRedactPaths` will be redacted as `"REDACTED"` automatically. And additional redaction will be
+ * carried out by openredaction.
  *
  * Values that are **not** valid: functions, class instances, `undefined`, circular references,
  * and `BigInt` (pino will throw or silently drop them).
