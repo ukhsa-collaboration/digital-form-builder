@@ -75,8 +75,6 @@ export const handleApplicationError = (
     ...("data" in data ? data.data : {}),
   };
 
-  request.logger.trace({ pageData }, "PAGE DATA IN ERROR");
-
   const view =
     ("page" in data && data.page && findView(folders, data.page)) ||
     findView(folders, code);
