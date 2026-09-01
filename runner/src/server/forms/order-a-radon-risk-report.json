@@ -384,6 +384,9 @@
     {
       "title": "How would you like to receive your report?",
       "path": "/receive-report-preference",
+      "options": {
+        "honorReturnURL": false
+      },
       "components": [
         {
           "name": "deliveryMethod",
@@ -482,6 +485,9 @@
     {
       "title": "Enter personal details",
       "path": "/enter-your-details-post",
+      "options": {
+        "honorReturnURL": false
+      },
       "components": [
         {
           "name": "fullNameLabel",
@@ -550,6 +556,9 @@
     {
       "path": "/is-delivery-address-same-as-report-address",
       "title": "Is this the correct delivery address?",
+      "options": {
+        "honorReturnURL": false
+      },
       "components": [
         {
           "name": "deliveryAddressSameAsReportDisplay",
@@ -775,7 +784,8 @@
       "options": {
         "hiddenFields": ["addressType"],
         "disabledChangeFields": ["addressType"],
-        "customButtonText": "Find address"
+        "customButtonText": "Find address",
+        "honorReturnURL": false
       },
       "componentsAfter": [
         {
