@@ -70,16 +70,17 @@ export const handleApplicationError = (
   // views are looked up from most to least specific: form, form group, generic
   const folders = [formId, formGroup, ""];
 
+  const pageData = {
+    ...(data.backUrl ? { backLink: data.backUrl } : {}),
+    ...(formId ? { startPage: `/${formId}` } : {}),
+    ...("data" in data ? data.data : {}),
+  };
+
   const view =
     ("page" in data && data.page && findView(folders, data.page)) ||
     findView(folders, code);
 
-  return response
-    .view(view || code, {
-      ...(data.backUrl ? { backLink: data.backUrl } : {}),
-      ...(formId ? { startPage: `/${formId}` } : {}),
-    })
-    .code(data.code);
+  return response.view(view || code, pageData).code(data.code);
 };
 
 /*

@@ -9,6 +9,8 @@ export type ControllerErrorMetadata = {
   backUrl?: string;
   /** The stack of error that caused the controller error */
   originalStack?: string;
+  /** Page data */
+  data?: Record<string, unknown>;
 };
 
 export type RenderingErrorMetadata = {

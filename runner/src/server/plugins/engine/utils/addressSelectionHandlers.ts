@@ -69,6 +69,9 @@ const lookupUdprnInDatabase = async (
         code: 404,
         page: "404-address-not-in-db",
         backUrl: backLinkUrl,
+        data: {
+          findAnAddressUrl: "./find-a-report-address",
+        },
       });
     }
 
