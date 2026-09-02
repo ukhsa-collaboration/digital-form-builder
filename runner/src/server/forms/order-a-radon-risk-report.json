@@ -959,7 +959,7 @@
       "path": "/summary",
       "controller": "HeadlessSummaryPageController",
       "options": {
-        "hideContinueButton": false,
+        "showContinueButton": true,
         "customButtonText": "Confirm and go to payment"
       },
       "components": [

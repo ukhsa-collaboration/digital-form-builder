@@ -900,7 +900,7 @@
       "title": "Review your order",
       "path": "/summary",
       "options": {
-        "hideContinueButton": false,
+        "showContinueButton": true,
         "customButtonText": "Confirm and go to payment"
       },
       "controller": "HeadlessSummaryPageController",
