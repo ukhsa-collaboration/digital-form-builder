@@ -4,8 +4,8 @@
   "metadata": {},
   "startPage": "/start",
   "fullStartPage": "start",
-  "name": "Order a radon gas test kit",
-  "serviceName": "Order a radon gas test kit",
+  "name": "Order a home radon gas test kit",
+  "serviceName": "Order a home radon gas test kit",
   "confirmationSessionTimeout": 2000,
   "generateReference": true,
   "paymentProvider": "trust-payments",
@@ -16,8 +16,8 @@
     }
   ],
   "feedback": {
-    "feedbackForm": false,
-    "url": ""
+    "feedbackForm": true,
+    "url": "https://submit.forms.service.gov.uk/form/266710/radon-services-feedback-form"
   },
   "hooks": {
     "HeadlessSummaryPageController.onSubmit": "rpsGasTestKitOnSummarySubmit"
