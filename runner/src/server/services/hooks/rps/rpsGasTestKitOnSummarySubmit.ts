@@ -27,9 +27,18 @@ export const rpsGasTestKitOnSummarySubmit: Hook<void> = async (
   request,
   context
 ) => {
+  const { rpsBackendService, cacheService } = request.service.getServices(
+    "rpsBackendService",
+    "cacheService"
+  );
+
+  if (await cacheService.isStateFrozen(request)) {
+    throw new ControllerError("state is frozen", {
+      code: 500,
+    });
+  }
+
   const { state } = context;
-  const { rpsBackendService } =
-    request.service.getServices("rpsBackendService");
 
   const customer: StoreGtkRequest["customer"] = {
     title: state["title"],
@@ -104,7 +113,7 @@ export const rpsGasTestKitOnSummarySubmit: Hook<void> = async (
   };
 
   request.logger.trace(
-    rawRequestData,
+    { rawRequestData },
     "rpsGasTestKitOnSummarySubmit.rawRequestData"
   );
 
@@ -122,19 +131,12 @@ export const rpsGasTestKitOnSummarySubmit: Hook<void> = async (
     );
   }
 
-  request.logger.trace(requestBody, "rpsGasTestKitOnSummarySubmit.requestBody");
-
   const response = await rpsBackendService.request("/storegtk", {
     method: "POST",
     body: JSON.stringify(requestBody),
   });
 
   const body = await response.json();
-
-  request.logger.trace(
-    { status: response.status, body },
-    "rpsGasTestKitOnSummarySubmit.response"
-  );
 
   if (response.status !== 200 || body.error) {
     throw new ControllerError(

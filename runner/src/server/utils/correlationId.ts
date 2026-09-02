@@ -30,5 +30,7 @@ export async function destroySession(
   await cacheService.clearState(request);
   request.yar.clear("correlationId");
 
+  request.yar.reset();
+
   request.logger.trace(["destroySession", "Session destroyed"]);
 }

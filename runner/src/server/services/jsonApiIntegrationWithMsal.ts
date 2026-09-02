@@ -31,7 +31,11 @@ export class JsonApiIntegrationWithMsal extends BaseService {
 
     const url = `${this.config.apimBaseUrl}${path}`;
 
-    this.log.trace("request", { url, headers, init });
+    this.log.trace("request", {
+      url,
+      headers: headers,
+      body: init.body,
+    });
 
     const response = await fetch(url, { ...init, headers });
 
@@ -41,7 +45,7 @@ export class JsonApiIntegrationWithMsal extends BaseService {
       status: response.status,
       statusText: response.statusText,
       headers: response.headers,
-      body,
+      body: body,
     });
 
     return Promise.resolve(new Response(JSON.stringify(body), response));

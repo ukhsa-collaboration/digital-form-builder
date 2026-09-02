@@ -233,12 +233,15 @@ export interface TrustPaymentsDetails {
   billingFirstName: string;
   billingLastName: string;
   amount: number;
+  orderReference: string;
   redirectUrl: string;
 }
 
 export interface TrustPaymentsConfig {
   siteReference: string;
   hashPassword: string;
+  successWebhookUrl: string;
+  failureWebhookUrl: string;
 }
 
 /**

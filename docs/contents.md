@@ -44,6 +44,8 @@ Features and configuration options for the runner.
   - Intercept outbound HTTP calls in local development with mock responses
 - [global hooks](runner/hooks.md)
   - Run named, per-form side effects at fixed points in a form's lifecycle without branching in controllers
+- [log redaction](runner/log-redaction.md)
+  - PII detection and path-based redaction for runner log output
 
 #### Components
 

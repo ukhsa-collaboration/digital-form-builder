@@ -79,6 +79,7 @@ export class PageControllerBase {
   buttonText?: string;
   honorReturnURL?: boolean | ConditionalCase<boolean>[];
   hideContinueButton?: boolean;
+  showContinueButton?: boolean;
 
   // TODO: pageDef type
   constructor(model: FormModel, pageDef: { [prop: string]: any } = {}) {
@@ -101,7 +102,10 @@ export class PageControllerBase {
     this.buttonText =
       pageDef?.options?.customButtonText ?? this.defaultButtonText;
     this.honorReturnURL = pageDef?.options?.honorReturnURL ?? true;
-    this.hideContinueButton = pageDef.options?.hideContinueButton ?? false;
+
+    // force show or hide the form button. They will only have an effect if they are not undefined.
+    this.hideContinueButton = pageDef.options?.hideContinueButton;
+    this.showContinueButton = pageDef.options?.showContinueButton;
 
     // Resolve section
     this.section = model.sections?.find(
@@ -1048,7 +1052,7 @@ export class PageControllerBase {
   }
 
   get defaultNextPath() {
-    return `${this.model.basePath || ""}/summary`;
+    return `/${this.model.basePath || ""}/summary`;
   }
 
   get validationOptions() {

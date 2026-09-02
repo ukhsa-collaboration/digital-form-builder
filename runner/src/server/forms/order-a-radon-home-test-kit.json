@@ -469,10 +469,10 @@
         {
           "name": "continueWithoutFreeRetestLink",
           "type": "Para",
-          "content": "<a href=\"your-details\" target=\"_blank\">Continue without a free retest</a>"
+          "content": "<a href=\"your-details\">Continue without a free retest</a>"
         }
       ],
-      "next": []
+      "next": [{ "path": "/your-details" }]
     },
     {
       "path": "/your-details",
@@ -900,7 +900,7 @@
       "title": "Review your order",
       "path": "/summary",
       "options": {
-        "hideContinueButton": false,
+        "showContinueButton": true,
         "customButtonText": "Confirm and go to payment"
       },
       "controller": "HeadlessSummaryPageController",
@@ -1557,7 +1557,9 @@
       "service": "trustPaymentsService",
       "parameters": {
         "siteReference": "${RPS_GTK_TRUST_PAYMENTS_SITE_REFERENCE}",
-        "hashPassword": "${RPS_GTK_TRUST_PAYMENTS_HASH_PASSWORD}"
+        "hashPassword": "${RPS_GTK_TRUST_PAYMENTS_HASH_PASSWORD}",
+        "successWebhookUrl": "${RPS_AWS_APIGW_BASE_URL}/storepayment",
+        "failureWebhookUrl": "${RPS_AWS_APIGW_BASE_URL}/storepayment"
       }
     },
     {
