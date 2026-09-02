@@ -142,13 +142,6 @@ const getTrustPaymentsBillingInformation = async ({
   const billingInfoValidation =
     billingInformationSchema.validate(billingInformation);
 
-  request.logger.trace(
-    {
-      billingInfoValidation,
-    },
-    "Billing information"
-  );
-
   if (billingInfoValidation.error) {
     throw new ControllerError(
       "billing formation for trust payments is invalid",

@@ -69,7 +69,7 @@ declare module "@hapi/hapi" {
     };
     hook: {
       // plugin hooks
-      run<T = unknown>(
+      run<T = void>(
         hookName: string,
         context: { model: HookModel; state?: HookState }
       ): Promise<T>;
