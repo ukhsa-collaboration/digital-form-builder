@@ -229,21 +229,6 @@ export interface DynamicServiceConfig {
   parameters: Record<string, any>;
 }
 
-export interface TrustPaymentsDetails {
-  billingFirstName: string;
-  billingLastName: string;
-  amount: number;
-  orderReference: string;
-  redirectUrl: string;
-}
-
-export interface TrustPaymentsConfig {
-  siteReference: string;
-  hashPassword: string;
-  successWebhookUrl: string;
-  failureWebhookUrl: string;
-}
-
 /**
  * `FormDefinition` is a typescript representation of `Schema`
  */

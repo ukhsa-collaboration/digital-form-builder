@@ -26,7 +26,8 @@
     "url": ""
   },
   "hooks": {
-    "HeadlessSummaryPageController.onSubmit": "rpsRiskReportOnSummarySubmit"
+    "HeadlessSummaryPageController.onSubmit": "rpsRiskReportOnSummarySubmit",
+    "TrustPaymentsAdapter.getBillingInformation": "rpsGetBillingInformation"
   },
   "pages": [
     {
