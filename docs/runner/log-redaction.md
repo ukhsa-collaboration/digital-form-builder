@@ -10,7 +10,7 @@ There are two complementary layers:
 
 ### 1. PII detection (openredaction)
 
-When `ENABLE_LOG_REDACTION=true`, the `redactionTransport` stage is inserted into the pipeline. It uses [openredaction](https://github.com/openredaction/openredaction) to scan the full log object — including dynamically-named fields and nested structures — and replace detected PII with `[REDACTED]`.
+When `DISABLE_LOG_REDACTION=false`, the `redactionTransport` stage is inserted into the pipeline. It uses [openredaction](https://github.com/openredaction/openredaction) to scan the full log object — including dynamically-named fields and nested structures — and replace detected PII with `[REDACTED]`.
 
 Detected PII categories include (but are not limited to): email addresses, phone numbers, NI numbers, postcodes, and free-text content that matches known sensitive patterns.
 
@@ -31,12 +31,12 @@ log call → pino serializers (header key normalisation)
 
 ## Configuration
 
-| Environment variable   | Type                  | Default | Description                                                                       |
-| ---------------------- | --------------------- | ------- | --------------------------------------------------------------------------------- |
-| `ENABLE_LOG_REDACTION` | boolean               | `false` | Enable the openredaction PII-scanning transport stage                             |
-| `LOG_REDACT_PATHS`     | JSON array of strings | `[]`    | Dot-notation paths always redacted by pino (e.g. `["req.headers.authorization"]`) |
-| `LOG_LEVEL`            | string                | —       | Pino log level: `trace`, `debug`, `info`, `warn`, `error`                         |
-| `LOG_PRETTY_PRINT`     | boolean               | `false` | Format output with pino-pretty (development only)                                 |
+| Environment variable    | Type                  | Default | Description                                                                       |
+| ----------------------- | --------------------- | ------- | --------------------------------------------------------------------------------- |
+| `DISABLE_LOG_REDACTION` | boolean               | `false` | Enable the openredaction PII-scanning transport stage                             |
+| `LOG_REDACT_PATHS`      | JSON array of strings | `[]`    | Dot-notation paths always redacted by pino (e.g. `["req.headers.authorization"]`) |
+| `LOG_LEVEL`             | string                | —       | Pino log level: `trace`, `debug`, `info`, `warn`, `error`                         |
+| `LOG_PRETTY_PRINT`      | boolean               | `false` | Format output with pino-pretty (development only)                                 |
 
 ## Skipped paths
 

@@ -6,7 +6,6 @@ import {
   saveGasTestKitDetailsSchema,
   StoreGtkRequest,
 } from "@xgovformbuilder/model/dist/module/schema/rps";
-import { redactJson } from "src/server/utils/redactJson";
 
 const toAddressDetails = (address?: {
   address?: string;
@@ -114,7 +113,7 @@ export const rpsGasTestKitOnSummarySubmit: Hook<void> = async (
   };
 
   request.logger.trace(
-    { rawRequestData: await redactJson(rawRequestData) },
+    { rawRequestData },
     "rpsGasTestKitOnSummarySubmit.rawRequestData"
   );
 

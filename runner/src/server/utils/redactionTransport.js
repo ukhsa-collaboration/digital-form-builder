@@ -2,6 +2,9 @@
 
 const build = require("pino-abstract-transport");
 const { OpenRedaction, createJsonProcessor } = require("openredaction");
+const {
+  redactPreservingTypedPlaceholders,
+} = require("./redactPreservingTypedPlaceholders");
 
 /**
  * Recursively parses string values that look like serialised JSON (e.g. a
@@ -49,6 +52,8 @@ module.exports = function redactionTransport(opts = {}) {
   // that can look PII-shaped (hapi's `id`) but aren't. Extend via the
   // pipeline target's `options.skipPaths` in logger.ts.
   const skipPaths = opts.skipPaths || [];
+  const piiIndicatorKeys = opts.piiIndicatorKeys || [];
+  const alwaysRedact = opts.alwaysRedact || [];
 
   return build(
     async function* (source) {
@@ -59,13 +64,15 @@ module.exports = function redactionTransport(opts = {}) {
           const detection = await jsonProcessor.detect(expanded, detector, {
             scanKeys: true,
             skipPaths,
-            piiIndicatorKeys: ["firstName", "lastName"],
+            piiIndicatorKeys,
+            alwaysRedact,
           });
 
-          const redacted = jsonProcessor.redact(expanded, detection, {
-            preserveStructure: true,
-            skipPaths,
-          });
+          const redacted = redactPreservingTypedPlaceholders(
+            expanded,
+            detection,
+            skipPaths
+          );
 
           yield JSON.stringify(redacted) + "\n";
         } catch (err) {

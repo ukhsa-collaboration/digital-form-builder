@@ -11,11 +11,10 @@ const lowercaseHeaderKeys = (
     Object.entries(headers ?? {}).map(([k, v]) => [k.toLowerCase(), v])
   );
 
-const enableLogRedaction =
-  config.enableLogRedaction === true ||
-  (config.enableLogRedaction as unknown) === "true";
+const disableLogRedaction =
+  config.disableLogRedaction === true || config.disableLogRedaction === "true";
 
-const skipPaths: string[] = [
+export const skipPaths: string[] = [
   "id",
   "pid",
   "hostname",
@@ -31,18 +30,25 @@ const skipPaths: string[] = [
   "responseTime",
 ];
 
+const sensitiveKeys: string[] = config.sensitiveLogKeys;
+
+export const alwaysRedact: string[] = [
+  ...sensitiveKeys,
+  ...sensitiveKeys.map((key) => `*.${key}`),
+];
+
 const options: pino.LoggerOptions = {
   level: config.logLevel,
   transport: {
     pipeline: [
-      ...(enableLogRedaction
+      ...(!disableLogRedaction
         ? [
             {
               target: require.resolve("./redactionTransport"),
               // Dot-paths never scanned for PII - structural/internal fields that
               // can look PII-shaped to the detector but aren't. Extend here if it
               // flags another non-PII field.
-              options: { skipPaths },
+              options: { skipPaths, alwaysRedact },
             },
           ]
         : []),
@@ -57,7 +63,7 @@ const options: pino.LoggerOptions = {
     // only need one case variant regardless of how the caller set the header name.
     headers: lowercaseHeaderKeys,
   },
-  ...(enableLogRedaction
+  ...(!disableLogRedaction
     ? {
         redact: {
           paths: config.logRedactPaths,

@@ -155,7 +155,7 @@ module.exports = {
    */
   logLevel: "info", // Accepts "trace" | "debug" | "info" | "warn" |"error"
   logPrettyPrint: true,
-  enableLogRedaction: true,
+  disableLogRedaction: false,
 
   // You should check your privacy policy before disabling this. Check https://getpino.io/#/docs/redaction on how to configure redaction paths
   logRedactPaths: [
@@ -166,6 +166,19 @@ module.exports = {
     ...createRedactedHeaderLogPath("x-api-key"),
     ...createRedactedHeaderLogPath("x-auth-token"),
     ...createRedactedHeaderLogPath("x-client-secret"),
+  ],
+
+  // Keys that will always be fully redacted. The values will be replaced with [SENSITIVE_FIELD]
+  sensitiveLogKeys: [
+    "firstName",
+    "lastName",
+    "email",
+    "emailAddress",
+    "udprn",
+    "uprn",
+    "parentUprn",
+    "address",
+    "addressString",
   ],
 
   safelist: ["61bca17e-fe74-40e0-9c15-a901ad120eca.mock.pstmn.io"],

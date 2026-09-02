@@ -1,5 +1,10 @@
 import { OpenRedaction, createJsonProcessor } from "openredaction";
-import { logger } from "./logger";
+import {
+  logger,
+  skipPaths as defaultSkipPaths,
+  alwaysRedact as defaultAlwaysRedact,
+} from "./logger";
+import { redactPreservingTypedPlaceholders } from "./redactPreservingTypedPlaceholders";
 
 const detector = new OpenRedaction({
   preset: "gdpr",
@@ -17,19 +22,17 @@ const jsonProcessor = createJsonProcessor();
  */
 export async function redactJson<T>(
   value: T,
-  skipPaths: string[] = []
+  skipPaths: string[] = defaultSkipPaths,
+  alwaysRedact: string[] = defaultAlwaysRedact
 ): Promise<T> {
   try {
     const detection = await jsonProcessor.detect(value, detector, {
       scanKeys: true,
       skipPaths,
-      piiIndicatorKeys: ["firstName", "lastName"],
+      alwaysRedact,
     });
 
-    return jsonProcessor.redact(value, detection, {
-      preserveStructure: true,
-      skipPaths,
-    });
+    return redactPreservingTypedPlaceholders(value, detection, skipPaths);
   } catch (err) {
     logger.warn(err, "Failed to redact JSON payload");
     return value;

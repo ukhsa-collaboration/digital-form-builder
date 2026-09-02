@@ -5,7 +5,6 @@ import {
   StoreReportRequest,
   storeReportRequestSchema,
 } from "@xgovformbuilder/model/dist/module/schema/rps";
-import { redactJson } from "src/server/utils/redactJson";
 
 /**
  * The hook for the on submit event within the headless summary page
@@ -53,7 +52,7 @@ export const rpsRiskReportOnSummarySubmit: Hook<void> = async (
   };
 
   request.logger.trace(
-    { rawRequestData: await redactJson(rawRequestData) },
+    { rawRequestData: rawRequestData },
     "rpsRiskReportOnSummarySubmit.rawRequestData"
   );
 

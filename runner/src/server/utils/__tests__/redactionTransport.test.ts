@@ -35,7 +35,7 @@ suite("redactionTransport", () => {
       formId: "rps-risk-report",
     });
 
-    expect(result.email).to.equal("[REDACTED]");
+    expect(result.email).to.match(/^\[EMAIL_\d+\]$/);
     expect(result.formId).to.equal("rps-risk-report");
   });
 
@@ -48,7 +48,9 @@ suite("redactionTransport", () => {
       },
     });
 
-    expect(result.page.answers.customField123.note).to.equal("[REDACTED]");
+    expect(result.page.answers.customField123.note).to.match(
+      /please call \[PHONE[^\]]*\]/
+    );
   });
 
   test("expands a JSON-string field (e.g. a fetch RequestInit body) into an object so only its PII fields are redacted", async () => {
@@ -62,10 +64,8 @@ suite("redactionTransport", () => {
       },
     });
 
-    expect(result.init.body).to.equal({
-      email: "[REDACTED]",
-      formId: "abc123",
-    });
+    expect(result.init.body.email).to.match(/^\[EMAIL_\d+\]$/);
+    expect(result.init.body.formId).to.equal("abc123");
   });
 
   test("passes through a log line with no PII unchanged", async () => {
