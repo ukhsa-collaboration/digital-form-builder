@@ -5,6 +5,11 @@ import { BaseService } from "../BaseService";
 import { PaymentProviderService } from "./types";
 import { FormModel } from "src/server/plugins/engine/models";
 import { getOrCreateCorrelationId } from "src/server/utils/correlationId";
+import {
+  billingInformationSchema,
+  TrustPaymentsBillingInformation,
+} from "@xgovformbuilder/model";
+import { HapiRequest } from "src/server/types";
 
 /**
  * Each payment provider is an adapter implementing the common
@@ -109,6 +114,46 @@ type TrustPaymentsAdapterService = PaymentProviderService<{
   html: string;
 }>;
 
+/**
+ * Gets the billing information via a global hook. Will throw an error if the data is not valid.
+ * @param request - The Hapi request instance
+ * @param model - The form model
+ * @param state - The current session state
+ * @returns
+ */
+const getTrustPaymentsBillingInformation = async ({
+  request,
+  model,
+  state,
+}: {
+  request: HapiRequest;
+  model: FormModel;
+  state: Record<string, unknown>;
+}) => {
+  const billingInformation =
+    await request.hook.run<TrustPaymentsBillingInformation>(
+      "TrustPaymentsAdapter.getBillingInformation",
+      {
+        model: model,
+        state,
+      }
+    );
+
+  const billingInfoValidation =
+    billingInformationSchema.validate(billingInformation);
+
+  if (billingInfoValidation.error) {
+    throw new ControllerError(
+      "billing formation for trust payments is invalid",
+      {
+        code: 500,
+      }
+    );
+  }
+
+  return billingInfoValidation.value as TrustPaymentsBillingInformation;
+};
+
 /** Adapter for Trust Payments, registered under `"trust-payments"`. */
 class TrustPaymentsAdapter
   extends BaseService
@@ -119,7 +164,7 @@ class TrustPaymentsAdapter
   }
 
   async createPayment(
-    ...[request, state, feesModel, _model]: Parameters<
+    ...[request, state, feesModel, model]: Parameters<
       TrustPaymentsAdapterService["createPayment"]
     >
   ) {
@@ -141,18 +186,14 @@ class TrustPaymentsAdapter
     const url = new URL(request.url);
     const redirectUrl = `${url.origin}/${request.params.id}/status`;
 
-    if (
-      typeof state["firstName"] !== "string" ||
-      typeof state["lastName"] !== "string"
-    ) {
-      throw new ControllerError("invalid billing first name & last name", {
-        code: 500,
-      });
-    }
+    const billingInformation = await getTrustPaymentsBillingInformation({
+      request,
+      model,
+      state,
+    });
 
     const html = await trustPaymentsService.createTrustPaymentsForm({
-      billingFirstName: state["firstName"] ?? "",
-      billingLastName: state["lastName"] ?? "",
+      ...billingInformation,
       amount: feesModel.total,
       orderReference: getOrCreateCorrelationId(request),
       redirectUrl,

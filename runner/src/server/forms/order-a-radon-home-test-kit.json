@@ -20,7 +20,8 @@
     "url": ""
   },
   "hooks": {
-    "HeadlessSummaryPageController.onSubmit": "rpsGasTestKitOnSummarySubmit"
+    "HeadlessSummaryPageController.onSubmit": "rpsGasTestKitOnSummarySubmit",
+    "TrustPaymentsAdapter.getBillingInformation": "rpsGetBillingInformation"
   },
   "pages": [
     {

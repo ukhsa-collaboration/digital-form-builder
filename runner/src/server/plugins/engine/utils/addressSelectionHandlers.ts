@@ -6,7 +6,7 @@ import { getOrCreateCorrelationId } from "server/utils/correlationId";
 import {
   RiskReportLookupAddressRequest,
   RiskReportLookupResponse,
-} from "@xgovformbuilder/model/dist/module/schema";
+} from "@xgovformbuilder/model";
 
 /**
  * A handler invoked once a user confirms a selected address. Type-specific side

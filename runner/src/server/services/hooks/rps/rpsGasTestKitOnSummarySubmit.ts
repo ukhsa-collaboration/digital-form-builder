@@ -5,7 +5,7 @@ import { Hook } from "../types";
 import {
   saveGasTestKitDetailsSchema,
   StoreGtkRequest,
-} from "@xgovformbuilder/model/dist/module/schema/rps";
+} from "@xgovformbuilder/model";
 
 const toAddressDetails = (address?: {
   address?: string;

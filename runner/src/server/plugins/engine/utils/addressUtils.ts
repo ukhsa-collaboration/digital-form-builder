@@ -1,4 +1,4 @@
-import { Item } from "@xgovformbuilder/model/dist/module/data-model/types";
+import { Item } from "@xgovformbuilder/model";
 import Joi from "joi";
 import { Address } from "src/server/services/addressLookupService";
 import Fuse from "fuse.js";
@@ -122,9 +122,8 @@ export function extractAddressContext(
 
     if (key.endsWith(SELECTED_ADDRESS_SUFFIX)) {
       const addressType = key.slice(0, -SELECTED_ADDRESS_SUFFIX.length);
-      context[
-        `${addressType}_fullSelectedAddress`
-      ] = resolveFullSelectedAddress(state, addressType);
+      context[`${addressType}_fullSelectedAddress`] =
+        resolveFullSelectedAddress(state, addressType);
     }
   }
 
