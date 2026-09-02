@@ -8,7 +8,7 @@ import { getOrCreateCorrelationId } from "src/server/utils/correlationId";
 import {
   billingInformationSchema,
   TrustPaymentsBillingInformation,
-} from "@xgovformbuilder/model/dist/module/schema/services";
+} from "@xgovformbuilder/model";
 import { HapiRequest } from "src/server/types";
 
 /**

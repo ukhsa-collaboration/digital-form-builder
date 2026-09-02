@@ -1,6 +1,6 @@
 import { ControllerError } from "server/plugins/engine/errors";
 import { Hook } from "../types";
-import { TrustPaymentsBillingInformation } from "@xgovformbuilder/model/dist/module/schema/services";
+import { TrustPaymentsBillingInformation } from "@xgovformbuilder/model";
 
 /**
  * The hook for the on submit event within the headless summary page

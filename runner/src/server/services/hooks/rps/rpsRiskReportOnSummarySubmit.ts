@@ -4,7 +4,7 @@ import { Hook } from "../types";
 import {
   StoreReportRequest,
   storeReportRequestSchema,
-} from "@xgovformbuilder/model/dist/module/schema/rps";
+} from "@xgovformbuilder/model";
 
 /**
  * The hook for the on submit event within the headless summary page

@@ -5,7 +5,7 @@ import { BaseService } from "./BaseService";
 import {
   TrustPaymentsConfig,
   TrustPaymentsDetails,
-} from "@xgovformbuilder/model/dist/module/schema/services";
+} from "@xgovformbuilder/model";
 
 export class TrustPaymentsService extends BaseService {
   private config: TrustPaymentsConfig;
