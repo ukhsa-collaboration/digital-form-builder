@@ -37,21 +37,26 @@ export const alwaysRedact: string[] = [
   ...sensitiveKeys.map((key) => `*.${key}`),
 ];
 
+const logRedactionTransport = [
+  {
+    target: require.resolve("./redactionTransport"),
+    // Dot-paths never scanned for PII - structural/internal fields that
+    // can look PII-shaped to the detector but aren't. Extend here if it
+    // flags another non-PII field.
+    options: { skipPaths, alwaysRedact },
+  },
+];
+
+const logRedactConfig = {
+  paths: config.logRedactPaths,
+  censor: "[REDACTED]",
+};
+
 const options: pino.LoggerOptions = {
   level: config.logLevel,
   transport: {
     pipeline: [
-      ...(!disableLogRedaction
-        ? [
-            {
-              target: require.resolve("./redactionTransport"),
-              // Dot-paths never scanned for PII - structural/internal fields that
-              // can look PII-shaped to the detector but aren't. Extend here if it
-              // flags another non-PII field.
-              options: { skipPaths, alwaysRedact },
-            },
-          ]
-        : []),
+      ...(disableLogRedaction ? [] : logRedactionTransport),
       isPretty ? { target: "pino-pretty" } : { target: "pino/file" },
     ],
   },
@@ -63,14 +68,7 @@ const options: pino.LoggerOptions = {
     // only need one case variant regardless of how the caller set the header name.
     headers: lowercaseHeaderKeys,
   },
-  ...(!disableLogRedaction
-    ? {
-        redact: {
-          paths: config.logRedactPaths,
-          censor: "[REDACTED]",
-        },
-      }
-    : {}),
+  ...(disableLogRedaction ? {} : { redact: logRedactConfig }),
 };
 
 export const logger = pino(options);
