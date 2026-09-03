@@ -10,33 +10,36 @@ exports.lab = lab;
 const { describe, it, afterEach } = lab;
 
 describe("saveGasTestKitDetailsSchema", () => {
-  const person = {
+  const customerPerson = {
     title: "Mr",
     firstName: "John",
     lastName: "Smith",
     email: "john.smith@email.com",
   };
 
+  const recipientPerson = {
+    title: "Mr",
+    firstName: "John",
+    lastName: "Smith",
+  };
+
   const address = {
-    udprn: "23747208",
     fullAddress: "Houses of Parliament, Westminster, London, SW1A 0AA",
     postcode: "SW1A 0AA",
   };
 
   const manualAddress = {
-    udprn: "",
     fullAddress: "1 Test Street, Testville, TE5 7ST",
     postcode: "TE5 7ST",
   };
 
   const basePayload = {
     uuid: "343d10da-7d57-425e-8b2f-6891b1c563d6",
-    orderNumber: "RRR-26154780",
-    customer: person,
+    customer: customerPerson,
     measurementAddress: address,
-    kitRecipient: person,
+    kitRecipient: recipientPerson,
     kitRecipientAddress: address,
-    resultsRecipient: person,
+    resultsRecipient: recipientPerson,
     resultsRecipientAddress: manualAddress,
     prevTestedAddress: false,
     prevAboveActionLevel: false,
@@ -48,8 +51,10 @@ describe("saveGasTestKitDetailsSchema", () => {
       const { error, value } =
         saveGasTestKitDetailsSchema.validate(basePayload);
       expect(error).to.be.undefined();
-      expect(value.customer.telephone).to.equal("dummy-telephone");
-      expect(value.resultsRecipientAddress.udprn).to.equal("");
+      expect(value.customer.telephone).to.be.undefined();
+      expect(value.resultsRecipientAddress.fullAddress).to.equal(
+        manualAddress.fullAddress
+      );
     });
 
     it("strips unknown top-level fields", () => {
@@ -61,10 +66,10 @@ describe("saveGasTestKitDetailsSchema", () => {
       expect(value).to.not.include("somethingUnexpected");
     });
 
-    it("keeps an explicitly provided telephone", () => {
+    it("keeps an explicitly provided customer telephone", () => {
       const { error, value } = saveGasTestKitDetailsSchema.validate({
         ...basePayload,
-        customer: { ...person, telephone: "07865123456" },
+        customer: { ...customerPerson, telephone: "07865123456" },
       });
       expect(error).to.be.undefined();
       expect(value.customer.telephone).to.equal("07865123456");
@@ -80,7 +85,7 @@ describe("saveGasTestKitDetailsSchema", () => {
     });
 
     it("errors when customer.firstName is missing", () => {
-      const { firstName, ...personWithoutFirstName } = person;
+      const { firstName, ...personWithoutFirstName } = customerPerson;
       const { error } = saveGasTestKitDetailsSchema.validate({
         ...basePayload,
         customer: personWithoutFirstName,
@@ -89,14 +94,24 @@ describe("saveGasTestKitDetailsSchema", () => {
       expect(error!.message).to.include("firstName");
     });
 
-    it("errors when an address is missing udprn", () => {
-      const { udprn, ...addressWithoutUdprn } = address;
+    it("errors when customer.email is missing", () => {
+      const { email, ...personWithoutEmail } = customerPerson;
       const { error } = saveGasTestKitDetailsSchema.validate({
         ...basePayload,
-        measurementAddress: addressWithoutUdprn,
+        customer: personWithoutEmail,
       });
       expect(error).to.exist();
-      expect(error!.message).to.include("udprn");
+      expect(error!.message).to.include("email");
+    });
+
+    it("errors when an address is missing fullAddress", () => {
+      const { fullAddress, ...addressWithoutFullAddress } = address;
+      const { error } = saveGasTestKitDetailsSchema.validate({
+        ...basePayload,
+        measurementAddress: addressWithoutFullAddress,
+      });
+      expect(error).to.exist();
+      expect(error!.message).to.include("fullAddress");
     });
 
     it("errors when prevTestedAddress is not a boolean", () => {
@@ -118,23 +133,19 @@ describe("rpsGasTestKitOnSummarySubmit", () => {
   const measurementAddress = {
     address: "1 Measurement Way, Manchester",
     postcode: "M1 1AA",
-    udprn: "111",
   };
 
   const kitAddress = {
     address: "2 Kit Street, Leeds",
     postcode: "LS1 1AA",
-    udprn: "222",
   };
 
   const resultsAddress = {
     address: "3 Results Road, Bristol",
     postcode: "BS1 1AA",
-    udprn: "333",
   };
 
   const toAddressDetails = (address: typeof measurementAddress) => ({
-    udprn: address.udprn,
     fullAddress: address.address,
     postcode: address.postcode,
   });
@@ -151,19 +162,14 @@ describe("rpsGasTestKitOnSummarySubmit", () => {
   };
 
   const buildRequest = () => {
-    const jsonStub = sinon.stub().resolves({ ok: true });
-    const requestStub = sinon.stub().resolves({
-      status: 200,
-      headers: { "content-type": "application/json" },
-      json: jsonStub,
-    });
+    const storeGtkStub = sinon.stub().resolves({ message: "", uuid: "" });
 
     const yarStore = new Map<string, unknown>();
 
     const request: any = {
       service: {
         getServices: sinon.stub().returns({
-          rpsBackendService: { request: requestStub },
+          gasTestKitApiService: { storeGtk: storeGtkStub },
         }),
       },
       logger: { warn: sinon.stub(), trace: sinon.stub() },
@@ -173,17 +179,15 @@ describe("rpsGasTestKitOnSummarySubmit", () => {
       },
     };
 
-    return { request, requestStub };
+    return { request, storeGtkStub };
   };
 
-  const getPostedBody = (requestStub: sinon.SinonStub) => {
-    const [path, options] = requestStub.firstCall.args;
-    expect(path).to.equal("/storegtk");
-    return JSON.parse(options.body);
+  const getPostedBody = (storeGtkStub: sinon.SinonStub) => {
+    return storeGtkStub.firstCall.args[0];
   };
 
   it("uses the measurement address for both kit and results when both are confirmed as the same as the measurement address", async () => {
-    const { request, requestStub } = buildRequest();
+    const { request, storeGtkStub } = buildRequest();
     const context: any = {
       state: {
         ...baseState,
@@ -195,7 +199,7 @@ describe("rpsGasTestKitOnSummarySubmit", () => {
 
     await rpsGasTestKitOnSummarySubmit(request, context);
 
-    const body = getPostedBody(requestStub);
+    const body = getPostedBody(storeGtkStub);
 
     expect(body.kitRecipient.firstName).to.equal("John");
     expect(body.kitRecipientAddress).to.equal(
@@ -209,7 +213,7 @@ describe("rpsGasTestKitOnSummarySubmit", () => {
   });
 
   it("uses the measurement address for the kit but collects a separate results address when only the kit is confirmed as the same as the measurement address", async () => {
-    const { request, requestStub } = buildRequest();
+    const { request, storeGtkStub } = buildRequest();
     const context: any = {
       state: {
         ...baseState,
@@ -224,7 +228,7 @@ describe("rpsGasTestKitOnSummarySubmit", () => {
 
     await rpsGasTestKitOnSummarySubmit(request, context);
 
-    const body = getPostedBody(requestStub);
+    const body = getPostedBody(storeGtkStub);
 
     expect(body.kitRecipient.firstName).to.equal("John");
     expect(body.kitRecipientAddress).to.equal(
@@ -234,8 +238,6 @@ describe("rpsGasTestKitOnSummarySubmit", () => {
       title: "Mrs",
       firstName: "Jane",
       lastName: "Doe",
-      email: "john.smith@email.com",
-      telephone: "dummy-telephone",
     });
     expect(body.resultsRecipientAddress).to.equal(
       toAddressDetails(resultsAddress)
@@ -244,7 +246,7 @@ describe("rpsGasTestKitOnSummarySubmit", () => {
   });
 
   it("sends results to the measurement address when kit goes to a different address but results are confirmed as the same as measurement", async () => {
-    const { request, requestStub } = buildRequest();
+    const { request, storeGtkStub } = buildRequest();
     const context: any = {
       state: {
         ...baseState,
@@ -260,14 +262,12 @@ describe("rpsGasTestKitOnSummarySubmit", () => {
 
     await rpsGasTestKitOnSummarySubmit(request, context);
 
-    const body = getPostedBody(requestStub);
+    const body = getPostedBody(storeGtkStub);
 
     expect(body.kitRecipient).to.equal({
       title: "Dr",
       firstName: "Ken",
       lastName: "Adams",
-      email: "john.smith@email.com",
-      telephone: "dummy-telephone",
     });
     expect(body.kitRecipientAddress).to.equal(toAddressDetails(kitAddress));
     expect(body.resultsRecipient.firstName).to.equal("John");
@@ -280,7 +280,7 @@ describe("rpsGasTestKitOnSummarySubmit", () => {
   });
 
   it("sends results to the kit address when kit goes to a different address and kitResultsConfirmation is yes", async () => {
-    const { request, requestStub } = buildRequest();
+    const { request, storeGtkStub } = buildRequest();
     const context: any = {
       state: {
         ...baseState,
@@ -296,14 +296,12 @@ describe("rpsGasTestKitOnSummarySubmit", () => {
 
     await rpsGasTestKitOnSummarySubmit(request, context);
 
-    const body = getPostedBody(requestStub);
+    const body = getPostedBody(storeGtkStub);
 
     expect(body.kitRecipient).to.equal({
       title: "Dr",
       firstName: "Ken",
       lastName: "Adams",
-      email: "john.smith@email.com",
-      telephone: "dummy-telephone",
     });
     expect(body.kitRecipientAddress).to.equal(toAddressDetails(kitAddress));
     expect(body.resultsRecipient).to.equal(body.kitRecipient);
@@ -311,7 +309,7 @@ describe("rpsGasTestKitOnSummarySubmit", () => {
   });
 
   it("sends results to a separate address when kit goes to a different address and kitResultsConfirmation is no", async () => {
-    const { request, requestStub } = buildRequest();
+    const { request, storeGtkStub } = buildRequest();
     const context: any = {
       state: {
         ...baseState,
@@ -331,22 +329,18 @@ describe("rpsGasTestKitOnSummarySubmit", () => {
 
     await rpsGasTestKitOnSummarySubmit(request, context);
 
-    const body = getPostedBody(requestStub);
+    const body = getPostedBody(storeGtkStub);
 
     expect(body.kitRecipient).to.equal({
       title: "Dr",
       firstName: "Ken",
       lastName: "Adams",
-      email: "john.smith@email.com",
-      telephone: "dummy-telephone",
     });
     expect(body.kitRecipientAddress).to.equal(toAddressDetails(kitAddress));
     expect(body.resultsRecipient).to.equal({
       title: "Ms",
       firstName: "Amy",
       lastName: "Lee",
-      email: "john.smith@email.com",
-      telephone: "dummy-telephone",
     });
     expect(body.resultsRecipientAddress).to.equal(
       toAddressDetails(resultsAddress)
@@ -354,7 +348,7 @@ describe("rpsGasTestKitOnSummarySubmit", () => {
   });
 
   it("overrides any stale separately-entered kit/results addresses when both are confirmed as the same as the measurement address", async () => {
-    const { request, requestStub } = buildRequest();
+    const { request, storeGtkStub } = buildRequest();
     const context: any = {
       state: {
         ...baseState,
@@ -369,7 +363,7 @@ describe("rpsGasTestKitOnSummarySubmit", () => {
 
     await rpsGasTestKitOnSummarySubmit(request, context);
 
-    const body = getPostedBody(requestStub);
+    const body = getPostedBody(storeGtkStub);
 
     expect(body.kitRecipientAddress).to.equal(
       toAddressDetails(measurementAddress)

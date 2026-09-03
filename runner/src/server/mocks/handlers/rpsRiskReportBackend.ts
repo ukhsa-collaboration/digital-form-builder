@@ -2,9 +2,7 @@ import { http, HttpResponse, RequestHandler } from "msw";
 import { createChildLogger } from "../../utils/logger";
 import {
   lookupAddressRequestSchema,
-  RiskReportLookupResponse,
-  storePaymentDetailsRequestSchema,
-  StorePaymentDetailsResponse,
+  LookupResponse,
   storeReportRequestSchema,
   StoreReportResponse,
 } from "@xgovformbuilder/model";
@@ -28,8 +26,10 @@ const storeReportDetailsEndpoint = http.post(
     }
 
     const response: StoreReportResponse = {
-      message: "",
-      uuid: validated.value.uuid,
+      success: true,
+      data: {
+        uuid: validated.value.uuid,
+      },
     };
 
     return HttpResponse.json(response);
@@ -52,65 +52,38 @@ const storeRiskReportAddressEndpoint = http.post(
       return HttpResponse.json(validated.error, { status: 500 });
     }
 
-    const { udprn, sessionId } = validated.value;
+    const { udprn, uuid } = validated.value;
 
     switch (udprn) {
       case undefined:
         return HttpResponse.json({}, { status: 500 });
 
       case "20765140": {
-        const response: RiskReportLookupResponse = {
-          success: false,
-          UDPRN: udprn,
-          TemplateId: "1",
-          found: false,
-          requestId: sessionId,
+        const response: LookupResponse = {
+          success: true,
+          data: {
+            uuid,
+            found: false,
+          },
         };
         return HttpResponse.json(response);
       }
 
       default: {
-        const response: RiskReportLookupResponse = {
+        const response: LookupResponse = {
           success: true,
-          UDPRN: udprn,
-          TemplateId: "5",
-          found: true,
-          requestId: sessionId,
+          data: {
+            uuid,
+            found: true,
+          },
         };
         return HttpResponse.json(response);
       }
     }
-  }
-);
-
-const storePaymentDetailsEndpoint = http.post(
-  "*/storepayment",
-  async ({ request }) => {
-    const validated = storePaymentDetailsRequestSchema.validate(
-      await request.json()
-    );
-
-    if (validated.error) {
-      logger.error(
-        { err: validated.error },
-        "Mock /storepayment request failed validation"
-      );
-      return HttpResponse.json(validated.error, { status: 500 });
-    }
-
-    const { uuid, transactionId } = validated.value;
-
-    const response: StorePaymentDetailsResponse = {
-      message: "Payment stored",
-      uuid,
-      transactionId,
-    };
-    return HttpResponse.json(response);
   }
 );
 
 export const rpsRiskReportBackendHandlers: RequestHandler[] = [
   storeRiskReportAddressEndpoint,
   storeReportDetailsEndpoint,
-  storePaymentDetailsEndpoint,
 ];
