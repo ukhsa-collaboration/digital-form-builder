@@ -2,9 +2,9 @@
   "formGroup": "radon",
   "version": 2,
   "metadata": {},
-  "startPage": "/start",
-  "fullStartPage": "start",
-  "name": "Order a radon gas test kit",
+  "startPage": "/gas-test-kit-start",
+  "fullStartPage": "gas-test-kit-start",
+  "name": "Order a home radon gas test kit",
   "serviceName": "Order a radon gas test kit",
   "confirmationSessionTimeout": 2000,
   "generateReference": true,
@@ -51,53 +51,82 @@
   },
   "pages": [
     {
-      "path": "/start",
+      "path": "/gas-test-kit-start",
       "title": "Order a home radon gas test kit",
       "backLinkFallback": "https://www.ukhsa-protectionservices.org.uk/",
       "components": [
         {
           "type": "Para",
-          "content": "Use this service to order a radon gas test kit for a property in the UK and and the Isle of Man.\n</br></br>The radon gas test kit measures the level of radon in your property over a period of 3 months. The results show if the radon level is above the Action Level advised by the UK Health Security Agency. If your result is above the Action Level, you should take steps to reduce it."
+          "content": "Use this service to order a radon gas test kit for a property in the UK and the Isle of Man.</br></br>The radon gas test kit measures the level of radon in your property over a period of three months. The results will show if the radon level is above the Action Level or not as advised by the UK Health Security Agency. If your result is above the Action Level, you should take steps to reduce it."
         },
         {
           "type": "InsetText",
-          "content": "The Action Level for radon in homes is 200 becquerels per cubic metre (Bq m-3). A becquerel is a measure of radioactivity. If the radon level in your property is higher than this, you should take steps to reduce it."
+          "content": "The Action Level for radon in homes is 200 becquerels per cubic metre (Bq m<sup>-3</sup>). A becquerel is a measure of radioactivity."
         },
         {
           "type": "InsetText",
-          "content": " If you or anyone living in your home is a current or ex-smoker, the risk to health is greater. In this case, the Action Level is lower, at 100 Bq m-3."
+          "content": "You may wish to use the Target Level of 100 Bq m<sup>-3</sup> if there are smokers or ex-smokers living in the property as there is a greater risk to their health."
         },
         {
           "type": "Para",
-          "content": "\nOnce your kit arrives, we will send you instructions on how to do the test.\n</br></br>\nAfter you return the kit, you will receive a report showing the radon level at your address and advice on whether you need to take action.\n</br></br>\nA test kit costs £52.80, including VAT.\n</br></br>\n<b>Before you start</b>\n</br></br>\nThe test will not be valid if:</br>"
-        },
-        {
-          "type": "List",
-          "title": "The test will not be valid if",
-          "list": "invalidIfList",
-          "values": { "type": "listRef" }
+          "content": "A test kit costs £52.80 (including VAT).<p class=\"govuk-body\"><b>Your kit includes:</b></p><ul class=\"govuk-list govuk-list--bullet\"><li>2 detectors, one for the living area and the other for the bedroom</li><li>detector placement instructions</li><li>a pre-paid envelope, to return the detector three months later</li></ul>"
         },
         {
           "type": "Para",
-          "content": "\nThis is because how a home is used can affect radon levels. For example, how often windows and doors are opened, or how the home is heated.\n</br></br>\nYou'll need your:</br>"
+          "content": "After three months you will return the kit and receive a report showing the radon level at your address and advice on whether you need to take remedial action."
         },
         {
-          "type": "List",
-          "title": "You'll need your:",
-          "list": "youllNeedYourList"
+          "type": "Html",
+          "content": "<h2 class=\"govuk-heading-m\">Before you start</h2>"
+        },
+        {
+          "type": "Para",
+          "content": "Ordering a kit takes around 5 minutes. It may take up to 10 working days for the kit to be delivered."
+        },
+        {
+          "type": "Para",
+          "content": "<h3 class=\"govuk-heading-s\">To review:</h3>"
+        },
+        {
+          "type": "Html",
+          "content": "<ul class=\"govuk-list govuk-list--bullet\"><li>if you are a landlord, you have a duty of Care under the Housing Act (2004) to provide a safe home - you can find more information on the need for action with regards to radon gas defined by the <a href\"https://www.gov.uk/government/publications/housing-health-and-safety-rating-system-hhsrs-landlord-and-agent-guide\">Housing Health and Safety Rating System (HHSRS)</a></li><li>if your property's radon level has been measure before using UKHSA, you may be eligible for a free retest - you will be asked your name, address, and the method of remediaton you have used to determine your eligibility</li><li>if you would like 20 or more radon detectors, or are a public sector organisation, <a href=\"/radon-enquiry\">contact us</a> as discounts may be available</li></ul>"
+        },
+        {
+          "type": "Para",
+          "content": "<h3 class=\"govuk-heading-s\">The test will not be valid if:</h3>"
+        },
+        {
+          "type": "Para",
+          "content": "<ul class=\"govuk-list govuk-list--bullet\"><li>any building work is planned during the testing period that disrupts normal living conditions, or changes the way air moves through the property</li><li>the property is empty for more than 2 weeks during the test</li><li>the people living in the property change during the test</li></ul>"
+        },
+        {
+          "type": "Para",
+          "content": "This is because the way a home is used can affect radon levels. For example, how often windows and doors are opened, or how the home is heated."
+        },
+        {
+          "type": "Para",
+          "content": "<h3 class=\"govuk-heading-s\">You'll need your:</h3>"
+        },
+        {
+          "type": "Html",
+          "content": "<ul class=\"govuk-list govuk-list--bullet\"><li>a valid email address</li><li>a postal delivery address in the UK or Isle of Man</li><li>your measurement address</li><li>your payment details</li></ul></br>"
         }
       ],
-      "next": [{ "path": "/property-address" }],
+      "next": [{ "path": "/gas-test-kit-property-address-postcode" }],
       "controller": "./pages/start.js",
       "options": {
         "isStartButton": true
       }
     },
     {
-      "path": "/property-address",
+      "path": "/gas-test-kit-property-address-postcode",
       "title": "Enter the address you want to measure the radon level",
       "controller": "FindAnAddressPageController",
       "components": [
+        {
+          "type": "Para",
+          "content": "This will be the property where your radon level will be measured"
+        },
         {
           "name": "propertyAddress_postcodeLookup",
           "type": "TextField",
@@ -160,7 +189,7 @@
           "path": "/property-address-confirm",
           "condition": "hasMatchedPropertyAddressCondition"
         },
-        { "path": "/property-address-select" },
+        { "path": "/gas-test-kit-select-an-address" },
         {
           "path": "/property-address-not-found",
           "condition": "noPropertyAddressesCondition"
@@ -203,7 +232,7 @@
       ],
       "controller": "SelectAnAddressPageController",
       "options": {
-        "changePath": "/property-address"
+        "changePath": "/gas-test-kit-property-address-postcode"
       },
       "componentsAfter": [
         {
@@ -221,11 +250,11 @@
           "path": "/property-address-not-found",
           "condition": "propertyAddressOnlyOneAddressCondition"
         },
-        { "path": "/property-address" }
+        { "path": "/gas-test-kit-property-address-postcode" }
       ]
     },
     {
-      "path": "/property-address-select",
+      "path": "/gas-test-kit-select-an-address",
       "title": "Select an address",
       "controller": "SelectAnAddressPageController",
       "components": [
@@ -234,8 +263,10 @@
           "content": "{{ propertyAddress_numberOfAddresses }} addresses found for '{{ propertyAddress_postcodeLookup }}'"
         },
         {
+          "name": "searchAgain",
+          "options": {},
           "type": "Html",
-          "content": "<p class=\"govuk-body-m\"><a href=\"/property-address{% if returnUrl %}?returnUrl={{ returnUrl | urlencode }}{% endif %}\">Change your search</a> if the address you're looking for is not listed.</p>"
+          "content": "<p class=\"govuk-body-m\"><a href=\"gas-test-kit-property-address-postcode{% if returnUrl %}?returnUrl={{ returnUrl | urlencode }}{% endif %}\">Change your search</a> if the address you're looking for is not listed.</p><p class=\"govuk-body-m\"><a href=\"property-address-manual{% if returnUrl %}?returnUrl={{ returnUrl | urlencode }}{% endif %}\">Enter address manually</a></p>"
         },
         {
           "name": "addressType",
@@ -258,12 +289,6 @@
           }
         }
       ],
-      "componentsAfter": [
-        {
-          "type": "Html",
-          "content": "<br><a href=\"property-address-manual{% if returnUrl %}?returnUrl={{ returnUrl | urlencode }}{% endif %}\">Enter address manually</a>"
-        }
-      ],
       "next": [
         {
           "path": "/property-address-confirm"
@@ -276,23 +301,31 @@
       "components": [
         {
           "type": "Para",
-          "content": "Check your address for mistakes, then try again.<br><br>Check you have entered the address correctly, then try again."
+          "content": "Check your postcode and building number or name for mistakes, then try again."
+        },
+        {
+          "type": "Para",
+          "content": "Check you have entered the postcode and building number or name correctly, then try again."
         },
         {
           "type": "Html",
-          "content": "<p class=\"govuk-body-m\"><a href=\"property-address{% if returnUrl %}?returnUrl={{ returnUrl | urlencode }}{% endif %}\">Change your search</a> or <a href=\"property-address-manual{% if returnUrl %}?returnUrl={{ returnUrl | urlencode }}{% endif %}\">enter address manually</a></p>"
+          "content": "<p class=\"govuk-body-m\"><a href=\"/gas-test-kit-property-address-postcode{% if returnUrl %}?returnUrl={{ returnUrl | urlencode }}{% endif %}\">Change your search</a> or <a href=\"property-address-manual{% if returnUrl %}?returnUrl={{ returnUrl | urlencode }}{% endif %}\">enter address manually</a></p>"
         }
       ],
       "options": {
         "hideContinueButton": true
       },
-      "next": [{ "path": "/property-address" }]
+      "next": [{ "path": "/gas-test-kit-property-address-postcode" }]
     },
     {
       "path": "/property-address-manual",
       "title": "Enter the address you want to measure the radon level",
       "controller": "FindAnAddressPageController",
       "components": [
+        {
+          "type": "Para",
+          "content": "This will be the property where your radon level will be measured"
+        },
         {
           "name": "addressType",
           "type": "HiddenField",
@@ -378,7 +411,7 @@
           "path": "/property-address-confirm",
           "condition": "hasMatchedPropertyAddressCondition"
         },
-        { "path": "/property-address-select" },
+        { "path": "/gas-test-kit-select-an-address" },
         {
           "path": "/property-address-manual-not-found",
           "condition": "noPropertyAddressesCondition"
@@ -398,7 +431,7 @@
         },
         {
           "type": "Html",
-          "content": "<p class=\"govuk-body-m\"><a href=\"property-address{% if returnUrl %}?returnUrl={{ returnUrl | urlencode }}{% endif %}\">Change your search</a> or <a href=\"property-address-manual{% if returnUrl %}?returnUrl={{ returnUrl | urlencode }}{% endif %}\">enter address manually</a></p>"
+          "content": "<p class=\"govuk-body-m\"><a href=\"/gas-test-kit-property-address-postcode{% if returnUrl %}?returnUrl={{ returnUrl | urlencode }}{% endif %}\">Change your search</a> or <a href=\"property-address-manual{% if returnUrl %}?returnUrl={{ returnUrl | urlencode }}{% endif %}\">enter address manually</a></p>"
         }
       ],
       "next": [{ "path": "/property-address-manual" }]
@@ -432,7 +465,7 @@
     },
     {
       "path": "/previous-test-action-level",
-      "title": "Was the level above the action level 200 Bq m⁻³",
+      "title": "Was the level above the action level 200 Bq m⁻³?",
       "components": [
         {
           "name": "bqmYesNo",
@@ -486,18 +519,20 @@
     },
     {
       "path": "/free-test-eligibility",
-      "title": "You may be eligible for a free test",
+      "title": "You may be eligible for a free retest",
       "options": {
         "hideContinueButton": true
       },
       "components": [
         {
-          "name": "contactNumber",
           "type": "Para",
-          "content": "Contact the Radon team on 01235 822622 to find out."
+          "content": "Contact the radon team</br>Telephone: 0123 582 2622</br>Monday to Friday, 9:00am to 4:30pm"
         },
         {
-          "name": "continueWithoutFreeRetestLink",
+          "type": "Para",
+          "content": "You will need to provide your name, address and the method of remediation you have used."
+        },
+        {
           "type": "Para",
           "content": "<a href=\"your-details\">Continue without a free retest</a>"
         }
@@ -637,15 +672,16 @@
       "components": [
         {
           "name": "resultsTitle",
-          "type": "TextField",
+          "type": "RadiosField",
           "title": "Title",
-          "hint": "e.g. Mr, Mrs, Dr",
           "options": {
             "exposeToContext": true,
             "customValidationMessages": {
-              "string.empty": "Enter the title of the recipient of the radon gas test results"
-            }
-          }
+              "any.required": "Select the title of the recipient of the radon gas test results"
+            },
+            "divider": true
+          },
+          "list": "titleList"
         },
         {
           "name": "resultsFirstName",
@@ -760,15 +796,16 @@
       "components": [
         {
           "name": "kitTitle",
-          "type": "TextField",
+          "type": "RadiosField",
           "title": "Title",
-          "hint": "e.g. Mr, Mrs, Dr",
           "options": {
             "exposeToContext": true,
             "customValidationMessages": {
-              "string.empty": "Enter the title of the recipient of the kit"
-            }
-          }
+              "any.required": "Select the title of the recipient of the radon gas test kit"
+            },
+            "divider": true
+          },
+          "list": "titleList"
         },
         {
           "name": "kitFirstName",
@@ -776,7 +813,7 @@
           "title": "First name",
           "options": {
             "customValidationMessages": {
-              "string.empty": "Enter the first name of the recipient of the kit"
+              "string.empty": "Enter the first name of the recipient of the radon gas test kit"
             },
             "exposeToContext": true
           }
@@ -787,7 +824,7 @@
           "title": "Last Name",
           "options": {
             "customValidationMessages": {
-              "string.empty": "Enter the last name of the recipient of the kit"
+              "string.empty": "Enter the last name of the recipient of the radon gas test kit"
             },
             "exposeToContext": true
           }
@@ -936,8 +973,8 @@
       "controller": "HeadlessSummaryPageController",
       "components": [
         {
-          "type": "Para",
-          "content": "Check that everything is correct before you confirm your order."
+          "type": "Html",
+          "content": "<div class=\"govuk-warning-text\"><span class=\"govuk-warning-text__icon\" aria-hidden=\"true\">!</span><strong class=\"govuk-warning-text__text\"><span class=\"govuk-visually-hidden\">Warning</span>Check your answers before you continue to payment. You cannot return to this page once you proceed.</strong></div>"
         },
         {
           "type": "SummaryLists",
@@ -982,8 +1019,8 @@
                 },
                 {
                   "type": "component",
-                  "title": "Property address",
-                  "changeUrl": "/property-address",
+                  "title": "Measurement address",
+                  "changeUrl": "/gas-test-kit-property-address-postcode",
                   "value": {
                     "name": "displayPropertyAddress",
                     "type": "DisplayAddress",
@@ -1022,7 +1059,7 @@
                       "condition": "kitAddressIncorrect",
                       "value": "/kit-address"
                     },
-                    { "value": "/property-address" }
+                    { "value": "/gas-test-kit-property-address-postcode" }
                   ],
                   "value": {
                     "name": "displayKitAddress",
@@ -1080,7 +1117,7 @@
                       "condition": "resultsAddressIncorrect",
                       "value": "/results-address"
                     },
-                    { "value": "/property-address" }
+                    { "value": "/gas-test-kit-property-address-postcode" }
                   ],
                   "value": {
                     "name": "displayResultsAddress",
@@ -1150,50 +1187,12 @@
         {
           "name": "final links",
           "type": "Para",
-          "content": "<p class=\"govuk-body-m\"><a href=\"https://www.gov.uk/health-protection-team\" target=”_blank”>What did you think of this service?</a> (takes 30 seconds)</p><p class=\"govuk-body-m\"><a href=\"start\" target=”_blank”>Order another radon gas test kit</a></p><p class=\"govuk-body-m\"><a href=\"https://www.gov.uk/health-protection-team\" target=”_blank”>Go to Radon services for homeowners or householders</a></p>"
+          "content": "<p class=\"govuk-body-m\"><a href=\"https://submit.forms.service.gov.uk/form/266710/radon-services-feedback-form\">What did you think of this service?</a> (takes 30 seconds)</p><p class=\"govuk-body-m\"><a href=\"start\">Order another radon gas test kit</a></p><p class=\"govuk-body-m\"><a href=\"/radon-enquiry\">Contact Radon Measurement Service team</a></p><p class=\"govuk-body-m\"><a href=\"https://www.gov.uk/health-protection-team\">Go to Radon services for homeowners or householders</a></p>"
         }
       ]
     }
   },
   "lists": [
-    {
-      "title": "The test will not be valid if:",
-      "name": "invalidIfList",
-      "type": "string",
-      "items": [
-        {
-          "text": "any building work is planned during the testing period that disrupts normal living conditions, or changes the way air moves through the property",
-          "value": "any building work is planned during the testing period that disrupts normal living conditions, or changes the way air moves through the property"
-        },
-        {
-          "text": "the property is empty for more than 2 weeks during the test",
-          "value": "the property is empty for more than 2 weeks during the test"
-        },
-        {
-          "text": "the people living in the property change during the test",
-          "value": "the people living in the property change during the test"
-        }
-      ]
-    },
-    {
-      "title": "You'll need your:",
-      "name": "youllNeedYourList",
-      "type": "string",
-      "items": [
-        {
-          "text": "a valid email address ",
-          "value": "a valid email address "
-        },
-        {
-          "text": "a postal delivery address in the UK or Isle of Man",
-          "value": "a postal delivery address in the UK or Isle of Man"
-        },
-        {
-          "text": "your payment details",
-          "value": "your payment details"
-        }
-      ]
-    },
     {
       "name": "addressesList",
       "title": "addressesList",
