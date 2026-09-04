@@ -72,6 +72,7 @@ export const handleApplicationError = (
 
   const pageData = {
     ...(data.backUrl ? { backLink: data.backUrl } : {}),
+    ...(formId ? { startPage: `/${formId}` } : {}),
     ...("data" in data ? data.data : {}),
   };
 

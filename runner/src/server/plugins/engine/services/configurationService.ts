@@ -5,6 +5,7 @@ import stripJsonComments from "strip-json-comments";
 import { resolveDevPlaceholders } from "../utils/resolveDevPlaceholders";
 import { FormDefinition } from "@xgovformbuilder/model";
 import { idFromFilename } from "../helpers";
+import { logger } from "../../../utils/logger";
 
 const FORMS_FOLDER = path.join(__dirname, "..", "..", "..", "forms");
 
@@ -55,7 +56,7 @@ export const loadPreConfiguredForms = (): FormConfiguration[] => {
       ? [configFile, existing]
       : [existing, configFile];
 
-    console.warn(
+    logger.warn(
       `[loadPreConfiguredForms] Found both '${stale}' and '${current}' for form id '${id}'. ` +
         `Ignoring '${stale}' - this is likely a stale build artifact left behind after a rename. ` +
         `Delete it from the forms output directory.`

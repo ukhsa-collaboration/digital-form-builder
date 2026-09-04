@@ -11,6 +11,7 @@ Here you can find additional documentation for XGovFormBuilder.
   - [Contents](#contents)
     - [Runner](#runner)
       - [Components](#components)
+      - [Services](#services)
     - [Designer](#designer)
     - [Examples](#examples)
     - [ADRs](#adrs)
@@ -44,6 +45,8 @@ Features and configuration options for the runner.
   - Intercept outbound HTTP calls in local development with mock responses
 - [global hooks](runner/hooks.md)
   - Run named, per-form side effects at fixed points in a form's lifecycle without branching in controllers
+- [log redaction](runner/log-redaction.md)
+  - PII detection and path-based redaction for runner log output
 
 #### Components
 
@@ -53,6 +56,10 @@ Features and configuration options for the runner.
   - Render a previously collected address from form state with each line on its own line
 - [summary lists](runner/components/summary-lists.md)
   - Render one or more GOV.UK summary lists from form state with optional change links and summary cards
+
+#### Services
+
+- [Trust Payments Adapter & Service](runner/services//trust-payments-adapter.md) - Documentation for trust payments service and app interactions.
 
 ### Designer
 

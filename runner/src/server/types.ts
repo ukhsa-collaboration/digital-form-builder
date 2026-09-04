@@ -28,9 +28,7 @@ import { FormModel } from "server/plugins/engine/models";
 import { JsonApiIntegrationWithMsal } from "./services/jsonApiIntegrationWithMsal";
 import { HookModel, HookState } from "server/services/hooks/types";
 
-type Services = (
-  services: string[]
-) => {
+type Services = (services: string[]) => {
   cacheService: CacheService;
   magicLinkCacheService: MagicLinkCacheService;
   notifyService: NotifyService;
@@ -71,10 +69,10 @@ declare module "@hapi/hapi" {
     };
     hook: {
       // plugin hooks
-      run(
+      run<T = void>(
         hookName: string,
         context: { model: HookModel; state?: HookState }
-      ): Promise<unknown>;
+      ): Promise<T>;
     };
     i18n: {
       // plugin locale

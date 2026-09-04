@@ -27,8 +27,7 @@
   },
   "hooks": {
     "HeadlessSummaryPageController.onSubmit": "rpsRiskReportOnSummarySubmit",
-    "TrustPaymentsService.onInvalidPayment": "rpsRiskReportInvalidPayment",
-    "TrustPaymentsService.onValidPayment": "rpsRiskReportValidPayment"
+    "TrustPaymentsAdapter.getBillingInformation": "rpsGetBillingInformation"
   },
   "pages": [
     {
@@ -386,6 +385,9 @@
     {
       "title": "How would you like to receive your report?",
       "path": "/receive-report-preference",
+      "options": {
+        "honorReturnURL": false
+      },
       "components": [
         {
           "name": "deliveryMethod",
@@ -484,6 +486,9 @@
     {
       "title": "Enter personal details",
       "path": "/enter-your-details-post",
+      "options": {
+        "honorReturnURL": false
+      },
       "components": [
         {
           "name": "fullNameLabel",
@@ -551,6 +556,9 @@
     {
       "path": "/is-delivery-address-same-as-report-address",
       "title": "Is this the correct delivery address?",
+      "options": {
+        "honorReturnURL": false
+      },
       "components": [
         {
           "name": "deliveryAddressSameAsReportDisplay",
@@ -782,7 +790,8 @@
       "options": {
         "hiddenFields": ["addressType"],
         "disabledChangeFields": ["addressType"],
-        "customButtonText": "Find address"
+        "customButtonText": "Find address",
+        "honorReturnURL": false
       },
       "componentsAfter": [
         {
@@ -951,7 +960,7 @@
       "path": "/summary",
       "controller": "HeadlessSummaryPageController",
       "options": {
-        "hideContinueButton": false,
+        "showContinueButton": true,
         "customButtonText": "Confirm and go to payment"
       },
       "components": [
@@ -1437,7 +1446,9 @@
       "service": "trustPaymentsService",
       "parameters": {
         "siteReference": "${RPS_ORR_TRUST_PAYMENTS_SITE_REFERENCE}",
-        "hashPassword": "${RPS_ORR_TRUST_PAYMENTS_HASH_PASSWORD}"
+        "hashPassword": "${RPS_ORR_TRUST_PAYMENTS_HASH_PASSWORD}",
+        "successWebhookUrl": "${RPS_AWS_APIGW_BASE_URL}/storepayment",
+        "failureWebhookUrl": "${RPS_AWS_APIGW_BASE_URL}/storepayment"
       }
     },
     {
