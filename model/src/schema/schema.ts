@@ -416,7 +416,7 @@ export const Schema = joi
     featureFlags: joi.array().items(joi.string()).optional(),
     footer: joi
       .array()
-      .items(joi.object({ text: joi.string(), href: joi.string().optional() }))
+      .items(joi.object({ text: joi.string(), href: joi.string() }))
       .optional(),
   });
 
