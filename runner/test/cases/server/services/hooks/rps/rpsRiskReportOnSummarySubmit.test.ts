@@ -13,9 +13,7 @@ describe("storeReportRequestSchema", () => {
     firstName: "John",
     lastName: "Doe",
     deliveryMethod: "post",
-    telephone: "07700900000",
     fullAddress: "10 Downing Street, London, SW1A 2AA",
-    countryCode: "E",
   };
 
   const baseEmailState = {
@@ -23,10 +21,7 @@ describe("storeReportRequestSchema", () => {
     firstName: "Jane",
     lastName: "Doe",
     deliveryMethod: "email",
-    telephone: "07700900000",
     email: "jane.doe@example.com",
-    fullAddress: "10 Downing Street, London, SW1A 2AA",
-    countryCode: "E",
   };
 
   describe("valid payloads", () => {
@@ -41,7 +36,24 @@ describe("storeReportRequestSchema", () => {
       expect(error).to.be.undefined();
     });
 
+    it("validates a post delivery with optional address lines included", () => {
+      const state = {
+        ...basePostState,
+        addressLine1: "10 Downing Street",
+        addressLine2: "",
+        townCity: "London",
+        postcode: "SW1A 2AA",
+      };
+      const { error } = storeReportRequestSchema.validate(state);
+      expect(error).to.be.undefined();
+    });
+
     it("validates an email delivery with required email", () => {
+      const { error } = storeReportRequestSchema.validate(baseEmailState);
+      expect(error).to.be.undefined();
+    });
+
+    it("validates an email delivery without a fullAddress", () => {
       const { error } = storeReportRequestSchema.validate(baseEmailState);
       expect(error).to.be.undefined();
     });
@@ -74,6 +86,13 @@ describe("storeReportRequestSchema", () => {
       const { error } = storeReportRequestSchema.validate(state);
       expect(error).to.exist();
       expect(error!.message).to.include("email");
+    });
+
+    it("errors when deliveryMethod is post and fullAddress is missing", () => {
+      const state = { ...basePostState, fullAddress: undefined };
+      const { error } = storeReportRequestSchema.validate(state);
+      expect(error).to.exist();
+      expect(error!.message).to.include("fullAddress");
     });
 
     it("errors when deliveryMethod is not a valid value", () => {

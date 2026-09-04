@@ -1,10 +1,7 @@
 import { ControllerError } from "server/plugins/engine/errors";
 import { getOrCreateCorrelationId } from "server/utils/correlationId";
 import { Hook } from "../types";
-import {
-  StoreReportRequest,
-  storeReportRequestSchema,
-} from "@xgovformbuilder/model";
+import { StoreReportData } from "@xgovformbuilder/model";
 
 /**
  * The hook for the on submit event within the headless summary page
@@ -16,8 +13,8 @@ export const rpsRiskReportOnSummarySubmit: Hook<void> = async (
   request,
   context
 ) => {
-  const { rpsBackendService, cacheService } = request.service.getServices(
-    "rpsBackendService",
+  const { riskReportApiService, cacheService } = request.service.getServices(
+    "riskReportApiService",
     "cacheService"
   );
 
@@ -31,54 +28,31 @@ export const rpsRiskReportOnSummarySubmit: Hook<void> = async (
 
   const selectedRiskReportAddress = state["reportAddress_selectedAddress"];
 
-  if (!selectedRiskReportAddress)
+  if (!selectedRiskReportAddress) {
     throw new ControllerError("cannot find risk report address", {
       code: 500,
     });
+  }
 
   const selectedDeliveryAddress = state["deliveryAddress_selectedAddress"];
 
   const deliveryMethod = state["deliveryMethod"] as "email" | "post";
 
-  const rawRequestData: StoreReportRequest = {
+  const data = {
     uuid: getOrCreateCorrelationId(request),
     deliveryMethod,
     firstName: state["firstName"],
     lastName: state["lastName"],
-    telephone: "dummy-phone",
-    fullAddress: selectedDeliveryAddress?.address ?? "dummy-address",
-    countryCode: selectedRiskReportAddress["countryCode"],
+    fullAddress: selectedDeliveryAddress?.address,
     email: state["emailAddress"] ?? undefined,
-  };
+  } as StoreReportData;
 
-  request.logger.trace(
-    { rawRequestData: rawRequestData },
-    "rpsRiskReportOnSummarySubmit.rawRequestData"
-  );
+  request.logger.trace({ data }, "rpsRiskReportOnSummarySubmit.data");
 
-  const { error, value: requestBody } = storeReportRequestSchema.validate(
-    rawRequestData,
-    {
-      abortEarly: false,
-    }
-  );
+  const response = await riskReportApiService.storeReport(data);
 
-  if (error) {
-    throw new ControllerError(
-      `Invalid form state for /storereport: ${error.message}`,
-      { code: 500 }
-    );
-  }
-
-  const response = await rpsBackendService.request("/storereport", {
-    method: "POST",
-    body: JSON.stringify(requestBody),
-  });
-
-  const body = await response.json();
-
-  if (response.status !== 200 || body.error) {
-    throw new ControllerError(`Request to save report details has failed`, {
+  if (!response.success) {
+    throw new ControllerError("store report details failed", {
       code: 500,
     });
   }
