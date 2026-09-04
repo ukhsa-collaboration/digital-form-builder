@@ -31,7 +31,7 @@
       "components": [
         {
           "type": "Para",
-          "content": "<ul class=\"govuk-list govuk-list--bullet\"><li>Use this service to order a radon gas test kit for a property in the UK and and the Isle of Man</li><li>The radon gas test kit measures the level of radon in your property over a period of three months</li><li>The results will show if the radon level is above the Action Level or not as advised by the UK Health Security Agency.</li><li>If your result is above the Action Level, you should take steps to reduce it</li></ul>"
+          "content": "Use this service to order a radon gas test kit for a property in the UK and and the Isle of Man.\n</br></br>The radon gas test kit measures the level of radon in your property over a period of 3 months. The results show if the radon level is above the Action Level advised by the UK Health Security Agency. If your result is above the Action Level, you should take steps to reduce it."
         },
         {
           "type": "InsetText",
@@ -43,7 +43,7 @@
         },
         {
           "type": "Para",
-          "content": "A test kit costs £52.80 (including VAT).<p class=\"govuk-body\"><b>Your kit includes:</b></p><ul class=\"govuk-list govuk-list--bullet\"><li>2 detectors, one for the living area and the other for the bedroom</li><li>Detector placement instructions</li><li>A pre-paid envelope, to return the detector three months later</li></ul>"
+          "content": "A test kit costs £52.80 (including VAT).<p class=\"govuk-body\"><b>Your kit includes:</b></p><ul class=\"govuk-list govuk-list--bullet\"><li>2 detectors, one for the living area and the other for the bedroom</li><li>detector placement instructions</li><li>a pre-paid envelope, to return the detector three months later</li></ul>"
         },
         {
           "type": "Para",
@@ -51,7 +51,7 @@
         },
         {
           "type": "Para",
-          "content": "<h1 class=\"govuk-heading-m\">Before you start</h2><p class=\"govuk-body\">Ordering a kit takes around 5 minutes. It may take up to 10 working days for the kit to be delivered<p class=\"govuk-body\"><b>To review</b></p><ul class=\"govuk-list govuk-list--bullet\"><li>If you are a landlord, you have a <a href=\"#to-be-determined\">Duty of Care under the Housing Act (2004)</a> to provide a safe home. You can find more information on the need for action with regards to radon gas defined by the <a href\"https://www.gov.uk/government/publications/housing-health-and-safety-rating-system-hhsrs-landlord-and-agent-guide\">Housing Health and Safety Rating System (HHSRS)</a></li><li>If your property's radon level has been measure before using UKHSA, you may be eligible for a free retest - you will be asked your name, address, and the method of remediaton you have used to determine your eligibility</li><li>If you would like 20 or more radon detectors, or are a public sector organisation, contact us as discounts may apply </li></ul>"
+          "content": "<h1 class=\"govuk-heading-m\">Before you start</h2><p class=\"govuk-body\">Ordering a kit takes around 5 minutes. It may take up to 10 working days for the kit to be delivered<p class=\"govuk-body\"><b>To review</b></p><ul class=\"govuk-list govuk-list--bullet\"><li>if you are a landlord, you have a duty of Care under the Housing Act (2004) to provide a safe home - you can find more information on the need for action with regards to radon gas defined by the <a href\"https://www.gov.uk/government/publications/housing-health-and-safety-rating-system-hhsrs-landlord-and-agent-guide\">Housing Health and Safety Rating System (HHSRS)</a></li><li>if your property's radon level has been measure before using UKHSA, you may be eligible for a free retest - you will be asked your name, address, and the method of remediaton you have used to determine your eligibility</li><li>if you would like 20 or more radon detectors, or are a public sector organisation, <a href=\"/radon-enquiry\">contact us</a> as discounts may be available</li></ul>"
         },
         {
           "type": "Para",
@@ -59,7 +59,7 @@
         },
         {
           "type": "Para",
-          "content": "<b>You'll need your</b><ul class=\"govuk-list govuk-list--bullet\"><li>A valid email address</li><li>A postal delivery address in the UK or Isle of Man</li><li>Your measurement address</li><li>Your payment details</li></ul></br>"
+          "content": "<b>You'll need your</b><ul class=\"govuk-list govuk-list--bullet\"><li>a valid email address</li><li>a postal delivery address in the UK or Isle of Man</li><li>your measurement address</li><li>your payment details</li></ul></br>"
         }
       ],
       "next": [{ "path": "/gas-test-kit-property-address-postcode" }],
