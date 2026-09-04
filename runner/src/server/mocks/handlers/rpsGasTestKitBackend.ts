@@ -1,6 +1,9 @@
 import { http, HttpResponse } from "msw";
 import { createChildLogger } from "../../utils/logger";
-import { saveGasTestKitDetailsSchema } from "@xgovformbuilder/model";
+import {
+  saveGasTestKitDetailsSchema,
+  StoreGtkResponse,
+} from "@xgovformbuilder/model";
 
 const logger = createChildLogger({ name: "gtkBackend" });
 
@@ -20,7 +23,12 @@ export const storeGtkEndpoint = http.post("*/storegtk", async ({ request }) => {
     return HttpResponse.json(validated.error, { status: 500 });
   }
 
-  return HttpResponse.json({});
+  const response: StoreGtkResponse = {
+    uuid: validated.value.uuid,
+    message: "details stored",
+  };
+
+  return HttpResponse.json(response);
 });
 
 export const rpsGasTestKitBackendHandlers = [storeGtkEndpoint];

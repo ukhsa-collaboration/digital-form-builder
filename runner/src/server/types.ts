@@ -26,6 +26,8 @@ import { QueueStatusService } from "server/services/queueStatusService";
 import { QueueService } from "./services/QueueService";
 import { FormModel } from "server/plugins/engine/models";
 import { JsonApiIntegrationWithMsal } from "./services/jsonApiIntegrationWithMsal";
+import { RiskReportApiService } from "./services/riskReportApiService";
+import { GasTestKitApiService } from "./services/gasTestKitApiService";
 import { HookModel, HookState } from "server/services/hooks/types";
 
 type Services = (services: string[]) => {
@@ -46,7 +48,8 @@ type Services = (services: string[]) => {
 
 type KnownServicesMap = ReturnType<Services> & {
   jsonApiIntegrationWithMsal: JsonApiIntegrationWithMsal;
-  rpsBackendService: JsonApiIntegrationWithMsal;
+  riskReportApiService: RiskReportApiService;
+  gasTestKitApiService: GasTestKitApiService;
 };
 
 export type RouteConfig = {

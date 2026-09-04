@@ -2,19 +2,15 @@ import { getOrCreateCorrelationId } from "server/utils/correlationId";
 import { resolveSelectedAddress } from "server/plugins/engine/utils/addressUtils";
 import { ControllerError } from "server/plugins/engine/errors";
 import { Hook } from "../types";
-import {
-  saveGasTestKitDetailsSchema,
-  StoreGtkRequest,
-} from "@xgovformbuilder/model";
+import { StoreGtkData } from "@xgovformbuilder/model";
 
 const toAddressDetails = (address?: {
   address?: string;
   postcode?: string;
-  udprn?: string;
 }) => ({
-  udprn: "00000000",
   fullAddress: address?.address ?? "",
   postcode: address?.postcode ?? "",
+  udprn: "00000000",
 });
 
 /**
@@ -27,8 +23,8 @@ export const rpsGasTestKitOnSummarySubmit: Hook<void> = async (
   request,
   context
 ) => {
-  const { rpsBackendService, cacheService } = request.service.getServices(
-    "rpsBackendService",
+  const { gasTestKitApiService, cacheService } = request.service.getServices(
+    "gasTestKitApiService",
     "cacheService"
   );
 
@@ -40,12 +36,12 @@ export const rpsGasTestKitOnSummarySubmit: Hook<void> = async (
 
   const { state } = context;
 
-  const customer: StoreGtkRequest["customer"] = {
+  const customer: StoreGtkData["customer"] = {
     title: state["title"],
     firstName: state["firstName"],
     lastName: state["lastName"],
     email: state["emailAddress"],
-    telephone: "dummy-telephone",
+    telephone: "07999999999",
   };
 
   const measurementAddress = resolveSelectedAddress(state, "propertyAddress");
@@ -54,14 +50,14 @@ export const rpsGasTestKitOnSummarySubmit: Hook<void> = async (
   const resultsSameAsProperty = state["resultsAddressConfirmation"] === true;
   const resultsSameAsKit = state["kitResultsConfirmation"] === true;
 
-  const kitRecipient: StoreGtkRequest["kitRecipient"] = kitSameAsProperty
+  const kitRecipient: StoreGtkData["kitRecipient"] = kitSameAsProperty
     ? customer
     : {
         title: state["kitTitle"],
         firstName: state["kitFirstName"],
         lastName: state["kitLastName"],
-        email: state["emailAddress"],
-        telephone: "dummy-telephone",
+        email: "no-reply@ukhsa.gov.uk",
+        telephone: "07999999999",
       };
 
   const kitRecipientAddress = kitSameAsProperty
@@ -78,7 +74,7 @@ export const rpsGasTestKitOnSummarySubmit: Hook<void> = async (
   // set. We must check resultsSameAsProperty independently of kitSameAsProperty.
   const resultsUseMeasurement = !kitSameAsProperty && resultsSameAsProperty;
 
-  const resultsRecipient: StoreGtkRequest["resultsRecipient"] = resultsUseKit
+  const resultsRecipient: StoreGtkData["resultsRecipient"] = resultsUseKit
     ? kitRecipient
     : resultsUseMeasurement
     ? customer
@@ -86,8 +82,8 @@ export const rpsGasTestKitOnSummarySubmit: Hook<void> = async (
         title: state["resultsTitle"],
         firstName: state["resultsFirstName"],
         lastName: state["resultsLastName"],
-        email: state["emailAddress"],
-        telephone: "dummy-telephone",
+        email: "no-reply@ukhsa.gov.uk",
+        telephone: "07999999999",
       };
 
   const resultsRecipientAddress = resultsUseKit
@@ -98,7 +94,7 @@ export const rpsGasTestKitOnSummarySubmit: Hook<void> = async (
 
   const uuid = getOrCreateCorrelationId(request);
 
-  const rawRequestData = {
+  const data: StoreGtkData = {
     uuid,
     orderNumber: uuid,
     customer,
@@ -112,36 +108,13 @@ export const rpsGasTestKitOnSummarySubmit: Hook<void> = async (
     remediationComplete: state["stepsToReduceYesNo"] === true,
   };
 
-  request.logger.trace(
-    { rawRequestData },
-    "rpsGasTestKitOnSummarySubmit.rawRequestData"
-  );
+  request.logger.trace({ data }, "rpsGasTestKitOnSummarySubmit.data");
 
-  const { error, value: requestBody } = saveGasTestKitDetailsSchema.validate(
-    rawRequestData,
-    {
-      abortEarly: false,
-    }
-  );
+  const response = await gasTestKitApiService.storeGtk(data);
 
-  if (error) {
-    throw new ControllerError(
-      `Invalid form state for /storegtk: ${error.message}`,
-      { code: 500 }
-    );
-  }
-
-  const response = await rpsBackendService.request("/storegtk", {
-    method: "POST",
-    body: JSON.stringify(requestBody),
-  });
-
-  const body = await response.json();
-
-  if (response.status !== 200 || body.error) {
-    throw new ControllerError(
-      `Request to save gas test kit details has failed`,
-      { code: 500 }
-    );
+  if (!response.uuid) {
+    throw new ControllerError("store gtk details failed", {
+      code: 500,
+    });
   }
 };

@@ -1,12 +1,8 @@
 import { HapiRequest } from "server/types";
-import { JsonApiIntegrationWithMsal } from "src/server/services/jsonApiIntegrationWithMsal";
+import { RiskReportApiService } from "src/server/services/riskReportApiService";
 import { Address } from "src/server/services/addressLookupService";
 import { ControllerError } from "../errors";
 import { getOrCreateCorrelationId } from "server/utils/correlationId";
-import {
-  RiskReportLookupAddressRequest,
-  RiskReportLookupResponse,
-} from "@xgovformbuilder/model";
 
 /**
  * A handler invoked once a user confirms a selected address. Type-specific side
@@ -21,42 +17,33 @@ export type AddressSelectionHandler = (
 
 /**
  * Calls the RPS backend service to see if a UDPRN is valid for a risk report
- * @param rpsBackendService - The backend service to check UDPRNs in the database
- * @param parameters - udprn & a back link url for the error pages
+ * @param riskReportApiService - The typed service used to check UDPRNs in the database
+ * @param parameters - address details & a back link url for the error pages
  * @returns a session ID if successful
  */
 const lookupUdprnInDatabase = async (
-  rpsBackendService: JsonApiIntegrationWithMsal,
+  riskReportApiService: RiskReportApiService,
   {
     udprn,
-    uprn,
+    address,
     sessionId,
     backLinkUrl,
   }: {
     udprn: string;
-    uprn: string;
+    address: Address;
     sessionId: string;
     backLinkUrl: string;
   }
 ) => {
   try {
-    const request: RiskReportLookupAddressRequest = {
-      sessionId: sessionId,
+    const response = await riskReportApiService.lookupAddress({
+      uuid: sessionId,
       udprn: udprn.padStart(8, "0"),
-      uprn,
-    };
-
-    const checkUdprn = await rpsBackendService.request("/lookup", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(request),
+      countryCode: address.countryCode as "E" | "W" | "S" | "N",
+      fullAddress: address.address,
     });
 
-    const response: RiskReportLookupResponse = await checkUdprn.json();
-
-    if (response.success === undefined) {
+    if (!response.success) {
       throw new ControllerError("database check not successful", {
         code: 500,
         page: "500-database-check-error",
@@ -64,7 +51,7 @@ const lookupUdprnInDatabase = async (
       });
     }
 
-    if (!response.found) {
+    if (!response.data.found) {
       throw new ControllerError("address is not in database", {
         code: 404,
         page: "404-address-not-in-db",
@@ -99,8 +86,8 @@ const rpsRiskReportOnAddressSelection: AddressSelectionHandler = async (
   request,
   address
 ) => {
-  const { rpsBackendService, cacheService } = request.service.getServices(
-    "rpsBackendService",
+  const { riskReportApiService, cacheService } = request.service.getServices(
+    "riskReportApiService",
     "cacheService"
   );
 
@@ -114,11 +101,11 @@ const rpsRiskReportOnAddressSelection: AddressSelectionHandler = async (
   const progress = currentState.progress || [];
   const backLinkUrl = progress[progress.length - 1];
 
-  await lookupUdprnInDatabase(rpsBackendService, {
+  await lookupUdprnInDatabase(riskReportApiService, {
     sessionId: getOrCreateCorrelationId(request),
     backLinkUrl,
     udprn: address?.udprn,
-    uprn: address?.uprn,
+    address,
   });
 };
 
