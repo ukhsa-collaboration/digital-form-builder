@@ -42,15 +42,15 @@
         },
         {
           "type": "Para",
-          "content": "A test kit costs £52.80 (including VAT).<p class=\"govuk-body\"><b>Your kit includes:</b></p><ul class=\"govuk-list govuk-list--bullet\"><li>2 detectors, one for the living area and the other for the bedroom</li><li>Detector placement instructions</li><li>A pre-paid envelope, to return the detector 3 months later</li></ul>"
+          "content": "A test kit costs £52.80 (including VAT).<p class=\"govuk-body\"><b>Your kit includes:</b></p><ul class=\"govuk-list govuk-list--bullet\"><li>2 detectors, one for the living area and the other for the bedroom</li><li>Detector placement instructions</li><li>A pre-paid envelope, to return the detector three months later</li></ul>"
         },
         {
           "type": "Para",
-          "content": "After three-months you will return the kit and receive a report showing the radon level at your address and advice on whether you need to take remedial action"
+          "content": "After three months you will return the kit and receive a report showing the radon level at your address and advice on whether you need to take remedial action"
         },
         {
           "type": "Para",
-          "content": "<h1 class=\"govuk-heading-m\">Before you start</h2><p class=\"govuk-body\">Ordering a kit takes around 5 minutes. It may take up to 10 working days for the kit to be delivered<p class=\"govuk-body\"><b>To review</b></p><ul class=\"govuk-list govuk-list--bullet\"><li>If you are a landlord, you have a Duty of Care under the Housing Act (2004) to provide a safe home. You can find more information on the need for action with regards to radon gas defined by the Housing Health and Safety Rating System (HHSRS)</li><li>If your property's radon level has been measure before using UKHSA, you may be eligible for a free retest - you will be asked your name, address, and the method of remediaton you have used to determine your eligibility</li><li>If you would like 20 or more radon detectors, or are a public sector organisation, contact us as discounts may apply </li></ul>"
+          "content": "<h1 class=\"govuk-heading-m\">Before you start</h2><p class=\"govuk-body\">Ordering a kit takes around 5 minutes. It may take up to 10 working days for the kit to be delivered<p class=\"govuk-body\"><b>To review</b></p><ul class=\"govuk-list govuk-list--bullet\"><li>If you are a landlord, you have a <a href=\"#to-be-determined\">Duty of Care under the Housing Act (2004)</a> to provide a safe home. You can find more information on the need for action with regards to radon gas defined by the <a href\"https://www.gov.uk/government/publications/housing-health-and-safety-rating-system-hhsrs-landlord-and-agent-guide\">Housing Health and Safety Rating System (HHSRS)</a></li><li>If your property's radon level has been measure before using UKHSA, you may be eligible for a free retest - you will be asked your name, address, and the method of remediaton you have used to determine your eligibility</li><li>If you would like 20 or more radon detectors, or are a public sector organisation, contact us as discounts may apply </li></ul>"
         },
         {
           "type": "Para",
@@ -1123,7 +1123,7 @@
         {
           "name": "final links",
           "type": "Para",
-          "content": "<p class=\"govuk-body-m\"><a href=\"https://www.gov.uk/health-protection-team\" target=”_blank”>What did you think of this service?</a> (takes 30 seconds)</p><p class=\"govuk-body-m\"><a href=\"start\" target=”_blank”>Order another radon gas test kit</a></p><p class=\"govuk-body-m\"><a href=\"radon-enquiry\" target=”_blank”>Contact Radon Measurement Service team</a></p><p class=\"govuk-body-m\"><a href=\"https://www.gov.uk/health-protection-team\" target=”_blank”>Go to Radon services for homeowners or householders</a></p>"
+          "content": "<p class=\"govuk-body-m\"><a href=\"https://submit.forms.service.gov.uk/form/266710/radon-services-feedback-form\">What did you think of this service?</a> (takes 30 seconds)</p><p class=\"govuk-body-m\"><a href=\"start\">Order another radon gas test kit</a></p><p class=\"govuk-body-m\"><a href=\"/radon-enquiry\">Contact Radon Measurement Service team</a></p><p class=\"govuk-body-m\"><a href=\"https://www.gov.uk/health-protection-team\">Go to Radon services for homeowners or householders</a></p>"
         }
       ]
     }
