@@ -80,6 +80,8 @@ export class PageControllerBase {
   honorReturnURL?: boolean | ConditionalCase<boolean>[];
   hideContinueButton?: boolean;
   showContinueButton?: boolean;
+  isStartButton?: boolean;
+  footer?: { href: string; text: string }[];
 
   // TODO: pageDef type
   constructor(model: FormModel, pageDef: { [prop: string]: any } = {}) {
@@ -102,6 +104,8 @@ export class PageControllerBase {
     this.buttonText =
       pageDef?.options?.customButtonText ?? this.defaultButtonText;
     this.honorReturnURL = pageDef?.options?.honorReturnURL ?? true;
+    this.isStartButton = pageDef?.options?.isStartButton ?? false;
+    this.footer = def.footer;
 
     // force show or hide the form button. They will only have an effect if they are not undefined.
     this.hideContinueButton = pageDef.options?.hideContinueButton;
@@ -189,6 +193,7 @@ export class PageControllerBase {
     details?: any;
     returnUrl?: string | undefined;
     allowExit?: boolean;
+    footer?: { href: string; text: string }[];
   } {
     let showTitle = true;
     let pageTitle = this.title;
@@ -620,6 +625,7 @@ export class PageControllerBase {
 
       this.setPhaseTag(viewModel);
       this.setFeedbackDetails(viewModel, request);
+      this.setFooterLinks(viewModel);
 
       /**
        * Content components can be hidden based on a condition. If the condition evaluates to true, it is safe to be kept, otherwise discard it
@@ -976,6 +982,10 @@ export class PageControllerBase {
     }
 
     return undefined;
+  }
+
+  setFooterLinks(viewModel) {
+    viewModel.footer = this.footer;
   }
 
   makeGetRoute() {
