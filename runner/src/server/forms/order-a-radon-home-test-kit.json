@@ -38,7 +38,7 @@
         },
         {
           "type": "InsetText",
-          "content": "You may wish to use the Target Level of 100 Bq <sup>m-3</sup> if there are smokers or ex-smokers living in the property as there is a greater risk to their health."
+          "content": "You may wish to use the Target Level of 100 Bq m<sup>-3</sup> if there are smokers or ex-smokers living in the property as there is a greater risk to their health."
         },
         {
           "type": "Para",
