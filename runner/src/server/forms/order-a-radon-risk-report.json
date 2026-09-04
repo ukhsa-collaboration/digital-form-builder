@@ -1099,7 +1099,7 @@
         {
           "name": "final links",
           "type": "Para",
-          "content": "<p class=\"govuk-body-m\"><a href=\"https://www.gov.uk/health-protection-team\" target=”_blank”>What did you think of this service?</a> (takes 30 seconds)</p><p class=\"govuk-body-m\"><a href=\"#\" target=”_blank”>Contact Radon Measurement Service team</a></p><p class=\"govuk-body-m\"><a href=\"#\" target=”_blank”>Go to radon services for homeowners or householders</a></p>"
+          "content": "<p class=\"govuk-body-m\"><a href=\"https://submit.forms.service.gov.uk/form/266710/radon-services-feedback-form\">What did you think of this service?</a> (takes 30 seconds)</p><p class=\"govuk-body-m\"><a href=\"/radon-enquiry\">Contact Radon Measurement Service team</a></p><p class=\"govuk-body-m\"><a href=\"#\">Go to radon services for homeowners or householders</a></p>"
         }
       ]
     }
