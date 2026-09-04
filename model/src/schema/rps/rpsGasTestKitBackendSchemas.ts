@@ -56,7 +56,7 @@ export const saveGasTestKitDetailsSchema = joi
   })
   .options({ stripUnknown: true });
 
-export type StoreGtkRequest = {
+export type StoreGtkData = {
   uuid: string;
   orderNumber: string;
   customer: PersonDetails;
@@ -68,4 +68,9 @@ export type StoreGtkRequest = {
   prevTestedAddress: boolean;
   prevAboveActionLevel: boolean;
   remediationComplete: boolean;
+};
+
+export type StoreGtkResponse = {
+  message: string;
+  uuid: string;
 };

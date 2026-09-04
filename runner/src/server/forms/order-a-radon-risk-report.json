@@ -1452,10 +1452,10 @@
       }
     },
     {
-      "name": "rpsBackendService",
-      "service": "jsonApiIntegrationWithMsal",
+      "name": "riskReportApiService",
+      "service": "riskReportApiService",
       "parameters": {
-        "name": "rpsBackendService.RadonRiskReport",
+        "name": "riskReportApiService.RadonRiskReport",
         "apimBaseUrl": "${RPS_AWS_APIGW_BASE_URL}",
         "callingApplication": "RPS",
         "tenantId": "${RPS_AWS_AUTHORISER_API_TENANT_ID}",

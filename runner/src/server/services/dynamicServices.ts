@@ -5,6 +5,8 @@ import { HapiServer } from "../types";
 import { JsonApiIntegrationWithMsal } from "./jsonApiIntegrationWithMsal";
 import { AddressLookupService } from "./addressLookupService";
 import { TrustPaymentsService } from "./trustPaymentsService";
+import { RiskReportApiService } from "./riskReportApiService";
+import { GasTestKitApiService } from "./gasTestKitApiService";
 
 type ServiceConstructor = new (name: string, parameters: any) => unknown;
 
@@ -12,6 +14,8 @@ export const serviceRegistry: Record<string, ServiceConstructor> = {
   jsonApiIntegrationWithMsal: JsonApiIntegrationWithMsal,
   addressLookupService: AddressLookupService,
   trustPaymentsService: TrustPaymentsService,
+  riskReportApiService: RiskReportApiService,
+  gasTestKitApiService: GasTestKitApiService,
 };
 
 export const getDynamicServiceInstanceName = (formId: string, name: string) =>
