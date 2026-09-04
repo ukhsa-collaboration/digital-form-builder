@@ -7,7 +7,7 @@ import {
   StorePaymentDetailsResponse,
   storeReportRequestSchema,
   StoreReportResponse,
-} from "@xgovformbuilder/model/dist/module/schema/rps";
+} from "@xgovformbuilder/model";
 
 const logger = createChildLogger({ name: "rpsRiskReportBackend" });
 

@@ -1,6 +1,6 @@
 import { http, HttpResponse } from "msw";
 import { createChildLogger } from "../../utils/logger";
-import { saveGasTestKitDetailsSchema } from "@xgovformbuilder/model/dist/module/schema/rps";
+import { saveGasTestKitDetailsSchema } from "@xgovformbuilder/model";
 
 const logger = createChildLogger({ name: "gtkBackend" });
 

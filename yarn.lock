@@ -3789,6 +3789,55 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@openredaction/core@npm:^1.1.5":
+  version: 1.1.5
+  resolution: "@openredaction/core@npm:1.1.5"
+  peerDependencies:
+    mammoth: ^1.6.0
+    pdf-parse: ^1.1.1
+    tesseract.js: ^5.0.0
+  peerDependenciesMeta:
+    mammoth:
+      optional: true
+    pdf-parse:
+      optional: true
+    tesseract.js:
+      optional: true
+  checksum: 35637d5318193434dae75afc24faed61e9b6beaa0f9624597b4f497b6bcf89d7f882d3fc61b689d12a53fc583731bacf16198fef745b97417cfb66fb0e89e5c0
+  languageName: node
+  linkType: hard
+
+"@openredaction/express@npm:^1.1.5":
+  version: 1.1.5
+  resolution: "@openredaction/express@npm:1.1.5"
+  dependencies:
+    "@openredaction/core": ^1.1.5
+  peerDependencies:
+    express: ^4.18.0 || ^5.0.0
+  checksum: fdf69799bdac62866a6f0b42cbb040e18c842faf0fe3997c06c301b3fd1a0df34c35c674fc796948873cccfc3aab0174faef5966622026c03d27a256eefe1003
+  languageName: node
+  linkType: hard
+
+"@openredaction/react@npm:^1.1.5":
+  version: 1.1.5
+  resolution: "@openredaction/react@npm:1.1.5"
+  dependencies:
+    "@openredaction/core": ^1.1.5
+  peerDependencies:
+    react: ^18.0.0 || ^19.0.0
+  checksum: 561e3231c6c23adf5ee2755411a87860a7a024a644f9a74e1bd3127a00f95a1ec2eb6880bc4b9d7d9201fd0b81152f88ace62174723277f4d1672ddf775e4fc4
+  languageName: node
+  linkType: hard
+
+"@openredaction/server@npm:^1.1.5":
+  version: 1.1.5
+  resolution: "@openredaction/server@npm:1.1.5"
+  dependencies:
+    "@openredaction/core": ^1.1.5
+  checksum: 211d51ce220e9d13cc694a87638a68872e42e73797a30056d798fe5dacc0f2e17b7da46725654b674a2a4930953765662b724f7b51c1cf3a411ee13fea125294
+  languageName: node
+  linkType: hard
+
 "@pkgjs/parseargs@npm:^0.11.0":
   version: 0.11.0
   resolution: "@pkgjs/parseargs@npm:0.11.0"
@@ -5448,8 +5497,10 @@ __metadata:
     nodemon: ^3.0.2
     notifications-node-client: ^7.0.4
     nunjucks: ^3.2.3
+    openredaction: 1.1.5
     pg-boss: ^10.1.3
     pino: 8.15.1
+    pino-abstract-transport: 1.1.0
     pino-pretty: ^9.4.1
     prisma: 6.12.0
     resolve: ^1.19.0
@@ -16869,6 +16920,32 @@ __metadata:
   languageName: node
   linkType: hard
 
+"openredaction@npm:1.1.5":
+  version: 1.1.5
+  resolution: "openredaction@npm:1.1.5"
+  dependencies:
+    "@openredaction/core": ^1.1.5
+    "@openredaction/express": ^1.1.5
+    "@openredaction/react": ^1.1.5
+    "@openredaction/server": ^1.1.5
+  peerDependencies:
+    mammoth: ^1.6.0
+    pdf-parse: ^1.1.1
+    react: ^18.0.0 || ^19.0.0
+    tesseract.js: ^5.0.0
+  peerDependenciesMeta:
+    mammoth:
+      optional: true
+    pdf-parse:
+      optional: true
+    react:
+      optional: true
+    tesseract.js:
+      optional: true
+  checksum: be7d5fad6956db7adbfb5c7fd1dd2ebbad1df842799b101cdc2084109c85ae4d46f8d50c854e9c2e6bea9548f2d88a6c354ee77f4857fed697d11a1abdf7418f
+  languageName: node
+  linkType: hard
+
 "opn@npm:^5.5.0":
   version: 5.5.0
   resolution: "opn@npm:5.5.0"
@@ -17521,6 +17598,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"pino-abstract-transport@npm:1.1.0, pino-abstract-transport@npm:v1.1.0":
+  version: 1.1.0
+  resolution: "pino-abstract-transport@npm:1.1.0"
+  dependencies:
+    readable-stream: ^4.0.0
+    split2: ^4.0.0
+  checksum: cc84caabee5647b5753ae484d5f63a1bca0f6e1791845e2db2b6d830a561c2b5dd1177720f68d78994c8a93aecc69f2729e6ac2bc871a1bf5bb4b0ec17210668
+  languageName: node
+  linkType: hard
+
 "pino-abstract-transport@npm:^1.0.0":
   version: 1.2.0
   resolution: "pino-abstract-transport@npm:1.2.0"
@@ -17528,16 +17615,6 @@ __metadata:
     readable-stream: ^4.0.0
     split2: ^4.0.0
   checksum: 3336c51fb91ced5ef8a4bfd70a96e41eb6deb905698e83350dc71eedffb34795db1286d2d992ce1da2f6cd330a68be3f7e2748775a6b8a2ee3416796070238d6
-  languageName: node
-  linkType: hard
-
-"pino-abstract-transport@npm:v1.1.0":
-  version: 1.1.0
-  resolution: "pino-abstract-transport@npm:1.1.0"
-  dependencies:
-    readable-stream: ^4.0.0
-    split2: ^4.0.0
-  checksum: cc84caabee5647b5753ae484d5f63a1bca0f6e1791845e2db2b6d830a561c2b5dd1177720f68d78994c8a93aecc69f2729e6ac2bc871a1bf5bb4b0ec17210668
   languageName: node
   linkType: hard
 

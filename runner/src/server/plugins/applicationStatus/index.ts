@@ -52,9 +52,8 @@ const index = {
 
             const state = await cacheService.getState(request);
 
-            const {
-              reference: newReference,
-            } = await statusService.outputRequests(request);
+            const { reference: newReference } =
+              await statusService.outputRequests(request);
 
             if (state.callback?.skipSummary?.redirectUrl) {
               const { redirectUrl } = state.callback?.skipSummary;

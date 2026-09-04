@@ -1,4 +1,5 @@
 import config from "../../../config";
+import { logger } from "../../../utils/logger";
 
 /**
  * Resolves placeholder variables in form configurations. This is a development-only
@@ -65,7 +66,7 @@ function resolveString(str: string): string {
   return str.replace(PLACEHOLDER_PATTERN, (match, varName) => {
     const value = process.env[varName];
     if (value === undefined) {
-      console.warn(
+      logger.warn(
         `[resolveDevPlaceholders] Environment variable '${varName}' not found. Placeholder '${match}' will remain unresolved.`
       );
       return match;

@@ -1,11 +1,11 @@
 import { createHash, timingSafeEqual } from "crypto";
-import {
-  TrustPaymentsDetails,
-  TrustPaymentsConfig,
-} from "@xgovformbuilder/model";
 import { HapiRequest } from "../types";
 import { ControllerError } from "../plugins/engine/errors";
 import { BaseService } from "./BaseService";
+import {
+  TrustPaymentsConfig,
+  TrustPaymentsDetails,
+} from "@xgovformbuilder/model";
 
 export class TrustPaymentsService extends BaseService {
   private config: TrustPaymentsConfig;
@@ -27,7 +27,12 @@ export class TrustPaymentsService extends BaseService {
     const siteReference = this.config.siteReference;
     const billingFirstName = details.billingFirstName;
     const billingLastName = details.billingLastName;
+    const billingEmailAddress = details.billingEmailAddress;
+    const orderReference = details.orderReference;
+
     const successfulUrlRedirect = details.redirectUrl;
+    const successWebhookUrl = this.config.successWebhookUrl;
+    const failureWebhookUrl = this.config.failureWebhookUrl;
 
     // current time minus 2 minutes
     const date = new Date(Date.now() - 2 * 60 * 1000);
@@ -42,6 +47,7 @@ export class TrustPaymentsService extends BaseService {
       amount +
       siteReference +
       version +
+      orderReference +
       siteSecurityTimestamp +
       this.config.hashPassword;
 
@@ -49,7 +55,9 @@ export class TrustPaymentsService extends BaseService {
       "h" + createHash("sha256").update(stringToHash, "utf8").digest("hex");
 
     this.log.trace("createTrustPaymentsForm", {
+      orderReference,
       siteReference,
+      siteSecurityHash: hash,
       siteSecurityTimestamp,
     });
 
@@ -62,12 +70,26 @@ export class TrustPaymentsService extends BaseService {
             <input type="hidden" name="mainamount" value="${amount}">
             <input type="hidden" name="billingfirstname" value="${billingFirstName}">
             <input type="hidden" name="billinglastname" value="${billingLastName}">
+            ${
+              billingEmailAddress
+                ? `<input type="hidden" name="billingemail" value="${billingEmailAddress}">`
+                : ""
+            }
             
             <input type="hidden" name="strequiredfields" value="billingfirstname">
             <input type="hidden" name="strequiredfields" value="billinglastname">
+
       
             <input type="hidden" name="ruleidentifier" value="STR-6">
             <input type="hidden" name="successfulurlredirect" value="${successfulUrlRedirect}">
+
+            <input type="hidden" name="ruleidentifier" value="STR-8">
+            <input type=hidden name="successfulurlnotification" value="${successWebhookUrl}">
+            
+            <input type="hidden" name="ruleidentifier" value="STR-9">
+            <input type=hidden name="declinedurlnotification" value="${failureWebhookUrl}">
+            
+            <input type="hidden" name="orderreference" value="${orderReference}">
             
             <input type="hidden" name="version" value="${version}">
             
