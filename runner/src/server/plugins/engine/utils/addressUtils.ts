@@ -1,16 +1,62 @@
-import { Item } from "@xgovformbuilder/model/dist/module/data-model/types";
+import { Item } from "@xgovformbuilder/model";
 import Joi from "joi";
 import { Address } from "src/server/services/addressLookupService";
 import Fuse from "fuse.js";
 
-export type AddressType =
-  | "reportAddress"
-  | "deliveryAddress"
-  | "measurementAddress";
+/**
+ * An address type is any identifier-safe string declared in the form JSON. It
+ * is used as a prefix for the namespaced state keys (e.g. `reportAddress_*`),
+ * so the controllers are agnostic to the specific value.
+ */
+export type AddressType = string;
 
-export type SelectedFieldName =
-  | "selectedReportAddress"
-  | "selectedDeliveryAddress";
+/**
+ * The address type is used to build state-key prefixes and the derived
+ * selected-address field name, so keep it to identifier-safe characters.
+ */
+export const addressTypeSchema = Joi.string()
+  .pattern(/^[a-zA-Z][a-zA-Z0-9]*$/)
+  .max(64);
+
+/**
+ * specific schema for the select an address form.
+ * Required to identity what type of address we are selecting
+ */
+export const addressTypeFormSchema = Joi.object({
+  addressType: addressTypeSchema,
+}).unknown(true);
+
+/**
+ * Returns the selected address radios field name for a given address type.
+ * State keys are namespaced by address type, so the field name is derived by
+ * pure string construction and works for any type without a lookup table.
+ * @param addressType - the address type
+ * @returns the component name of the selected address radios field
+ */
+export function deriveSelectedFieldName(addressType: AddressType): string {
+  return `${addressType}_addressSelection`;
+}
+
+/**
+ * Suffixes of the namespaced address state keys that should be exposed to the
+ * template context so any component can display a previously selected address
+ * (e.g. `{{ propertyAddress_selectedAddress.address }}`).
+ *
+ * `_addresses` (the full candidate list) is deliberately excluded: nothing in
+ * templates needs it and it would bloat every page render.
+ */
+export const ADDRESS_CONTEXT_SUFFIXES = [
+  "_selectedAddress",
+  "_matchedAddress",
+  "_postcodeLookup",
+  "_buildingLookup",
+  "_addressLine1Lookup",
+  "_numberOfAddresses",
+  "_hasMatchedAddress",
+  "_isCorrectAddress",
+];
+
+const SELECTED_ADDRESS_SUFFIX = "_selectedAddress";
 
 export type AddressLookupFields = {
   postcode: string;
@@ -21,28 +67,67 @@ export type AddressLookupFields = {
   county?: string;
 };
 
-export const addressTypeSchema = Joi.string().valid(
-  "reportAddress",
-  "deliveryAddress",
-  "measurementAddress"
-);
+/**
+ * Resolves the full single-line address string for an address type, regardless
+ * of whether the selected address is stored as the full object (post-confirm)
+ * or as a bare UDPRN string (post-selection). Falls back to the matched address
+ * and then the cached candidate list.
+ * @param state - the full form cache state
+ * @param addressType - the address-type prefix (e.g. `propertyAddress`)
+ * @returns the full address line, or "" when nothing is selected
+ */
+function resolveFullSelectedAddress(
+  state: Record<string, any>,
+  addressType: string
+): string {
+  const value = state[`${addressType}${SELECTED_ADDRESS_SUFFIX}`];
+  if (!value) return "";
+
+  if (typeof value === "object" && value.address) return value.address;
+
+  // value is a UDPRN string — resolve it to the full object.
+  const matched = state[`${addressType}_matchedAddress`];
+
+  if (matched && String(matched.udprn) === String(value)) {
+    return matched.address;
+  }
+
+  const addresses: Address[] = state[`${addressType}_addresses`] || [];
+  const found = addresses.find((addr) => String(addr.udprn) === String(value));
+
+  return found ? found.address : String(value);
+}
 
 /**
- * Returns the selected address name using the address type
- * @param addressType - the adders type
- * @returns the component name of the selected address
+ * Shallow-picks the namespaced address keys from cache state so they can be
+ * merged into the nunjucks `formData` context. Object values (the selected /
+ * matched address objects) are kept verbatim. For every `${type}_selectedAddress`
+ * key it also adds a resolved `${type}_fullSelectedAddress` string containing the
+ * full single-line address, so templates can display it without having to know
+ * whether the selection is stored as an object or a UDPRN.
+ * @param state - the full form cache state
+ * @returns a map of address state keys to their values
  */
-export function deriveSelectedFieldName(
-  addressType: AddressType
-): SelectedFieldName {
-  switch (addressType) {
-    case "reportAddress":
-      return "selectedReportAddress";
-    case "deliveryAddress":
-      return "selectedDeliveryAddress";
-    default:
-      return addressType as never;
+export function extractAddressContext(
+  state: Record<string, any>
+): Record<string, any> {
+  const context: Record<string, any> = {};
+
+  if (!state) return context;
+
+  for (const key of Object.keys(state)) {
+    if (ADDRESS_CONTEXT_SUFFIXES.some((suffix) => key.endsWith(suffix))) {
+      context[key] = state[key];
+    }
+
+    if (key.endsWith(SELECTED_ADDRESS_SUFFIX)) {
+      const addressType = key.slice(0, -SELECTED_ADDRESS_SUFFIX.length);
+      context[`${addressType}_fullSelectedAddress`] =
+        resolveFullSelectedAddress(state, addressType);
+    }
   }
+
+  return context;
 }
 
 /**
@@ -69,6 +154,30 @@ export const resolveAddressByUdprn = (
 ): Address | undefined => {
   return addresses.find((addr) => String(addr.udprn) === udprn);
 };
+
+/**
+ * Resolves the full selected-address object for an address type.
+ * Returns `undefined` if nothing has been selected yet.
+ * @param state - the full form cache state
+ * @param addressType - the address-type prefix (e.g. `propertyAddress`)
+ */
+export function resolveSelectedAddress(
+  state: Record<string, any>,
+  addressType: string
+): Address | undefined {
+  const value = state[`${addressType}${SELECTED_ADDRESS_SUFFIX}`];
+
+  if (!value) return undefined;
+  if (typeof value === "object") return value as Address;
+
+  const matched = state[`${addressType}_matchedAddress`];
+
+  if (matched && String(matched.udprn) === String(value)) return matched;
+
+  const addresses: Address[] = state[`${addressType}_addresses`] || [];
+
+  return resolveAddressByUdprn(addresses, value);
+}
 
 const STREET_NUMBER_PATTERN = /(^|, )(\d+[A-Z]?([-\/]\d+)?[A-Z]?),/i;
 
@@ -98,6 +207,7 @@ export const findMatchingAddress = (
     .filter(Boolean)
     .map((part) => part?.trim().toUpperCase())
     .join(", ");
+
   return fuzzyMatchAddress(addresses, addressQuery);
 };
 
@@ -113,8 +223,11 @@ export const fuzzyMatchAddress = (
   });
 
   const results = fuse.search(query);
+
+  const result = results[0];
+
   // Return the best match
-  if (results.length > 0 && results[0].score < 0.38) {
+  if (result?.score && result?.score < 0.38) {
     return results[0].item;
   }
 

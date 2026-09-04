@@ -1,16 +1,17 @@
 import * as Code from "@hapi/code";
 import * as Lab from "@hapi/lab";
+import sinon from "sinon";
+import Joi from "joi";
 import {
+  getBackLink,
+  getReturnUrl,
+  getValidStateFromQueryParameters,
+  idFromFilename,
+  nonRelativeRedirectUrl,
   proceed,
   redirectTo,
   redirectUrl,
-  nonRelativeRedirectUrl,
-  getValidStateFromQueryParameters,
-  getReturnUrl,
-  getBackLink,
-} from "src/server/plugins/engine/helpers";
-import sinon from "sinon";
-import Joi from "joi";
+} from "../../../../../src/server/plugins/engine/helpers";
 
 const lab = Lab.script();
 
@@ -465,6 +466,24 @@ suite("Helpers", () => {
     test("Should fall back to progress history when returnUrl is protocol-relative (open redirect)", () => {
       const request = { query: { returnUrl: "//evil.example.com" } };
       expect(getBackLink(request, ["/a", "/b"], "/fallback")).to.equal("/a");
+    });
+  });
+
+  describe("idFromFilename", () => {
+    test("strips .json extension", () => {
+      expect(idFromFilename("my-form.json")).to.equal("my-form");
+    });
+
+    test("strips .jsonc extension", () => {
+      expect(idFromFilename("my-form.jsonc")).to.equal("my-form");
+    });
+
+    test("strips govsite. prefix and .json extension", () => {
+      expect(idFromFilename("govsite.my-form.json")).to.equal("my-form");
+    });
+
+    test("strips govsite. prefix and .jsonc extension", () => {
+      expect(idFromFilename("govsite.my-form.jsonc")).to.equal("my-form");
     });
   });
 });

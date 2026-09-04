@@ -3,7 +3,6 @@ import CatboxRedis from "@hapi/catbox-redis";
 import CatboxMemory from "@hapi/catbox-memory";
 import Jwt from "@hapi/jwt";
 import Redis from "ioredis";
-
 import config from "../config";
 import { HapiRequest, HapiServer } from "../types";
 import { ExitState, FormSubmissionState } from "../plugins/engine/types";
@@ -12,7 +11,7 @@ import {
   InitialiseSessionOptions,
 } from "server/plugins/initialiseSession/types";
 import { WebhookSchema } from "../schemas/types";
-import { ExitResponse } from "server/services/ExitService";
+import { ControllerError } from "../plugins/engine/errors";
 
 const {
   redisHost,
@@ -85,12 +84,28 @@ export class CacheService {
     const key = this.Key(request);
 
     if (await this.isStateFrozen(request)) {
-      throw new Error("Session state is frozen and cannot be modified");
+      const systemFields = ["reference", "webhookData", "pay"];
+
+      const nonSystemUpdates = Object.keys(value).filter(
+        (key) => !systemFields.includes(key)
+      );
+
+      if (nonSystemUpdates.length > 0) {
+        const invalidFields = nonSystemUpdates.join(", ");
+        throw new ControllerError(
+          `Session state is frozen and cannot be modified. Fields: ${invalidFields}`,
+          {
+            code: 500,
+            page: "reset-session",
+          }
+        );
+      }
     }
 
     const state = await this.getState(request);
     let ttl = sessionTimeout;
     hoek.merge(state, value, nullOverride, arrayMerge);
+
     if (!!state.pay) {
       this.logger.info(
         ["cacheService", request.yar.id],
@@ -98,6 +113,7 @@ export class CacheService {
       );
       ttl = paymentSessionTimeout;
     }
+
     await this.cache.set(key, state, ttl);
     return this.cache.get(key);
   }

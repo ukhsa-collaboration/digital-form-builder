@@ -1,4 +1,5 @@
 import crypto from "crypto";
+import { logger } from "./logger";
 
 // Configuration constants
 const TIME_THRESHOLD = 1200; // 5 minutes in seconds
@@ -78,7 +79,7 @@ export async function createHmac(
 
     return [hmac, currentTimestamp, hmacExpiryTime];
   } catch (error) {
-    console.error("Error creating HMAC:", error);
+    logger.error(error, "Error creating HMAC");
     throw error;
   }
 }
@@ -104,7 +105,7 @@ export async function createHmacRaw(
 
     return [hmac, currentTimestamp, expiryTimestamp];
   } catch (error) {
-    console.error("Error creating HMAC (raw):", error);
+    logger.error(error, "Error creating HMAC (raw)");
     throw error;
   }
 }
@@ -142,7 +143,7 @@ export async function validateHmac(
       return { isValid: false, reason: "invalid_signature" };
     }
   } catch (error) {
-    console.error("Error validating HMAC:", error);
+    logger.error(error, "Error validating HMAC");
     return { isValid: false, reason: "error" };
   }
 }

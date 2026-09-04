@@ -7,6 +7,7 @@ import { FeeDetails } from "server/services/payService";
 export type FeesModel = {
   details: FeeDetails[];
   total: number;
+  totalInPounds: string;
   prefixes: string[];
   referenceFormat?: string;
   reportingColumns?: {
@@ -53,26 +54,25 @@ export function FeesModel(
   const reportingColumns = ReportingColumns(columnsConfig, state);
 
   const details = feesAsFeeDetails(applicableFees, state);
-  return details.reduce(
-    (acc: FeesModel, fee: FeeDetails) => {
-      const { amount, multiplyBy = 1, prefix = "" } = fee;
 
-      acc.total = acc.total + amount * multiplyBy;
-      acc.prefixes = [...acc.prefixes, prefix].filter((p) => p);
-
-      return acc;
-    },
-    {
-      details,
-      total: 0,
-      prefixes: [],
-      referenceFormat:
-        model.feeOptions?.paymentReferenceFormat ??
-        model.def.paymentReferenceFormat ??
-        "",
-      ...(reportingColumns && { reportingColumns }),
-    }
+  const total = details.reduce(
+    (sum, { amount, multiplyBy = 1 }) => sum + amount * multiplyBy,
+    0
   );
+
+  const prefixes = details.map(({ prefix = "" }) => prefix).filter(Boolean);
+
+  return {
+    details,
+    total,
+    totalInPounds: (total / 100).toFixed(2),
+    prefixes,
+    referenceFormat:
+      model.feeOptions?.paymentReferenceFormat ??
+      model.def.paymentReferenceFormat ??
+      "",
+    ...(reportingColumns && { reportingColumns }),
+  };
 }
 
 /**

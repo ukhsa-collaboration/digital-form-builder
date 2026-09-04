@@ -28,16 +28,17 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
     environment:
-      # Forms can reference ${VAR_NAME} placeholders (e.g. addressLookupConfig in
+      # Forms can reference ${VAR_NAME} placeholders (e.g. services in
       # order-a-radon-risk-report.json). In development these are resolved from
-      # environment variables of the same name by resolvePlaceholders.ts.
+      # environment variables of the same name by resolveDevPlaceholders.ts.
 
       # ==============================
       # ====== Common Variables ======
       # ==============================
 
       - SESSION_COOKIE_PASSWORD
-      - ENABLE_MOCK_API=true
+      - ENABLE_MOCK_API
+      - LOG_LEVEL
 
       # ------ Location services via UKHSA Azure ------
 
@@ -49,37 +50,23 @@ services:
 
       # ------ Trust Payments Service ------
 
-      - RPS_TRUST_PAYMENTS_SITE_REFERENCE
-      - RPS_TRUST_PAYMENTS_USER_ID
-      - RPS_TRUST_PAYMENTS_USER_PASSWORD
-      - RPS_TRUST_PAYMENTS_JWT_USER_ID
-      - RPS_TRUST_PAYMENTS_JWT_SECRET_KEY
-      - RPS_TRUST_PAYMENTS_HASH_PASSWORD
+      - RPS_ORR_TRUST_PAYMENTS_SITE_REFERENCE
+      - RPS_GTK_TRUST_PAYMENTS_SITE_REFERENCE
+
+      - RPS_ORR_TRUST_PAYMENTS_HASH_PASSWORD
+      - RPS_GTK_TRUST_PAYMENTS_HASH_PASSWORD
 
       # ====================================
       # ====== App Specific Variables ======
       # ====================================
 
-      # ------ Radon Enquiry ------
+      # ------ RPS URLS ------
 
-      - RPS_RADON_ENQUIRY_API_BASE_URL
-      - RPS_RADON_ENQUIRY_API_TENANT_ID
-      - RPS_RADON_ENQUIRY_API_CLIENT_ID
-      - RPS_RADON_ENQUIRY_API_CLIENT_SECRET
-      - RPS_RADON_ENQUIRY_API_SCOPES
+      - RPS_AWS_APIGW_BASE_URL
 
-      # ------ Radon Test Kit ------
+      # ------ RPS AWS Authoriser ------
 
-      - RPS_RADON_TEST_KIT_API_BASE_URL
-      - RPS_RADON_TEST_KIT_API_TENANT_ID
-      - RPS_RADON_TEST_KIT_API_CLIENT_ID
-      - RPS_RADON_TEST_KIT_API_CLIENT_SECRET
-      - RPS_RADON_TEST_KIT_API_SCOPES
-
-      # ------ Radon Risk Report ------
-
-      - RPS_RADON_RISK_REPORT_API_BASE_URL
-      - RPS_RADON_RISK_REPORT_API_TENANT_ID
-      - RPS_RADON_RISK_REPORT_API_CLIENT_ID
-      - RPS_RADON_RISK_REPORT_API_CLIENT_SECRET
-      - RPS_RADON_RISK_REPORT_API_SCOPES
+      - RPS_AWS_AUTHORISER_API_TENANT_ID
+      - RPS_AWS_AUTHORISER_API_CLIENT_ID
+      - RPS_AWS_AUTHORISER_API_CLIENT_SECRET
+      - RPS_AWS_AUTHORISER_API_SCOPES

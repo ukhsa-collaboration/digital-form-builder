@@ -26,10 +26,11 @@ import { QueueStatusService } from "server/services/queueStatusService";
 import { QueueService } from "./services/QueueService";
 import { FormModel } from "server/plugins/engine/models";
 import { JsonApiIntegrationWithMsal } from "./services/jsonApiIntegrationWithMsal";
+import { RiskReportApiService } from "./services/riskReportApiService";
+import { GasTestKitApiService } from "./services/gasTestKitApiService";
+import { HookModel, HookState } from "server/services/hooks/types";
 
-type Services = (
-  services: string[]
-) => {
+type Services = (services: string[]) => {
   cacheService: CacheService;
   magicLinkCacheService: MagicLinkCacheService;
   notifyService: NotifyService;
@@ -47,7 +48,8 @@ type Services = (
 
 type KnownServicesMap = ReturnType<Services> & {
   jsonApiIntegrationWithMsal: JsonApiIntegrationWithMsal;
-  rpsBackendService: JsonApiIntegrationWithMsal;
+  riskReportApiService: RiskReportApiService;
+  gasTestKitApiService: GasTestKitApiService;
 };
 
 export type RouteConfig = {
@@ -67,6 +69,13 @@ declare module "@hapi/hapi" {
       getServices<K extends keyof KnownServicesMap>(
         ...services: K[]
       ): Pick<KnownServicesMap, K>;
+    };
+    hook: {
+      // plugin hooks
+      run<T = void>(
+        hookName: string,
+        context: { model: HookModel; state?: HookState }
+      ): Promise<T>;
     };
     i18n: {
       // plugin locale

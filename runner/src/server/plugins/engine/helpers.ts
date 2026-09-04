@@ -122,7 +122,7 @@ export function redirectTo(
 }
 
 export const idFromFilename = (filename: string) => {
-  return filename.replace(/govsite\.|\.json|/gi, "");
+  return filename.replace(/govsite\.|\.jsonc?|/gi, "");
 };
 
 export function getValidStateFromQueryParameters(
