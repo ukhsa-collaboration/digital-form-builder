@@ -32,7 +32,10 @@
         }
       ],
       "next": [{ "path": "/order-risk-report-find-a-report-address" }],
-      "controller": "./pages/start.js"
+      "controller": "./pages/start.js",
+      "options": {
+        "isStartButton": true
+      }
     },
 
     {
@@ -1321,8 +1324,8 @@
   "version": 2,
   "skipSummary": false,
   "feedback": {
-    "feedbackForm": false,
-    "url": ""
+    "feedbackForm": true,
+    "url": "https://submit.forms.service.gov.uk/form/266710/radon-services-feedback-form"
   },
   "footer": [
     {
