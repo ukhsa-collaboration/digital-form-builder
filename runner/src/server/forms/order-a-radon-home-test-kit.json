@@ -31,7 +31,7 @@
       "components": [
         {
           "type": "Para",
-          "content": "Use this service to order a radon gas test kit for a property in the UK and and the Isle of Man.\n</br></br>The radon gas test kit measures the level of radon in your property over a period of 3 months. The results show if the radon level is above the Action Level advised by the UK Health Security Agency. If your result is above the Action Level, you should take steps to reduce it."
+          "content": "Use this service to order a radon gas test kit for a property in the UK and the Isle of Man.</br></br>The radon gas test kit measures the level of radon in your property over a period of three months. The results will show if the radon level is above the Action Level or not as advised by the UK Health Security Agency. If your result is above the Action Level, you should take steps to reduce it."
         },
         {
           "type": "InsetText",
@@ -47,19 +47,43 @@
         },
         {
           "type": "Para",
-          "content": "After three months you will return the kit and receive a report showing the radon level at your address and advice on whether you need to take remedial action"
+          "content": "After three months you will return the kit and receive a report showing the radon level at your address and advice on whether you need to take remedial action."
+        },
+        {
+          "type": "Html",
+          "content": "<h2 class=\"govuk-heading-m\">Before you start</h2>"
         },
         {
           "type": "Para",
-          "content": "<h1 class=\"govuk-heading-m\">Before you start</h2><p class=\"govuk-body\">Ordering a kit takes around 5 minutes. It may take up to 10 working days for the kit to be delivered<p class=\"govuk-body\"><b>To review</b></p><ul class=\"govuk-list govuk-list--bullet\"><li>if you are a landlord, you have a duty of Care under the Housing Act (2004) to provide a safe home - you can find more information on the need for action with regards to radon gas defined by the <a href\"https://www.gov.uk/government/publications/housing-health-and-safety-rating-system-hhsrs-landlord-and-agent-guide\">Housing Health and Safety Rating System (HHSRS)</a></li><li>if your property's radon level has been measure before using UKHSA, you may be eligible for a free retest - you will be asked your name, address, and the method of remediaton you have used to determine your eligibility</li><li>if you would like 20 or more radon detectors, or are a public sector organisation, <a href=\"/radon-enquiry\">contact us</a> as discounts may be available</li></ul>"
+          "content": "Ordering a kit takes around 5 minutes. It may take up to 10 working days for the kit to be delivered."
         },
         {
           "type": "Para",
-          "content": "<b>The test will not be valid if:</b><ul class=\"govuk-list govuk-list--bullet\"><li>any building work is planned during the testing period that disrupts normal living conditions, or changes the way air moves through the property</li><li>the property is empty for more than 2 weeks during the test</li><li>the people living in the property change during the test</li></ul><p class=\"govuk-body\">This is because how a home is used can affect radon levels. For example, how often windows and doors are opened, or how the home is heated.</p>"
+          "content": "<h3 class=\"govuk-heading-s\">To review:</h3>"
+        },
+        {
+          "type": "Html",
+          "content": "<ul class=\"govuk-list govuk-list--bullet\"><li>if you are a landlord, you have a duty of Care under the Housing Act (2004) to provide a safe home - you can find more information on the need for action with regards to radon gas defined by the <a href\"https://www.gov.uk/government/publications/housing-health-and-safety-rating-system-hhsrs-landlord-and-agent-guide\">Housing Health and Safety Rating System (HHSRS)</a></li><li>if your property's radon level has been measure before using UKHSA, you may be eligible for a free retest - you will be asked your name, address, and the method of remediaton you have used to determine your eligibility</li><li>if you would like 20 or more radon detectors, or are a public sector organisation, <a href=\"/radon-enquiry\">contact us</a> as discounts may be available</li></ul>"
         },
         {
           "type": "Para",
-          "content": "<b>You'll need your</b><ul class=\"govuk-list govuk-list--bullet\"><li>a valid email address</li><li>a postal delivery address in the UK or Isle of Man</li><li>your measurement address</li><li>your payment details</li></ul></br>"
+          "content": "<h3 class=\"govuk-heading-s\">The test will not be valid if:</h3>"
+        },
+        {
+          "type": "Para",
+          "content": "<ul class=\"govuk-list govuk-list--bullet\"><li>any building work is planned during the testing period that disrupts normal living conditions, or changes the way air moves through the property</li><li>the property is empty for more than 2 weeks during the test</li><li>the people living in the property change during the test</li></ul>"
+        },
+        {
+          "type": "Para",
+          "content": "This is because the way a home is used can affect radon levels. For example, how often windows and doors are opened, or how the home is heated."
+        },
+        {
+          "type": "Para",
+          "content": "<h3 class=\"govuk-heading-s\">You'll need your:</h3>"
+        },
+        {
+          "type": "Html",
+          "content": "<ul class=\"govuk-list govuk-list--bullet\"><li>a valid email address</li><li>a postal delivery address in the UK or Isle of Man</li><li>your measurement address</li><li>your payment details</li></ul></br>"
         }
       ],
       "next": [{ "path": "/gas-test-kit-property-address-postcode" }],
@@ -248,7 +272,11 @@
       "components": [
         {
           "type": "Para",
-          "content": "Check your address for mistakes, then try again.<br><br>Check you have entered the address correctly, then try again."
+          "content": "Check your postcode and building number or name for mistakes, then try again."
+        },
+        {
+          "type": "Para",
+          "content": "Check you have entered the postcode and building number or name correctly, then try again."
         },
         {
           "type": "Html",
@@ -265,6 +293,10 @@
       "title": "Enter the address you want to measure the radon level",
       "controller": "FindAnAddressPageController",
       "components": [
+        {
+          "type": "Para",
+          "content": "This will be the property where your radon level will be measured"
+        },
         {
           "name": "addressType",
           "type": "HiddenField",
@@ -404,7 +436,7 @@
     },
     {
       "path": "/previous-test-action-level",
-      "title": "Was the level above the action level 200 Bq m⁻³",
+      "title": "Was the level above the action level 200 Bq m⁻³?",
       "components": [
         {
           "name": "bqmYesNo",
@@ -458,18 +490,20 @@
     },
     {
       "path": "/free-test-eligibility",
-      "title": "You may be eligible for a free test",
+      "title": "You may be eligible for a free retest",
       "options": {
         "hideContinueButton": true
       },
       "components": [
         {
-          "name": "contactNumber",
           "type": "Para",
-          "content": "Contact the Radon team on 01235 822622 to find out."
+          "content": "Contact the radon team</br>Telephone: 0123 582 2622</br>Monday to Friday, 9:00am to 4:30pm"
         },
         {
-          "name": "continueWithoutFreeRetestLink",
+          "type": "Para",
+          "content": "You will need to provide your name, address and the method of remediation you have used."
+        },
+        {
           "type": "Para",
           "content": "<a href=\"your-details\">Continue without a free retest</a>"
         }
@@ -910,8 +944,8 @@
       "controller": "HeadlessSummaryPageController",
       "components": [
         {
-          "type": "Para",
-          "content": "Check that everything is correct before you confirm your order."
+          "type": "Html",
+          "content": "<div class=\"govuk-warning-text\"><span class=\"govuk-warning-text__icon\" aria-hidden=\"true\">!</span><strong class=\"govuk-warning-text__text\"><span class=\"govuk-visually-hidden\">Warning</span>Check your answers before you continue to payment. You cannot return to this page once you proceed.</strong></div>"
         },
         {
           "type": "SummaryLists",
