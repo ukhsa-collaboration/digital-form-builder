@@ -76,6 +76,7 @@ export class PageControllerBase {
   returnUrl?: string;
   buttonText?: string;
   hideContinueButton?: boolean;
+  isStartButton?: boolean;
   footer?: { href: string; text: string }[];
 
   // TODO: pageDef type
@@ -98,6 +99,7 @@ export class PageControllerBase {
       pageDef.disableSingleComponentAsHeading;
     this.buttonText = pageDef.customButtonText ?? this.defaultButtonText;
     this.hideContinueButton = pageDef.options?.hideContinueButton ?? false;
+    this.isStartButton = pageDef?.options?.isStartButton ?? false;
     this.footer = def.footer;
 
     // Resolve section
