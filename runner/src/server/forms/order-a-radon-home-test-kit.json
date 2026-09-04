@@ -38,7 +38,7 @@
         },
         {
           "type": "InsetText",
-          "content": "You may wish to use the Target Level of 100 Bq m-3 if there are smokers or ex-smokers living in the property as there is a greater risk to their health."
+          "content": "You may wish to use the Target Level of 100 Bq <sup>m-3</sup> if there are smokers or ex-smokers living in the property as there is a greater risk to their health."
         },
         {
           "type": "Para",
@@ -737,7 +737,7 @@
           "options": {
             "exposeToContext": true,
             "customValidationMessages": {
-              "any.required": "Select a title"
+              "any.required": "Select the title of the recipient of the radon gas test kit"
             },
             "divider": true
           },
@@ -749,7 +749,7 @@
           "title": "First name",
           "options": {
             "customValidationMessages": {
-              "string.empty": "Enter the first name of the recipient of the kit"
+              "string.empty": "Enter the first name of the recipient of the radon gas test kit"
             },
             "exposeToContext": true
           }
@@ -760,7 +760,7 @@
           "title": "Last Name",
           "options": {
             "customValidationMessages": {
-              "string.empty": "Enter the last name of the recipient of the kit"
+              "string.empty": "Enter the last name of the recipient of the radon gas test kit"
             },
             "exposeToContext": true
           }
