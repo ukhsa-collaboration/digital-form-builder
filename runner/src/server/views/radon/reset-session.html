@@ -1,0 +1,33 @@
+{% set mainClasses = "govuk-main-wrapper--l" %}
+{% set skipTimeoutWarning = true %}
+{% from "panel/macro.njk" import govukPanel %}
+
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="govuk-width-container">
+    <div class="govuk-main-wrapper">
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-two-thirds">
+                <h1 class="govuk-heading-l">You cannot change your answers</h1>
+
+                <p>
+                    You have reached the payment stage of your order. Your answers are now locked and cannot be changed.
+                </p>
+
+                <p>
+                    If any of the information is incorrect, you will need to start a new order and enter your details
+                    again.
+                </p>
+
+                </br>
+                </br>
+
+                <a href="/end-session?redirect={{ startPage }}" class="govuk-button">
+                    Start new order
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
