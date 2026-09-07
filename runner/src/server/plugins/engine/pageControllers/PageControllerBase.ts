@@ -27,6 +27,7 @@ import {
   FormSubmissionErrors,
   FormSubmissionState,
 } from "../types";
+import { FormDefinition } from "@xgovformbuilder/model";
 import { ComponentCollectionViewModel } from "../components/types";
 import { format, parseISO } from "date-fns";
 import config from "server/config";
@@ -80,8 +81,8 @@ export class PageControllerBase {
   honorReturnURL?: boolean | ConditionalCase<boolean>[];
   hideContinueButton?: boolean;
   showContinueButton?: boolean;
-  isStartButton?: boolean;
-  footer?: { href: string; text: string }[];
+  hasStartButton?: boolean;
+  footerLinks: FormDefinition["footerLinks"];
 
   // TODO: pageDef type
   constructor(model: FormModel, pageDef: { [prop: string]: any } = {}) {
@@ -104,8 +105,8 @@ export class PageControllerBase {
     this.buttonText =
       pageDef?.options?.customButtonText ?? this.defaultButtonText;
     this.honorReturnURL = pageDef?.options?.honorReturnURL ?? true;
-    this.isStartButton = pageDef?.options?.isStartButton ?? false;
-    this.footer = def.footer;
+    this.hasStartButton = pageDef?.options?.hasStartButton ?? false;
+    this.footerLinks = def.footerLinks;
 
     // force show or hide the form button. They will only have an effect if they are not undefined.
     this.hideContinueButton = pageDef.options?.hideContinueButton;
@@ -193,7 +194,7 @@ export class PageControllerBase {
     details?: any;
     returnUrl?: string | undefined;
     allowExit?: boolean;
-    footer?: { href: string; text: string }[];
+    footerLinks?: FormDefinition["footerLinks"];
   } {
     let showTitle = true;
     let pageTitle = this.title;
@@ -422,8 +423,7 @@ export class PageControllerBase {
    */
   getErrors(validationResult): FormSubmissionErrors | undefined {
     if (validationResult && validationResult.error) {
-      const isoRegex =
-        /\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z)/;
+      const isoRegex = /\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z)/;
 
       const errorList = validationResult.error.details.map((err) => {
         const name = err.path
@@ -985,7 +985,7 @@ export class PageControllerBase {
   }
 
   setFooterLinks(viewModel) {
-    viewModel.footer = this.footer;
+    viewModel.footerLinks = this.footerLinks;
   }
 
   makeGetRoute() {

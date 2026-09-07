@@ -19,7 +19,7 @@
     "feedbackForm": true,
     "url": "https://submit.forms.service.gov.uk/form/266710/radon-services-feedback-form"
   },
-  "footer": [
+  "footerLinks": [
     {
       "href": "https://www.ukhsa-protectionservices.org.uk/tc/help",
       "text": "Help"
@@ -115,7 +115,7 @@
       "next": [{ "path": "/gas-test-kit-property-address-postcode" }],
       "controller": "./pages/start.js",
       "options": {
-        "isStartButton": true
+        "hasStartButton": true
       }
     },
     {

@@ -195,11 +195,11 @@
 {% endblock %}
 
 {% block footer %}
-  {% if footer %}
+  {% if footerLinks %}
     {{ govukFooter({
         rebrand: true,
         meta: {
-            items: footer
+            items: footerLinks
         }
     }) }}
   {% else %}

@@ -414,7 +414,7 @@ export const Schema = joi
     provider: joi.string().valid("govuk-pay", "trust-payments").optional(),
     paymentProvider: joi.string().optional(),
     featureFlags: joi.array().items(joi.string()).optional(),
-    footer: joi
+    footerLinks: joi
       .array()
       .items(joi.object({ text: joi.string(), href: joi.string() }))
       .optional(),

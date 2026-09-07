@@ -274,5 +274,5 @@ export type FormDefinition = {
   provider?: string;
   paymentProvider?: string;
   featureFlags?: string[];
-  footer?: { href: string; text: string }[];
+  footerLinks?: { href: string; text: string }[];
 };
