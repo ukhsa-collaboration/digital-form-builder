@@ -270,9 +270,20 @@
       },
       "components": [
         {
-          "name": "intro",
+          "name": "introService",
           "type": "Para",
-          "content": "<p class=\"govuk-body-m\">The <b>{{service}}</b> team will review your enquiry and aim to respond within 5 days. If your enquiry is urgent, please <a href=\"https://www.gov.uk/health-protection-team\" target=”_blank”>call us</a></p>"
+          "options": {
+            "condition": "ojQCvt"
+          },
+          "content": "<p class=\"govuk-body-m\">The <b>{{service}}</b> team will review your enquiry and aim to respond within 5 days. If your enquiry is urgent, please <a href=\"https://www.gov.uk/health-protection-team\" target=”_blank”>call us.</a></p>"
+        },
+        {
+          "name": "introNoService",
+          "type": "Para",
+          "options": {
+            "condition": "tvCQjo"
+          },
+          "content": "<p class=\"govuk-body-m\">The team will review your enquiry and aim to respond within 5 days. If your enquiry is urgent, please <a href=\"https://www.gov.uk/health-protection-team\" target=”_blank”>call us.</a></p>"
         },
         {
           "name": "tableService",
