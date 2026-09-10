@@ -1,17 +1,19 @@
-import { SummaryViewModel } from "../models";
-import { PageController } from "./PageController";
-import { feedbackReturnInfoKey, redirectTo, redirectUrl } from "../helpers";
+import { isMultipleApiKey } from "@xgovformbuilder/model";
+import config from "server/config";
+import { FeesModel } from "server/plugins/engine/models/submission";
 import { HapiRequest, HapiResponseToolkit } from "server/types";
+import { submitActionRegistry } from "src/server/services/submitActions";
+import { FormComponent } from "../components";
+import { SelectionControlField } from "../components/SelectionControlField";
+import { ControllerError } from "../errors";
 import {
   decodeFeedbackContextInfo,
   FeedbackContextInfo,
   RelativeUrl,
 } from "../feedback";
-import config from "server/config";
-import { FeesModel } from "server/plugins/engine/models/submission";
-import { isMultipleApiKey } from "@xgovformbuilder/model";
-import { FormComponent } from "../components";
-import { SelectionControlField } from "../components/SelectionControlField";
+import { feedbackReturnInfoKey, redirectTo, redirectUrl } from "../helpers";
+import { SummaryViewModel } from "../models";
+import { PageController } from "./PageController";
 import { PageControllerBase } from "./PageControllerBase";
 
 const DEFAULT_OPTIONS = {
@@ -184,12 +186,6 @@ export class CustomSummaryPageController extends PageController {
         outputs: summaryViewModel.outputs,
         userCompletedSummary: true,
       });
-
-      // Commented out due to potential for logging PII
-      // request.logger.info(
-      //   ["Webhook data", "before send", request.yar.id],
-      //   JSON.stringify(summaryViewModel.validatedWebhookData)
-      // );
 
       await cacheService.mergeState(request, {
         webhookData: summaryViewModel.validatedWebhookData,
@@ -391,10 +387,7 @@ export class CustomSummaryPageController extends PageController {
     const model = this.model;
 
     // Helper function to process components recursively
-    const processComponent = (
-      component: FormComponent,
-      parentComponent?: FormComponent
-    ): any[] => {
+    const processComponent = (component: FormComponent): any[] => {
       const rows: any[] = [];
 
       // Process the current component if it has a name (is a form field)
@@ -499,12 +492,14 @@ export class CustomSummaryPageController extends PageController {
 
   get payApiKey(): string {
     const modelDef = this.model.def;
-    const payApiKey = modelDef.feeOptions?.payApiKey ?? def.payApiKey;
+    const payApiKey = modelDef.feeOptions?.payApiKey ?? modelDef.payApiKey;
 
     if (isMultipleApiKey(payApiKey)) {
-      return payApiKey[config.apiEnv] ?? payApiKey.test ?? payApiKey.production;
+      return (
+        payApiKey[config.apiEnv] ?? payApiKey.test ?? payApiKey.production ?? ""
+      );
     }
-    return payApiKey;
+    return payApiKey ?? "";
   }
 
   get defaultButtonText() {

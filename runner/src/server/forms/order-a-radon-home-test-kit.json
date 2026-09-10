@@ -1,0 +1,1608 @@
+{
+  "formGroup": "radon",
+  "version": 2,
+  "metadata": {},
+  "startPage": "/gas-test-kit-start",
+  "fullStartPage": "gas-test-kit-start",
+  "name": "Order a home radon gas test kit",
+  "serviceName": "Order a radon gas test kit",
+  "confirmationSessionTimeout": 2000,
+  "generateReference": true,
+  "paymentProvider": "trust-payments",
+  "fees": [
+    {
+      "description": "Radon gas home test kit",
+      "amount": 5280
+    }
+  ],
+  "feedback": {
+    "feedbackForm": true,
+    "url": "https://submit.forms.service.gov.uk/form/266710/radon-services-feedback-form"
+  },
+  "footerLinks": [
+    {
+      "href": "https://www.ukhsa-protectionservices.org.uk/tc/help",
+      "text": "Help"
+    },
+    {
+      "href": "https://www.ukhsa-protectionservices.org.uk/tc/privacy-policy",
+      "text": "Privacy"
+    },
+    {
+      "href": "https://www.ukhsa-protectionservices.org.uk/tc/cookies",
+      "text": "Cookies"
+    },
+    {
+      "href": "https://www.ukhsa-protectionservices.org.uk/tc/accessibility-statement",
+      "text": "Accessibility Statement"
+    },
+    {
+      "href": "https://www.ukhsa-protectionservices.org.uk/contact/",
+      "text": "Contact"
+    },
+    {
+      "href": "https://www.ukhsa-protectionservices.org.uk/tc/terms-conditions",
+      "text": "Terms and Conditions"
+    }
+  ],
+  "hooks": {
+    "HeadlessSummaryPageController.onSubmit": "rpsGasTestKitOnSummarySubmit",
+    "TrustPaymentsAdapter.getBillingInformation": "rpsGetBillingInformation"
+  },
+  "pages": [
+    {
+      "path": "/gas-test-kit-start",
+      "title": "Order a home radon gas test kit",
+      "backLinkFallback": "https://www.ukhsa-protectionservices.org.uk/",
+      "components": [
+        {
+          "type": "Para",
+          "content": "Use this service to order a radon gas test kit for a property in the UK and the Isle of Man.</br></br>The radon gas test kit measures the level of radon in your property over a period of three months. The results will show if the radon level is above the Action Level or not as advised by the UK Health Security Agency. If your result is above the Action Level, you should take steps to reduce it."
+        },
+        {
+          "type": "InsetText",
+          "content": "The Action Level for radon in homes is 200 becquerels per cubic metre (Bq m<sup>-3</sup>). A becquerel is a measure of radioactivity."
+        },
+        {
+          "type": "InsetText",
+          "content": "You may wish to use the Target Level of 100 Bq m<sup>-3</sup> if there are smokers or ex-smokers living in the property as there is a greater risk to their health."
+        },
+        {
+          "type": "Para",
+          "content": "A test kit costs £52.80 (including VAT).<p class=\"govuk-body\"><b>Your kit includes:</b></p><ul class=\"govuk-list govuk-list--bullet\"><li>2 detectors, one for the living area and the other for the bedroom</li><li>detector placement instructions</li><li>a pre-paid envelope, to return the detector three months later</li></ul>"
+        },
+        {
+          "type": "Para",
+          "content": "After three months you will return the kit and receive a report showing the radon level at your address and advice on whether you need to take remedial action."
+        },
+        {
+          "type": "Html",
+          "content": "<h2 class=\"govuk-heading-m\">Before you start</h2>"
+        },
+        {
+          "type": "Para",
+          "content": "Ordering a kit takes around 5 minutes. It may take up to 10 working days for the kit to be delivered."
+        },
+        {
+          "type": "Para",
+          "content": "<h3 class=\"govuk-heading-s\">To review:</h3>"
+        },
+        {
+          "type": "Html",
+          "content": "<ul class=\"govuk-list govuk-list--bullet\"><li>if you are a landlord, you have a duty of Care under the Housing Act (2004) to provide a safe home - you can find more information on the need for action with regards to radon gas defined by the <a href=\"https://www.gov.uk/government/publications/housing-health-and-safety-rating-system-hhsrs-landlord-and-agent-guide\">Housing Health and Safety Rating System (HHSRS)</a></li><li>if your property's radon level has been measure before using UKHSA, you may be eligible for a free retest - you will be asked your name, address, and the method of remediaton you have used to determine your eligibility</li><li>if you would like 20 or more radon detectors, or are a public sector organisation, <a href=\"/radon-enquiry\">contact us</a> as discounts may be available</li></ul>"
+        },
+        {
+          "type": "Para",
+          "content": "<h3 class=\"govuk-heading-s\">The test will not be valid if:</h3>"
+        },
+        {
+          "type": "Para",
+          "content": "<ul class=\"govuk-list govuk-list--bullet\"><li>any building work is planned during the testing period that disrupts normal living conditions, or changes the way air moves through the property</li><li>the property is empty for more than 2 weeks during the test</li><li>the people living in the property change during the test</li></ul>"
+        },
+        {
+          "type": "Para",
+          "content": "This is because the way a home is used can affect radon levels. For example, how often windows and doors are opened, or how the home is heated."
+        },
+        {
+          "type": "Para",
+          "content": "<h3 class=\"govuk-heading-s\">You'll need your:</h3>"
+        },
+        {
+          "type": "Html",
+          "content": "<ul class=\"govuk-list govuk-list--bullet\"><li>a valid email address</li><li>a postal delivery address in the UK or Isle of Man</li><li>your measurement address</li><li>your payment details</li></ul></br>"
+        }
+      ],
+      "next": [{ "path": "/gas-test-kit-property-address-postcode" }],
+      "controller": "./pages/start.js",
+      "options": {
+        "hasStartButton": true
+      }
+    },
+    {
+      "path": "/gas-test-kit-property-address-postcode",
+      "title": "Enter the address you want to measure the radon level",
+      "controller": "FindAnAddressPageController",
+      "components": [
+        {
+          "type": "Para",
+          "content": "This will be the property where your radon level will be measured"
+        },
+        {
+          "name": "propertyAddress_postcodeLookup",
+          "type": "TextField",
+          "title": "Postcode",
+          "hint": "For example, AA3 1AB",
+          "schema": {
+            "max": 10,
+            "regex": "^[\\s]*[A-z]{1,2}[0-9][A-z0-9]?[\\s]*[0-9]{1,2}[ABD-hJLNP-uW-z]{2}[\\s]*$"
+          },
+          "options": {
+            "customValidationMessages": {
+              "string.empty": "Enter postcode",
+              "string.pattern.base": "Enter a full UK postcode",
+              "string.max": "Postcode must be less than 10 characters"
+            },
+            "autocomplete": "postal-code",
+            "exposeToContext": true,
+            "format": {
+              "trim": true,
+              "case": "upper"
+            }
+          }
+        },
+        {
+          "name": "addressType",
+          "type": "HiddenField",
+          "options": {
+            "exposeToContext": true,
+            "value": "propertyAddress"
+          }
+        },
+        {
+          "name": "propertyAddress_buildingLookup",
+          "type": "TextField",
+          "title": "Building number or name",
+          "hint": "For example, 15 or Prospect cottage",
+          "schema": { "max": 100 },
+          "options": {
+            "customValidationMessages": {
+              "string.empty": "Enter building number or name",
+              "string.max": "Building name must be less than 100 characters"
+            },
+            "exposeToContext": true
+          }
+        }
+      ],
+      "options": {
+        "hiddenFields": ["addressType"],
+        "disabledChangeFields": ["addressType"],
+        "customButtonText": "Find address"
+      },
+      "componentsAfter": [
+        {
+          "type": "Html",
+          "content": "<br><a href=\"property-address-manual{% if returnUrl %}?returnUrl={{ returnUrl | urlencode }}{% endif %}\">Enter address manually</a>"
+        }
+      ],
+      "next": [
+        {
+          "path": "/property-address-confirm",
+          "condition": "hasMatchedPropertyAddressCondition"
+        },
+        { "path": "/gas-test-kit-select-an-address" },
+        {
+          "path": "/property-address-not-found",
+          "condition": "noPropertyAddressesCondition"
+        }
+      ]
+    },
+    {
+      "path": "/property-address-confirm",
+      "title": "Is this the correct address?",
+      "components": [
+        {
+          "name": "propertyAddress_matchedAddressDisplay",
+          "type": "DisplayAddress",
+          "content": "{{ propertyAddress_matchedAddress.address }}"
+        },
+        {
+          "name": "addressType",
+          "type": "HiddenField",
+          "options": {
+            "exposeToContext": true,
+            "value": "propertyAddress"
+          }
+        },
+        {
+          "name": "propertyAddress_addressSelection",
+          "type": "HiddenField",
+          "title": "Property address"
+        },
+        {
+          "name": "propertyAddress_isCorrectAddress",
+          "type": "YesNoField",
+          "title": "Is this the correct address?",
+          "options": {
+            "hideTitle": true,
+            "customValidationMessages": {
+              "any.required": "Select Yes if this is the correct address"
+            }
+          }
+        }
+      ],
+      "controller": "SelectAnAddressPageController",
+      "options": {
+        "changePath": "/gas-test-kit-property-address-postcode"
+      },
+      "componentsAfter": [
+        {
+          "name": "enterAddressManuallyLink",
+          "type": "Html",
+          "content": "<br><a href=\"property-address-manual{% if returnUrl %}?returnUrl={{ returnUrl | urlencode }}{% endif %}\">Enter address manually</a>"
+        }
+      ],
+      "next": [
+        {
+          "path": "/previous-test",
+          "condition": "isCorrectPropertyAddress"
+        },
+        {
+          "path": "/property-address-not-found",
+          "condition": "propertyAddressOnlyOneAddressCondition"
+        },
+        { "path": "/gas-test-kit-property-address-postcode" }
+      ]
+    },
+    {
+      "path": "/gas-test-kit-select-an-address",
+      "title": "Select an address",
+      "controller": "SelectAnAddressPageController",
+      "components": [
+        {
+          "type": "Para",
+          "content": "{{ propertyAddress_numberOfAddresses }} addresses found for '{{ propertyAddress_postcodeLookup }}'"
+        },
+        {
+          "name": "searchAgain",
+          "options": {},
+          "type": "Html",
+          "content": "<p class=\"govuk-body-m\"><a href=\"gas-test-kit-property-address-postcode{% if returnUrl %}?returnUrl={{ returnUrl | urlencode }}{% endif %}\">Change your search</a> if the address you're looking for is not listed.</p><p class=\"govuk-body-m\"><a href=\"property-address-manual{% if returnUrl %}?returnUrl={{ returnUrl | urlencode }}{% endif %}\">Enter address manually</a></p>"
+        },
+        {
+          "name": "addressType",
+          "type": "HiddenField",
+          "options": {
+            "exposeToContext": true,
+            "value": "propertyAddress"
+          }
+        },
+        {
+          "name": "propertyAddress_addressSelection",
+          "type": "RadiosField",
+          "title": "Property address",
+          "list": "addressesList",
+          "options": {
+            "hideTitle": true,
+            "customValidationMessages": {
+              "any.required": "Select an address"
+            }
+          }
+        }
+      ],
+      "next": [
+        {
+          "path": "/property-address-confirm"
+        }
+      ]
+    },
+    {
+      "path": "/property-address-not-found",
+      "title": "No addresses found for ‘{{ propertyAddress_postcodeLookup }}’ and ‘{{ propertyAddress_buildingLookup }}’",
+      "components": [
+        {
+          "type": "Para",
+          "content": "Check your postcode and building number or name for mistakes, then try again."
+        },
+        {
+          "type": "Para",
+          "content": "Check you have entered the postcode and building number or name correctly, then try again."
+        },
+        {
+          "type": "Html",
+          "content": "<p class=\"govuk-body-m\"><a href=\"/gas-test-kit-property-address-postcode{% if returnUrl %}?returnUrl={{ returnUrl | urlencode }}{% endif %}\">Change your search</a> or <a href=\"property-address-manual{% if returnUrl %}?returnUrl={{ returnUrl | urlencode }}{% endif %}\">enter address manually</a></p>"
+        }
+      ],
+      "options": {
+        "hideContinueButton": true
+      },
+      "next": [{ "path": "/gas-test-kit-property-address-postcode" }]
+    },
+    {
+      "path": "/property-address-manual",
+      "title": "Enter the address you want to measure the radon level",
+      "controller": "FindAnAddressPageController",
+      "components": [
+        {
+          "type": "Para",
+          "content": "This will be the property where your radon level will be measured"
+        },
+        {
+          "name": "addressType",
+          "type": "HiddenField",
+          "options": {
+            "exposeToContext": true,
+            "value": "propertyAddress"
+          }
+        },
+        {
+          "name": "propertyAddress_addressLine1Lookup",
+          "type": "TextField",
+          "title": "Address Line 1",
+          "options": {
+            "customValidationMessages": {
+              "any.required": "Enter address line 1, typically the building and street",
+              "any.only": "Enter address line 1, typically the building and street",
+              "string.empty": "Enter address line 1, typically the building and street"
+            },
+            "exposeToContext": true
+          }
+        },
+        {
+          "name": "propertyAddress_addressLine2Lookup",
+          "type": "TextField",
+          "title": "Address Line 2",
+          "options": {
+            "required": false,
+            "exposeToContext": true
+          }
+        },
+        {
+          "name": "propertyAddress_townLookup",
+          "type": "TextField",
+          "title": "Town or city",
+          "options": {
+            "customValidationMessages": {
+              "any.required": "Enter town or city",
+              "any.only": "Enter town or city",
+              "string.empty": "Enter town or city"
+            },
+            "exposeToContext": true
+          }
+        },
+        {
+          "name": "propertyAddress_countyLookup",
+          "type": "TextField",
+          "title": "County",
+          "options": {
+            "required": false,
+            "exposeToContext": true
+          }
+        },
+        {
+          "name": "propertyAddress_postcodeLookup",
+          "type": "TextField",
+          "title": "Postcode",
+          "hint": "For example, AA3 1AB",
+          "schema": {
+            "max": 10,
+            "regex": "^[\\s]*[A-z]{1,2}[0-9][A-z0-9]?[\\s]*[0-9]{1,2}[ABD-hJLNP-uW-z]{2}[\\s]*$"
+          },
+          "options": {
+            "customValidationMessages": {
+              "string.empty": "Enter postcode",
+              "string.pattern.base": "Enter a full UK postcode",
+              "string.max": "Postcode must be less than 10 characters"
+            },
+            "autocomplete": "postal-code",
+            "format": {
+              "trim": true,
+              "case": "upper"
+            },
+            "exposeToContext": true
+          }
+        }
+      ],
+      "options": {
+        "hiddenFields": ["addressType"],
+        "disabledChangeFields": ["addressType"]
+      },
+      "next": [
+        {
+          "path": "/property-address-confirm",
+          "condition": "hasMatchedPropertyAddressCondition"
+        },
+        { "path": "/gas-test-kit-select-an-address" },
+        {
+          "path": "/property-address-manual-not-found",
+          "condition": "noPropertyAddressesCondition"
+        }
+      ]
+    },
+    {
+      "path": "/property-address-manual-not-found",
+      "title": "We cannot find your address",
+      "options": {
+        "hideContinueButton": true
+      },
+      "components": [
+        {
+          "type": "Para",
+          "content": "No address found for {{ propertyAddress_addressLine1Lookup }}{% if propertyAddress_addressLine2Lookup %}, {{ propertyAddress_addressLine2Lookup }}{% endif %}{% if propertyAddress_townLookup %}, {{ propertyAddress_townLookup }}{% endif %}{% if propertyAddress_countyLookup %}, {{ propertyAddress_countyLookup }}{% endif %}{% if propertyAddress_postcodeLookup %}, {{ propertyAddress_postcodeLookup }}{% endif %}<br><br>Check your address for mistakes, then try again.<br><br>Check you have entered the address correctly, then try again."
+        },
+        {
+          "type": "Html",
+          "content": "<p class=\"govuk-body-m\"><a href=\"/gas-test-kit-property-address-postcode{% if returnUrl %}?returnUrl={{ returnUrl | urlencode }}{% endif %}\">Change your search</a> or <a href=\"property-address-manual{% if returnUrl %}?returnUrl={{ returnUrl | urlencode }}{% endif %}\">enter address manually</a></p>"
+        }
+      ],
+      "next": [{ "path": "/property-address-manual" }]
+    },
+    {
+      "path": "/previous-test",
+      "title": "Have you tested this address before using a gas test kit purchased from us?",
+      "components": [
+        {
+          "name": "testedBeforeYesNo",
+          "type": "YesNoField",
+          "title": "Have you tested this address before using a gas test kit purchaced from us?",
+          "values": { "type": "listRef" },
+          "options": {
+            "customValidationMessages": {
+              "any.required": "Select yes if this address has been tested before using a gas test kit purchased from us"
+            }
+          }
+        }
+      ],
+      "next": [
+        {
+          "path": "/previous-test-action-level",
+          "condition": "hasTested"
+        },
+        {
+          "path": "/your-details",
+          "condition": "hasNotTested"
+        }
+      ]
+    },
+    {
+      "path": "/previous-test-action-level",
+      "title": "Was the level above the action level 200 Bq m⁻³?",
+      "components": [
+        {
+          "name": "bqmYesNo",
+          "type": "YesNoField",
+          "title": "Was the level above the action level 200 Bq m⁻³",
+          "options": {
+            "customValidationMessages": {
+              "any.required": "Select yes if the level was above the action level of 200 Bq m⁻³"
+            }
+          },
+          "hint": "This information will be on your radon gas test results"
+        }
+      ],
+      "next": [
+        {
+          "path": "/previous-test-steps-taken",
+          "condition": "levelAboveActionLevel"
+        },
+        {
+          "path": "/your-details",
+          "condition": "levelNotAboveActionLevel"
+        }
+      ]
+    },
+    {
+      "path": "/previous-test-steps-taken",
+      "title": "Have you taken any steps to reduce the radon level since the last test?",
+      "components": [
+        {
+          "name": "stepsToReduceYesNo",
+          "type": "YesNoField",
+          "title": "Have you taken any steps to reduce the radon level since the last test?",
+          "options": {
+            "customValidationMessages": {
+              "any.required": "Select yes if you have taken steps to reduce the radon level since the last test"
+            }
+          },
+          "hint": "This information will be on your radon gas test results"
+        }
+      ],
+      "next": [
+        {
+          "path": "/free-test-eligibility",
+          "condition": "stepsTaken"
+        },
+        {
+          "path": "/your-details",
+          "condition": "stepsNotTaken"
+        }
+      ]
+    },
+    {
+      "path": "/free-test-eligibility",
+      "title": "You may be eligible for a free retest",
+      "options": {
+        "hideContinueButton": true
+      },
+      "components": [
+        {
+          "type": "Para",
+          "content": "Contact the radon team</br>Telephone: 0123 582 2622</br>Monday to Friday, 9:00am to 4:30pm"
+        },
+        {
+          "type": "Para",
+          "content": "You will need to provide your name, address and the method of remediation you have used."
+        },
+        {
+          "type": "Para",
+          "content": "<a href=\"your-details\">Continue without a free retest</a>"
+        }
+      ],
+      "next": [{ "path": "/your-details" }]
+    },
+    {
+      "path": "/your-details",
+      "title": "Enter your personal details",
+      "components": [
+        {
+          "type": "Para",
+          "content": "Fill in the information of the person who is paying for the radon gas test kit"
+        },
+        {
+          "name": "title",
+          "type": "RadiosField",
+          "title": "Title",
+          "options": {
+            "exposeToContext": true,
+            "customValidationMessages": {
+              "any.required": "Select a title"
+            },
+            "divider": true
+          },
+          "list": "titleList"
+        },
+        {
+          "name": "firstName",
+          "type": "TextField",
+          "title": "First name",
+          "options": {
+            "customValidationMessages": {
+              "string.empty": "Enter a first name"
+            },
+            "exposeToContext": true
+          }
+        },
+        {
+          "name": "lastName",
+          "type": "TextField",
+          "title": "Last name",
+          "options": {
+            "exposeToContext": true,
+            "customValidationMessages": {
+              "string.empty": "Enter a last name"
+            }
+          }
+        },
+        {
+          "name": "emailAddress",
+          "type": "EmailAddressField",
+          "title": "Email address",
+          "hint": "For example, 'name@example.com'.",
+          "options": {
+            "exposeToContext": true,
+            "customValidationMessages": {
+              "any.required": "Enter an email address",
+              "any.only": "Enter an email address",
+              "string.empty": "Enter an email address",
+              "string.pattern.base": "Enter an email address in the correct format, like name@example.com"
+            }
+          }
+        },
+        {
+          "type": "InsetText",
+          "content": "We will use your email address to send your payment confirmation."
+        }
+      ],
+      "next": [{ "path": "/kit-details" }]
+    },
+    {
+      "path": "/kit-details",
+      "title": "Measurement address details",
+      "options": {
+        "honorReturnURL": false
+      },
+      "components": [
+        {
+          "type": "DisplayAddress",
+          "content": "{{ propertyAddress_fullSelectedAddress }}",
+          "options": {
+            "inset": true
+          }
+        },
+        {
+          "type": "Para",
+          "content": "<p class=\"govuk-body-m\"><h2 class=\"govuk-heading-m\">Is this the address you want the kit delivered to?</h2></p>"
+        },
+        {
+          "name": "kitAddressConfirmation",
+          "type": "YesNoField",
+          "title": "Is this the address you want the kit delivered to?",
+          "options": { "hideTitle": true, "exposeToContext": true }
+        },
+        {
+          "type": "Html",
+          "content": "<div class=\"govuk-warning-text\"><span class=\"govuk-warning-text__icon\" aria-hidden=\"true\">!</span><strong class=\"govuk-warning-text__text\"><span class=\"govuk-visually-hidden\">Warning</span>The detectors record continuously so the reading may be less accurate if they are not at the measurement address.</strong></div>"
+        },
+        {
+          "type": "Para",
+          "content": "If the kits are delivered to a different address than where they will be used, the detectors must be placed within the measurement address within 7 days of delivery.\n</br></br>\nA kit fits through a standard letter box."
+        },
+        {
+          "type": "Para",
+          "content": "<p class=\"govuk-body-m\"><h2 class=\"govuk-heading-m\">Is this the address you want your radon gas test results to?</h2></p>"
+        },
+        {
+          "name": "resultsAddressConfirmation",
+          "type": "YesNoField",
+          "title": "Is this the address you want your radon gas test results to?",
+          "options": { "hideTitle": true, "exposeToContext": true }
+        },
+        {
+          "type": "Para",
+          "content": "You will receive a physical report showing the radon level at your measurement address and advice on whether you need to take action."
+        }
+      ],
+      "next": [
+        {
+          "path": "/summary",
+          "condition": "readyToReview"
+        },
+        {
+          "path": "/kit-recipient",
+          "condition": "kitAddressIncorrect"
+        },
+        {
+          "path": "/results-recipient",
+          "condition": "correctKitAddressIncorrectResultsAddress"
+        }
+      ]
+    },
+    {
+      "path": "/results-recipient",
+      "title": "Who is the recipient of radon gas test results",
+      "components": [
+        {
+          "name": "resultsTitle",
+          "type": "RadiosField",
+          "title": "Title",
+          "options": {
+            "exposeToContext": true,
+            "customValidationMessages": {
+              "any.required": "Select the title of the recipient of the radon gas test results"
+            },
+            "divider": true
+          },
+          "list": "titleList"
+        },
+        {
+          "name": "resultsFirstName",
+          "type": "TextField",
+          "title": "First name",
+          "options": {
+            "customValidationMessages": {
+              "string.empty": "Enter the first name of the recipient of the radon gas test results"
+            },
+            "exposeToContext": true
+          }
+        },
+        {
+          "name": "resultsLastName",
+          "type": "TextField",
+          "title": "Last Name",
+          "options": {
+            "customValidationMessages": {
+              "string.empty": "Enter the last name of the recipient of the radon gas test results"
+            },
+            "exposeToContext": true
+          }
+        }
+      ],
+      "next": [{ "path": "/results-address" }]
+    },
+    {
+      "path": "/results-address",
+      "title": "What address do you want your radon gas test results to be delivered to?",
+      "components": [
+        {
+          "name": "addressType",
+          "type": "HiddenField",
+          "options": {
+            "exposeToContext": true,
+            "value": "resultsAddress"
+          }
+        },
+        {
+          "name": "resultsAddress_addressLine1Lookup",
+          "type": "TextField",
+          "title": "Address Line 1",
+          "options": {
+            "customValidationMessages": {
+              "string.empty": "Enter address line 1, typically the building and street"
+            },
+            "exposeToContext": true
+          }
+        },
+        {
+          "name": "resultsAddress_addressLine2Lookup",
+          "type": "TextField",
+          "title": "Address Line 2",
+          "options": {
+            "required": false,
+            "exposeToContext": true
+          }
+        },
+        {
+          "name": "resultsAddress_townLookup",
+          "type": "TextField",
+          "title": "Town or city",
+          "options": {
+            "customValidationMessages": {
+              "string.empty": "Enter town or city"
+            },
+            "exposeToContext": true
+          }
+        },
+        {
+          "name": "resultsAddress_countyLookup",
+          "type": "TextField",
+          "title": "County",
+          "options": {
+            "required": false,
+            "exposeToContext": true
+          }
+        },
+        {
+          "name": "resultsAddress_postcodeLookup",
+          "type": "TextField",
+          "title": "Postcode",
+          "schema": {
+            "max": 10,
+            "regex": "^[\\s]*[A-z]{1,2}[0-9][A-z0-9]?[\\s]*[0-9]{1,2}[ABD-hJLNP-uW-z]{2}[\\s]*$"
+          },
+          "options": {
+            "customValidationMessages": {
+              "string.empty": "Enter postcode",
+              "string.pattern.base": "Enter a full UK postcode",
+              "string.max": "Postcode must be less than 10 characters"
+            },
+            "autocomplete": "postal-code",
+            "exposeToContext": true,
+            "format": {
+              "trim": true,
+              "case": "upper"
+            }
+          }
+        }
+      ],
+      "options": {
+        "hiddenFields": ["addressType"],
+        "disabledChangeFields": ["addressType"]
+      },
+      "controller": "ManualAddressPageController",
+      "next": [{ "path": "/summary" }]
+    },
+    {
+      "path": "/kit-recipient",
+      "title": "Who is the recipient of the kit?",
+      "components": [
+        {
+          "name": "kitTitle",
+          "type": "RadiosField",
+          "title": "Title",
+          "options": {
+            "exposeToContext": true,
+            "customValidationMessages": {
+              "any.required": "Select the title of the recipient of the radon gas test kit"
+            },
+            "divider": true
+          },
+          "list": "titleList"
+        },
+        {
+          "name": "kitFirstName",
+          "type": "TextField",
+          "title": "First name",
+          "options": {
+            "customValidationMessages": {
+              "string.empty": "Enter the first name of the recipient of the radon gas test kit"
+            },
+            "exposeToContext": true
+          }
+        },
+        {
+          "name": "kitLastName",
+          "type": "TextField",
+          "title": "Last Name",
+          "options": {
+            "customValidationMessages": {
+              "string.empty": "Enter the last name of the recipient of the radon gas test kit"
+            },
+            "exposeToContext": true
+          }
+        }
+      ],
+      "next": [{ "path": "/kit-address" }]
+    },
+    {
+      "path": "/kit-address",
+      "title": "What address do you want your kit to be delivered to?",
+      "components": [
+        {
+          "name": "addressType",
+          "type": "HiddenField",
+          "options": {
+            "exposeToContext": true,
+            "value": "kitAddress"
+          }
+        },
+        {
+          "name": "kitAddress_addressLine1Lookup",
+          "type": "TextField",
+          "title": "Address Line 1",
+          "options": {
+            "customValidationMessages": {
+              "string.empty": "Enter address line 1, typically the building and street"
+            },
+            "exposeToContext": true
+          }
+        },
+        {
+          "name": "kitAddress_addressLine2Lookup",
+          "type": "TextField",
+          "title": "Address Line 2",
+          "options": {
+            "required": false,
+            "exposeToContext": true
+          }
+        },
+        {
+          "name": "kitAddress_townLookup",
+          "type": "TextField",
+          "title": "Town or city",
+          "options": {
+            "customValidationMessages": {
+              "string.empty": "Enter town or city"
+            },
+            "exposeToContext": true
+          }
+        },
+        {
+          "name": "kitAddress_countyLookup",
+          "type": "TextField",
+          "title": "County",
+          "options": {
+            "required": false,
+            "exposeToContext": true
+          }
+        },
+        {
+          "name": "kitAddress_postcodeLookup",
+          "type": "TextField",
+          "title": "Postcode",
+          "schema": {
+            "max": 10,
+            "regex": "^[\\s]*[A-z]{1,2}[0-9][A-z0-9]?[\\s]*[0-9]{1,2}[ABD-hJLNP-uW-z]{2}[\\s]*$"
+          },
+          "options": {
+            "customValidationMessages": {
+              "string.empty": "Enter postcode",
+              "string.pattern.base": "Enter a full UK postcode",
+              "string.max": "Postcode must be less than 10 characters"
+            },
+            "autocomplete": "postal-code",
+            "exposeToContext": true,
+            "format": {
+              "trim": true,
+              "case": "upper"
+            }
+          }
+        }
+      ],
+      "options": {
+        "hiddenFields": ["addressType"],
+        "disabledChangeFields": ["addressType"]
+      },
+      "controller": "ManualAddressPageController",
+      "next": [
+        {
+          "path": "/kit-address-results-confirm",
+          "condition": "incorrectKitAddressIncorrectResultsAddress"
+        },
+        { "path": "/summary" }
+      ]
+    },
+    {
+      "path": "/kit-address-results-confirm",
+      "title": "Delivery Details",
+      "options": {
+        "honorReturnURL": [
+          { "condition": "kitResultsConfirmationYes", "value": true },
+          { "value": false }
+        ]
+      },
+      "components": [
+        {
+          "name": "kitAddress",
+          "type": "DisplayAddress",
+          "content": "{{kitTitle}} {{kitFirstName}} {{kitLastName}}, {{ kitAddress_fullSelectedAddress }}",
+          "options": {
+            "inset": true
+          }
+        },
+        {
+          "name": "ResultsDeliveryQuestion",
+          "type": "Para",
+          "content": "<p class=\"govuk-body-m\"><h2 class=\"govuk-heading-m\">Is this the address you want your radon gas test results delivered to?</h2></p>"
+        },
+        {
+          "name": "kitResultsConfirmation",
+          "type": "YesNoField",
+          "title": " ",
+          "options": {
+            "exposeToContext": true,
+            "customValidationMessages": {
+              "any.required": "Select yes if this is the address you want your radon gas test results delivered to"
+            }
+          }
+        }
+      ],
+      "next": [
+        {
+          "path": "/results-recipient",
+          "condition": "kitDetailsIncorrectResultsAddress"
+        },
+        { "path": "/summary" }
+      ]
+    },
+    {
+      "title": "Review your order",
+      "path": "/summary",
+      "options": {
+        "showContinueButton": true,
+        "customButtonText": "Confirm and go to payment"
+      },
+      "controller": "HeadlessSummaryPageController",
+      "components": [
+        {
+          "type": "Html",
+          "content": "<div class=\"govuk-warning-text\"><span class=\"govuk-warning-text__icon\" aria-hidden=\"true\">!</span><strong class=\"govuk-warning-text__text\"><span class=\"govuk-visually-hidden\">Warning</span>Check your answers before you continue to payment. You cannot return to this page once you proceed.</strong></div>"
+        },
+        {
+          "type": "SummaryLists",
+          "content": [
+            {
+              "title": "Order summary",
+              "content": [
+                {
+                  "title": "Which type of test kit do you need?",
+                  "value": "Home radon gas test kit",
+                  "changeUrl": false
+                },
+                {
+                  "title": "Total",
+                  "value": "<b class=\"govuk-summary-list__row--no-wrap\">£{{fees.totalInPounds}} (including VAT)</b>",
+                  "changeUrl": false
+                }
+              ]
+            },
+            {
+              "title": "Contact information",
+              "content": [
+                {
+                  "title": "Title",
+                  "value": "{{title}}",
+                  "changeUrl": "/your-details"
+                },
+                {
+                  "title": "First name",
+                  "value": "{{firstName}}",
+                  "changeUrl": "/your-details"
+                },
+                {
+                  "title": "Last name",
+                  "value": "{{lastName}}",
+                  "changeUrl": "/your-details"
+                },
+                {
+                  "title": "Email address",
+                  "value": "{{emailAddress}}",
+                  "changeUrl": "/your-details"
+                },
+                {
+                  "type": "component",
+                  "title": "Measurement address",
+                  "changeUrl": "/gas-test-kit-property-address-postcode",
+                  "value": {
+                    "name": "displayPropertyAddress",
+                    "type": "DisplayAddress",
+                    "content": "{{propertyAddress_fullSelectedAddress}}"
+                  }
+                },
+                {
+                  "type": "component",
+                  "title": "Delivery recipient",
+                  "changeUrl": [
+                    {
+                      "condition": "kitAddressIncorrect",
+                      "value": "/kit-recipient"
+                    },
+                    { "value": "/your-details" }
+                  ],
+                  "value": {
+                    "name": "kitRecipient",
+                    "type": "Para",
+                    "content": [
+                      {
+                        "condition": "kitAddressIncorrect",
+                        "value": "{{kitTitle}} {{kitFirstName}} {{kitLastName}}"
+                      },
+                      {
+                        "value": "{{title}} {{firstName}} {{lastName}}"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "type": "component",
+                  "title": "Delivery address",
+                  "changeUrl": [
+                    {
+                      "condition": "kitAddressIncorrect",
+                      "value": "/kit-address"
+                    },
+                    { "value": "/gas-test-kit-property-address-postcode" }
+                  ],
+                  "value": {
+                    "name": "displayKitAddress",
+                    "type": "DisplayAddress",
+                    "content": [
+                      {
+                        "condition": "kitAddressIncorrect",
+                        "value": "{{kitAddress_fullSelectedAddress}}"
+                      },
+                      { "value": "{{propertyAddress_fullSelectedAddress}}" }
+                    ]
+                  }
+                },
+                {
+                  "type": "component",
+                  "title": "Results recipient",
+                  "changeUrl": [
+                    {
+                      "condition": "kitResultsConfirmationYes",
+                      "value": "/kit-recipient"
+                    },
+                    {
+                      "condition": "resultsAddressIncorrect",
+                      "value": "/results-recipient"
+                    },
+                    { "value": "/your-details" }
+                  ],
+                  "value": {
+                    "name": "resultsRecipient",
+                    "type": "Para",
+                    "content": [
+                      {
+                        "condition": "kitResultsConfirmationYes",
+                        "value": "{{kitTitle}} {{kitFirstName}} {{kitLastName}}"
+                      },
+                      {
+                        "condition": "resultsAddressIncorrect",
+                        "value": "{{resultsTitle}} {{resultsFirstName}} {{resultsLastName}}"
+                      },
+                      {
+                        "value": "{{title}} {{firstName}} {{lastName}}"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "type": "component",
+                  "title": "Results address",
+                  "changeUrl": [
+                    {
+                      "condition": "kitResultsConfirmationYes",
+                      "value": "/kit-address"
+                    },
+                    {
+                      "condition": "resultsAddressIncorrect",
+                      "value": "/results-address"
+                    },
+                    { "value": "/gas-test-kit-property-address-postcode" }
+                  ],
+                  "value": {
+                    "name": "displayResultsAddress",
+                    "type": "DisplayAddress",
+                    "content": [
+                      {
+                        "condition": "kitResultsConfirmationYes",
+                        "value": "{{kitAddress_fullSelectedAddress}}"
+                      },
+                      {
+                        "condition": "resultsAddressIncorrect",
+                        "value": "{{resultsAddress_fullSelectedAddress}}"
+                      },
+                      { "value": "{{propertyAddress_fullSelectedAddress}}" }
+                    ]
+                  }
+                }
+              ]
+            }
+          ],
+          "options": {
+            "enableCards": "true"
+          }
+        },
+        {
+          "name": "termsAndConditions",
+          "type": "CheckboxesField",
+          "title": " ",
+          "list": "termsAndConditionsList",
+          "options": {
+            "required": true,
+            "html": true,
+            "customValidationMessages": {
+              "any.required": "You must accept the Privacy Policy and Terms and Conditions before continuing"
+            }
+          }
+        }
+      ],
+      "componentsAfter": [
+        {
+          "type": "Para",
+          "content": "You will be redirected to Trust Payments, UKHSA approved payment system."
+        }
+      ],
+      "next": []
+    }
+  ],
+  "specialPages": {
+    "confirmationPage": {
+      "customText": {
+        "title": "Home radon gas test kit ordered",
+        "nextSteps": "<p class=\"govuk-body-m\">We have sent a confirmation email to {{ emailAddress }}.</p>",
+        "generatedReferenceContent": "Your order number is",
+        "hidePanel": false
+      },
+      "components": [
+        {
+          "name": "info",
+          "type": "Para",
+          "content": "<p class=\"govuk-body-m\">We have received your order. It may take up to 10 working days to dispatch the kit.<br></br>Instructions on how to set up the kit in the property will be included in the delivery package.</p>"
+        },
+        {
+          "name": "warningText",
+          "type": "Html",
+          "content": "<div class=\"govuk-warning-text\"><span class=\"govuk-warning-text__icon\" aria-hidden=\"true\">!</span><strong class=\"govuk-warning-text__text\"><span class=\"govuk-visually-hidden\">Warning</span>You must place the kit within the measurement address within 7 days of delivery.</strong></div>"
+        },
+        {
+          "name": "final links",
+          "type": "Para",
+          "content": "<p class=\"govuk-body-m\"><a href=\"https://submit.forms.service.gov.uk/form/266710/radon-services-feedback-form\">What did you think of this service?</a> (takes 30 seconds)</p><p class=\"govuk-body-m\"><a href=\"start\">Order another radon gas test kit</a></p><p class=\"govuk-body-m\"><a href=\"/radon-enquiry\">Contact Radon Measurement Service team</a></p><p class=\"govuk-body-m\"><a href=\"https://www.gov.uk/health-protection-team\">Go to Radon services for homeowners or householders</a></p>"
+        }
+      ]
+    }
+  },
+  "lists": [
+    {
+      "name": "addressesList",
+      "title": "addressesList",
+      "type": "string",
+      "items": []
+    },
+    {
+      "name": "titleList",
+      "title": "titleList",
+      "type": "string",
+      "items": [
+        { "text": "Mr", "value": "Mr" },
+        { "text": "Mrs", "value": "Mrs" },
+        { "text": "Miss", "value": "Miss" },
+        { "text": "Ms", "value": "Ms" },
+        {
+          "text": "Prefer not to say",
+          "value": "Prefer not to say"
+        },
+        {
+          "text": "None of the above",
+          "value": "None of the above"
+        }
+      ]
+    },
+    {
+      "title": "Terms and conditions",
+      "name": "termsAndConditionsList",
+      "type": "string",
+      "items": [
+        {
+          "html": "<p class=\"govuk-body-m\">I agree to the <a href=\"https://www.ukhsa-protectionservices.org.uk/tc/privacy-policy\" target=\"_blank\">Privacy Policy</a> and <a href=\"https://www.ukhsa-protectionservices.org.uk/tc/terms-conditions\" target=\"_blank\">Terms and Conditions</a> for this order.</p>",
+          "value": "accept"
+        }
+      ]
+    }
+  ],
+  "conditions": [
+    {
+      "name": "hasMatchedPropertyAddressCondition",
+      "displayName": "Has Matched Property Address",
+      "value": {
+        "name": "hasMatchedPropertyAddressCondition",
+        "conditions": [
+          {
+            "field": {
+              "name": "propertyAddress_hasMatchedAddress",
+              "type": "YesNoField",
+              "display": "propertyAddress_hasMatchedAddress"
+            },
+            "operator": "is",
+            "value": { "type": "Value", "value": "true", "display": "true" }
+          }
+        ]
+      }
+    },
+    {
+      "name": "isCorrectPropertyAddress",
+      "displayName": "Is Correct Property Address Yes",
+      "value": {
+        "name": "isCorrectPropertyAddress",
+        "conditions": [
+          {
+            "field": {
+              "name": "propertyAddress_isCorrectAddress",
+              "type": "YesNoField",
+              "display": "propertyAddress_isCorrectAddress"
+            },
+            "operator": "is",
+            "value": { "type": "Value", "value": "true", "display": "true" }
+          }
+        ]
+      }
+    },
+    {
+      "name": "noPropertyAddressesCondition",
+      "displayName": "No Property Addresses Found",
+      "value": {
+        "name": "noPropertyAddressesCondition",
+        "conditions": [
+          {
+            "field": {
+              "name": "propertyAddress_numberOfAddresses",
+              "type": "NumberField",
+              "display": "numberOfAddresses"
+            },
+            "operator": "is",
+            "value": { "type": "Value", "value": "0", "display": "0" }
+          }
+        ]
+      }
+    },
+    {
+      "name": "propertyAddressOnlyOneAddressCondition",
+      "displayName": "Property Address Only One Address",
+      "value": {
+        "name": "propertyAddressOnlyOneAddressCondition",
+        "conditions": [
+          {
+            "field": {
+              "name": "propertyAddress_numberOfAddresses",
+              "type": "NumberField",
+              "display": "numberOfAddresses"
+            },
+            "operator": "is",
+            "value": { "type": "Value", "value": "1", "display": "1" }
+          }
+        ]
+      }
+    },
+    {
+      "displayName": "Has Tested",
+      "name": "hasTested",
+      "value": {
+        "name": "hasTested",
+        "conditions": [
+          {
+            "field": {
+              "name": "testedBeforeYesNo",
+              "type": "YesNoField",
+              "display": "Have you tested this address before using a gas test kit purchaced from us?"
+            },
+            "operator": "is",
+            "value": { "type": "Value", "value": "true", "display": "true" }
+          }
+        ]
+      }
+    },
+    {
+      "displayName": "Level Above Action Level",
+      "name": "levelAboveActionLevel",
+      "value": {
+        "name": "levelAboveActionLevel",
+        "conditions": [
+          {
+            "field": {
+              "name": "bqmYesNo",
+              "type": "YesNoField",
+              "display": "Was the level above the action level 200 Bqm-3"
+            },
+            "operator": "is",
+            "value": { "type": "Value", "value": "true", "display": "true" }
+          }
+        ]
+      }
+    },
+    {
+      "displayName": "Steps Taken",
+      "name": "stepsTaken",
+      "value": {
+        "name": "stepsTaken",
+        "conditions": [
+          {
+            "field": {
+              "name": "stepsToReduceYesNo",
+              "type": "YesNoField",
+              "display": "Have you taken any steps to reduce the radon level since the last test?"
+            },
+            "operator": "is",
+            "value": { "type": "Value", "value": "true", "display": "true" }
+          }
+        ]
+      }
+    },
+    {
+      "displayName": "Has Not Tested",
+      "name": "hasNotTested",
+      "value": {
+        "name": "hasNotTested",
+        "conditions": [
+          {
+            "field": {
+              "name": "testedBeforeYesNo",
+              "type": "YesNoField",
+              "display": "Have you tested this address before using a gas test kit purchaced from us?"
+            },
+            "operator": "is",
+            "value": { "type": "Value", "value": "false", "display": "false" }
+          }
+        ]
+      }
+    },
+    {
+      "displayName": "Level Not Above Action Level",
+      "name": "levelNotAboveActionLevel",
+      "value": {
+        "name": "levelNotAboveActionLevel",
+        "conditions": [
+          {
+            "field": {
+              "name": "bqmYesNo",
+              "type": "YesNoField",
+              "display": "Was the level above the action level 200 Bqm-3"
+            },
+            "operator": "is",
+            "value": { "type": "Value", "value": "false", "display": "false" }
+          }
+        ]
+      }
+    },
+    {
+      "displayName": "Steps Not Taken",
+      "name": "stepsNotTaken",
+      "value": {
+        "name": "stepsNotTaken",
+        "conditions": [
+          {
+            "field": {
+              "name": "stepsToReduceYesNo",
+              "type": "YesNoField",
+              "display": "Have you taken any steps to reduce the radon level since the last test?"
+            },
+            "operator": "is",
+            "value": { "type": "Value", "value": "false", "display": "false" }
+          }
+        ]
+      }
+    },
+    {
+      "displayName": "Delivery Address Incorrect",
+      "name": "kitAddressIncorrect",
+      "value": {
+        "name": "kitAddressIncorrect",
+        "conditions": [
+          {
+            "field": {
+              "name": "kitAddressConfirmation",
+              "type": "YesNoField",
+              "display": "Is this the address you want the kit delivered to?"
+            },
+            "operator": "is",
+            "value": { "type": "Value", "value": "false", "display": "false" }
+          }
+        ]
+      }
+    },
+    {
+      "displayName": "Results Address Incorrect",
+      "name": "resultsAddressIncorrect",
+      "value": {
+        "name": "resultsAddressIncorrect",
+        "conditions": [
+          {
+            "field": {
+              "name": "resultsAddressConfirmation",
+              "type": "YesNoField",
+              "display": "Is this the address you want your radon gas test results to?"
+            },
+            "operator": "is",
+            "value": { "type": "Value", "value": "false", "display": "false" }
+          }
+        ]
+      }
+    },
+    {
+      "displayName": "Ready To Review",
+      "name": "readyToReview",
+      "value": {
+        "name": "readyToReview",
+        "conditions": [
+          {
+            "field": {
+              "name": "kitAddressConfirmation",
+              "type": "YesNoField",
+              "display": "Is this the address you want the kit delivered to?"
+            },
+            "operator": "is",
+            "value": { "type": "Value", "value": "true", "display": "true" }
+          },
+          {
+            "coordinator": "and",
+            "field": {
+              "name": "resultsAddressConfirmation",
+              "type": "YesNoField",
+              "display": "Is this the address you want your radon gas test results to?"
+            },
+            "operator": "is",
+            "value": { "type": "Value", "value": "true", "display": "true" }
+          }
+        ]
+      }
+    },
+    {
+      "displayName": "Correct Kit Address Incorrect Results Address",
+      "name": "correctKitAddressIncorrectResultsAddress",
+      "value": {
+        "name": "correctKitAddressIncorrectResultsAddress",
+        "conditions": [
+          {
+            "field": {
+              "name": "kitAddressConfirmation",
+              "type": "YesNoField",
+              "display": "Is this the address you want the kit delivered to?"
+            },
+            "operator": "is",
+            "value": { "type": "Value", "value": "true", "display": "true" }
+          },
+          {
+            "coordinator": "and",
+            "field": {
+              "name": "resultsAddressConfirmation",
+              "type": "YesNoField",
+              "display": "Is this the address you want your radon gas test results to?"
+            },
+            "operator": "is",
+            "value": { "type": "Value", "value": "false", "display": "false" }
+          }
+        ]
+      }
+    },
+    {
+      "displayName": "Incorrect Kit Address Incorrect Results Address",
+      "name": "incorrectKitAddressIncorrectResultsAddress",
+      "value": {
+        "name": "incorrectKitAddressIncorrectResultsAddress",
+        "conditions": [
+          {
+            "field": {
+              "name": "kitAddressConfirmation",
+              "type": "YesNoField",
+              "display": "Is this the address you want the kit delivered to?"
+            },
+            "operator": "is",
+            "value": { "type": "Value", "value": "false", "display": "false" }
+          },
+          {
+            "coordinator": "and",
+            "field": {
+              "name": "resultsAddressConfirmation",
+              "type": "YesNoField",
+              "display": "Is this the address you want your radon gas test results to?"
+            },
+            "operator": "is",
+            "value": { "type": "Value", "value": "false", "display": "false" }
+          }
+        ]
+      }
+    },
+    {
+      "displayName": "Delivery Details Incorrect Results Address",
+      "name": "kitDetailsIncorrectResultsAddress",
+      "value": {
+        "name": "kitDetailsIncorrectResultsAddress",
+        "conditions": [
+          {
+            "field": {
+              "name": "kitResultsConfirmation",
+              "type": "YesNoField",
+              "display": "Is this the address you want the kit delivered to?"
+            },
+            "operator": "is",
+            "value": { "type": "Value", "value": "false", "display": "false" }
+          }
+        ]
+      }
+    },
+    {
+      "displayName": "Kit Results Confirmation Yes",
+      "name": "kitResultsConfirmationYes",
+      "value": {
+        "name": "kitResultsConfirmationYes",
+        "conditions": [
+          {
+            "field": {
+              "name": "kitResultsConfirmation",
+              "type": "YesNoField",
+              "display": "Is this the address you want your radon gas test results delivered to?"
+            },
+            "operator": "is",
+            "value": { "type": "Value", "value": "true", "display": "true" }
+          }
+        ]
+      }
+    }
+  ],
+  "services": [
+    {
+      "name": "addressLookupService",
+      "service": "addressLookupService",
+      "parameters": {
+        "apimBaseUrl": "${RPS_LOCATION_SERVICES_API_BASE_URL}",
+        "callingApplication": "RPS",
+        "tenantId": "${RPS_LOCATION_SERVICES_API_TENANT_ID}",
+        "clientId": "${RPS_LOCATION_SERVICES_API_CLIENT_ID}",
+        "clientSecret": "${RPS_LOCATION_SERVICES_API_CLIENT_SECRET}",
+        "scopes": ["${RPS_LOCATION_SERVICES_API_SCOPES}"]
+      }
+    },
+    {
+      "name": "trustPaymentsService",
+      "service": "trustPaymentsService",
+      "parameters": {
+        "siteReference": "${RPS_GTK_TRUST_PAYMENTS_SITE_REFERENCE}",
+        "hashPassword": "${RPS_GTK_TRUST_PAYMENTS_HASH_PASSWORD}",
+        "successWebhookUrl": "${RPS_AWS_APIGW_BASE_URL}/storepayment",
+        "failureWebhookUrl": "${RPS_AWS_APIGW_BASE_URL}/storepayment"
+      }
+    },
+    {
+      "name": "gasTestKitApiService",
+      "service": "gasTestKitApiService",
+      "parameters": {
+        "name": "gasTestKitApiService.RadonHomeGasTestKit",
+        "apimBaseUrl": "${RPS_AWS_APIGW_BASE_URL}",
+        "callingApplication": "RPS",
+        "tenantId": "${RPS_AWS_AUTHORISER_API_TENANT_ID}",
+        "clientId": "${RPS_AWS_AUTHORISER_API_CLIENT_ID}",
+        "clientSecret": "${RPS_AWS_AUTHORISER_API_CLIENT_SECRET}",
+        "scopes": ["${RPS_AWS_AUTHORISER_API_SCOPES}"]
+      }
+    }
+  ]
+}

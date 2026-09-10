@@ -1,5 +1,5 @@
-import { post, put } from "./httpService";
 import { HapiServer } from "../types";
+import { post, put } from "./httpService";
 
 const DEFAULT_OPTIONS = {
   headers: {
@@ -38,10 +38,12 @@ export class WebhookService {
     // );
 
     let request = method === "POST" ? post : put;
+
     try {
       if (!sendAdditionalPayMetadata) {
         delete data?.metadata?.pay;
       }
+
       const { payload, res } = await request(url, {
         ...DEFAULT_OPTIONS,
         headers: {

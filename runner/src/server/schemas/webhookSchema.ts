@@ -1,12 +1,12 @@
+import { componentSchema } from "@xgovformbuilder/model";
 import joi from "joi";
+import { Question } from "server/plugins/engine/models/types";
 import {
   Field,
   InitialiseSessionQuestion,
   InitialiseSessionSchema,
   WebhookSchema,
 } from "server/schemas/types";
-import { Question } from "server/plugins/engine/models/types";
-import { componentSchema } from "@xgovformbuilder/model";
 
 const fieldSchema: joi.ObjectSchema<Field> = joi.object({
   key: joi.string().required(),
@@ -49,47 +49,45 @@ const sessionFieldSchema = joi.object({
   answer: joi.any().required(),
 });
 
-const sessionQuestionSchema: joi.ObjectSchema<InitialiseSessionQuestion> = joi.object(
-  {
+const sessionQuestionSchema: joi.ObjectSchema<InitialiseSessionQuestion> =
+  joi.object({
     category: joi.string().optional(),
     fields: joi.array().items(sessionFieldSchema),
-  }
-);
+  });
 
-const optionsSchema: joi.ObjectSchema<
-  InitialiseSessionSchema["options"]
-> = joi.object({
-  callbackUrl: joi
-    .string()
-    .required()
-    .note("The endpoint to send the amended data to"),
-  redirectPath: joi
-    .string()
-    .optional()
-    .allow("")
-    .note("appended to URL of formId after GET /session/${token}"),
-  message: joi
-    .string()
-    .optional()
-    .allow("")
-    .note("Message to display to the user on the summary page"),
-  customText: joi
-    .object({
-      title: joi.string().optional().allow(false, ""),
-      paymentSkipped: joi.string().optional().allow(false, ""),
-      nextSteps: joi.string().optional().allow(false, ""),
-      hidePanel: joi.boolean().optional(),
-    })
-    .optional(),
-  components: joi.array().items(componentSchema),
-});
+const optionsSchema: joi.ObjectSchema<InitialiseSessionSchema["options"]> =
+  joi.object({
+    callbackUrl: joi
+      .string()
+      .required()
+      .note("The endpoint to send the amended data to"),
+    redirectPath: joi
+      .string()
+      .optional()
+      .allow("")
+      .note("appended to URL of formId after GET /session/${token}"),
+    message: joi
+      .string()
+      .optional()
+      .allow("")
+      .note("Message to display to the user on the summary page"),
+    customText: joi
+      .object({
+        title: joi.string().optional().allow(false, ""),
+        paymentSkipped: joi.string().optional().allow(false, ""),
+        nextSteps: joi.string().optional().allow(false, ""),
+        generatedReferenceContent: joi.string().optional().allow(false, ""),
+        hidePanel: joi.boolean().optional(),
+      })
+      .optional(),
+    components: joi.array().items(componentSchema),
+  });
 
 //TODO:- make this work with initialiseSession POST endpoint, so the endpoint can be auto-documented
-export const initialiseSessionSchema: joi.ObjectSchema<InitialiseSessionSchema> = joi.object(
-  {
+export const initialiseSessionSchema: joi.ObjectSchema<InitialiseSessionSchema> =
+  joi.object({
     name: joi.string().optional().allow(""),
     options: optionsSchema,
     questions: joi.array().items(sessionQuestionSchema),
     metadata: metadataSchema.optional(),
-  }
-);
+  });

@@ -2,8 +2,8 @@ import Joi from "joi";
 import { redirectTo } from "./engine";
 import { healthCheckRoute, publicRoutes } from "../routes";
 import { HapiRequest, HapiResponseToolkit } from "../types";
-import config from "../config";
 import getRequestInfo from "server/utils/getRequestInfo";
+import { destroySession } from "server/utils/correlationId";
 import { FormModel } from "server/plugins/engine/models";
 import { feedbackReturnInfoKey } from "./engine/helpers";
 import { FeedbackContextInfo, RelativeUrl } from "./engine/feedback";
@@ -195,6 +195,7 @@ export default {
               {
                 isHttpOnly: false,
                 path: "/",
+                isSameSite: "Lax",
               }
             );
           },
@@ -287,7 +288,20 @@ export default {
             request.yar.reset();
           }
           const { redirect } = request.query;
-          return redirectTo(request, h, (redirect as string) || "/");
+          return redirectTo(request, h, redirect || "/");
+        },
+      });
+
+      server.route({
+        method: "get",
+        path: "/end-session",
+        handler: async (request: HapiRequest, h: HapiResponseToolkit) => {
+          const { cacheService } = request.services([]);
+
+          await destroySession(request, cacheService);
+
+          const { redirect } = request.query;
+          return redirectTo(request, h, redirect || "/");
         },
       });
 

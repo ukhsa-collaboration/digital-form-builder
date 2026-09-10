@@ -1,13 +1,13 @@
-import { FormModel } from "server/plugins/engine/models";
-import Boom from "boom";
-import { WebhookModel } from "server/plugins/engine/models/submission";
 import wreck from "@hapi/wreck";
 import { format, parseISO } from "date-fns";
-import { callbackValidation } from "server/plugins/initialiseSession/helpers";
 import Joi from "joi";
-import { ExitState, FormSubmissionState } from "server/plugins/engine/types";
-import { HapiServer } from "server/types";
+import { FormModel } from "server/plugins/engine/models";
+import { WebhookModel } from "server/plugins/engine/models/submission";
 import { WebhookData } from "server/plugins/engine/models/types";
+import { ExitState, FormSubmissionState } from "server/plugins/engine/types";
+import { callbackValidation } from "server/plugins/initialiseSession/helpers";
+import { HapiServer } from "server/types";
+import { RenderingError } from "../plugins/engine/errors";
 
 /**
  * Expected response from the exit webhook.
@@ -65,7 +65,9 @@ export class ExitService {
 
   async exitForm(form: FormModel, state: FormSubmissionState) {
     if (!form.allowExit) {
-      throw Boom.forbidden();
+      throw new RenderingError("User not allowed to exit form", {
+        code: 403,
+      });
     }
 
     const options = form.exitOptions!;
@@ -115,23 +117,19 @@ export class ExitService {
    */
   sanitiseResponse(response: ExitResponse) {
     const sanitisedResponse: ExitResponse = {};
-    const {
-      value: expiryValue,
-      error: expiryError,
-    } = ExitService.expirySchema.validate(response.expiry, {
-      abortEarly: false,
-    });
+    const { value: expiryValue, error: expiryError } =
+      ExitService.expirySchema.validate(response.expiry, {
+        abortEarly: false,
+      });
 
     if (expiryValue && !expiryError) {
       sanitisedResponse.expiry = expiryValue;
     }
 
-    const {
-      value: redirectValue,
-      error: redirectError,
-    } = ExitService.redirectUrlSchema.validate(response.redirectUrl, {
-      abortEarly: false,
-    });
+    const { value: redirectValue, error: redirectError } =
+      ExitService.redirectUrlSchema.validate(response.redirectUrl, {
+        abortEarly: false,
+      });
 
     if (redirectValue && !redirectError) {
       sanitisedResponse.redirectUrl = redirectValue;

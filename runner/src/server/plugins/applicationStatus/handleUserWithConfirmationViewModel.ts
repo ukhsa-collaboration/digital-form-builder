@@ -1,4 +1,5 @@
 import { HapiRequest, HapiResponseToolkit } from "server/types";
+import { getOrCreateCorrelationId } from "server/utils/correlationId";
 
 export async function handleUserWithConfirmationViewModel(
   request: HapiRequest,
@@ -18,7 +19,7 @@ export async function handleUserWithConfirmationViewModel(
 
   if (redirectUrl) {
     request.logger.info(
-      [`/${request.params.id}/status`, request.yar.id],
+      [`/${request.params.id}/status`, getOrCreateCorrelationId(request)],
       `confirmationViewModel.redirect detected. User will be redirected to ${redirectUrl}`
     );
     return h.redirect(redirectUrl).takeover();
@@ -26,7 +27,7 @@ export async function handleUserWithConfirmationViewModel(
 
   if (confirmation) {
     request.logger.info(
-      [`/${request.params.id}/status`, request.yar.id],
+      [`/${request.params.id}/status`, getOrCreateCorrelationId(request)],
       `confirmationViewModel.confirmation detected. Re-presenting ${confirmation}`
     );
     return h.view("confirmation", confirmation).takeover();

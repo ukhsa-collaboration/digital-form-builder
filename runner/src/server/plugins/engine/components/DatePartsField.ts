@@ -13,6 +13,7 @@ import {
 } from "../types";
 import { FormModel } from "../models";
 import { DataType } from "server/plugins/engine/components/types";
+import { logger } from "../../../utils/logger";
 
 export class DatePartsField extends FormComponent {
   children: ComponentCollection;
@@ -155,7 +156,7 @@ export class DatePartsField extends FormComponent {
       date.getMonth() !== month - 1 || // Convert back to 1-indexed
       date.getDate() !== day
     ) {
-      console.error("Invalid date detected:", { day, month, year });
+      logger.error({ day, month, year }, "Invalid date detected");
       return null; // Invalid date
     }
 

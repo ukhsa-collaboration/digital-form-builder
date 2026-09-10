@@ -1,5 +1,5 @@
 import { HapiRequest, HapiResponseToolkit } from "server/types";
-import Boom from "boom";
+import { RenderingError } from "../../../errors";
 
 /**
  * Gets the FormModel based on the URL parameter `/{id}`.
@@ -8,7 +8,9 @@ export function getForm(request: HapiRequest, _h: HapiResponseToolkit) {
   const id = request.params?.id;
   const form = request.server.app.forms?.[id];
   if (!form) {
-    throw Boom.notFound();
+    throw new RenderingError("Form not found", {
+      code: 404,
+    });
   }
   return form;
 }

@@ -235,4 +235,22 @@ export const ComponentTypes: ComponentDef[] = [
     options: {},
     schema: {},
   },
+  {
+    name: "DisplayAddress",
+    type: "DisplayAddress",
+    title: "Display address",
+    subType: "content",
+    content: "",
+    options: {},
+    schema: {},
+  },
+  {
+    name: "SummaryLists",
+    type: "SummaryLists",
+    title: "Summary lists",
+    subType: "content",
+    content: [],
+    options: {},
+    schema: {},
+  },
 ];

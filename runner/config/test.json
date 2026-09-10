@@ -9,6 +9,7 @@
   "enforceCsrf": true,
   "httpsCookieSecureAttribute": true,
   "initialisedSessionKey": "predictable-key",
+  "sessionCookiePassword": "test-only-session-cookie-password-not-a-secret",
   "env": "test",
   "documentUploadApiUrl": "http://localhost:9000"
 }

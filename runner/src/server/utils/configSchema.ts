@@ -21,6 +21,7 @@ export const configSchema = Joi.object({
     .optional()
     .allow("trace", "debug", "info", "warn", "error"),
   logPrettyPrint: Joi.boolean().optional(),
+  disableLogRedaction: Joi.boolean().optional(),
   logRedactPaths: Joi.array().items(Joi.string()).default([]),
   ordnanceSurveyKey: Joi.string().optional(),
   browserRefreshUrl: Joi.string().optional(),
@@ -111,7 +112,13 @@ export const configSchema = Joi.object({
       "HS512"
     )
     .default("HS512"),
-
+  enableMockApi: Joi.boolean()
+    .optional()
+    .default(false)
+    .when("env", {
+      is: "production",
+      then: Joi.valid(false),
+    }),
   enableQueueService: Joi.boolean().optional(),
   queueType: Joi.string().when("enableQueueService", {
     is: true,
@@ -152,5 +159,5 @@ export function buildConfig(config) {
     throw new Error(`The server config is invalid. ${result.error.message}`);
   }
 
-  return config;
+  return result.value;
 }

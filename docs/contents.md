@@ -7,10 +7,14 @@ Here you can find additional documentation for XGovFormBuilder.
 
 ## Contents
 
-- [Runner](#runner)
-- [Designer](#designer)
-- [Examples](#examples)
-- [ADRs](#adrs)
+- [Documentation](#documentation)
+  - [Contents](#contents)
+    - [Runner](#runner)
+      - [Components](#components)
+      - [Services](#services)
+    - [Designer](#designer)
+    - [Examples](#examples)
+    - [ADRs](#adrs)
 
 ### Runner
 
@@ -29,12 +33,33 @@ Features and configuration options for the runner.
     as on the [renew or replace your adult passport pages](https://www.gov.uk/renew-adult-passport/renew)
 - [redirects](runner/redirects.md)
   - Redirect users to a different page in the runner or external URL
+- [error page resolution](runner/error-page-resolution.md)
+  - Serve project or group-specific error pages instead of the generic runner error pages
 - [queues](runner/submission-queue.md)
   - Submit data to a queue after the user has completed the form
 - [summary details transforms](runner/summary-details-transforms.md)
   - Modify the details on summary pages before they are displayed to the user
 - [templating](runner/templating.md)
   - Allow njks templating within html components and add previous answers to the render context
+- [mock API](runner/mock-api.md)
+  - Intercept outbound HTTP calls in local development with mock responses
+- [global hooks](runner/hooks.md)
+  - Run named, per-form side effects at fixed points in a form's lifecycle without branching in controllers
+- [log redaction](runner/log-redaction.md)
+  - PII detection and path-based redaction for runner log output
+
+#### Components
+
+- [hidden field](runner/components/hidden-field.md)
+  - Embed non-visible data in a form page for use in submissions or later pages
+- [display address](runner/components/display-address.md)
+  - Render a previously collected address from form state with each line on its own line
+- [summary lists](runner/components/summary-lists.md)
+  - Render one or more GOV.UK summary lists from form state with optional change links and summary cards
+
+#### Services
+
+- [Trust Payments Adapter & Service](runner/services//trust-payments-adapter.md) - Documentation for trust payments service and app interactions.
 
 ### Designer
 

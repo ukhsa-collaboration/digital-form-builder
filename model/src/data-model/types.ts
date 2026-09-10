@@ -16,6 +16,7 @@ export interface Page {
   disableBackLink?: boolean;
   controller: string;
   components?: ComponentDef[];
+  componentsAfter?: ComponentDef[];
   section?: string; // the section ID
   sectionForExitJourneySummaryPages?: string;
   sectionForMultiSummaryPages?: string;
@@ -107,11 +108,18 @@ export type NotifyOutputConfiguration = {
   }[];
   escapeURLs?: boolean;
 };
+export type PayloadValueConfig = {
+  field?: string;
+  fallback?: string;
+  string?: string;
+  required?: boolean;
+};
 
 export type WebhookOutputConfiguration = {
   url: string;
   sendAdditionalPayMetadata?: boolean;
   allowRetry?: boolean;
+  payload?: Record<string, PayloadValueConfig>;
 };
 
 export type OutputConfiguration =
@@ -131,6 +139,7 @@ export type ConfirmationPage = {
     title: string;
     paymentSkipped: Toggleable<string>;
     nextSteps: Toggleable<string>;
+    generatedReferenceContent: string;
     referenceTitle: string;
     referenceContent: string;
     hidePanel?: boolean;
@@ -208,17 +217,30 @@ export interface SecureFormSubmissionConfig extends MsalAuthorizerConfig {
   useAwsWafUserAgentWorkaround?: boolean;
 }
 
+export interface AddressLookupConfig extends MsalAuthorizerConfig {
+  apimBaseUrl: string;
+  callingApplication: string;
+  subscriptionKey?: string;
+}
+
+export interface DynamicServiceConfig {
+  name: string;
+  service: string;
+  parameters: Record<string, any>;
+}
+
 /**
  * `FormDefinition` is a typescript representation of `Schema`
  */
 export type FormDefinition = {
+  formGroup?: string;
+  name?: string | undefined;
   pages: Array<Page | RepeatingFieldPage>;
   conditions: ConditionRawData[];
   lists: List[];
   sections: Section[];
   startPage?: Page["path"] | undefined;
   authentication?: boolean | undefined;
-  name?: string | undefined;
   feedback?: Feedback;
   phaseBanner?: PhaseBanner;
   fees: Fee[];
@@ -242,8 +264,15 @@ export type FormDefinition = {
   fileUploadHmacSharedKey?: string | undefined;
   fullStartPage?: string | undefined;
   serviceName?: string | undefined;
-  confirmationSessionTimeout: number | undefined;
+  confirmationSessionTimeout?: number | undefined;
   returnTo?: boolean | undefined;
-  secureFormSubmissionConfig: SecureFormSubmissionConfig;
+  secureFormSubmissionConfig?: SecureFormSubmissionConfig;
   error500ContactEmail?: string | undefined;
+  hooks?: Record<string, string>;
+  generateReference?: boolean | undefined;
+  services?: DynamicServiceConfig[];
+  provider?: string;
+  paymentProvider?: string;
+  featureFlags?: string[];
+  footer?: { href: string; text: string }[];
 };

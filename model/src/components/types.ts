@@ -26,6 +26,9 @@ export enum ComponentTypeEnum {
   List = "List",
   ContextComponent = "ContextComponent",
   ContentWithState = "ContentWithState",
+  DisplayAddress = "DisplayAddress",
+  HiddenField = "HiddenField",
+  SummaryLists = "SummaryLists",
 }
 
 export type ComponentType =
@@ -56,7 +59,10 @@ export type ComponentType =
   | "List"
   | "WebsiteField"
   | "ContextComponent"
-  | "ContentWithState";
+  | "ContentWithState"
+  | "DisplayAddress"
+  | "HiddenField"
+  | "SummaryLists";
 
 export type ComponentSubType = "field" | "content";
 
@@ -89,6 +95,10 @@ interface TextFieldBase {
     exposeToContext?: boolean;
     disableChangingFromSummary?: boolean;
     customValidationMessages?: Record<string, string>;
+    format?: {
+      trim?: boolean;
+      case?: "upper" | "lower";
+    };
   };
   schema: {
     max?: number;
@@ -301,6 +311,57 @@ export interface InsetTextComponent extends ContentFieldBase {
   type: "InsetText";
 }
 
+export interface DisplayAddressComponent extends ContentFieldBase {
+  type: "DisplayAddress";
+}
+
+export interface HiddenFieldComponent {
+  type: "HiddenField";
+  name: string;
+  options: {
+    value?: string;
+    exposeToContext?: boolean;
+  };
+  schema?: {};
+}
+
+export interface ConditionalValue {
+  condition?: string;
+  value: string;
+}
+
+export interface SummaryListComponentValue {
+  name: string;
+  type: string;
+  content: string | ConditionalValue[];
+  options?: Record<string, any>;
+}
+
+export interface SummaryListRow {
+  title: string;
+  value: string | SummaryListComponentValue;
+  changeUrl: string | false | ConditionalValue[];
+  type?: "component";
+}
+
+export interface SummaryListSection {
+  title: string;
+  content: SummaryListRow[];
+}
+
+export interface SummaryListsComponent {
+  type: "SummaryLists";
+  name: string;
+  title?: string;
+  content: SummaryListSection[];
+  subType?: "content";
+  options: {
+    enableCards?: boolean | "true" | "false";
+    condition?: string;
+  };
+  schema?: {};
+}
+
 // List Fields
 export interface ListComponent extends ListFieldBase {
   type: "List";
@@ -327,7 +388,9 @@ export interface RadiosFieldComponent extends ListFieldBase {
 
 export interface SelectFieldComponent extends ListFieldBase {
   type: "SelectField";
-  options: ListFieldBase["options"] & { autocomplete?: string };
+  options: ListFieldBase["options"] & { autocomplete?: string } & {
+    preselected?: { text: string; value: string | number | boolean };
+  };
   subType?: "listField";
 }
 
@@ -365,7 +428,10 @@ export type ComponentDef =
   | YesNoFieldComponent
   | WebsiteFieldComponent
   | ContextComponent
-  | ContentWithStateComponent;
+  | ContentWithStateComponent
+  | DisplayAddressComponent
+  | HiddenFieldComponent
+  | SummaryListsComponent;
 
 // Components that render inputs.
 export type InputFieldsComponentsDef =
@@ -392,7 +458,8 @@ export type ContentComponentsDef =
   | InsetTextComponent
   | ListComponent
   | FlashCardComponent
-  | ContentWithStateComponent;
+  | ContentWithStateComponent
+  | DisplayAddressComponent;
 
 // Components that render Lists
 export type ListComponentsDef =

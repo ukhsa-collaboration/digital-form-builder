@@ -1,28 +1,28 @@
-import joi from "joi";
-import { add } from "date-fns";
-import { Parser } from "expr-eval";
 import {
-  Schema,
   clone,
+  ConditionRawData,
   ConditionsModel,
   FormDefinition,
-  Page,
-  ConditionRawData,
   List,
+  Page,
+  Schema,
 } from "@xgovformbuilder/model";
+import { add } from "date-fns";
+import { Parser } from "expr-eval";
+import joi from "joi";
 
-import { FormSubmissionState } from "../types";
+import { ContextComponentCollection } from "server/plugins/engine/components/ContextComponentCollection";
+import { ExitOptions } from "server/plugins/engine/models/FormModel.exitOptions";
+import { DEFAULT_FEE_OPTIONS } from "server/plugins/engine/models/FormModel.feeOptions";
+import { ExecutableCondition } from "server/plugins/engine/models/types";
+import config from "../../../config";
 import {
-  PageControllerBase,
   getPageController,
+  PageControllerBase,
   SummaryPageController,
 } from "../pageControllers";
 import { PageController } from "../pageControllers/PageController";
-import { ExecutableCondition } from "server/plugins/engine/models/types";
-import { DEFAULT_FEE_OPTIONS } from "server/plugins/engine/models/FormModel.feeOptions";
-import { ContextComponentCollection } from "server/plugins/engine/components/ContextComponentCollection";
-import { ExitOptions } from "server/plugins/engine/models/FormModel.exitOptions";
-import config from "../../../config";
+import { FormSubmissionState } from "../types";
 
 class EvaluationContext {
   constructor(conditions, value) {
@@ -49,7 +49,7 @@ export class FormModel {
   lists: FormDefinition["lists"];
   sections: FormDefinition["sections"] = [];
   options: any;
-  name: any;
+  name: string;
   serviceStartPage: any;
   values: any;
   returnTo: any;
@@ -98,10 +98,11 @@ export class FormModel {
 
     this.def = def;
     this.lists = def.lists;
-    this.sections = def.sections;
+    this.sections = Array.isArray(def.sections) ? def.sections : [];
     this.options = options;
     this.name = def.name;
-    this.serviceStartPage = def.fullStartPage || config.serviceStartPage || config.serviceName || "#";
+    this.serviceStartPage =
+      def.fullStartPage || config.serviceStartPage || config.serviceName || "#";
     this.returnTo = def.returnTo || false;
     this.values = result.value;
 
@@ -162,9 +163,9 @@ export class FormModel {
             (page) => page.pageDef.repeatField
           );
 
-          let sectionSchema:
-            | joi.ObjectSchema<any>
-            | joi.ArraySchema = joi.object().required();
+          let sectionSchema: joi.ObjectSchema<any> | joi.ArraySchema = joi
+            .object()
+            .required();
 
           sectionPages.forEach((sectionPage) => {
             sectionSchema = sectionSchema.concat(sectionPage.stateSchema);
@@ -277,10 +278,12 @@ export class FormModel {
 
   getRelevantPages(state: FormSubmissionState) {
     let nextPage = this.startPage;
-    const relevantPages: any[] = [];
-    let endPage = null;
+    const relevantPages: PageControllerBase[] = [];
+    const visitedPages = new Set<PageControllerBase>();
+    let endPage: PageControllerBase | undefined;
 
-    while (nextPage != null) {
+    while (nextPage != null && !visitedPages.has(nextPage)) {
+      visitedPages.add(nextPage);
       if (nextPage.hasFormComponents) {
         relevantPages.push(nextPage);
       } else if (

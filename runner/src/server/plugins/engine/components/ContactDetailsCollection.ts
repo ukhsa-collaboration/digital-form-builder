@@ -1,16 +1,15 @@
-import { Schema } from "joi";
 import { InputFieldsComponentsDef } from "@xgovformbuilder/model";
-import Joi from "joi";
+import Joi, { Schema } from "joi";
 
-import { FormComponent } from "./FormComponent";
-import { ComponentCollection } from "./ComponentCollection";
+import { FormModel } from "../models";
 import {
   FormData,
   FormPayload,
   FormSubmissionErrors,
   FormSubmissionState,
 } from "../types";
-import { FormModel } from "../models";
+import { ComponentCollection } from "./ComponentCollection";
+import { FormComponent } from "./FormComponent";
 import { ListItem } from "./types";
 
 /**
@@ -23,6 +22,7 @@ import { ListItem } from "./types";
  * the visible inputs so that key is always present in the payload — Joi only
  * runs validators on keys that exist in the input being validated.
  */
+const DEFAULT_EMAIL_MESSAGE = "Enter an email address in the correct format";
 export class ContactDetailsCollection extends FormComponent {
   children: ComponentCollection;
 
@@ -72,7 +72,10 @@ export class ContactDetailsCollection extends FormComponent {
             required: false,
             optionalText: false,
             customValidationMessages: {
-              "string.email": "Enter an email address in the correct format",
+              "string.pattern.base": DEFAULT_EMAIL_MESSAGE,
+              "any.required": DEFAULT_EMAIL_MESSAGE,
+              "any.only": DEFAULT_EMAIL_MESSAGE,
+              "string.empty": DEFAULT_EMAIL_MESSAGE,
             },
           },
         },
@@ -189,7 +192,7 @@ export class ContactDetailsCollection extends FormComponent {
     return {
       ...viewModel,
       fieldset: { legend: viewModel.label },
-      items: (componentViewModels as unknown) as ListItem[],
+      items: componentViewModels as unknown as ListItem[],
     };
   }
 }

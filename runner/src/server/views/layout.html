@@ -139,7 +139,7 @@
                 tag: {
                     text: phaseTag | title
                 },
-                html: 'This is a new service – your <a class="govuk-link" href=' + feedbackLink + '>feedback</a> will help us to improve it.'
+                html: 'This is a new service. Help us improve it and <a class="govuk-link" href=' + feedbackLink + ' target="_blank">give your feedback (opens in a new tab)</a>.'
             }) }}
         {% else %}
             {{ govukPhaseBanner({
@@ -194,8 +194,15 @@
   {% endif %}
 {% endblock %}
 
-
 {% block footer %}
+  {% if footer %}
+    {{ govukFooter({
+        rebrand: true,
+        meta: {
+            items: footer
+        }
+    }) }}
+  {% else %}
     {{ govukFooter({
         rebrand: true,
         meta: {
@@ -211,4 +218,5 @@
             }]
         }
     }) }}
+  {% endif %}
 {% endblock %}

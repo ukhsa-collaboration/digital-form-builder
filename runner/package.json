@@ -18,6 +18,7 @@
     "test": "yarn lint && yarn type-check && NODE_ENV=test yarn bin/run unit-test",
     "test-cov": "yarn run unit-test-cov",
     "test:dev": "lab -T test/.transform.js -P (test|src)/**/*.test.* -v test --coverage-exclude",
+    "test:file": "node_modules/.bin/lab -T test/.transform.js -v",
     "unit-test": "lab -T test/.transform.js -P (test|src)/**/*.test.* -v test -S -v -r console -o stdout -r html -o unit-test.html -I version -l",
     "unit-test-cov": "lab -T test/.transform.js -P (test|src)/**/*.test.* -v test -t 83 -S -v -r console -o stdout -r lcov -o test-coverage/lab/lcov.info -r html -o test-coverage/lab/unit-test.html -r junit -o test-results/junit/unit-test.xml -I version -l",
     "a11y": "node test/audit/components && node lighthouse",
@@ -30,7 +31,7 @@
     "url": "https://github.com/XGovFormBuilder/digital-form-builder/tree/main/builder"
   },
   "engines": {
-    "node": ">=18"
+    "node": ">=20"
   },
   "license": "SEE LICENSE IN LICENSE",
   "dependencies": {
@@ -61,6 +62,7 @@
     "config": "^3.3.7",
     "dotenv": "8.2.0",
     "expr-eval": "^2.0.2",
+    "fuse.js": "7.5.0",
     "google-libphonenumber": "^3.2.34",
     "govuk-frontend": "^5.10.2",
     "hapi-pino": "8.0.0",
@@ -74,10 +76,14 @@
     "nanoid": "^3.3.4",
     "notifications-node-client": "^7.0.4",
     "nunjucks": "^3.2.3",
+    "openredaction": "1.1.5",
     "pg-boss": "^10.1.3",
+    "pino": "8.15.1",
+    "pino-abstract-transport": "1.1.0",
     "resolve": "^1.19.0",
     "schmervice": "^1.6.0",
-    "tmp": "^0.2.1",
+    "strip-json-comments": "^3.1.1",
+    "tmp": "^0.2.3",
     "url-parse": "^1.5.10",
     "uuid": "^8.3.2",
     "yar": "9.1.0"
@@ -121,8 +127,9 @@
     "flat": "5.0.2",
     "form-data": "^4.0.0",
     "lodash-es": "^4.17.21",
+    "msw": "^2.14.6",
     "nodemon": "^3.0.2",
-    "pino": "8.15.1",
+    "pino-pretty": "^9.4.1",
     "prisma": "6.12.0",
     "sass": "^1.49.9",
     "sinon": "^13.0.1",

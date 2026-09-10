@@ -1,5 +1,6 @@
 {
   "delay": "500",
   "watch": ["dist"],
+  "ext": "js,json,jsonc",
   "legacyWatch": true
 }

@@ -120,13 +120,15 @@ const pageSchema = joi.object().keys({
   sidebarContent: joi.object().optional(),
   controller: joi.string(),
   components: joi.array().items(componentSchema),
+  componentsAfter: joi.array().items(componentSchema).optional(),
   disableSingleComponentAsHeading: joi.boolean(),
   next: joi.array().items(nextSchema),
   repeatField: joi.string().optional(),
   options: joi.object().optional(),
   backLinkFallback: joi.string().optional(),
   disableBackLink: joi.bool().optional(),
-  customButtonText: joi.string().optional(),
+  hideContinueButton: joi.boolean().optional(),
+  showContinueButton: joi.boolean().optional(),
 });
 
 const startNavigationLinkSchema = joi.object().keys({
@@ -156,6 +158,7 @@ const confirmationPageSchema = joi.object({
       nextSteps: toggleableString.default(
         "You will receive an email with details with the next steps."
       ),
+      generatedReferenceContent: joi.string().optional(),
       referenceTitle: joi.string(),
       referenceContent: joi.string(),
       hidePanel: joi.boolean().optional(),
@@ -177,11 +180,11 @@ const specialPagesSchema = joi.object().keys({
   paymentSkippedWarningPage: paymentSkippedWarningPage.optional(),
 });
 
-const listItemSchema = joi.object().keys({
-  text: localisedString,
+const listItemBaseKeys = {
   value: joi.alternatives().try(joi.number(), joi.string()),
   checkpointDisplayValue: joi.alternatives().try(joi.number(), joi.string()),
   description: localisedString.optional(),
+  selected: joi.boolean().optional(),
   conditional: joi
     .object()
     .keys({
@@ -194,7 +197,17 @@ const listItemSchema = joi.object().keys({
     .allow(null)
     .optional(),
   condition: joi.string().allow(null, "").optional(),
-});
+};
+
+// Either `html` or `text` must be present, but not both — .oxor enforces this.
+const listItemSchema = joi
+  .object()
+  .keys({
+    ...listItemBaseKeys,
+    html: localisedString,
+    text: localisedString,
+  })
+  .oxor("html", "text");
 
 const listSchema = joi.object().keys({
   name: joi.string().required(),
@@ -254,6 +267,7 @@ const webhookSchema = joi.object().keys({
   url: joi.string(),
   sendAdditionalPayMetadata: joi.boolean().optional().default(false),
   allowRetry: joi.boolean().default(true),
+  payload: joi.object().unknown(true).optional(),
 });
 
 const outputSchema = joi.object().keys({
@@ -335,10 +349,23 @@ const secureFormSubmissionConfig = msalAuthorizeConfigSchema.concat(
   })
 );
 
+const dynamicServiceConfigSchema = joi.object().keys({
+  name: joi.string().required(),
+  service: joi.string().required(),
+  parameters: joi.object().unknown(true).required(),
+});
+
+export const trustPaymentConfigSchema = joi.object({
+  hashPassword: joi.string().required(),
+  siteReference: joi.string().required(),
+  onValidRedirect: joi.string().optional(),
+});
+
 export const Schema = joi
   .object()
   .required()
   .keys({
+    formGroup: localisedString.optional(),
     name: localisedString.optional(),
     feedback: feedbackSchema,
     startPage: joi.string().required(),
@@ -348,7 +375,7 @@ export const Schema = joi
       .required()
       .items(joi.alternatives().try(pageSchema, multiStartPageSchema))
       .unique("path"),
-    sections: joi.array().items(sectionsSchema).unique("name").required(),
+    sections: joi.array().items(sectionsSchema).unique("name").optional(),
     conditions: joi.array().items(conditionsSchema).unique("name"),
     lists: joi.array().items(listSchema).unique("name"),
     fees: joi.array().items(feeSchema).optional(),
@@ -380,6 +407,16 @@ export const Schema = joi
     returnTo: joi.boolean().optional(),
     secureFormSubmissionConfig: secureFormSubmissionConfig.optional(),
     error500ContactEmail: joi.string().optional(),
+    hooks: joi.object().pattern(joi.string(), joi.string()).optional(),
+    generateReference: joi.boolean().optional(),
+    services: joi.array().items(dynamicServiceConfigSchema).optional(),
+    provider: joi.string().valid("govuk-pay", "trust-payments").optional(),
+    paymentProvider: joi.string().optional(),
+    featureFlags: joi.array().items(joi.string()).optional(),
+    footer: joi
+      .array()
+      .items(joi.object({ text: joi.string(), href: joi.string().optional() }))
+      .optional(),
   });
 
 /**

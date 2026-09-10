@@ -40,6 +40,14 @@ Additional documentation such as ADRs and features can be found in [docs](./docs
 
 ## Setup
 
+**Environment variables**
+
+1. Run the following command to copy the example environment variable file for the project
+
+   ```bash
+   cp .env.example .env
+   ```
+
 **Always run scripts from the root directory.**
 
 1. Make sure you are using node 20 `node --version`.
@@ -55,6 +63,19 @@ To learn more about workspaces, check these links:
 
 - [Workspaces in Yarn](https://classic.yarnpkg.com/blog/2017/08/02/introducing-workspaces/)
 - [Workspaces](https://classic.yarnpkg.com/en/docs/workspaces)
+
+### Docker
+
+For local development purposes, we use docker to run the application stack.
+
+Run the following command to build and start your local development environment:
+
+```bash
+docker compose -f docker-compose.yml -f docker-compose.dev.yml up --build
+```
+
+> Note: this process requires docker and docker compose v2 to be installed on your machine.
+> If you don't have docker installed, you can use podman instead. Just switch `docker <COMMAND` with `podman <COMMAND`.
 
 ### I want to...
 

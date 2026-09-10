@@ -3,6 +3,7 @@ import FormData from "form-data";
 import config from "../../config";
 import { get, post } from "../httpService";
 import { createHmacRaw } from "../../utils/hmac";
+import { getOrCreateCorrelationId } from "../../utils/correlationId";
 import { HapiRequest, HapiResponseToolkit, HapiServer } from "../../types";
 
 type Payload = HapiRequest["payload"];
@@ -126,13 +127,14 @@ export class UploadService {
     const model = id && forms?.[id];
     const hmacKey = model?.def?.fileUploadHmacSharedKey;
 
+    const correlationId = getOrCreateCorrelationId(request);
     const [hmacSignature, requestTime] = await createHmacRaw(
-      request.yar.id,
+      correlationId,
       hmacKey
     );
 
     const customSecurityHeaders = {
-      "X-Request-ID": request.yar.id.toString(),
+      "X-Request-ID": correlationId,
       "X-HMAC-Signature": hmacSignature.toString(),
       "X-HMAC-Time": requestTime.toString(),
     };
@@ -251,7 +253,7 @@ export class UploadService {
 
   getLoggerIdentifier(request: HapiRequest, mergedObject: Object) {
     return {
-      id: request.yar.id,
+      id: getOrCreateCorrelationId(request),
       path: request.path,
       ...mergedObject,
     };

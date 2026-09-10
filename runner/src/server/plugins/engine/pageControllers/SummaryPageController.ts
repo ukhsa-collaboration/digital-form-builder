@@ -1,15 +1,16 @@
-import { SummaryViewModel } from "../models";
-import { PageController } from "./PageController";
-import { feedbackReturnInfoKey, redirectTo, redirectUrl } from "../helpers";
+import { isMultipleApiKey } from "@xgovformbuilder/model";
+import config from "server/config";
+import { FeesModel } from "server/plugins/engine/models/submission";
 import { HapiRequest, HapiResponseToolkit } from "server/types";
+import { v4 as uuidv4 } from "uuid";
 import {
   decodeFeedbackContextInfo,
   FeedbackContextInfo,
   RelativeUrl,
 } from "../feedback";
-import config from "server/config";
-import { FeesModel } from "server/plugins/engine/models/submission";
-import { isMultipleApiKey } from "@xgovformbuilder/model";
+import { redirectTo, redirectUrl } from "../helpers";
+import { SummaryViewModel } from "../models";
+import { PageController } from "./PageController";
 
 export class SummaryPageController extends PageController {
   /**
@@ -52,6 +53,7 @@ export class SummaryPageController extends PageController {
         const section = parts[0];
         const property = parts.length > 1 ? parts[parts.length - 1] : null;
         const iteration = parts.length === 3 ? Number(parts[1]) + 1 : null;
+
         const pageWithError = model.pages.filter((page) => {
           if (page.section && page.section.name === section) {
             let propertyMatches = true;
@@ -73,6 +75,7 @@ export class SummaryPageController extends PageController {
           }
           return false;
         })[0];
+
         if (pageWithError) {
           const params = {
             returnUrl: redirectUrl(request, `/${model.basePath}/summary`),
@@ -87,10 +90,18 @@ export class SummaryPageController extends PageController {
         }
       }
 
+      const { progress = [] } = state;
+
+      if (!this.disableBackLink) {
+        viewModel.backLink =
+          progress[progress.length - 1] ?? this.backLinkFallback;
+      }
+
       const declarationError = request.yar.flash("declarationError");
       if (declarationError.length) {
         viewModel.declarationError = declarationError[0];
       }
+
       return h.view("summary", viewModel);
     };
   }
@@ -102,6 +113,7 @@ export class SummaryPageController extends PageController {
   makePostRouteHandler() {
     return async (request: HapiRequest, h: HapiResponseToolkit) => {
       const { payService, cacheService } = request.services([]);
+
       const model = this.model;
       const state = await cacheService.getState(request);
       const summaryViewModel = new SummaryViewModel(
@@ -147,7 +159,10 @@ export class SummaryPageController extends PageController {
        * If a form is configured with a declaration, a checkbox will be rendered with the configured declaration text.
        * If the user does not agree to the declaration, the page will be rerendered with a warning.
        */
-      if (summaryViewModel.declaration && !summaryViewModel.skipSummary) {
+      if (
+        (summaryViewModel.declaration || summaryViewModel.declarationLabel) &&
+        !summaryViewModel.skipSummary
+      ) {
         const { declaration } = request.payload as {
           declaration?: any;
         };
@@ -160,19 +175,22 @@ export class SummaryPageController extends PageController {
           const url = request.headers.referer ?? request.path;
           return redirectTo(request, h, `${url}#declaration`);
         }
+
         summaryViewModel.addDeclarationAsQuestion();
+      }
+
+      if (model.def?.generateReference == true) {
+        const reference = uuidv4();
+        summaryViewModel.addReferenceToWebhook(reference);
+        await cacheService.mergeState(request, {
+          generatedReference: reference,
+        });
       }
 
       await cacheService.mergeState(request, {
         outputs: summaryViewModel.outputs,
         userCompletedSummary: true,
       });
-
-      // Commented out due to potential for logging PII
-      // request.logger.info(
-      //   ["Webhook data", "before send", request.yar.id],
-      //   JSON.stringify(summaryViewModel.validatedWebhookData)
-      // );
 
       await cacheService.mergeState(request, {
         webhookData: summaryViewModel.validatedWebhookData,
@@ -277,7 +295,10 @@ export class SummaryPageController extends PageController {
         "Summary",
         `${request.url.pathname}${request.url.search}`
       );
-      relativeFeedbackUrl.setParam(feedbackReturnInfoKey, returnInfo.toString());
+      relativeFeedbackUrl.setParam(
+        feedbackReturnInfoKey,
+        returnInfo.toString()
+      );
       return relativeFeedbackUrl.toString();
     }
 
@@ -298,11 +319,13 @@ export class SummaryPageController extends PageController {
 
   get payApiKey(): string {
     const modelDef = this.model.def;
-    const payApiKey = modelDef.feeOptions?.payApiKey ?? def.payApiKey;
+    const payApiKey = modelDef.feeOptions?.payApiKey ?? modelDef.payApiKey;
 
     if (isMultipleApiKey(payApiKey)) {
-      return payApiKey[config.apiEnv] ?? payApiKey.test ?? payApiKey.production;
+      return (
+        payApiKey[config.apiEnv] ?? payApiKey.test ?? payApiKey.production ?? ""
+      );
     }
-    return payApiKey;
+    return payApiKey ?? "";
   }
 }

@@ -1,3 +1,9 @@
 {% macro Para(component) %}
-  <p class="govuk-body">{{ component.model.content | safe }}</p>
+  {% if component.model.attributes.inset %}
+    <div class="govuk-inset-text">
+      <p class="govuk-body">{{ component.model.content | safe }}</p>
+    </div>
+  {% else %}
+    <p class="govuk-body">{{ component.model.content | safe }}</p>
+  {% endif %}
 {% endmacro %}

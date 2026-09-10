@@ -1,18 +1,18 @@
-import { FormModel } from "server/plugins/engine/models";
-import { FormSubmissionState } from "server/plugins/engine/types";
-import {
-  EmailModel,
-  WebhookModel,
-  NotifyModel,
-} from "server/plugins/engine/models/submission";
-import { WebhookData } from "server/plugins/engine/models/types";
 import {
   EmailOutputConfiguration,
   NotifyOutputConfiguration,
   OutputType,
   WebhookOutputConfiguration,
 } from "@xgovformbuilder/model";
+import { FormModel } from "server/plugins/engine/models";
+import {
+  EmailModel,
+  NotifyModel,
+  WebhookModel,
+} from "server/plugins/engine/models/submission";
 import { OutputData } from "server/plugins/engine/models/submission/types";
+import { WebhookData } from "server/plugins/engine/models/types";
+import { FormSubmissionState } from "server/plugins/engine/types";
 
 export class Outputs {
   webhookData: WebhookData;
@@ -28,13 +28,15 @@ export class Outputs {
           /**
            * Typescript does not support nested type discrimination {@link https://github.com/microsoft/TypeScript/issues/18758}
            */
-          const notifyOutputConfiguration = output.outputConfiguration as NotifyOutputConfiguration;
+          const notifyOutputConfiguration =
+            output.outputConfiguration as NotifyOutputConfiguration;
           return {
             type: OutputType.Notify,
             outputData: NotifyModel(model, notifyOutputConfiguration, state),
           };
         case "email":
-          const emailOutputConfiguration = output.outputConfiguration as EmailOutputConfiguration;
+          const emailOutputConfiguration =
+            output.outputConfiguration as EmailOutputConfiguration;
           return {
             type: OutputType.Email,
             outputData: EmailModel(
@@ -44,7 +46,8 @@ export class Outputs {
             ),
           };
         case "webhook":
-          const webhookOutputConfiguration = output.outputConfiguration as WebhookOutputConfiguration;
+          const webhookOutputConfiguration =
+            output.outputConfiguration as WebhookOutputConfiguration;
           return {
             type: OutputType.Webhook,
             outputData: {
@@ -52,6 +55,7 @@ export class Outputs {
               sendAdditionalPayMetadata:
                 webhookOutputConfiguration.sendAdditionalPayMetadata,
               allowRetry: webhookOutputConfiguration.allowRetry,
+              payload: webhookOutputConfiguration.payload,
             },
           };
         default:

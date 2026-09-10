@@ -1,12 +1,14 @@
 import { InputFieldsComponentsDef } from "@xgovformbuilder/model";
 
+import joi, { Schema } from "joi";
 import { FormModel } from "../models";
 import { FormData, FormSubmissionErrors } from "../types";
 import { FormComponent } from "./FormComponent";
 import { addClassOptionIfNone } from "./helpers";
-import joi, { Schema } from "joi";
 
 const EMAIL_REGEX = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
+
+const DEFAULT_MESSAGE = "Enter an email address in the correct format";
 
 export class EmailAddressField extends FormComponent {
   formSchema;
@@ -28,8 +30,15 @@ export class EmailAddressField extends FormComponent {
     const pattern = new RegExp(EMAIL_REGEX);
     emailSchema = emailSchema.pattern(pattern);
 
-    if (this.options.customValidationMessages) {
-      emailSchema = emailSchema.messages(this.options.customValidationMessages);
+    if (def.options.customValidationMessages) {
+      emailSchema = emailSchema.messages(def.options.customValidationMessages);
+    } else {
+      emailSchema = emailSchema.messages({
+        "string.pattern.base": DEFAULT_MESSAGE,
+        "any.required": DEFAULT_MESSAGE,
+        "any.only": DEFAULT_MESSAGE,
+        "string.empty": DEFAULT_MESSAGE,
+      });
     }
 
     this.formSchema = emailSchema;
