@@ -1,6 +1,7 @@
 import joi from "joi";
+import { RpsApiResponse } from "./types";
 
-const personalDetailsSchema = joi.object({
+const customerDetailsSchema = joi.object({
   title: joi.string().required(),
   firstName: joi.string().required(),
   lastName: joi.string().required(),
@@ -8,8 +9,7 @@ const personalDetailsSchema = joi.object({
     .string()
     .email({ tlds: { allow: false } })
     .required(),
-  // still not finalised, so we have a dummy placeholder for telephone
-  telephone: joi.string().default("dummy-telephone"),
+  telephone: joi.string().optional(),
 });
 
 type PersonDetails = {
@@ -17,11 +17,22 @@ type PersonDetails = {
   firstName: string;
   lastName: string;
   email: string;
-  telephone: string;
+  telephone?: string;
+};
+
+const addressRecipientSchema = joi.object({
+  title: joi.string().required(),
+  firstName: joi.string().required(),
+  lastName: joi.string().required(),
+});
+
+export type AddressRecipient = {
+  title: string;
+  firstName: string;
+  lastName: string;
 };
 
 const addressDetailsSchema = joi.object({
-  udprn: joi.string().required(),
   fullAddress: joi.string().required(),
   addressLine1: joi.string().optional(),
   addressLine2: joi.string().allow("").optional(),
@@ -31,7 +42,6 @@ const addressDetailsSchema = joi.object({
 });
 
 type AddressDetails = {
-  udprn: string;
   fullAddress: string;
   addressLine1?: string;
   addressLine2?: string;
@@ -43,34 +53,34 @@ type AddressDetails = {
 export const saveGasTestKitDetailsSchema = joi
   .object({
     uuid: joi.string().required(),
-    orderNumber: joi.string().required(),
-    customer: personalDetailsSchema.required(),
+    customer: customerDetailsSchema.required(),
     measurementAddress: addressDetailsSchema.required(),
-    kitRecipient: personalDetailsSchema.required(),
+    kitRecipient: addressRecipientSchema.required(),
     kitRecipientAddress: addressDetailsSchema.required(),
-    resultsRecipient: personalDetailsSchema.required(),
+    resultsRecipient: addressRecipientSchema.required(),
     resultsRecipientAddress: addressDetailsSchema.required(),
     prevTestedAddress: joi.boolean().required(),
     prevAboveActionLevel: joi.boolean().required(),
     remediationComplete: joi.boolean().required(),
+    amount: joi.number().integer().required(),
   })
   .options({ stripUnknown: true });
 
 export type StoreGtkData = {
   uuid: string;
-  orderNumber: string;
   customer: PersonDetails;
   measurementAddress: AddressDetails;
-  kitRecipient: PersonDetails;
+  kitRecipient: AddressRecipient;
   kitRecipientAddress: AddressDetails;
-  resultsRecipient: PersonDetails;
+  resultsRecipient: AddressRecipient;
   resultsRecipientAddress: AddressDetails;
   prevTestedAddress: boolean;
   prevAboveActionLevel: boolean;
   remediationComplete: boolean;
+  amount: number;
 };
 
-export type StoreGtkResponse = {
-  message: string;
+export type StoreGtkResponse = RpsApiResponse<{
   uuid: string;
-};
+  message: string;
+}>;

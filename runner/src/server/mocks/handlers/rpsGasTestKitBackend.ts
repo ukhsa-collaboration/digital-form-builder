@@ -24,8 +24,11 @@ export const storeGtkEndpoint = http.post("*/storegtk", async ({ request }) => {
   }
 
   const response: StoreGtkResponse = {
-    uuid: validated.value.uuid,
-    message: "details stored",
+    success: true,
+    data: {
+      uuid: validated.value.uuid,
+      message: "GTK details stored",
+    },
   };
 
   return HttpResponse.json(response);

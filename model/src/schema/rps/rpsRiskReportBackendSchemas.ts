@@ -50,6 +50,7 @@ export const storeReportRequestSchema = joi.object({
   addressLine2: joi.string().allow("").optional(),
   townCity: joi.string().allow("").optional(),
   postcode: joi.string().optional(),
+  amount: joi.number().integer().required(),
 });
 
 type StoreReportDataBase = {
@@ -60,6 +61,7 @@ type StoreReportDataBase = {
   addressLine2?: string;
   townCity?: string;
   postcode?: string;
+  amount: number;
 };
 
 export type StoreReportData =
