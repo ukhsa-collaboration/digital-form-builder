@@ -7,6 +7,7 @@ export enum ComponentTypeEnum {
   DateTimeField = "DateTimeField",
   DatePartsField = "DatePartsField",
   ContactDetailsCollection = "ContactDetailsCollection",
+  Fieldset = "Fieldset",
   MonthYearField = "MonthYearField",
   DateTimePartsField = "DateTimePartsField",
   SelectField = "SelectField",
@@ -41,6 +42,7 @@ export type ComponentType =
   | "MonthYearField"
   | "DatePartsField"
   | "ContactDetailsCollection"
+  | "Fieldset"
   | "DateTimePartsField"
   | "SelectField"
   | "AutocompleteField"
@@ -262,6 +264,27 @@ export interface UkAddressFieldComponent extends TextFieldBase {
   type: "UkAddressField";
 }
 
+export interface FieldsetComponent {
+  type: "Fieldset";
+  subType?: "field";
+  name: string;
+  title: string;
+  hint?: string;
+  components: ComponentDef[];
+  options: {
+    hideTitle?: boolean;
+    classes?: string;
+    condition?: string;
+    exposeToContext?: boolean;
+    validation?: {
+      minRequired?: number;
+      fields?: string[];
+      customValidationMessage?: string;
+    };
+  };
+  schema?: {};
+}
+
 // Date Fields
 export interface DateFieldComponent extends DateFieldBase {
   type: "DateField";
@@ -407,6 +430,7 @@ export type ComponentDef =
   | DateFieldComponent
   | DatePartsFieldFieldComponent
   | ContactDetailsCollectionComponent
+  | FieldsetComponent
   | MonthYearFieldComponent
   | DateTimeFieldComponent
   | DateTimePartsFieldComponent
