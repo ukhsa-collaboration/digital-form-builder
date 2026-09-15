@@ -1,5 +1,6 @@
 import { ControllerError } from "server/plugins/engine/errors";
 import { getOrCreateCorrelationId } from "server/utils/correlationId";
+import { FeesModel } from "server/plugins/engine/models/submission";
 import { Hook } from "../types";
 import { StoreReportData } from "@xgovformbuilder/model";
 
@@ -24,7 +25,15 @@ export const rpsRiskReportOnSummarySubmit: Hook<void> = async (
     });
   }
 
-  const { state } = context;
+  const { model, state } = context;
+
+  const feesModel = FeesModel(model, state);
+
+  if (!feesModel) {
+    throw new ControllerError("cannot calculate purchase amount", {
+      code: 500,
+    });
+  }
 
   const selectedRiskReportAddress = state["reportAddress_selectedAddress"];
 
@@ -45,6 +54,7 @@ export const rpsRiskReportOnSummarySubmit: Hook<void> = async (
     lastName: state["lastName"],
     fullAddress: selectedDeliveryAddress?.address,
     email: state["emailAddress"] ?? undefined,
+    amount: feesModel.total,
   } as StoreReportData;
 
   request.logger.trace({ data }, "rpsRiskReportOnSummarySubmit.data");

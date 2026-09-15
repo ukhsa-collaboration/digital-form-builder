@@ -1,6 +1,7 @@
 import { getOrCreateCorrelationId } from "server/utils/correlationId";
 import { resolveSelectedAddress } from "server/plugins/engine/utils/addressUtils";
 import { ControllerError } from "server/plugins/engine/errors";
+import { FeesModel } from "server/plugins/engine/models/submission";
 import { Hook } from "../types";
 import { StoreGtkData } from "@xgovformbuilder/model";
 
@@ -34,14 +35,27 @@ export const rpsGasTestKitOnSummarySubmit: Hook<void> = async (
     });
   }
 
-  const { state } = context;
+  const { model, state } = context;
+
+  const feesModel = FeesModel(model, state);
+
+  if (!feesModel) {
+    throw new ControllerError("cannot calculate purchase amount", {
+      code: 500,
+    });
+  }
 
   const customer: StoreGtkData["customer"] = {
     title: state["title"],
     firstName: state["firstName"],
     lastName: state["lastName"],
     email: state["emailAddress"],
-    telephone: "07999999999",
+  };
+
+  const customerRecipentDetails = {
+    title: state["title"],
+    firstName: state["firstName"],
+    lastName: state["lastName"],
   };
 
   const measurementAddress = resolveSelectedAddress(state, "propertyAddress");
@@ -51,13 +65,11 @@ export const rpsGasTestKitOnSummarySubmit: Hook<void> = async (
   const resultsSameAsKit = state["kitResultsConfirmation"] === true;
 
   const kitRecipient: StoreGtkData["kitRecipient"] = kitSameAsProperty
-    ? customer
+    ? customerRecipentDetails
     : {
         title: state["kitTitle"],
         firstName: state["kitFirstName"],
         lastName: state["kitLastName"],
-        email: "no-reply@ukhsa.gov.uk",
-        telephone: "07999999999",
       };
 
   const kitRecipientAddress = kitSameAsProperty
@@ -77,13 +89,11 @@ export const rpsGasTestKitOnSummarySubmit: Hook<void> = async (
   const resultsRecipient: StoreGtkData["resultsRecipient"] = resultsUseKit
     ? kitRecipient
     : resultsUseMeasurement
-    ? customer
+    ? customerRecipentDetails
     : {
         title: state["resultsTitle"],
         firstName: state["resultsFirstName"],
         lastName: state["resultsLastName"],
-        email: "no-reply@ukhsa.gov.uk",
-        telephone: "07999999999",
       };
 
   const resultsRecipientAddress = resultsUseKit
@@ -96,7 +106,6 @@ export const rpsGasTestKitOnSummarySubmit: Hook<void> = async (
 
   const data: StoreGtkData = {
     uuid,
-    orderNumber: uuid,
     customer,
     measurementAddress: toAddressDetails(measurementAddress),
     kitRecipient,
@@ -106,13 +115,14 @@ export const rpsGasTestKitOnSummarySubmit: Hook<void> = async (
     prevTestedAddress: state["testedBeforeYesNo"] === true,
     prevAboveActionLevel: state["bqmYesNo"] === true,
     remediationComplete: state["stepsToReduceYesNo"] === true,
+    amount: feesModel.total,
   };
 
   request.logger.trace({ data }, "rpsGasTestKitOnSummarySubmit.data");
 
   const response = await gasTestKitApiService.storeGtk(data);
 
-  if (!response.uuid) {
+  if (!response.success) {
     throw new ControllerError("store gtk details failed", {
       code: 500,
     });

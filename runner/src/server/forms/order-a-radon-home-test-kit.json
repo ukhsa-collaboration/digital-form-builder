@@ -309,7 +309,7 @@
         },
         {
           "type": "Html",
-          "content": "<p class=\"govuk-body-m\"><a href=\"/gas-test-kit-property-address-postcode{% if returnUrl %}?returnUrl={{ returnUrl | urlencode }}{% endif %}\">Change your search</a> or <a href=\"property-address-manual{% if returnUrl %}?returnUrl={{ returnUrl | urlencode }}{% endif %}\">enter address manually</a></p>"
+          "content": "<p class=\"govuk-body-m\"><a href=\"gas-test-kit-property-address-postcode{% if returnUrl %}?returnUrl={{ returnUrl | urlencode }}{% endif %}\">Change your search</a> or <a href=\"property-address-manual{% if returnUrl %}?returnUrl={{ returnUrl | urlencode }}{% endif %}\">enter address manually</a></p>"
         }
       ],
       "options": {
@@ -431,7 +431,7 @@
         },
         {
           "type": "Html",
-          "content": "<p class=\"govuk-body-m\"><a href=\"/gas-test-kit-property-address-postcode{% if returnUrl %}?returnUrl={{ returnUrl | urlencode }}{% endif %}\">Change your search</a> or <a href=\"property-address-manual{% if returnUrl %}?returnUrl={{ returnUrl | urlencode }}{% endif %}\">enter address manually</a></p>"
+          "content": "<p class=\"govuk-body-m\"><a href=\"gas-test-kit-property-address-postcode{% if returnUrl %}?returnUrl={{ returnUrl | urlencode }}{% endif %}\">Change your search</a> or <a href=\"property-address-manual{% if returnUrl %}?returnUrl={{ returnUrl | urlencode }}{% endif %}\">enter address manually</a></p>"
         }
       ],
       "next": [{ "path": "/property-address-manual" }]
