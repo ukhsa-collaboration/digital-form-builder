@@ -80,7 +80,10 @@ export const ComponentTypes: ComponentDef[] = [
     subType: "field",
     hint: "",
     components: [],
-    options: {},
+    options: {
+      required: false,
+      optionalText: false,
+    },
     schema: {},
   },
   {
