@@ -600,7 +600,7 @@
               },
               "type": "TelephoneNumberField",
               "title": "Phone number",
-              "hint": "For example For example, ‘01632 960 001, 07700 900 982 or +44 808 157 0192’"
+              "hint": "For example, ‘01632 960 001, 07700 900 982 or +44 808 157 0192’"
             }
           ]
         },
