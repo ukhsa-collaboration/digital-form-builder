@@ -272,17 +272,23 @@ export interface FieldsetComponent {
   hint?: string;
   components: ComponentDef[];
   options: {
+    required: false;
+    optionalText: false;
     hideTitle?: boolean;
     classes?: string;
     condition?: string;
     exposeToContext?: boolean;
-    validation?: {
-      minRequired?: number;
-      fields?: string[];
-      customValidationMessage?: string;
-    };
+    validation?: ValidationRule[];
   };
   schema?: {};
+}
+
+export type ValidationRule = MinimumRequired;
+
+export interface MinimumRequired {
+  minRequired: number;
+  fields: string[];
+  errorMessage: string;
 }
 
 // Date Fields

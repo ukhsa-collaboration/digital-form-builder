@@ -15,22 +15,20 @@ import { ListItem } from "./types";
 
 export class Fieldset extends FormComponent {
   children: ComponentCollection;
-
-  private validationSchema?: Joi.Schema;
-  private validatedFieldNames: string[] = [];
+  formSchema: Joi.Schema;
+  stateSchema: Joi.Schema;
 
   constructor(def: FieldsetComponent, model: FormModel) {
     super(def, model);
 
     const { components, options } = def;
     const validation = options?.validation;
-
     const childDefs = validation
       ? [
           ...components,
-          // Hidden carrier field for the cross-field rule. Joi only
-          // validates keys present in the payload, so this must always
-          // be rendered when a group rule is configured.
+          // Hidden carrier field for validation to attach
+          // to as Joi only runs validators on keys present in the
+          // payload. Removing this field disables validation
           {
             type: "TextField" as const,
             name: this.name,
@@ -49,46 +47,58 @@ export class Fieldset extends FormComponent {
 
     this.children = new ComponentCollection(childDefs as any, model);
 
-    if (validation) {
-      this.validatedFieldNames =
-        validation.fields ?? components.map((c) => c.name);
-      const minRequired = validation.minRequired ?? 1;
+    // Form schema for payload
+    let schema = Joi.any();
 
-      this.validationSchema = Joi.any()
-        .custom((value, helpers) => {
-          const root = helpers.state.ancestors[0] as any;
-          const filledCount = this.validatedFieldNames.filter((n) => {
-            const v = root?.[n];
-            return v !== undefined && v !== null && String(v).trim() !== "";
-          }).length;
-          if (filledCount < minRequired) {
-            return helpers.error("any.invalid");
-          }
-          return value;
-        })
-        .messages({
-          "any.invalid":
-            validation.customValidationMessage ??
-            `Enter at least ${minRequired} of: ${this.validatedFieldNames.join(
-              ", "
-            )}`,
-        });
+    if (validation) {
+      for (const val of validation) {
+        // Cross-field rule enforcing "at least minRrequired" is filled in
+        // Injected as callback on the synthetic [this.name] key in getFormSchemaKeys
+        if (val.minRequired && val.minRequired > 0) {
+          schema = schema
+            .custom((value, helpers) => {
+              const root = helpers.state.ancestors[0] as any;
+              const filledCount = val.fields.filter((n) => {
+                const v = root?.[n];
+                return v !== undefined && v !== null && String(v).trim() !== "";
+              }).length;
+
+              if (filledCount < val.minRequired) {
+                return helpers.error("any.invalid");
+              }
+
+              return value ?? "";
+            })
+            .messages({
+              "any.invalid":
+                val.errorMessage ??
+                `Enter at least ${val.minRequired} of: ${val.fields.join(
+                  ", "
+                )}`,
+            });
+        }
+      }
+    } else {
+      schema = Joi.any().optional();
     }
+
+    this.formSchema = schema;
+
+    // State schema - allow empty for fieldset name
+    this.stateSchema = Joi.any().allow("", null).optional();
   }
 
   getFormSchemaKeys() {
     const childrenKeys = this.children.getFormSchemaKeys();
 
-    if (!this.validationSchema) return childrenKeys;
-
     return {
       ...childrenKeys,
-      [this.name]: this.validationSchema,
+      [this.name]: this.formSchema,
     };
   }
 
   getStateSchemaKeys() {
-    return this.children.getStateSchemaKeys() as Record<string, Schema>;
+    return { [this.name]: this.stateSchema as Schema };
   }
 
   getFormDataFromState(state: FormSubmissionState) {
@@ -108,7 +118,6 @@ export class Fieldset extends FormComponent {
 
   getViewModel(formData: FormData, errors: FormSubmissionErrors) {
     const viewModel = super.getViewModel(formData, errors);
-
     const childErrors: FormSubmissionErrors | undefined = errors
       ? {
           ...errors,

@@ -166,6 +166,54 @@
           "content": "Content",
           "options": {},
           "schema": {}
+        },
+        {
+          "name": "fieldsetContactInfo",
+          "type": "Fieldset",
+          "title": "Fieldset: Enter your contact information",
+          "hint": "To continue, enter an email address or phone number.",
+          "options": {
+            "validation": [
+              {
+                "minRequired": 1,
+                "fields": ["fieldsetEmailAddress", "fieldsetTelephone"],
+                "errorMessage": "Enter an email address or a phone number"
+              }
+            ]
+          },
+          "components": [
+            {
+              "name": "fieldsetEmailAddress",
+              "options": {
+                "required": false,
+                "optionalText": false,
+                "autocomplete": true,
+                "customValidationMessages": {
+                  "string.empty": "Enter an email address in the correct format",
+                  "string.pattern.base": "Enter an email address in the correct format"
+                },
+                "exposeToContext": true
+              },
+              "type": "EmailAddressField",
+              "title": "Fieldset: Enter your email address",
+              "hint": "For example, 'name@example.com'"
+            },
+            {
+              "name": "fieldsetTelephone",
+              "options": {
+                "required": false,
+                "optionalText": false,
+                "customValidationMessages": {
+                  "string.empty": "Enter a phone number in the correct format",
+                  "string.pattern.base": "Enter a phone number in the correct format"
+                },
+                "exposeToContext": true
+              },
+              "type": "TelephoneNumberField",
+              "title": "Fieldset: Phone number",
+              "hint": "For example For example, ‘01632 960 001, 07700 900 982 or +44 808 157 0192’"
+            }
+          ]
         }
       ],
       "next": [{ "path": "/all-components-optional" }]

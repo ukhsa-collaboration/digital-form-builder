@@ -555,19 +555,54 @@
           "title": "Last name"
         },
         {
-          "name": "emailAddress",
+          "name": "contactInfo",
+          "type": "Fieldset",
+          "title": "Enter your contact information",
+          "hint": "To continue, enter an email address or phone number.",
           "options": {
             "required": false,
-            "autocomplete": true,
-            "customValidationMessages": {
-              "string.empty": "Enter an email address in the correct format",
-              "string.pattern.base": "Enter an email address in the correct format"
-            },
-            "exposeToContext": true
+            "optionalText": false,
+            "validation": [
+              {
+                "minRequired": 1,
+                "fields": ["emailAddress", "telephone"],
+                "errorMessage": "Enter an email address or a phone number"
+              }
+            ]
           },
-          "type": "EmailAddressField",
-          "title": "Enter your email address",
-          "hint": "For example, 'name@example.com'"
+          "components": [
+            {
+              "name": "emailAddress",
+              "options": {
+                "required": false,
+                "optionalText": false,
+                "autocomplete": true,
+                "customValidationMessages": {
+                  "string.empty": "Enter an email address in the correct format",
+                  "string.pattern.base": "Enter an email address in the correct format"
+                },
+                "exposeToContext": true
+              },
+              "type": "EmailAddressField",
+              "title": "Enter your email address",
+              "hint": "For example, 'name@example.com'"
+            },
+            {
+              "name": "telephone",
+              "options": {
+                "required": false,
+                "optionalText": false,
+                "customValidationMessages": {
+                  "string.empty": "Enter a phone number in the correct format",
+                  "string.pattern.base": "Enter a phone number in the correct format"
+                },
+                "exposeToContext": true
+              },
+              "type": "TelephoneNumberField",
+              "title": "Phone number",
+              "hint": "For example For example, ‘01632 960 001, 07700 900 982 or +44 808 157 0192’"
+            }
+          ]
         },
         {
           "name": "emailConfirmationNote",
