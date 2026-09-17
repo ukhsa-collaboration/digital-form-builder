@@ -1,6 +1,7 @@
 import { StatusService } from "server/services/statusService";
 import { HapiRequest, HapiServer } from "server/types";
 import Boom from "boom";
+import { getOrCreateCorrelationId } from "server/utils/correlationId";
 import { MySqlQueueService } from "server/services/mySqlQueueService";
 import { PgBossQueueService } from "server/services/pgBossQueueService";
 
@@ -24,7 +25,9 @@ export class QueueStatusService extends StatusService {
     if (callback) {
       this.logger.info(
         ["QueueStatusService", "outputRequests"],
-        `Callback detected for ${request.yar.id} - PUT to ${callback.callbackUrl}`
+        `Callback detected for ${getOrCreateCorrelationId(request)} - PUT to ${
+          callback.callbackUrl
+        }`
       );
       try {
         const queueResults = await this.queueService.sendToQueue(

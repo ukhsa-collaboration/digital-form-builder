@@ -1,0 +1,18 @@
+{% set mainClasses = "govuk-main-wrapper--l" %}
+{% set skipTimeoutWarning = true %}
+{% from "panel/macro.njk" import govukPanel %}
+
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="govuk-width-container">
+    <div class="govuk-main-wrapper">
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-two-thirds">
+                <h1 class="govuk-heading-l">The session is locked.</h1>
+                <a href="/end-session?redirect={{ startPage }}" class="govuk-button">Start application again</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

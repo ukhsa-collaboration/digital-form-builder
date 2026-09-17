@@ -185,12 +185,6 @@ export class CustomSummaryPageController extends PageController {
         userCompletedSummary: true,
       });
 
-      // Commented out due to potential for logging PII
-      // request.logger.info(
-      //   ["Webhook data", "before send", request.yar.id],
-      //   JSON.stringify(summaryViewModel.validatedWebhookData)
-      // );
-
       await cacheService.mergeState(request, {
         webhookData: summaryViewModel.validatedWebhookData,
       });
@@ -391,10 +385,7 @@ export class CustomSummaryPageController extends PageController {
     const model = this.model;
 
     // Helper function to process components recursively
-    const processComponent = (
-      component: FormComponent,
-      parentComponent?: FormComponent
-    ): any[] => {
+    const processComponent = (component: FormComponent): any[] => {
       const rows: any[] = [];
 
       // Process the current component if it has a name (is a form field)
@@ -499,12 +490,14 @@ export class CustomSummaryPageController extends PageController {
 
   get payApiKey(): string {
     const modelDef = this.model.def;
-    const payApiKey = modelDef.feeOptions?.payApiKey ?? def.payApiKey;
+    const payApiKey = modelDef.feeOptions?.payApiKey ?? modelDef.payApiKey;
 
     if (isMultipleApiKey(payApiKey)) {
-      return payApiKey[config.apiEnv] ?? payApiKey.test ?? payApiKey.production;
+      return (
+        payApiKey[config.apiEnv] ?? payApiKey.test ?? payApiKey.production ?? ""
+      );
     }
-    return payApiKey;
+    return payApiKey ?? "";
   }
 
   get defaultButtonText() {

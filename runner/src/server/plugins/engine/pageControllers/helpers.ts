@@ -23,6 +23,11 @@ import { CustomSummaryPageController } from "./CustomSummaryPageController";
 import { DateComparisonPageController } from "./DateComparisonPageController";
 import { MagicLinkRedirectController } from "./MagicLinkRedirectController";
 import { RepeatedMultiFieldPageController } from "./RepeatedMultiFieldPageController";
+import { FindAnAddressPageController } from "./FindAnAddressPageController";
+import { SelectAnAddressPageController } from "./SelectAnAddressPageController";
+import { DeliveryAddressSameAsReportPageController } from "./DeliveryAddressSameAsReportPageController";
+import { ManualAddressPageController } from "./ManualAddressPageController";
+import { HeadlessSummaryPageController } from "./HeadlessSummaryPageController";
 
 const PageControllers = {
   DobPageController,
@@ -46,6 +51,11 @@ const PageControllers = {
   CustomSummaryPageController,
   DateComparisonPageController,
   MagicLinkRedirectController,
+  FindAnAddressPageController,
+  SelectAnAddressPageController,
+  DeliveryAddressSameAsReportPageController,
+  ManualAddressPageController,
+  HeadlessSummaryPageController,
 };
 
 export const controllerNameFromPath = (filePath: string) => {

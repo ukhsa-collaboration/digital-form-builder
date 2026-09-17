@@ -40,6 +40,14 @@ Additional documentation such as ADRs and features can be found in [docs](./docs
 
 ## Setup
 
+**Environment variables**
+
+1. Run the following command to copy the example environment variable file for the project
+
+   ```bash
+   cp .env.example .env
+   ```
+
 **Always run scripts from the root directory.**
 
 1. Make sure you are using node 20 `node --version`.

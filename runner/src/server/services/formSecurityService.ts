@@ -44,13 +44,16 @@ export class FormSecurityService {
         if (serviceInstance) {
           const headers = await serviceInstance.getAuthHeader();
           if (headers) {
-            const {
-              useAwsWafUserAgentWorkaround,
-            } = form.def.secureFormSubmissionConfig;
+            const { useAwsWafUserAgentWorkaround, routingKey } =
+              form.def.secureFormSubmissionConfig;
 
             if (useAwsWafUserAgentWorkaround == true) {
               /* AWS WAF forces User-Agent as part of auth, provide one to prevent 403 */
               headers["User-Agent"] = "X-GOV Forms/v1.0";
+            }
+
+            if (routingKey) {
+              headers["Ocp-Apim-Subscription-Key"] = routingKey;
             }
 
             customSecurityHeaders = headers;

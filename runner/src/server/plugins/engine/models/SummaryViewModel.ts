@@ -12,6 +12,7 @@ import { InitialiseSessionOptions } from "server/plugins/initialiseSession/types
 import { Outputs } from "server/plugins/engine/models/submission/Outputs";
 import { summaryDetailsTransformationMap } from "./SummaryViewModel.detailsTransformationMap";
 import nunjucks from "nunjucks";
+import { gatherRepeatPages } from "src/server/utils/gatherRepeatPages";
 
 import pino from "pino";
 const logger = pino().child({ name: "SummaryViewModel" });
@@ -180,6 +181,8 @@ export class SummaryViewModel {
     [undefined, ...model.sections].forEach((section) => {
       const items: any[] = [];
       const repeatingCards: any[] = [];
+      const itemNames = new Set<string>();
+
       let sectionState = section ? state[section.name] || {} : state;
 
       sectionState.originalFilenames = state.originalFilenames ?? {};
@@ -234,7 +237,10 @@ export class SummaryViewModel {
             state,
             model
           );
-          if (items.find((cbItem) => cbItem.name === item.name)) return;
+
+          if (itemNames.has(item.name)) continue;
+          itemNames.add(item.name);
+
           items.push(item);
           if (component.items) {
             const selectedValue = sectionState[component.name];
@@ -334,6 +340,21 @@ export class SummaryViewModel {
     });
   }
 
+  addReferenceToWebhook(reference: string) {
+    this._webhookData?.questions?.push({
+      category: null,
+      question: "Reference",
+      fields: [
+        {
+          key: "reference",
+          title: "Reference",
+          type: "string",
+          answer: reference,
+        },
+      ],
+    });
+  }
+
   private addFeedbackSourceDataToWebhook(
     webhookData,
     model: FormModel,
@@ -363,23 +384,6 @@ export class SummaryViewModel {
     }
     return webhookData;
   }
-}
-
-function gatherRepeatPages(state) {
-  if (!!Object.values(state).find((section) => Array.isArray(section))) {
-    return state;
-  }
-  const clonedState = clone(state);
-  Object.entries(state).forEach(([key, section]) => {
-    if (key === "progress") {
-      return;
-    }
-    if (Array.isArray(section)) {
-      clonedState[key] = section.map((pages) =>
-        Object.values(pages).reduce((acc: {}, p: any) => ({ ...acc, ...p }), {})
-      );
-    }
-  });
 }
 
 function renderTemplate(str: string, context: object): string {
@@ -438,6 +442,7 @@ function Item(
     title: component.title,
     dataType: component.dataType,
     immutable: component.options.disableChangingFromSummary,
+    filename: undefined,
   };
 
   if (

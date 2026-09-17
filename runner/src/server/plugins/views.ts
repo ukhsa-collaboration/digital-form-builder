@@ -29,11 +29,7 @@ export default {
               }).style_nonce;
             }
 
-            const html = template.render(
-              context /* , function (err, value) {
-              console.error(err)
-            } */
-            );
+            const html = template.render(context);
             return html;
           };
         },

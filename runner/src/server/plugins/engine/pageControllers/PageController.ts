@@ -6,6 +6,7 @@ export class PageController extends PageControllerBase {
   constructor(model: FormModel, pageDef: any) {
     super(model, pageDef);
   }
+
   /**
    * {@link https://hapi.dev/api/?v=20.1.2#route-options}
    */

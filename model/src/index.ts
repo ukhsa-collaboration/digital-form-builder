@@ -1,4 +1,4 @@
-export { Schema, componentSchema } from "./schema";
+export * from "./schema";
 export { ConditionRawData, ConditionsWrapper } from "./data-model";
 export { Logger } from "./utils/logger";
 export { FormConfiguration } from "./form";
@@ -9,3 +9,4 @@ export * from "./utils/helpers";
 export * from "./migration";
 export * from "./data-model/types";
 export { whichMigrations } from "./migration/whichMigrations";
+export { hasFeatureFlag } from "./featureFlags";

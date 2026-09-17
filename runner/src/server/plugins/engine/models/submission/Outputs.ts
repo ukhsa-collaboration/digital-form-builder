@@ -28,13 +28,15 @@ export class Outputs {
           /**
            * Typescript does not support nested type discrimination {@link https://github.com/microsoft/TypeScript/issues/18758}
            */
-          const notifyOutputConfiguration = output.outputConfiguration as NotifyOutputConfiguration;
+          const notifyOutputConfiguration =
+            output.outputConfiguration as NotifyOutputConfiguration;
           return {
             type: OutputType.Notify,
             outputData: NotifyModel(model, notifyOutputConfiguration, state),
           };
         case "email":
-          const emailOutputConfiguration = output.outputConfiguration as EmailOutputConfiguration;
+          const emailOutputConfiguration =
+            output.outputConfiguration as EmailOutputConfiguration;
           return {
             type: OutputType.Email,
             outputData: EmailModel(
@@ -44,7 +46,8 @@ export class Outputs {
             ),
           };
         case "webhook":
-          const webhookOutputConfiguration = output.outputConfiguration as WebhookOutputConfiguration;
+          const webhookOutputConfiguration =
+            output.outputConfiguration as WebhookOutputConfiguration;
           return {
             type: OutputType.Webhook,
             outputData: {
@@ -52,6 +55,7 @@ export class Outputs {
               sendAdditionalPayMetadata:
                 webhookOutputConfiguration.sendAdditionalPayMetadata,
               allowRetry: webhookOutputConfiguration.allowRetry,
+              payload: webhookOutputConfiguration.payload,
             },
           };
         default:

@@ -77,6 +77,7 @@ export type FormPayload = {
 
 export type FormData = {
   lang?: string; // form language e.g: "en"
+  returnUrl?: string; // present when reached via a summary page's "Change" link
   value?: FormPayload;
   errors?: FormSubmissionErrors | null;
 };

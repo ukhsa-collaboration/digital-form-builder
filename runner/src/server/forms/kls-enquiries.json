@@ -1358,8 +1358,8 @@
       "controller": "CustomSummaryPageController",
       "title": "Check the details before submitting",
       "components": [],
-      "customButtonText": "Confirm and submit",
       "options": {
+        "customButtonText": "Confirm and submit",
         "hiddenFields": ["ZpmVWP"],
         "disabledChangeFields": ["tUKBgj", "VeQCVM", "wyvXTj"]
       },

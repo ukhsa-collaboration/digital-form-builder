@@ -1,5 +1,6 @@
 import { HapiRequest, HapiServer } from "../types";
 import { createHmacRaw } from "../utils/hmac";
+import { getOrCreateCorrelationId } from "../utils/correlationId";
 import {
   CacheService,
   FormSecurityService,
@@ -8,7 +9,10 @@ import {
   WebhookService,
 } from "server/services";
 import { SendNotificationArgs } from "server/services/notifyService";
-import { WebhookOutputConfiguration } from "@xgovformbuilder/model";
+import {
+  WebhookOutputConfiguration,
+  PayloadValueConfig,
+} from "@xgovformbuilder/model";
 import { ComponentCollection } from "server/plugins/engine/components/ComponentCollection";
 import { FormSubmissionState } from "server/plugins/engine/types";
 import { FormModel } from "server/plugins/engine/models";
@@ -19,6 +23,7 @@ import {
   OutputData,
   TNotifyModel,
 } from "../plugins/engine/models/submission/types";
+import { paymentProviderRegistry } from "./paymentProviders";
 
 type WebhookModel = WebhookOutputConfiguration & {
   formData: object;
@@ -66,24 +71,35 @@ export class StatusService {
     this.payService = payService;
     this.formSecurityService = formSecurityService;
   }
+
   async shouldShowPayErrorPage(request: HapiRequest): Promise<boolean> {
-    const { pay } = await this.cacheService.getState(request);
+    const { pay, paymentProvider } = await this.cacheService.getState(request);
+
+    const adapter = paymentProviderRegistry[paymentProvider];
+
+    if (adapter?.verifyRedirect) await adapter.verifyRedirect(request);
+
     if (!pay) {
       this.logger.info(
         ["StatusService", "shouldShowPayErrorPage"],
         "No pay state detected, skipping"
       );
+
       return false;
     }
+
     const { self, meta } = pay;
     const { query } = request;
     const { state } = await this.payService.payStatus(self, meta.payApiKey);
+
     pay.state = state;
 
     if (state.status === "success") {
       this.logger.info(
         ["StatusService", "shouldShowPayErrorPage"],
-        `user ${request.yar.id} - shouldShowPayErrorPage: User has succeeded, setting paymentSkipped to false and continuing`
+        `user ${getOrCreateCorrelationId(
+          request
+        )} - shouldShowPayErrorPage: User has succeeded, setting paymentSkipped to false and continuing`
       );
 
       pay.paymentSkipped = false;
@@ -98,7 +114,9 @@ export class StatusService {
 
     this.logger.info(
       ["StatusService", "shouldShowPayErrorPage"],
-      `user ${request.yar.id} - shouldShowPayErrorPage: User has failed ${meta.attempts} payments`
+      `user ${getOrCreateCorrelationId(
+        request
+      )} - shouldShowPayErrorPage: User has failed ${meta.attempts} payments`
     );
 
     if (!allowSubmissionWithoutPayment) {
@@ -119,7 +137,9 @@ export class StatusService {
 
     this.logger.info(
       ["StatusService", "shouldShowPayErrorPage"],
-      `user ${request.yar.id} - shouldShowPayErrorPage: ${shouldRetry}`
+      `user ${getOrCreateCorrelationId(
+        request
+      )} - shouldShowPayErrorPage: ${shouldRetry}`
     );
 
     return shouldRetry;
@@ -145,19 +165,19 @@ export class StatusService {
     let customSecurityHeaders: Record<string, string> = {};
 
     if (hmacKey) {
+      const correlationId = getOrCreateCorrelationId(request);
       const [hmacSignature, requestTime, hmacExpiryTime] = await createHmacRaw(
-        request.yar.id,
+        correlationId,
         hmacKey
       );
       customSecurityHeaders = {
-        "X-Request-ID": request.yar.id.toString(),
+        "X-Request-ID": correlationId,
         "X-HMAC-Signature": hmacSignature.toString(),
         "X-HMAC-Time": requestTime.toString(),
       };
     } else {
-      const formSecurityHeaders = await this.formSecurityService.getSecurityHeaders(
-        request
-      );
+      const formSecurityHeaders =
+        await this.formSecurityService.getSecurityHeaders(request);
       if (formSecurityHeaders) {
         customSecurityHeaders = formSecurityHeaders;
       }
@@ -166,8 +186,11 @@ export class StatusService {
     if (callback) {
       this.logger.info(
         ["StatusService", "outputRequests"],
-        `Callback detected for ${request.yar.id} - PUT to ${callback.callbackUrl}`
+        `Callback detected for ${getOrCreateCorrelationId(request)} - PUT to ${
+          callback.callbackUrl
+        }`
       );
+
       try {
         newReference = await this.webhookService.postRequest(
           callback.callbackUrl,
@@ -184,14 +207,22 @@ export class StatusService {
 
     const firstWebhook = outputs?.find((output) => output.type === "webhook");
     const otherOutputs = outputs?.filter((output) => output !== firstWebhook);
+
     if (firstWebhook) {
+      const payload = this.resolvePayload(
+        firstWebhook.outputData.payload,
+        formData,
+        state
+      );
+
       newReference = await this.webhookService.postRequest(
         firstWebhook.outputData.url,
-        { ...formData },
+        { ...formData, ...payload },
         "POST",
         firstWebhook.outputData.sendAdditionalPayMetadata,
         customSecurityHeaders
       );
+
       await this.cacheService.mergeState(request, {
         reference: newReference,
       });
@@ -225,6 +256,43 @@ export class StatusService {
       reference: newReference,
       results: Promise.allSettled(requests),
     };
+  }
+
+  /**
+   * Injects values from `formData` and `state` into the payload structure
+   * If a value is not found in `formData` or `state`, it defaults to the value
+   * in the payload structure
+   *
+   * @param payload
+   * @param formData
+   * @param state
+   * @returns
+   */
+  resolvePayload(
+    payload: Record<string, PayloadValueConfig> | undefined | null,
+    formData: Record<string, unknown>,
+    state: Record<string, unknown>
+  ): Record<string, string> {
+    if (!payload) return {};
+
+    const resolveFieldValue = (field: string | undefined) =>
+      field ? formData[field] ?? state[field] : undefined;
+
+    const resolveValue = ({
+      string,
+      field,
+      fallback,
+    }: PayloadValueConfig): string =>
+      String(string ?? resolveFieldValue(field) ?? fallback ?? "");
+
+    const output: Record<string, string> = {};
+    for (const [key, config] of Object.entries(payload)) {
+      const value = resolveValue(config);
+      if (value !== "" || config.required !== false) {
+        output[key] = value;
+      }
+    }
+    return output;
   }
 
   /**
@@ -354,7 +422,7 @@ export class StatusService {
     formModel: FormModel,
     newReference?: string
   ) {
-    const { reference, pay, callback } = state;
+    const { reference, pay, callback, generatedReference = null } = state;
     this.logger.info(
       ["StatusService", "getViewModel"],
       `generating viewModel for ${newReference ?? reference}`
@@ -366,6 +434,7 @@ export class StatusService {
     let model = {
       reference: referenceToDisplay,
       ...(pay && { paymentSkipped: pay.paymentSkipped }),
+      ...(generatedReference && { generatedReference }),
     };
 
     const confirmationPageDef = formModel.def.specialPages?.confirmationPage;
@@ -401,6 +470,7 @@ export class StatusService {
       componentDefsToRender,
       formModel
     );
+
     model.components = componentCollection.getViewModel(
       state,
       undefined,

@@ -118,6 +118,37 @@
           "schema": {}
         },
         {
+          "type": "ContactDetailsCollection",
+          "name": "contactDetailsCollection",
+          "title": "Contact details collection",
+          "options": {},
+          "schema": {}
+        },
+        {
+          "type": "MonthYearField",
+          "name": "monthYearField",
+          "title": "Month year field",
+          "options": {},
+          "schema": {},
+          "hint": ""
+        },
+        {
+          "type": "AutocompleteField",
+          "name": "autocompleteField",
+          "title": "Autocomplete field",
+          "options": {},
+          "schema": {},
+          "list": "horseBreed"
+        },
+        {
+          "name": "WebsiteField",
+          "type": "WebsiteField",
+          "title": "Website field",
+          "options": {},
+          "schema": {},
+          "hint": ""
+        },
+        {
           "type": "Para",
           "content": "Paragraph...",
           "options": {},
@@ -136,7 +167,8 @@
           "options": {},
           "schema": {}
         }
-      ]
+      ],
+      "next": [{ "path": "/all-components-optional" }]
     },
     {
       "path": "/all-components-optional",
@@ -147,7 +179,7 @@
             "required": false
           },
           "type": "TextField",
-          "name": "textField",
+          "name": "textField2",
           "title": "Text field",
           "hint": "Help text",
           "schema": {}
@@ -157,7 +189,7 @@
             "required": false
           },
           "type": "MultilineTextField",
-          "name": "multilineTextField",
+          "name": "multilineTextField2",
           "title": "Multiline text field",
           "hint": "Help text",
           "schema": {}
@@ -167,7 +199,7 @@
             "required": false
           },
           "type": "NumberField",
-          "name": "numberField",
+          "name": "numberField2",
           "title": "Number field",
           "schema": {}
         },
@@ -176,7 +208,7 @@
             "required": false
           },
           "type": "DateField",
-          "name": "dateField",
+          "name": "dateField2",
           "title": "Date field",
           "schema": {}
         },
@@ -185,7 +217,7 @@
             "required": false
           },
           "type": "DatePartsField",
-          "name": "datePartsField",
+          "name": "datePartsField2",
           "title": "Date parts field",
           "schema": {}
         },
@@ -194,7 +226,7 @@
             "required": false
           },
           "type": "TimeField",
-          "name": "timeField",
+          "name": "timeField2",
           "title": "Time field",
           "schema": {}
         },
@@ -203,7 +235,7 @@
             "required": false
           },
           "type": "DateTimeField",
-          "name": "dateTimeField",
+          "name": "dateTimeField2",
           "title": "Date time field",
           "schema": {}
         },
@@ -212,7 +244,7 @@
             "required": false
           },
           "type": "DateTimePartsField",
-          "name": "dateTimePartsField",
+          "name": "dateTimePartsField2",
           "title": "Date time parts field",
           "schema": {}
         },
@@ -230,7 +262,7 @@
             "required": false
           },
           "type": "EmailAddressField",
-          "name": "emailAddressField",
+          "name": "emailAddressField2",
           "title": "Email address field",
           "schema": {}
         },
@@ -239,7 +271,7 @@
             "required": false
           },
           "type": "TelephoneNumberField",
-          "name": "telephoneNumberField",
+          "name": "telephoneNumberField2",
           "title": "Telephone number field",
           "schema": {}
         },
@@ -248,23 +280,23 @@
             "required": false
           },
           "type": "UkAddressField",
-          "name": "addressField",
-          "title": "Telephone number field",
+          "name": "addressField2",
+          "title": "UK address field",
           "schema": {}
         },
         {
           "options": {
-            "required": false,
-            "list": "companyType"
+            "required": false
           },
+          "list": "companyType",
           "type": "RadiosField",
-          "name": "radiosField",
+          "name": "radiosField2",
           "title": "Radios field",
           "schema": {}
         },
         {
           "type": "SelectField",
-          "name": "selectField",
+          "name": "selectField2",
           "title": "Select field",
           "list": "country",
           "options": {},
@@ -276,12 +308,19 @@
           },
           "list": "horseBreed",
           "type": "CheckboxesField",
-          "name": "checkboxesField",
+          "name": "checkboxesField2",
           "title": "Checkboxes field",
           "hint": "Please help",
           "schema": {}
         }
-      ]
+      ],
+      "next": [{ "path": "/summary" }]
+    },
+    {
+      "title": "Summary",
+      "path": "/summary",
+      "controller": "./pages/summary.js",
+      "components": []
     }
   ],
   "sections": [

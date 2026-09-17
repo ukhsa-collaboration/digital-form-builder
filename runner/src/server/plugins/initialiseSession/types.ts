@@ -17,6 +17,7 @@ export type InitialiseSessionOptions = {
     title: string;
     paymentSkipped?: false | string;
     nextSteps?: false | string;
+    generatedReferenceContent?: string;
     hidePanel?: boolean;
   };
   components: ContentComponentsDef[];

@@ -6,8 +6,10 @@ import { FormComponent } from "./FormComponent";
 import { addClassOptionIfNone } from "./helpers";
 import joi, { Schema } from "joi";
 
-const EMAIL_REGEX = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
-
+// For reference, see https://html.spec.whatwg.org/multipage/input.html#valid-e-mail-address
+export const EMAIL_REGEX =
+  /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+const DEFAULT_MESSAGE = "Enter an email address in the correct format";
 export class EmailAddressField extends FormComponent {
   formSchema;
   stateSchema;
@@ -28,8 +30,15 @@ export class EmailAddressField extends FormComponent {
     const pattern = new RegExp(EMAIL_REGEX);
     emailSchema = emailSchema.pattern(pattern);
 
-    if (this.options.customValidationMessages) {
-      emailSchema = emailSchema.messages(this.options.customValidationMessages);
+    if (def.options.customValidationMessages) {
+      emailSchema = emailSchema.messages(def.options.customValidationMessages);
+    } else {
+      emailSchema = emailSchema.messages({
+        "string.pattern.base": DEFAULT_MESSAGE,
+        "any.required": DEFAULT_MESSAGE,
+        "any.only": DEFAULT_MESSAGE,
+        "string.empty": DEFAULT_MESSAGE,
+      });
     }
 
     this.formSchema = emailSchema;
