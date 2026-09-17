@@ -12,7 +12,7 @@ const { suite, test } = lab;
 const hashPassword = "s3cr3t-password";
 
 function buildRequest(query: Record<string, string>): HapiRequest {
-  return ({ query } as unknown) as HapiRequest;
+  return { query } as unknown as HapiRequest;
 }
 
 function validHashFor(query: Record<string, string>): string {

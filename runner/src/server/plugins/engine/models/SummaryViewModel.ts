@@ -180,6 +180,7 @@ export class SummaryViewModel {
 
     [undefined, ...model.sections].forEach((section) => {
       const items: any[] = [];
+      const repeatingCards: any[] = [];
       const itemNames = new Set<string>();
 
       let sectionState = section ? state[section.name] || {} : state;
@@ -210,6 +211,23 @@ export class SummaryViewModel {
       }
 
       sectionPages.forEach((page) => {
+        if (page.isRepeatingFieldPageController) {
+          const cards = page.toSummaryDetails(state);
+
+          cards.forEach((card) => {
+            const url = redirectUrl(request, `/${model.basePath}${page.path}`, {
+              returnUrl: redirectUrl(request, `/${model.basePath}/summary`),
+              view: card.index,
+            });
+            card.card = url;
+            card.items.forEach((item) => {
+              item.url = url;
+            });
+          });
+
+          repeatingCards.push(...cards);
+          return;
+        }
         for (const component of page.components.formItems) {
           const item = Item(
             request,
@@ -266,6 +284,7 @@ export class SummaryViewModel {
           });
         }
       }
+      details.push(...repeatingCards);
     });
 
     return details;
