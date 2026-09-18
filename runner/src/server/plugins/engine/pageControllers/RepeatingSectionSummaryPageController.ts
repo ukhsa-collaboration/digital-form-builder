@@ -39,9 +39,7 @@ export class RepeatingSectionSummaryPageController extends PageController {
 
         if (int(this.path) === summaryFiltered.length) {
           const newPath = noInt(this.path) + (int(this.path) - 1);
-          return h.redirect(
-            `/${this.model.basePath}${newPath}${param}`
-          );
+          return h.redirect(`/${this.model.basePath}${newPath}${param}`);
         }
         return h.redirect(`/${this.model.basePath}${this.path}${param}`);
       }

@@ -104,8 +104,8 @@ export class RepeatingFieldPageController extends PageController {
         const { cacheService } = request.services([]);
         const state = await cacheService.getState(request);
         const partialState = this.getPartialState(state, view);
-        response.source.context.components &&= response.source.context.components.map(
-          (component) => {
+        response.source.context.components &&=
+          response.source.context.components.map((component) => {
             const { model } = component;
             model.value = partialState;
             model.items &&= model.items.filter(
@@ -115,8 +115,7 @@ export class RepeatingFieldPageController extends PageController {
               ...component,
               model,
             };
-          }
-        );
+          });
 
         this.addRowsToViewContext(response, state);
         return response;
