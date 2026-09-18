@@ -97,6 +97,7 @@ export class SummaryPageController extends PageController {
           progress[progress.length - 1] ?? this.backLinkFallback;
       }
 
+      // TODO: edit declaration error to be GDS compliant
       const declarationError = request.yar.flash("declarationError");
       if (declarationError.length) {
         viewModel.declarationError = declarationError[0];
