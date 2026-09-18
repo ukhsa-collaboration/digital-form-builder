@@ -12,6 +12,7 @@ export { ComponentCollection } from "./ComponentCollection";
 export { DateField } from "./DateField";
 export { DatePartsField } from "./DatePartsField";
 export { ContactDetailsCollection } from "./ContactDetailsCollection";
+export { Fieldset } from "./Fieldset";
 export { DateTimeField } from "./DateTimeField";
 export { DateTimePartsField } from "./DateTimePartsField";
 export { Details } from "./Details";
