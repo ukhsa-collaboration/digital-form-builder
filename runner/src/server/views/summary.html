@@ -2,11 +2,18 @@
 {% from "partials/summary-card.html" import summaryCard %}
 {% from "components/checkboxes/macro.njk" import govukCheckboxes %}
 {% extends 'layout.html' %}
+{% from "error-summary/macro.njk" import govukErrorSummary %}
+
 
 {% block content %}
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-two-thirds">
+        {% if submissionErrors %}
+          {{ govukErrorSummary(submissionErrors) }}
+        {% endif %}
         <h1 class="govuk-heading-l">
+
+
           {% if callback and callback.title %}
             {{ callback.title }}
           {% else %}
@@ -28,13 +35,13 @@
           {% if detail.card %}
             {{ summaryCard(detail, true) }}
             {% if detail.addRepeatFieldButton %}
-            <!-- Behaviour created for Repeat multifiled edit functionality on final page -->
+            <!-- Behaviour created for repeatedMultiField edit functionality on final page -->
             <a href="{{ detail.addRepeatFieldButton.href }}" class="govuk-button govuk-button--secondary">
               Add{% if detail.addRepeatFieldButton.canDelete %} or delete{% endif %} {{ detail.addRepeatFieldButton.label }}
             </a>
             {% endif %}
 
-            <!-- Legacy logic for repeatSectionPage Controller - DO NOT CONFUSE WITH REPEAT MULTI FIELD -->
+            <!-- Legacy logic for repeatSectionPage Controller - DO NOT CONFUSE WITH REPEATED MULTI FIELD -->
             {% if not details[loop.index].card and detail.items[0].pageId %}
               {% set splitDash = detail.items[0].pageId.split("-") %}
               {% set lastEntry = splitDash.slice(-1)[0] %}
@@ -69,23 +76,23 @@
               <input type="hidden" name="crumb" value="{{crumb}}"/>
 
                 {%if declaration %}
-                <h2 class="govuk-fieldset__legend govuk-fieldset__legend--m" id="declaration">Declaration</h2>
-                  {{ declaration | safe }}
-                  <div class="govuk-form-group {{ 'govuk-form-group--error' if declarationError }}">
-                    {% if declarationError %}
-                        <span id="nationality-error" class="govuk-error-message">
-                            <span class="govuk-visually-hidden">Error:</span> {{declarationError}}
-                        </span>
-                    {% endif %}
-                    <div class="govuk-checkboxes">
-                     <div class="govuk-checkboxes__item">
-                       <input class="govuk-checkboxes__input" id="declaration-1" name="declaration" type="checkbox" value="true">
-                       <label class="govuk-label govuk-checkboxes__label" for="declaration-1">
-                         Confirm
-                       </label>
-                     </div>
-                    </div>
-                  </div>
+                {{ govukCheckboxes({
+                  idPrefix: "declaration",
+                  name: "declaration",
+                  fieldset: {
+                    legend: {
+                      html: '<h2 class="govuk-fieldset__heading">Declaration</h2>',
+                      classes: "govuk-fieldset__legend--m"
+                    }
+                  },
+                  formGroup: {
+                    beforeInputs: { html: declaration }
+                  },
+                  errorMessage: { text: submissionErrorsByName.declaration[0].text } if submissionErrorsByName.declaration else false,
+                  items: [
+                    { value: "true", text: "Confirm" }
+                  ]
+                }) }}
                 {% endif %}
 
                 <button type="submit" data-prevent-double-click="true" class="govuk-button" data-module="govuk-button">
