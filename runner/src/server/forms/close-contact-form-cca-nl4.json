@@ -670,6 +670,21 @@
   ],
   "sections": [
     {
+      "name": "PersonalInformation",
+      "title": "Personal information",
+      "hideTitle": true
+    },
+    {
+      "name": "PeopleYouLiveWith",
+      "title": "People you live with",
+      "hideTitle": true
+    },
+    {
+      "name": "PeopleTheyLiveWith",
+      "title": "People they live with",
+      "hideTitle": true
+    },
+    {
       "name": "OtherContacts",
       "title": "Other close contacts in the last 14 days",
       "hideTitle": true
