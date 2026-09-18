@@ -16,7 +16,7 @@ export function secureUrl(value: string, helper: CustomHelpers) {
  */
 export const configSchema = Joi.object({
   port: Joi.number(),
-  env: Joi.string().valid("development", "test", "production"),
+  env: Joi.string().valid("dev", "test", "preprod", "production"),
   logLevel: Joi.string()
     .optional()
     .allow("trace", "debug", "info", "warn", "error"),
