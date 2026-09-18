@@ -261,6 +261,7 @@
         {
           "name": "first_name",
           "options": {
+            "autocomplete": "given-name",
             "customValidationMessages": {
               "string.pattern.base": "Enter a valid first (given) name"
             }
@@ -274,6 +275,7 @@
         {
           "name": "last_name",
           "options": {
+            "autocomplete": "family-name",
             "customValidationMessages": {
               "string.pattern.base": "Enter a valid last (family) name"
             }
@@ -285,27 +287,15 @@
           }
         },
         {
-          "name": "mWvTOY",
-          "options": {},
-          "type": "Html",
-          "content": "<br/><h2 class='govuk-heading-m'>How should we contact this person to provide them with advice and guidance?</h2>"
-        },
-        {
-          "name": "iulooD",
-          "options": {},
-          "type": "Para",
-          "content": "If the person is under 16 or unable to speak to us themselves, provide the contact details of a parent, carer or guardian."
-        },
-        {
           "name": "contact_directly",
           "options": {
-            "hideTitle": true,
             "customValidationMessages": {
               "any.required": "Select how we should contact this person"
             }
           },
           "type": "RadiosField",
-          "title": "How should we contact this person?",
+          "title": "How should we contact this person to provide them with advice and guidance?",
+          "hint": "If the person is under 16 or unable to speak to us themselves, provide the contact details of a parent, carer or guardian.",
           "list": "TQfrjB",
           "schema": {}
         },
@@ -421,6 +411,7 @@
         {
           "name": "first_name",
           "options": {
+            "autocomplete": "given-name",
             "customValidationMessages": {
               "string.pattern.base": "Enter a valid first (given) name"
             }
@@ -434,6 +425,7 @@
         {
           "name": "last_name",
           "options": {
+            "autocomplete": "family-name",
             "customValidationMessages": {
               "string.pattern.base": "Enter a valid last (family) name"
             }
@@ -445,27 +437,15 @@
           }
         },
         {
-          "name": "mWvTOY",
-          "options": {},
-          "type": "Html",
-          "content": "<br/><h2 class='govuk-heading-m'>How should we contact this person to provide them with advice and guidance?</h2>"
-        },
-        {
-          "name": "iulooD",
-          "options": {},
-          "type": "Para",
-          "content": "If the person is under 16 or unable to speak to us themselves, provide the contact details of a parent, carer or guardian."
-        },
-        {
           "name": "contact_directly",
           "options": {
-            "hideTitle": true,
             "customValidationMessages": {
               "any.required": "Select how we should contact this person"
             }
           },
           "type": "RadiosField",
-          "title": "How should we contact this person?",
+          "title": "How should we contact this person to provide them with advice and guidance?",
+          "hint": "If the person is under 16 or unable to speak to us themselves, provide the contact details of a parent, carer or guardian.",
           "list": "TQfrjB",
           "schema": {}
         },
@@ -581,6 +561,7 @@
         {
           "name": "first_name",
           "options": {
+            "autocomplete": "given-name",
             "customValidationMessages": {
               "string.pattern.base": "Enter a valid first (given) name"
             }
@@ -594,6 +575,7 @@
         {
           "name": "last_name",
           "options": {
+            "autocomplete": "family-name",
             "customValidationMessages": {
               "string.pattern.base": "Enter a valid last (family) name"
             }
@@ -605,27 +587,15 @@
           }
         },
         {
-          "name": "mWvTOY",
-          "options": {},
-          "type": "Html",
-          "content": "<br/><h2 class='govuk-heading-m'>How should we contact this person to provide them with advice and guidance?</h2>"
-        },
-        {
-          "name": "iulooD",
-          "options": {},
-          "type": "Para",
-          "content": "If the person is under 16 or unable to speak to us themselves, provide the contact details of a parent, carer or guardian."
-        },
-        {
           "name": "contact_directly",
           "options": {
-            "hideTitle": true,
             "customValidationMessages": {
               "any.required": "Select how we should contact this person"
             }
           },
           "type": "RadiosField",
-          "title": "How should we contact this person?",
+          "title": "How should we contact this person to provide them with advice and guidance?",
+          "hint": "If the person is under 16 or unable to speak to us themselves, provide the contact details of a parent, carer or guardian.",
           "list": "TQfrjB",
           "schema": {}
         },
@@ -741,6 +711,7 @@
         {
           "name": "first_name",
           "options": {
+            "autocomplete": "given-name",
             "customValidationMessages": {
               "string.pattern.base": "Enter a valid first (given) name"
             }
@@ -754,6 +725,7 @@
         {
           "name": "last_name",
           "options": {
+            "autocomplete": "family-name",
             "customValidationMessages": {
               "string.pattern.base": "Enter a valid last (family) name"
             }
@@ -765,27 +737,15 @@
           }
         },
         {
-          "name": "mWvTOY",
-          "options": {},
-          "type": "Html",
-          "content": "<br/><h2 class='govuk-heading-m'>How should we contact this person to provide them with advice and guidance?</h2>"
-        },
-        {
-          "name": "iulooD",
-          "options": {},
-          "type": "Para",
-          "content": "If the person is under 16 or unable to speak to us themselves, provide the contact details of a parent, carer or guardian."
-        },
-        {
           "name": "contact_directly",
           "options": {
-            "hideTitle": true,
             "customValidationMessages": {
               "any.required": "Select how we should contact this person"
             }
           },
           "type": "RadiosField",
-          "title": "How should we contact this person?",
+          "title": "How should we contact this person to provide them with advice and guidance?",
+          "hint": "If the person is under 16 or unable to speak to us themselves, provide the contact details of a parent, carer or guardian.",
           "list": "TQfrjB",
           "schema": {}
         },
@@ -901,6 +861,7 @@
         {
           "name": "first_name",
           "options": {
+            "autocomplete": "given-name",
             "customValidationMessages": {
               "string.pattern.base": "Enter a valid first (given) name"
             }
@@ -914,6 +875,7 @@
         {
           "name": "last_name",
           "options": {
+            "autocomplete": "family-name",
             "customValidationMessages": {
               "string.pattern.base": "Enter a valid last (family) name"
             }
@@ -925,27 +887,15 @@
           }
         },
         {
-          "name": "mWvTOY",
-          "options": {},
-          "type": "Html",
-          "content": "<br/><h2 class='govuk-heading-m'>How should we contact this person to provide them with advice and guidance?</h2>"
-        },
-        {
-          "name": "iulooD",
-          "options": {},
-          "type": "Para",
-          "content": "If the person is under 16 or unable to speak to us themselves, provide the contact details of a parent, carer or guardian."
-        },
-        {
           "name": "contact_directly",
           "options": {
-            "hideTitle": true,
             "customValidationMessages": {
               "any.required": "Select how we should contact this person"
             }
           },
           "type": "RadiosField",
-          "title": "How should we contact this person?",
+          "title": "How should we contact this person to provide them with advice and guidance?",
+          "hint": "If the person is under 16 or unable to speak to us themselves, provide the contact details of a parent, carer or guardian.",
           "list": "TQfrjB",
           "schema": {}
         },
@@ -1061,6 +1011,7 @@
         {
           "name": "first_name",
           "options": {
+            "autocomplete": "given-name",
             "customValidationMessages": {
               "string.pattern.base": "Enter a valid first (given) name"
             }
@@ -1074,6 +1025,7 @@
         {
           "name": "last_name",
           "options": {
+            "autocomplete": "family-name",
             "customValidationMessages": {
               "string.pattern.base": "Enter a valid last (family) name"
             }
@@ -1085,27 +1037,15 @@
           }
         },
         {
-          "name": "mWvTOY",
-          "options": {},
-          "type": "Html",
-          "content": "<br/><h2 class='govuk-heading-m'>How should we contact this person to provide them with advice and guidance?</h2>"
-        },
-        {
-          "name": "iulooD",
-          "options": {},
-          "type": "Para",
-          "content": "If the person is under 16 or unable to speak to us themselves, provide the contact details of a parent, carer or guardian."
-        },
-        {
           "name": "contact_directly",
           "options": {
-            "hideTitle": true,
             "customValidationMessages": {
               "any.required": "Select how we should contact this person"
             }
           },
           "type": "RadiosField",
-          "title": "How should we contact this person?",
+          "title": "How should we contact this person to provide them with advice and guidance?",
+          "hint": "If the person is under 16 or unable to speak to us themselves, provide the contact details of a parent, carer or guardian.",
           "list": "TQfrjB",
           "schema": {}
         },
@@ -1221,6 +1161,7 @@
         {
           "name": "first_name",
           "options": {
+            "autocomplete": "given-name",
             "customValidationMessages": {
               "string.pattern.base": "Enter a valid first (given) name"
             }
@@ -1234,6 +1175,7 @@
         {
           "name": "last_name",
           "options": {
+            "autocomplete": "family-name",
             "customValidationMessages": {
               "string.pattern.base": "Enter a valid last (family) name"
             }
@@ -1245,27 +1187,15 @@
           }
         },
         {
-          "name": "mWvTOY",
-          "options": {},
-          "type": "Html",
-          "content": "<br/><h2 class='govuk-heading-m'>How should we contact this person to provide them with advice and guidance?</h2>"
-        },
-        {
-          "name": "iulooD",
-          "options": {},
-          "type": "Para",
-          "content": "If the person is under 16 or unable to speak to us themselves, provide the contact details of a parent, carer or guardian."
-        },
-        {
           "name": "contact_directly",
           "options": {
-            "hideTitle": true,
             "customValidationMessages": {
               "any.required": "Select how we should contact this person"
             }
           },
           "type": "RadiosField",
-          "title": "How should we contact this person?",
+          "title": "How should we contact this person to provide them with advice and guidance?",
+          "hint": "If the person is under 16 or unable to speak to us themselves, provide the contact details of a parent, carer or guardian.",
           "list": "TQfrjB",
           "schema": {}
         },
@@ -1381,6 +1311,7 @@
         {
           "name": "first_name",
           "options": {
+            "autocomplete": "given-name",
             "customValidationMessages": {
               "string.pattern.base": "Enter a valid first (given) name"
             }
@@ -1394,6 +1325,7 @@
         {
           "name": "last_name",
           "options": {
+            "autocomplete": "family-name",
             "customValidationMessages": {
               "string.pattern.base": "Enter a valid last (family) name"
             }
@@ -1405,27 +1337,15 @@
           }
         },
         {
-          "name": "mWvTOY",
-          "options": {},
-          "type": "Html",
-          "content": "<br/><h2 class='govuk-heading-m'>How should we contact this person to provide them with advice and guidance?</h2>"
-        },
-        {
-          "name": "iulooD",
-          "options": {},
-          "type": "Para",
-          "content": "If the person is under 16 or unable to speak to us themselves, provide the contact details of a parent, carer or guardian."
-        },
-        {
           "name": "contact_directly",
           "options": {
-            "hideTitle": true,
             "customValidationMessages": {
               "any.required": "Select how we should contact this person"
             }
           },
           "type": "RadiosField",
-          "title": "How should we contact this person?",
+          "title": "How should we contact this person to provide them with advice and guidance?",
+          "hint": "If the person is under 16 or unable to speak to us themselves, provide the contact details of a parent, carer or guardian.",
           "list": "TQfrjB",
           "schema": {}
         },
@@ -1541,6 +1461,7 @@
         {
           "name": "first_name",
           "options": {
+            "autocomplete": "given-name",
             "customValidationMessages": {
               "string.pattern.base": "Enter a valid first (given) name"
             }
@@ -1554,6 +1475,7 @@
         {
           "name": "last_name",
           "options": {
+            "autocomplete": "family-name",
             "customValidationMessages": {
               "string.pattern.base": "Enter a valid last (family) name"
             }
@@ -1565,27 +1487,15 @@
           }
         },
         {
-          "name": "mWvTOY",
-          "options": {},
-          "type": "Html",
-          "content": "<br/><h2 class='govuk-heading-m'>How should we contact this person to provide them with advice and guidance?</h2>"
-        },
-        {
-          "name": "iulooD",
-          "options": {},
-          "type": "Para",
-          "content": "If the person is under 16 or unable to speak to us themselves, provide the contact details of a parent, carer or guardian."
-        },
-        {
           "name": "contact_directly",
           "options": {
-            "hideTitle": true,
             "customValidationMessages": {
               "any.required": "Select how we should contact this person"
             }
           },
           "type": "RadiosField",
-          "title": "How should we contact this person?",
+          "title": "How should we contact this person to provide them with advice and guidance?",
+          "hint": "If the person is under 16 or unable to speak to us themselves, provide the contact details of a parent, carer or guardian.",
           "list": "TQfrjB",
           "schema": {}
         },
@@ -1701,6 +1611,7 @@
         {
           "name": "first_name",
           "options": {
+            "autocomplete": "given-name",
             "customValidationMessages": {
               "string.pattern.base": "Enter a valid first (given) name"
             }
@@ -1714,6 +1625,7 @@
         {
           "name": "last_name",
           "options": {
+            "autocomplete": "family-name",
             "customValidationMessages": {
               "string.pattern.base": "Enter a valid last (family) name"
             }
@@ -1725,27 +1637,15 @@
           }
         },
         {
-          "name": "mWvTOY",
-          "options": {},
-          "type": "Html",
-          "content": "<br/><h2 class='govuk-heading-m'>How should we contact this person to provide them with advice and guidance?</h2>"
-        },
-        {
-          "name": "iulooD",
-          "options": {},
-          "type": "Para",
-          "content": "If the person is under 16 or unable to speak to us themselves, provide the contact details of a parent, carer or guardian."
-        },
-        {
           "name": "contact_directly",
           "options": {
-            "hideTitle": true,
             "customValidationMessages": {
               "any.required": "Select how we should contact this person"
             }
           },
           "type": "RadiosField",
-          "title": "How should we contact this person?",
+          "title": "How should we contact this person to provide them with advice and guidance?",
+          "hint": "If the person is under 16 or unable to speak to us themselves, provide the contact details of a parent, carer or guardian.",
           "list": "TQfrjB",
           "schema": {}
         },
@@ -1873,6 +1773,7 @@
         {
           "name": "first_name",
           "options": {
+            "autocomplete": "given-name",
             "customValidationMessages": {
               "string.pattern.base": "Enter a valid first (given) name"
             }
@@ -1886,6 +1787,7 @@
         {
           "name": "last_name",
           "options": {
+            "autocomplete": "family-name",
             "customValidationMessages": {
               "string.pattern.base": "Enter a valid last (family) name"
             }
@@ -1897,27 +1799,15 @@
           }
         },
         {
-          "name": "mWvTOY",
-          "options": {},
-          "type": "Html",
-          "content": "<br/><h2 class='govuk-heading-m'>How should we contact this person to provide them with advice and guidance?</h2>"
-        },
-        {
-          "name": "iulooD",
-          "options": {},
-          "type": "Para",
-          "content": "If the person is under 16 or unable to speak to us themselves, provide the contact details of a parent, carer or guardian."
-        },
-        {
           "name": "contact_directly",
           "options": {
-            "hideTitle": true,
             "customValidationMessages": {
               "any.required": "Select how we should contact this person"
             }
           },
           "type": "RadiosField",
-          "title": "How should we contact this person?",
+          "title": "How should we contact this person to provide them with advice and guidance?",
+          "hint": "If the person is under 16 or unable to speak to us themselves, provide the contact details of a parent, carer or guardian.",
           "list": "TQfrjB",
           "schema": {}
         },
@@ -2030,6 +1920,7 @@
         {
           "name": "first_name",
           "options": {
+            "autocomplete": "given-name",
             "customValidationMessages": {
               "string.pattern.base": "Enter a valid first (given) name"
             }
@@ -2043,6 +1934,7 @@
         {
           "name": "last_name",
           "options": {
+            "autocomplete": "family-name",
             "customValidationMessages": {
               "string.pattern.base": "Enter a valid last (family) name"
             }
@@ -2054,27 +1946,15 @@
           }
         },
         {
-          "name": "mWvTOY",
-          "options": {},
-          "type": "Html",
-          "content": "<br/><h2 class='govuk-heading-m'>How should we contact this person to provide them with advice and guidance?</h2>"
-        },
-        {
-          "name": "iulooD",
-          "options": {},
-          "type": "Para",
-          "content": "If the person is under 16 or unable to speak to us themselves, provide the contact details of a parent, carer or guardian."
-        },
-        {
           "name": "contact_directly",
           "options": {
-            "hideTitle": true,
             "customValidationMessages": {
               "any.required": "Select how we should contact this person"
             }
           },
           "type": "RadiosField",
-          "title": "How should we contact this person?",
+          "title": "How should we contact this person to provide them with advice and guidance?",
+          "hint": "If the person is under 16 or unable to speak to us themselves, provide the contact details of a parent, carer or guardian.",
           "list": "TQfrjB",
           "schema": {}
         },
@@ -2187,6 +2067,7 @@
         {
           "name": "first_name",
           "options": {
+            "autocomplete": "given-name",
             "customValidationMessages": {
               "string.pattern.base": "Enter a valid first (given) name"
             }
@@ -2200,6 +2081,7 @@
         {
           "name": "last_name",
           "options": {
+            "autocomplete": "family-name",
             "customValidationMessages": {
               "string.pattern.base": "Enter a valid last (family) name"
             }
@@ -2211,27 +2093,15 @@
           }
         },
         {
-          "name": "mWvTOY",
-          "options": {},
-          "type": "Html",
-          "content": "<br/><h2 class='govuk-heading-m'>How should we contact this person to provide them with advice and guidance?</h2>"
-        },
-        {
-          "name": "iulooD",
-          "options": {},
-          "type": "Para",
-          "content": "If the person is under 16 or unable to speak to us themselves, provide the contact details of a parent, carer or guardian."
-        },
-        {
           "name": "contact_directly",
           "options": {
-            "hideTitle": true,
             "customValidationMessages": {
               "any.required": "Select how we should contact this person"
             }
           },
           "type": "RadiosField",
-          "title": "How should we contact this person?",
+          "title": "How should we contact this person to provide them with advice and guidance?",
+          "hint": "If the person is under 16 or unable to speak to us themselves, provide the contact details of a parent, carer or guardian.",
           "list": "TQfrjB",
           "schema": {}
         },
@@ -2344,6 +2214,7 @@
         {
           "name": "first_name",
           "options": {
+            "autocomplete": "given-name",
             "customValidationMessages": {
               "string.pattern.base": "Enter a valid first (given) name"
             }
@@ -2357,6 +2228,7 @@
         {
           "name": "last_name",
           "options": {
+            "autocomplete": "family-name",
             "customValidationMessages": {
               "string.pattern.base": "Enter a valid last (family) name"
             }
@@ -2368,27 +2240,15 @@
           }
         },
         {
-          "name": "mWvTOY",
-          "options": {},
-          "type": "Html",
-          "content": "<br/><h2 class='govuk-heading-m'>How should we contact this person to provide them with advice and guidance?</h2>"
-        },
-        {
-          "name": "iulooD",
-          "options": {},
-          "type": "Para",
-          "content": "If the person is under 16 or unable to speak to us themselves, provide the contact details of a parent, carer or guardian."
-        },
-        {
           "name": "contact_directly",
           "options": {
-            "hideTitle": true,
             "customValidationMessages": {
               "any.required": "Select how we should contact this person"
             }
           },
           "type": "RadiosField",
-          "title": "How should we contact this person?",
+          "title": "How should we contact this person to provide them with advice and guidance?",
+          "hint": "If the person is under 16 or unable to speak to us themselves, provide the contact details of a parent, carer or guardian.",
           "list": "TQfrjB",
           "schema": {}
         },
@@ -2501,6 +2361,7 @@
         {
           "name": "first_name",
           "options": {
+            "autocomplete": "given-name",
             "customValidationMessages": {
               "string.pattern.base": "Enter a valid first (given) name"
             }
@@ -2514,6 +2375,7 @@
         {
           "name": "last_name",
           "options": {
+            "autocomplete": "family-name",
             "customValidationMessages": {
               "string.pattern.base": "Enter a valid last (family) name"
             }
@@ -2525,27 +2387,15 @@
           }
         },
         {
-          "name": "mWvTOY",
-          "options": {},
-          "type": "Html",
-          "content": "<br/><h2 class='govuk-heading-m'>How should we contact this person to provide them with advice and guidance?</h2>"
-        },
-        {
-          "name": "iulooD",
-          "options": {},
-          "type": "Para",
-          "content": "If the person is under 16 or unable to speak to us themselves, provide the contact details of a parent, carer or guardian."
-        },
-        {
           "name": "contact_directly",
           "options": {
-            "hideTitle": true,
             "customValidationMessages": {
               "any.required": "Select how we should contact this person"
             }
           },
           "type": "RadiosField",
-          "title": "How should we contact this person?",
+          "title": "How should we contact this person to provide them with advice and guidance?",
+          "hint": "If the person is under 16 or unable to speak to us themselves, provide the contact details of a parent, carer or guardian.",
           "list": "TQfrjB",
           "schema": {}
         },
@@ -2658,6 +2508,7 @@
         {
           "name": "first_name",
           "options": {
+            "autocomplete": "given-name",
             "customValidationMessages": {
               "string.pattern.base": "Enter a valid first (given) name"
             }
@@ -2671,6 +2522,7 @@
         {
           "name": "last_name",
           "options": {
+            "autocomplete": "family-name",
             "customValidationMessages": {
               "string.pattern.base": "Enter a valid last (family) name"
             }
@@ -2682,27 +2534,15 @@
           }
         },
         {
-          "name": "mWvTOY",
-          "options": {},
-          "type": "Html",
-          "content": "<br/><h2 class='govuk-heading-m'>How should we contact this person to provide them with advice and guidance?</h2>"
-        },
-        {
-          "name": "iulooD",
-          "options": {},
-          "type": "Para",
-          "content": "If the person is under 16 or unable to speak to us themselves, provide the contact details of a parent, carer or guardian."
-        },
-        {
           "name": "contact_directly",
           "options": {
-            "hideTitle": true,
             "customValidationMessages": {
               "any.required": "Select how we should contact this person"
             }
           },
           "type": "RadiosField",
-          "title": "How should we contact this person?",
+          "title": "How should we contact this person to provide them with advice and guidance?",
+          "hint": "If the person is under 16 or unable to speak to us themselves, provide the contact details of a parent, carer or guardian.",
           "list": "TQfrjB",
           "schema": {}
         },
@@ -2815,6 +2655,7 @@
         {
           "name": "first_name",
           "options": {
+            "autocomplete": "given-name",
             "customValidationMessages": {
               "string.pattern.base": "Enter a valid first (given) name"
             }
@@ -2828,6 +2669,7 @@
         {
           "name": "last_name",
           "options": {
+            "autocomplete": "family-name",
             "customValidationMessages": {
               "string.pattern.base": "Enter a valid last (family) name"
             }
@@ -2839,27 +2681,15 @@
           }
         },
         {
-          "name": "mWvTOY",
-          "options": {},
-          "type": "Html",
-          "content": "<br/><h2 class='govuk-heading-m'>How should we contact this person to provide them with advice and guidance?</h2>"
-        },
-        {
-          "name": "iulooD",
-          "options": {},
-          "type": "Para",
-          "content": "If the person is under 16 or unable to speak to us themselves, provide the contact details of a parent, carer or guardian."
-        },
-        {
           "name": "contact_directly",
           "options": {
-            "hideTitle": true,
             "customValidationMessages": {
               "any.required": "Select how we should contact this person"
             }
           },
           "type": "RadiosField",
-          "title": "How should we contact this person?",
+          "title": "How should we contact this person to provide them with advice and guidance?",
+          "hint": "If the person is under 16 or unable to speak to us themselves, provide the contact details of a parent, carer or guardian.",
           "list": "TQfrjB",
           "schema": {}
         },
@@ -2972,6 +2802,7 @@
         {
           "name": "first_name",
           "options": {
+            "autocomplete": "given-name",
             "customValidationMessages": {
               "string.pattern.base": "Enter a valid first (given) name"
             }
@@ -2985,6 +2816,7 @@
         {
           "name": "last_name",
           "options": {
+            "autocomplete": "family-name",
             "customValidationMessages": {
               "string.pattern.base": "Enter a valid last (family) name"
             }
@@ -2996,27 +2828,15 @@
           }
         },
         {
-          "name": "mWvTOY",
-          "options": {},
-          "type": "Html",
-          "content": "<br/><h2 class='govuk-heading-m'>How should we contact this person to provide them with advice and guidance?</h2>"
-        },
-        {
-          "name": "iulooD",
-          "options": {},
-          "type": "Para",
-          "content": "If the person is under 16 or unable to speak to us themselves, provide the contact details of a parent, carer or guardian."
-        },
-        {
           "name": "contact_directly",
           "options": {
-            "hideTitle": true,
             "customValidationMessages": {
               "any.required": "Select how we should contact this person"
             }
           },
           "type": "RadiosField",
-          "title": "How should we contact this person?",
+          "title": "How should we contact this person to provide them with advice and guidance?",
+          "hint": "If the person is under 16 or unable to speak to us themselves, provide the contact details of a parent, carer or guardian.",
           "list": "TQfrjB",
           "schema": {}
         },
@@ -3129,6 +2949,7 @@
         {
           "name": "first_name",
           "options": {
+            "autocomplete": "given-name",
             "customValidationMessages": {
               "string.pattern.base": "Enter a valid first (given) name"
             }
@@ -3142,6 +2963,7 @@
         {
           "name": "last_name",
           "options": {
+            "autocomplete": "family-name",
             "customValidationMessages": {
               "string.pattern.base": "Enter a valid last (family) name"
             }
@@ -3153,27 +2975,15 @@
           }
         },
         {
-          "name": "mWvTOY",
-          "options": {},
-          "type": "Html",
-          "content": "<br/><h2 class='govuk-heading-m'>How should we contact this person to provide them with advice and guidance?</h2>"
-        },
-        {
-          "name": "iulooD",
-          "options": {},
-          "type": "Para",
-          "content": "If the person is under 16 or unable to speak to us themselves, provide the contact details of a parent, carer or guardian."
-        },
-        {
           "name": "contact_directly",
           "options": {
-            "hideTitle": true,
             "customValidationMessages": {
               "any.required": "Select how we should contact this person"
             }
           },
           "type": "RadiosField",
-          "title": "How should we contact this person?",
+          "title": "How should we contact this person to provide them with advice and guidance?",
+          "hint": "If the person is under 16 or unable to speak to us themselves, provide the contact details of a parent, carer or guardian.",
           "list": "TQfrjB",
           "schema": {}
         },
@@ -3286,6 +3096,7 @@
         {
           "name": "first_name",
           "options": {
+            "autocomplete": "given-name",
             "customValidationMessages": {
               "string.pattern.base": "Enter a valid first (given) name"
             }
@@ -3299,6 +3110,7 @@
         {
           "name": "last_name",
           "options": {
+            "autocomplete": "family-name",
             "customValidationMessages": {
               "string.pattern.base": "Enter a valid last (family) name"
             }
@@ -3310,12 +3122,6 @@
           }
         },
         {
-          "name": "mWvTOY",
-          "options": {},
-          "type": "Html",
-          "content": "<br/><h2 class='govuk-heading-m'>How should we contact this person to provide them with advice and guidance?</h2>"
-        },
-        {
           "name": "iulooD",
           "options": {},
           "type": "Para",
@@ -3324,13 +3130,13 @@
         {
           "name": "contact_directly",
           "options": {
-            "hideTitle": true,
             "customValidationMessages": {
               "any.required": "Select how we should contact this person"
             }
           },
           "type": "RadiosField",
-          "title": "How should we contact this person?",
+          "title": "How should we contact this person to provide them with advice and guidance?",
+          "hint": "If the person is under 16 or unable to speak to us themselves, provide the contact details of a parent, carer or guardian.",
           "list": "TQfrjB",
           "schema": {}
         },
