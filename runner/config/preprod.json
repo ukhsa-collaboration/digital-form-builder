@@ -1,7 +1,8 @@
 {
-  "env": "preproduction",
-  "logPrettyPrint": false,
-  "enforceCsrf": true,
+  "env": "development",
+  "logPrettyPrint": true,
+  "enforceCsrf": false,
   "httpsCookieSecureAttribute": false,
-  "previewMode": false
+  "previewMode": true,
+  "isTest": true
 }
