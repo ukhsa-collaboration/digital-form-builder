@@ -1,80 +1,81 @@
-name: smoke tests
+# Used upstream only
 
-on:
-  workflow_call:
-    inputs:
-      build:
-        description: whether or not to build the images. Defaults to true
-        required: false
-        type: boolean
-        default: true
+# name: smoke tests
+# on:
+#   workflow_call:
+#     inputs:
+#       build:
+#         description: whether or not to build the images. Defaults to true
+#         required: false
+#         type: boolean
+#         default: true
 
-jobs:
-  smoke-test:
-    runs-on: ubuntu-latest
-    name: build app ${{inputs.app}}
-    outputs:
-      tag: ${{ steps.hashFile.outputs.tag }}
-      hash: ${{ steps.hashFile.outputs.hash }}
-    steps:
-      - uses: actions/checkout@v5
-      - name: Use Node.js
-        uses: actions/setup-node@v5
-        with:
-          node-version: "16.x"
+# jobs:
+#   smoke-test:
+#     runs-on: ubuntu-latest
+#     name: build app ${{inputs.app}}
+#     outputs:
+#       tag: ${{ steps.hashFile.outputs.tag }}
+#       hash: ${{ steps.hashFile.outputs.hash }}
+#     steps:
+#       - uses: actions/checkout@v5
+#       - name: Use Node.js
+#         uses: actions/setup-node@v5
+#         with:
+#           node-version: "16.x"
 
-      - name: Get yarn cache directory path
-        id: yarn-cache-dir-path
-        run: echo "::set-output name=dir::$(yarn config get cacheFolder)"
+#       - name: Get yarn cache directory path
+#         id: yarn-cache-dir-path
+#         run: echo "::set-output name=dir::$(yarn config get cacheFolder)"
 
-      - uses: actions/cache@v5
-        id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
-        with:
-          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-          key: ${{ runner.os }}-yarn-e2e-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-e2e
-            ${{ runner.os }}-yarn
+#       - uses: actions/cache@v5
+#         id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
+#         with:
+#           path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+#           key: ${{ runner.os }}-yarn-e2e-${{ hashFiles('**/yarn.lock') }}
+#           restore-keys: |
+#             ${{ runner.os }}-yarn-e2e
+#             ${{ runner.os }}-yarn
 
-      - name: Install dependencies
-        run: yarn
+#       - name: Install dependencies
+#         run: yarn
 
-      - name: Install e2e dependencies
-        run: yarn e2e install
+#       - name: Install e2e dependencies
+#         run: yarn e2e install
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v4
-        with:
-          buildkitd-config-inline: |
-            [registry."ghcr.io"]
+#       - name: Set up Docker Buildx
+#         uses: docker/setup-buildx-action@v4
+#         with:
+#           buildkitd-config-inline: |
+#             [registry."ghcr.io"]
 
-      - name: Login to GitHub Container Registry
-        uses: docker/login-action@v4
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+#       - name: Login to GitHub Container Registry
+#         uses: docker/login-action@v4
+#         with:
+#           registry: ghcr.io
+#           username: ${{ github.actor }}
+#           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: build containers
-        # if inputs.build is set to false, the latest images will be pulled from ghcr.io (see docker-compose.smoke.yml)
-        if: ${{ inputs.build }}
-        run: docker compose -f docker-compose.smoke.yml build designer runner
+#       - name: build containers
+#         # if inputs.build is set to false, the latest images will be pulled from ghcr.io (see docker-compose.smoke.yml)
+#         if: ${{ inputs.build }}
+#         run: docker compose -f docker-compose.smoke.yml build designer runner
 
-      - name: start containers
-        run: |
-          docker compose -f docker-compose.smoke.yml up redis designer -d
-          sleep 10
+#       - name: start containers
+#         run: |
+#           docker compose -f docker-compose.smoke.yml up redis designer -d
+#           sleep 10
 
-      - name: start runner
-        run: |
-          docker compose -f docker-compose.smoke.yml up runner -d
-          sleep 10
+#       - name: start runner
+#         run: |
+#           docker compose -f docker-compose.smoke.yml up runner -d
+#           sleep 10
 
-      - name: run smoke tests
-        run: yarn e2e cypress run
+#       - name: run smoke tests
+#         run: yarn e2e cypress run
 
-      - uses: actions/upload-artifact@v6
-        if: always()
-        with:
-          name: screenshots
-          path: e2e/cypress/screenshots
+#       - uses: actions/upload-artifact@v6
+#         if: always()
+#         with:
+#           name: screenshots
+#           path: e2e/cypress/screenshots
