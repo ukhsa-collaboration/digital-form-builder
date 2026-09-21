@@ -570,8 +570,8 @@
           "value": "had direct contact with, such as caring for them"
         },
         {
-          "text": "travelled with in the same vehicle",
-          "value": "travelled with in the same vehicle"
+          "text": "traveled with in the same vehicle",
+          "value": "traveled with in the same vehicle"
         }
       ]
     }
@@ -596,17 +596,7 @@
       "name": "OtherContacts",
       "title": "Other close contacts in the last 14 days",
       "hideTitle": true
-    },
-    { "name": "CloseContact1", "title": "Close contact 1", "hideTitle": true },
-    { "name": "CloseContact2", "title": "Close contact 2", "hideTitle": true },
-    { "name": "CloseContact3", "title": "Close contact 3", "hideTitle": true },
-    { "name": "CloseContact4", "title": "Close contact 4", "hideTitle": true },
-    { "name": "CloseContact5", "title": "Close contact 5", "hideTitle": true },
-    { "name": "CloseContact6", "title": "Close contact 6", "hideTitle": true },
-    { "name": "CloseContact7", "title": "Close contact 7", "hideTitle": true },
-    { "name": "CloseContact8", "title": "Close contact 8", "hideTitle": true },
-    { "name": "CloseContact9", "title": "Close contact 9", "hideTitle": true },
-    { "name": "CloseContact10", "title": "Close contact 10", "hideTitle": true }
+    }
   ],
   "conditions": [
     {
