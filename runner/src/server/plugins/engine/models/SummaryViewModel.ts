@@ -44,6 +44,7 @@ export class SummaryViewModel {
   fees: FeesModel | undefined;
   name: string | undefined;
   feedbackLink: string | undefined;
+  serviceName: string | undefined;
   phaseTag: string | undefined;
   declarationError: any; // TODO
   errors:
@@ -79,6 +80,7 @@ export class SummaryViewModel {
       def.feedback?.url ??
       ((def.feedback?.emailAddress && `mailto:${def.feedback?.emailAddress}`) ||
         config.feedbackLink);
+    this.serviceName = def.serviceName;
 
     const schema = model.makeFilteredSchema(state, relevantPages);
     const collatedRepeatPagesState = gatherRepeatPages(state);
