@@ -278,14 +278,14 @@ export interface FieldsetComponent {
     classes?: string;
     condition?: string;
     exposeToContext?: boolean;
-    validation?: ValidationRule[];
+    validation?: FieldsetValidationRule[];
   };
   schema?: {};
 }
 
-export type ValidationRule = MinimumRequired;
+type FieldsetValidationRule = MinimumRequired;
 
-export interface MinimumRequired {
+interface MinimumRequired {
   minRequired: number;
   fields: string[];
   errorMessage: string;
