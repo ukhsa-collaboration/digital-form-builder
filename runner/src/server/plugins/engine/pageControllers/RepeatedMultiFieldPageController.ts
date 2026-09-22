@@ -330,8 +330,9 @@ export class RepeatedMultiFieldPageController extends PageController {
     if (value === undefined || value === null || value === "") return "";
 
     // Selection fields store a value but display text — map it.
-    const listText = comp.list?.items?.find((i: any) => i.value === value)
-      ?.text;
+    const listText = comp.list?.items?.find(
+      (i: any) => i.value === value
+    )?.text;
     if (listText !== undefined) return listText;
 
     if (comp.dataType === "date" || comp.dataType === "monthYear") {
@@ -357,9 +358,7 @@ export class RepeatedMultiFieldPageController extends PageController {
     return String(value);
   }
 
-  toSummaryDetails(
-    state: FormSubmissionState
-  ): Array<{
+  toSummaryDetails(state: FormSubmissionState): Array<{
     name: string;
     title: string;
     index: number;
