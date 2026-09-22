@@ -213,10 +213,11 @@ export class SummaryViewModel {
       }
 
       sectionPages.forEach((page) => {
+        // Handles return values for components of RepatMultiFieldPageController
         if (page.isRepeatingFieldPageController) {
           const cards = page.toSummaryDetails(state);
 
-          cards.forEach((card) => {
+          cards.forEach((card, i) => {
             const url = redirectUrl(request, `/${model.basePath}${page.path}`, {
               returnUrl: redirectUrl(request, `/${model.basePath}/summary`),
               view: card.index,
@@ -225,11 +226,33 @@ export class SummaryViewModel {
             card.items.forEach((item) => {
               item.url = url;
             });
+            if (i === cards.length - 1) {
+              card.addRepeatFieldButton = {
+                // TODO: this url is probably wrong
+                href: redirectUrl(
+                  request,
+                  `/${model.basePath}${page.path}?view=summary`,
+                  {
+                    returnUrl: redirectUrl(
+                      request,
+                      `/${model.basePath}/summary`
+                    ),
+                  }
+                ),
+                canDelete: cards.length > 1,
+                label: card.title
+                  .split(" ")
+                  .slice(0, -1)
+                  .join(" ")
+                  .toLowerCase(),
+              };
+            }
           });
 
           repeatingCards.push(...cards);
           return;
         }
+
         for (const component of page.components.formItems) {
           const item = Item(
             request,

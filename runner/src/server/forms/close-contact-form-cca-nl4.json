@@ -114,7 +114,7 @@
       "controller": "./pages/start.js"
     },
     {
-      "title": "Have you received a positive test result for {{(srsContexts.diseaseInfo[d].name if srsContexts.diseaseInfo[d]) | default('bird (avian) flu', true) }}",
+      "title": "Have you received a positive test result for {{(srsContexts.diseaseInfo[d].name if srsContexts.diseaseInfo[d]) | default('bird (avian) flu', true) }}?",
       "path": "/completing-form-for",
       "components": [
         {
