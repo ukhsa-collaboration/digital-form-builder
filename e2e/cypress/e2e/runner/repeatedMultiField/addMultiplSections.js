@@ -18,13 +18,23 @@ Then(
 Then(
   "the summary card {string} has a {string} link to {string}",
   (cardTitle, linkText, hrefFragment) => {
+    const name = linkText.includes(cardTitle)
+      ? linkText
+      : `${linkText} ${cardTitle}`;
+
     cy.findByRole("heading", { name: cardTitle })
       .parents(".govuk-summary-card")
       .within(() => {
-        cy.findAllByRole("link", { name: new RegExp(linkText, "i") })
-          .first()
+        cy.findByRole("link", { name })
           .should("have.attr", "href")
-          .and("include", hrefFragment);
+          .then((href) => {
+            const actual = new URL(href, window.location.origin).searchParams;
+            const expected = new URLSearchParams(hrefFragment.split("?")[1]);
+
+            expected.forEach((value, key) => {
+              expect(actual.get(key), `query param "${key}"`).to.equal(value);
+            });
+          });
       });
   }
 );
@@ -43,6 +53,8 @@ When("I edit the summary card {string}", (cardTitle) => {
   cy.findByRole("heading", { name: cardTitle })
     .parents(".govuk-summary-card")
     .within(() => {
-      cy.findByRole("link", { name: /Change/i }).click();
+      cy.findByRole("link", {
+        name: new RegExp(`Change ${cardTitle}`, "i"),
+      }).click();
     });
 });
