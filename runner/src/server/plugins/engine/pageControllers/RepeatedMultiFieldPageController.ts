@@ -5,6 +5,7 @@ import { ComponentDef, RepeatingMultiFieldPage } from "@xgovformbuilder/model";
 import { FormComponent } from "../components";
 import { FormSubmissionState } from "server/plugins/engine/types";
 import nunjucks from "nunjucks";
+import SummaryCard from "../models/types";
 
 import joi from "joi";
 import { reach, clone } from "hoek";
@@ -362,18 +363,7 @@ export class RepeatedMultiFieldPageController extends PageController {
     return String(value);
   }
 
-  toSummaryDetails(state: FormSubmissionState): Array<{
-    name: string;
-    title: string;
-    index: number;
-    card: string;
-    items: Array<{
-      name: string;
-      label: string;
-      value: string;
-      url: string;
-    }>;
-  }> {
+  toSummaryDetails(state: FormSubmissionState): Array<SummaryCard> {
     const entries =
       (this.getPartialState(state) as Array<Record<string, unknown>>) ?? [];
 
