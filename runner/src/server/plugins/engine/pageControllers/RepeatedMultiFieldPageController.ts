@@ -194,14 +194,18 @@ export class RepeatedMultiFieldPageController extends PageController {
       if (query.view === "summary") {
         const state = await cacheService.getState(request);
 
-        if (request.payload?.next === "increment") {
+        //`next=increment` is sent by the "Add another" button in
+        // repeating-multi-field-summary.html. The "Continue" button sends no `next`,
+        // so it falls through to getNext(). Keep the value in sync with the template.
+        const payload = (request.payload ?? {}) as { next?: string }; // type casting for next
+        if (payload?.next === "increment") {
           const nextIndex = this.nextIndex(state); // next free slot
           return h.redirect(
             `/${this.model.basePath}${this.path}?view=${nextIndex}`
           );
         }
 
-        return h.redirect(this.getNext(request.payload));
+        return h.redirect(this.getNext(payload));
       }
 
       let validated: Record<string, unknown> = {};
