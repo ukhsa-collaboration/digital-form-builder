@@ -54,11 +54,18 @@ const storeRiskReportAddressEndpoint = http.post(
 
     const { udprn, uuid } = validated.value;
 
+    console.log(
+      "Mock /lookup request received with UDPRN:",
+      udprn,
+      "and UUID:",
+      uuid
+    );
+
     switch (udprn) {
       case undefined:
         return HttpResponse.json({}, { status: 500 });
 
-      case "20765140": {
+      case "23747871": {
         const response: LookupResponse = {
           success: true,
           data: {
