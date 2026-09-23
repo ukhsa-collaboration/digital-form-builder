@@ -37,8 +37,6 @@ export class MagicLinkController extends PageController {
         return h.redirect(`/${this.model.basePath}/expired`).code(302);
       }
 
-      await magicLinkCacheService.deleteMagicLinkRecord(email);
-
       if (!validation.isValid) {
         // Handle different invalid token cases
         switch (validation.reason) {
@@ -139,6 +137,16 @@ export class MagicLinkController extends PageController {
       if (!request.headers["user-agent"]) {
         return h.response("Ignored bot request").code(200);
       }
+      const { magicLinkCacheService } = request.services([]);
+
+      const isMagicLinkRecordActive = await magicLinkCacheService.searchForMagicLinkRecord(email);
+
+      if (!isMagicLinkRecordActive) {
+        return h.redirect(`/${this.model.basePath}/expired`).code(302);
+      }
+
+      await magicLinkCacheService.deleteMagicLinkRecord(email);
+
       if (validation.isValid) {
         const token = Jwt.token.generate(
           { email: request.query.email },
@@ -162,8 +170,6 @@ export class MagicLinkController extends PageController {
           isSameSite: "Lax",
         });
       }
-
-      const { magicLinkCacheService } = request.services([]);
 
       /* Populate the current session with the form state from the session that requested the magic link */
       await magicLinkCacheService.repopulateFormStateUponMagicLinkReturn(
