@@ -125,9 +125,8 @@ point per form, since the config is a plain key/value map.
 
    export const myServiceOnSubmit: Hook<void> = async (request, context) => {
      const { state } = context;
-     const { myBackendService } = request.service.getServices(
-       "myBackendService"
-     );
+     const { myBackendService } =
+       request.service.getServices("myBackendService");
 
      const response = await myBackendService.request("/submit", {
        method: "POST",
