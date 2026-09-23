@@ -2,7 +2,8 @@ import { RelativeUrl } from "./feedback";
 import { HapiRequest, HapiResponseToolkit } from "server/types";
 import { reach } from "@hapi/hoek";
 import _ from "lodash";
-import { AddressLookupConfig } from "@xgovformbuilder/model";
+import { FormSubmissionErrors } from "./types";
+import { AddressLookupConfig, FieldsetComponent } from "@xgovformbuilder/model";
 
 export const feedbackReturnInfoKey = "f_t";
 
@@ -150,4 +151,26 @@ export function getValidStateFromQueryParameters(
     },
     {}
   );
+}
+
+/**
+ * Link the errors to their first child field to allow scrolling to the error but still display error on fieldset
+ * @param errors Form submission errors
+ * @param fieldsetFields Fieldset components on page
+ */
+export function handleFieldsetErrors(
+  errors: FormSubmissionErrors,
+  fieldsetFields
+) {
+  for (const fieldset of fieldsetFields) {
+    const firstChild = fieldset.children?.items?.[0];
+    if (firstChild) {
+      for (const err of errors.errorList) {
+        if (err.name === fieldset.name) {
+          err.path = firstChild.name;
+          err.href = `#${firstChild.name}`;
+        }
+      }
+    }
+  }
 }

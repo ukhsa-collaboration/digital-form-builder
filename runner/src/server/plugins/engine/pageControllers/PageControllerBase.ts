@@ -6,6 +6,7 @@ import {
   feedbackReturnInfoKey,
   getBackLink,
   getReturnUrl,
+  handleFieldsetErrors,
   proceed,
   redirectTo,
 } from "../helpers";
@@ -758,6 +759,9 @@ export class PageControllerBase {
     const fileFields = this.getViewModel(formResult)
       .components.filter((component) => component.type === "FileUploadField")
       .map((component) => component.model);
+    const fieldsetFields = this.components.items.filter(
+      (component) => "type" in component && component.type === "Fieldset"
+    );
     const progress = state.progress || [];
     const { num } = request.query;
     const formData = this.getFormDataFromState(state, num - 1);
@@ -782,6 +786,9 @@ export class PageControllerBase {
       formResult.errors.errorList = reformattedErrors;
     }
 
+    if (fieldsetFields.length && formResult.errors) {
+      handleFieldsetErrors(formResult.errors, fieldsetFields);
+    }
     /**
      * other file related errors.. assuming file fields will be on their own page. This will replace all other errors from the page if not..
      */
@@ -822,7 +829,6 @@ export class PageControllerBase {
      */
     if (formResult.errors) {
       //TODO:- refactor to match POST REDIRECT GET pattern.
-
       return this.renderWithErrors(
         request,
         h,

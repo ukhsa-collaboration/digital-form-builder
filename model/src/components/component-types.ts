@@ -74,6 +74,19 @@ export const ComponentTypes: ComponentDef[] = [
     schema: {},
   },
   {
+    name: "Fieldset",
+    type: "Fieldset",
+    title: "Fieldset",
+    subType: "field",
+    hint: "",
+    components: [],
+    options: {
+      required: false,
+      optionalText: false,
+    },
+    schema: {},
+  },
+  {
     name: "DateTimePartsField",
     type: "DateTimePartsField",
     title: "Date time parts field",
