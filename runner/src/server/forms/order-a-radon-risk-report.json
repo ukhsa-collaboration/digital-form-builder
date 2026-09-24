@@ -596,8 +596,15 @@
                 "required": false,
                 "optionalText": false,
                 "customValidationMessages": {
-                  "string.empty": "Enter a phone number in the correct format",
-                  "string.pattern.base": "Enter a phone number in the correct format"
+                  "string.pattern.base": "Enter a phone number in the correct format",
+                  "INVALID_COUNTRY_CODE": "Enter a phone number in the correct format",
+                  "TOO_SHORT": "Enter a phone number in the correct format",
+                  "TOO_LONG": "Enter a phone number in the correct format",
+                  "IS_POSSIBLE_LOCAL_ONLY": "Enter a phone number in the correct format",
+                  "INVALID_LENGTH": "Enter a phone number in the correct format",
+                  "INVALID_PHONE_NUMBER": "Enter a phone number in the correct format",
+                  "TOO_SHORT_NSN": "Enter a phone number in the correct format",
+                  "TOO_SHORT_AFTER_IDD": "Enter a phone number in the correct format"
                 },
                 "exposeToContext": true
               },
