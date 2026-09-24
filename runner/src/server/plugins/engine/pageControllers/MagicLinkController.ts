@@ -145,31 +145,39 @@ export class MagicLinkController extends PageController {
         return h.redirect(`/${this.model.basePath}/expired`).code(302);
       }
 
+      if (!validation.isValid) {
+        switch (validation.reason) {
+          case "expired":
+            return h.redirect(`/${this.model.basePath}/expired`).code(302);
+          case "invalid_signature":
+            return h.redirect(`/${this.model.basePath}/incorrect-email`).code(302);
+          default:
+            return h.redirect(`/${this.model.basePath}/error`).code(302);
+        }
+      }
+
       await magicLinkCacheService.deleteMagicLinkRecord(email);
 
-      if (validation.isValid) {
-        const token = Jwt.token.generate(
-          { email: request.query.email },
-          {
-            key: this.model.def.jwtKey,
-            algorithm: config.initialisedSessionAlgorithm,
-          },
-          {
-            ttlSec: config.initialisedSessionTimeout / 1000,
-          }
-        );
+      const token = Jwt.token.generate(
+        { email: request.query.email },
+        {
+          key: this.model.def.jwtKey,
+          algorithm: config.initialisedSessionAlgorithm,
+        },
+        {
+          ttlSec: config.initialisedSessionTimeout / 1000,
+        }
+      );
 
-        // Set the JWT in a cookie
-        h.state("auth_token", token, {
-          ttl: 20 * 60 * 1000,
-          isSecure: true,
-          isHttpOnly: true,
-          encoding: "none",
-          clearInvalid: true,
-          path: "/",
-          isSameSite: "Lax",
-        });
-      }
+      h.state("auth_token", token, {
+        ttl: 20 * 60 * 1000,
+        isSecure: true,
+        isHttpOnly: true,
+        encoding: "none",
+        clearInvalid: true,
+        path: "/",
+        isSameSite: "Lax",
+      });
 
       /* Populate the current session with the form state from the session that requested the magic link */
       await magicLinkCacheService.repopulateFormStateUponMagicLinkReturn(
