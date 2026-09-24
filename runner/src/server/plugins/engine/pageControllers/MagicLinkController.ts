@@ -29,9 +29,8 @@ export class MagicLinkController extends PageController {
 
       //💣 Issue: As the program scales, this will need updating on a per-form basis.
       // Otherwise active on one form, will mark them active on all.
-      const isMagicLinkRecordActive = await magicLinkCacheService.searchForMagicLinkRecord(
-        email
-      );
+      const isMagicLinkRecordActive =
+        await magicLinkCacheService.searchForMagicLinkRecord(email);
 
       if (!isMagicLinkRecordActive) {
         return h.redirect(`/${this.model.basePath}/expired`).code(302);
@@ -51,13 +50,27 @@ export class MagicLinkController extends PageController {
         }
       }
 
+      if (this.model.def.skipSummary) {
+        this.showContinueButton = true;
+        const viewModel = this.getViewModel({});
+        viewModel.pageTitle = "Confirm your email address";
+        viewModel.components = [
+          {
+            type: "Para",
+            isFormComponent: false,
+            model: {
+              attributes: {},
+              content:
+                "Click continue to confirm your email address.",
+            },
+          },
+        ];
+        return h.view(this.viewName, viewModel);
+      }
+
       this.langFromRequest(request);
 
       const model = this.model;
-
-      if (this.model.def.skipSummary) {
-        return this.makePostRouteHandler()(request, h);
-      }
 
       const state = await cacheService.getState(request);
       const viewModel = new SummaryViewModel(this.title, model, state, request);
@@ -133,13 +146,13 @@ export class MagicLinkController extends PageController {
 
       const validation = await validateHmac(email, hmac, requestTime, hmacKey);
 
-      //Outlook safelink consumes magic link - This bypasses it
       if (!request.headers["user-agent"]) {
         return h.response("Ignored bot request").code(200);
       }
       const { magicLinkCacheService } = request.services([]);
 
-      const isMagicLinkRecordActive = await magicLinkCacheService.searchForMagicLinkRecord(email);
+      const isMagicLinkRecordActive =
+        await magicLinkCacheService.searchForMagicLinkRecord(email);
 
       if (!isMagicLinkRecordActive) {
         return h.redirect(`/${this.model.basePath}/expired`).code(302);
@@ -150,7 +163,9 @@ export class MagicLinkController extends PageController {
           case "expired":
             return h.redirect(`/${this.model.basePath}/expired`).code(302);
           case "invalid_signature":
-            return h.redirect(`/${this.model.basePath}/incorrect-email`).code(302);
+            return h
+              .redirect(`/${this.model.basePath}/incorrect-email`)
+              .code(302);
           default:
             return h.redirect(`/${this.model.basePath}/error`).code(302);
         }
