@@ -248,7 +248,10 @@
           "content": "<h2 class=\"govuk-heading-m\">Other ways to get in touch</h2><p class=\"govuk-body-m\"><p class=\"govuk-body-m\">Is your issue urgent? Would you prefer to call us? Find the appropriate phone number on our <a href=\"https://www.gov.uk/government/guidance/contact-radiation-protection-sciences\">contact us page</a>.</p>"
         }
       ],
-      "next": [{ "path": "/summary" }]
+      "next": [{ "path": "/summary" }],
+      "options": {
+        "customButtonText": "Submit"
+      }
     },
     {
       "title": "WHP Contact Us Placeholder",
@@ -278,7 +281,7 @@
           "options": {
             "condition": "ojQCvt"
           },
-          "content": "<p class=\"govuk-body-m\">The <b>{{service}}</b> team will review your enquiry and aim to respond within 5 days. If your enquiry is urgent, please <a href=\"https://www.gov.uk/government/guidance/contact-radiation-protection-sciences\" target=”_blank”>call us.</a></p>"
+          "content": "<p class=\"govuk-body-m\">The <b>{{service}}</b> team will review your enquiry and aim to respond within 5 working days. If your enquiry is urgent, please <a href=\"https://www.gov.uk/government/guidance/contact-radiation-protection-sciences\" target=”_blank”>call us.</a></p>"
         },
         {
           "name": "introNoService",
@@ -286,7 +289,7 @@
           "options": {
             "condition": "tvCQjo"
           },
-          "content": "<p class=\"govuk-body-m\">The team will review your enquiry and aim to respond within 5 days. If your enquiry is urgent, please <a href=\"https://www.gov.uk/government/guidance/contact-radiation-protection-sciences\" target=”_blank”>call us.</a></p>"
+          "content": "<p class=\"govuk-body-m\">The team will review your enquiry and aim to respond within 5 working days. If your enquiry is urgent, please <a href=\"https://www.gov.uk/government/guidance/contact-radiation-protection-sciences\" target=”_blank”>call us.</a></p>"
         },
         {
           "name": "tableService",
@@ -326,7 +329,7 @@
         {
           "text": "I work with radiation and need compliance or safety advice",
           "value": "I work with radiation and need compliance or safety advice",
-          "description": "Including Radiation Protection Advisor support, dangerous goods, non-ionising radiation, medical exposures, dental or environmental radiological assessments"
+          "description": "Including Radiation Protection Adviser support, dangerous goods, non-ionising radiation, medical exposures, dental or environmental radiological assessments"
         },
         {
           "text": "I want to enquire about training courses and facilities, or an existing course booking",
@@ -457,7 +460,7 @@
         {
           "text": "Dental X-ray Protection Services",
           "value": "Dental X-ray Protection Services",
-          "description": "Radiation Protection Advisor and medical physics expertise, quality assurance and equipment assessments for dental practices and X-ray equipment suppliers"
+          "description": "Radiation Protection Adviser and medical physics expertise, quality assurance and equipment assessments for dental practices and X-ray equipment suppliers"
         },
         {
           "text": "Environmental Radiological Assessment Services",

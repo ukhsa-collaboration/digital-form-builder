@@ -101,10 +101,10 @@ export class ContactDetailsCollection extends FormComponent {
       model
     );
 
-    // State schema (Pass 2) — shape only
     this.stateSchema = Joi.object({
       mobile_number: Joi.string().empty(["", null]),
       email_address: Joi.string().empty(["", null]).email(),
+      landline_number: Joi.string().empty(["", null]),
     });
 
     // Cross-field rule enforcing "at least one of mobile/email" when the component is required.
@@ -150,6 +150,7 @@ export class ContactDetailsCollection extends FormComponent {
     return {
       mobile_number: value.mobile_number ?? "",
       email_address: value.email_address ?? "",
+      landline_number: value.landline_number ?? "",
     };
   }
 
@@ -157,13 +158,14 @@ export class ContactDetailsCollection extends FormComponent {
     return {
       mobile_number: payload["mobile_number"] || null,
       email_address: payload["email_address"] || null,
+      landline_number: payload["landline_number"] || null,
     };
   }
 
   getDisplayStringFromState(state: FormSubmissionState) {
     const value = state[this.name];
     if (!value) return "";
-    return [value.mobile_number, value.email_address]
+    return [value.mobile_number, value.email_address, value.landline_number]
       .filter(Boolean)
       .join(", ");
   }
@@ -193,7 +195,7 @@ export class ContactDetailsCollection extends FormComponent {
     return {
       ...viewModel,
       fieldset: { legend: viewModel.label },
-      items: (componentViewModels as unknown) as ListItem[],
+      items: componentViewModels as unknown as ListItem[],
     };
   }
 }

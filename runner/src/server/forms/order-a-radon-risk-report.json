@@ -68,7 +68,7 @@
           "name": "introText",
           "options": {},
           "type": "Para",
-          "content": "<p class=\"govuk-body-m\">Use this service order a radon risk report for a property in the UK.</p><p class=\"govuk-body-m\">The report shows the likelihood, as a percentage (such as 3-5%), of a property having radon levels above the Action Level advised by the UK Health Security Agency.</p>"
+          "content": "<p class=\"govuk-body-m\">Use this service to order a radon risk report for a property in the UK.</p><p class=\"govuk-body-m\">The report shows the likelihood, as a percentage (such as 3-5%), of a property having radon levels above the Action Level advised by the UK Health Security Agency.</p>"
         },
         {
           "name": "actionLevelInset",
@@ -596,8 +596,15 @@
                 "required": false,
                 "optionalText": false,
                 "customValidationMessages": {
-                  "string.empty": "Enter a phone number in the correct format",
-                  "string.pattern.base": "Enter a phone number in the correct format"
+                  "string.pattern.base": "Enter a phone number in the correct format",
+                  "INVALID_COUNTRY_CODE": "Enter a phone number in the correct format",
+                  "TOO_SHORT": "Enter a phone number in the correct format",
+                  "TOO_LONG": "Enter a phone number in the correct format",
+                  "IS_POSSIBLE_LOCAL_ONLY": "Enter a phone number in the correct format",
+                  "INVALID_LENGTH": "Enter a phone number in the correct format",
+                  "INVALID_PHONE_NUMBER": "Enter a phone number in the correct format",
+                  "TOO_SHORT_NSN": "Enter a phone number in the correct format",
+                  "TOO_SHORT_AFTER_IDD": "Enter a phone number in the correct format"
                 },
                 "exposeToContext": true
               },

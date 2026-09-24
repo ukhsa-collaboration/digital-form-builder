@@ -11,10 +11,8 @@ export async function retryPay(request: HapiRequest, h: HapiResponseToolkit) {
   const form: FormModel = request.server.app.forms[request.params.id];
   const feeOptions = form.feeOptions;
 
-  const {
-    allowSubmissionWithoutPayment = true,
-    customPayErrorMessage,
-  } = feeOptions;
+  const { allowSubmissionWithoutPayment = true, customPayErrorMessage } =
+    feeOptions;
 
   if (shouldShowPayErrorPage) {
     return h
