@@ -36,9 +36,9 @@ export class TelephoneNumberField extends FormComponent {
       componentSchema = componentSchema.min(schema.min);
     }
 
-    if (options.isInternational) {
+    if (options.isInternationalOnly) {
       componentSchema = componentSchema.custom(internationalPhoneValidator);
-    } else if (options.isUK) {
+    } else if (options.isUKOnly) {
       componentSchema = componentSchema.custom(ukPhoneValidator);
     } else {
       componentSchema = componentSchema.custom(ukAndInternationalValidator);
@@ -47,12 +47,12 @@ export class TelephoneNumberField extends FormComponent {
     componentSchema = componentSchema.messages({
       "string.pattern.base": DEFAULT_MESSAGE,
       "string.empty": DEFAULT_MESSAGE,
-      INVALID_COUNTRY_CODE: `${def.title} failed because invalid country calling code`,
-      NOT_A_NUMBER: `${def.title} failed because the string supplied did not seem to be a phone number`,
-      TOO_SHORT_AFTER_IDD: `${def.title} failed because phone number too short after IDD`,
-      TOO_SHORT_NSN: `${def.title} failed because the string supplied is too short to be a phone number`,
-      TOO_SHORT: `${def.title} failed because the string supplied is too short to be a phone number`,
-      TOO_LONG: `${def.title} failed because the string supplied is too long to be a phone number`,
+      INVALID_COUNTRY_CODE: `${def.title} is not valid because invalid country calling code`,
+      NOT_A_NUMBER: `${def.title} is not valid because the string supplied did not seem to be a phone number`,
+      TOO_SHORT_AFTER_IDD: `${def.title} is not valid because phone number too short after IDD`,
+      TOO_SHORT_NSN: `${def.title} is not valid because the string supplied is too short to be a phone number`,
+      TOO_SHORT: `${def.title} is not valid because the string supplied is too short to be a phone number`,
+      TOO_LONG: `${def.title} is not valid because the string supplied is too long to be a phone number`,
       IS_POSSIBLE_LOCAL_ONLY: DEFAULT_MESSAGE,
       INVALID_LENGTH: DEFAULT_MESSAGE,
       INVALID_NUMBER: DEFAULT_MESSAGE,

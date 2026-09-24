@@ -14,7 +14,7 @@ suite("Telephone number field", () => {
       title: "My component",
       hint: "a hint",
       options: {
-        isUK: true,
+        isUKOnly: true,
       },
     };
     const { schema } = new TelephoneNumberField(def, {});
@@ -28,39 +28,39 @@ suite("Telephone number field", () => {
     test("2. Parsing error: Fails parseAndKeepRawInput", () => {
       // Invalid country calling code
       expect(schema.validate("+999 20 8738 935").error.message).to.equal(
-        "My component failed because invalid country calling code"
+        "My component is not valid because invalid country calling code"
       );
 
       // Not a number
       expect(schema.validate("+---").error.message).to.equal(
-        "My component failed because the string supplied did not seem to be a phone number"
+        "My component is not valid because the string supplied did not seem to be a phone number"
       );
 
       // Too short after IDD
       expect(schema.validate("0044-----").error.message).to.equal(
-        "My component failed because phone number too short after IDD"
+        "My component is not valid because phone number too short after IDD"
       );
 
       // Too short to parse
       expect(schema.validate("+44 0").error.message).to.equal(
-        "My component failed because the string supplied is too short to be a phone number"
+        "My component is not valid because the string supplied is too short to be a phone number"
       );
 
       // Too long to parse
       expect(schema.validate("+44 20 8738 9353111111").error.message).to.equal(
-        "My component failed because the string supplied is too long to be a phone number"
+        "My component is not valid because the string supplied is too long to be a phone number"
       );
     });
 
     test("3. Not possible: fails isPossibleNumberWithReason", () => {
       // Too short to be possible
       expect(schema.validate("+44 20").error.message).to.equal(
-        "My component failed because the string supplied is too short to be a phone number"
+        "My component is not valid because the string supplied is too short to be a phone number"
       );
 
       // Too long to be possible
       expect(schema.validate("+44 20 8738 93531").error.message).to.equal(
-        "My component failed because the string supplied is too long to be a phone number"
+        "My component is not valid because the string supplied is too long to be a phone number"
       );
 
       // Possible local only
@@ -97,7 +97,7 @@ suite("Telephone number field", () => {
       title: "My component",
       hint: "a hint",
       options: {
-        isInternational: true,
+        isInternationalOnly: true,
       },
     };
     const { schema } = new TelephoneNumberField(def, {});
@@ -109,43 +109,43 @@ suite("Telephone number field", () => {
     test("2. Parsing error: Fails parseAndKeepRawInput", () => {
       // Invalid country calling code
       expect(schema.validate("+999 20 8738 935").error.message).to.equal(
-        "My component failed because invalid country calling code"
+        "My component is not valid because invalid country calling code"
       );
       expect(schema.validate("(020) 8738 9353").error.message).to.equal(
-        "My component failed because invalid country calling code"
+        "My component is not valid because invalid country calling code"
       );
       expect(schema.validate("02087389353").error.message).to.equal(
-        "My component failed because invalid country calling code"
+        "My component is not valid because invalid country calling code"
       );
       expect(schema.validate("0044-----").error.message).to.equal(
-        "My component failed because invalid country calling code"
+        "My component is not valid because invalid country calling code"
       );
 
       // Not a number
       expect(schema.validate("+---").error.message).to.equal(
-        "My component failed because the string supplied did not seem to be a phone number"
+        "My component is not valid because the string supplied did not seem to be a phone number"
       );
 
       // Too short to parse
       expect(schema.validate("+44 0").error.message).to.equal(
-        "My component failed because the string supplied is too short to be a phone number"
+        "My component is not valid because the string supplied is too short to be a phone number"
       );
 
       // Too long to parse
       expect(schema.validate("+44 20 8738 9353111111").error.message).to.equal(
-        "My component failed because the string supplied is too long to be a phone number"
+        "My component is not valid because the string supplied is too long to be a phone number"
       );
     });
 
     test("3. Not possible: fails isPossibleNumberWithReason", () => {
       // Too short to be possible
       expect(schema.validate("+375 20").error.message).to.equal(
-        "My component failed because the string supplied is too short to be a phone number"
+        "My component is not valid because the string supplied is too short to be a phone number"
       );
 
       // Too long to be possible
       expect(schema.validate("+61 20 8738 9353123").error.message).to.equal(
-        "My component failed because the string supplied is too long to be a phone number"
+        "My component is not valid because the string supplied is too long to be a phone number"
       );
 
       // Possible local only
@@ -194,39 +194,39 @@ suite("Telephone number field", () => {
     test("2. Parsing error: Fails parseAndKeepRawInput", () => {
       // Invalid country calling code
       expect(schema.validate("+999 20 8738 935").error.message).to.equal(
-        "My component failed because invalid country calling code"
+        "My component is not valid because invalid country calling code"
       );
 
       // Not a number
       expect(schema.validate("+---").error.message).to.equal(
-        "My component failed because the string supplied did not seem to be a phone number"
+        "My component is not valid because the string supplied did not seem to be a phone number"
       );
 
       // Too short after IDD
       expect(schema.validate("0044-----").error.message).to.equal(
-        "My component failed because phone number too short after IDD"
+        "My component is not valid because phone number too short after IDD"
       );
 
       // Too short to parse
       expect(schema.validate("+44 0").error.message).to.equal(
-        "My component failed because the string supplied is too short to be a phone number"
+        "My component is not valid because the string supplied is too short to be a phone number"
       );
 
       // Too long to parse
       expect(schema.validate("+44 20 8738 9353111111").error.message).to.equal(
-        "My component failed because the string supplied is too long to be a phone number"
+        "My component is not valid because the string supplied is too long to be a phone number"
       );
     });
 
     test("3. Not possible: fails isPossibleNumberWithReason", () => {
       // Too short to be possible
       expect(schema.validate("+44 20").error.message).to.equal(
-        "My component failed because the string supplied is too short to be a phone number"
+        "My component is not valid because the string supplied is too short to be a phone number"
       );
 
       // Too long to be possible
       expect(schema.validate("+44 20 8738 93531").error.message).to.equal(
-        "My component failed because the string supplied is too long to be a phone number"
+        "My component is not valid because the string supplied is too long to be a phone number"
       );
 
       // Possible local only
@@ -262,7 +262,7 @@ suite("Telephone number field", () => {
       title: "My component",
       hint: "a hint",
       options: {
-        isUK: true,
+        isUKOnly: true,
         customValidationMessages: {
           "string.empty": "Custom empty message",
           NON_UK_NUMBER: "Custom non uk number message",

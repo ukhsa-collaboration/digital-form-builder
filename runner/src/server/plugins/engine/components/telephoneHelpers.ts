@@ -55,14 +55,14 @@ function formatPhoneNumber(phone: PhoneNumber, format: string) {
 function parseAndValidatePhoneNumber(
   value: string,
   _helpers: joi.CustomHelpers,
-  isInternational: boolean = false,
-  isUk: boolean = false
+  isInternationalOnly: boolean = false,
+  isUKOnly: boolean = false
 ) {
   let phone;
   try {
     // Default to GB as when parsing a phone number, no region code makes the dialling code required
     // The parsing method will self correct the region metadata provided region does not match
-    const parseRegion = isInternational ? "" : "GB";
+    const parseRegion = isInternationalOnly ? "" : "GB";
     phone = phoneUtil.parseAndKeepRawInput(value, parseRegion);
   } catch (error) {
     return _helpers.error(getPhoneParseError(error));
@@ -80,7 +80,7 @@ function parseAndValidatePhoneNumber(
   }
 
   // Check if from UK regions
-  if (isUk) {
+  if (isUKOnly) {
     const UK_REGIONS = ["GB", "JE", "GG", "IM"];
     const code = phoneUtil.getRegionCodeForNumber(phone);
     if (code === undefined || !UK_REGIONS.includes(code)) {
@@ -107,9 +107,4 @@ export function ukAndInternationalValidator(
   _helpers: joi.CustomHelpers
 ) {
   return parseAndValidatePhoneNumber(value, _helpers);
-}
-
-export function old(value: string, _helpers: joi.CustomHelpers) {
-  const phone = phoneUtil.parseAndKeepRawInput(value);
-  return phoneUtil.format(phone, PhoneNumberFormat.INTERNATIONAL);
 }
