@@ -5,7 +5,7 @@ import { feedbackReturnInfoKey, redirectUrl } from "../helpers";
 import { decodeFeedbackContextInfo } from "../feedback";
 import { webhookSchema } from "server/schemas/webhookSchema";
 import { FormSubmissionState } from "../types";
-import { FEEDBACK_CONTEXT_ITEMS, WebhookData } from "./types";
+import { FEEDBACK_CONTEXT_ITEMS, SummaryCard, WebhookData } from "./types";
 import { FeesModel } from "server/plugins/engine/models/submission";
 import { HapiRequest } from "src/server/types";
 import { InitialiseSessionOptions } from "server/plugins/initialiseSession/types";
@@ -182,6 +182,7 @@ export class SummaryViewModel {
 
     [undefined, ...model.sections].forEach((section) => {
       const items: any[] = [];
+      const repeatingCards: SummaryCard[] = [];
       const itemNames = new Set<string>();
 
       let sectionState = section ? state[section.name] || {} : state;
@@ -212,6 +213,23 @@ export class SummaryViewModel {
       }
 
       sectionPages.forEach((page) => {
+        if (page.isRepeatingFieldPageController) {
+          const cards = page.toSummaryDetails(state);
+
+          cards.forEach((card) => {
+            const url = redirectUrl(request, `/${model.basePath}${page.path}`, {
+              returnUrl: redirectUrl(request, `/${model.basePath}/summary`),
+              view: card.index,
+            });
+            card.card = url;
+            card.items.forEach((item) => {
+              item.url = url;
+            });
+          });
+
+          repeatingCards.push(...cards);
+          return;
+        }
         for (const component of page.components.formItems) {
           const item = Item(
             request,
@@ -268,6 +286,7 @@ export class SummaryViewModel {
           });
         }
       }
+      details.push(...repeatingCards);
     });
 
     return details;
