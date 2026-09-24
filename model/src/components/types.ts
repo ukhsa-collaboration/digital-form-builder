@@ -220,7 +220,8 @@ export interface TelephoneNumberFieldComponent extends TextFieldBase {
   type: "TelephoneNumberField";
   options: TextFieldBase["options"] & {
     customValidationMessage?: string;
-    isInternational?: boolean;
+    isInternationalOnly?: boolean;
+    isUKOnly?: boolean;
   };
 }
 
