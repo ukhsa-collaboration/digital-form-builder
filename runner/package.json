@@ -25,6 +25,9 @@
     "a11y": "node test/audit/components && node lighthouse",
     "symlink-env": "./bin/symlink-config",
     "type-check": "tsc --noEmit",
+    "build:e2e": "yarn babel-build",
+    "test:e2e": "yarn build:e2e && playwright test",
+    "test:e2e:ui": "playwright test --ui",
     "generate-docs": "typedoc src --tsconfig tsconfig.json --out ../docs/runner/typedoc --exclude '**/*+(index|.test|.jest).ts'"
   },
   "repository": {
@@ -104,6 +107,7 @@
     "@hapi/code": "8.0.1",
     "@hapi/lab": "24.0.0",
     "@oclif/core": "^1.19.0",
+    "@playwright/test": "^1.63.0",
     "@types/hapi": "^18.0.7",
     "@types/hapi__yar": "^10.1.1",
     "@types/hoek": "^4.1.4",

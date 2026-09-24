@@ -32,6 +32,8 @@ docs/**/typedoc
 # Testing
 **/test-results/*
 **/test-coverage/*
+**/playwright-report/*
+**/playwright/.cache/*
 unit-test.html
 .nyc_output
 .lighthouseci
