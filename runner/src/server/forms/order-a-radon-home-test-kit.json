@@ -192,7 +192,7 @@
           "path": "/property-address-confirm",
           "condition": "hasMatchedPropertyAddressCondition"
         },
-        { "path": "/gas-test-kit-select-an-address" },
+        { "path": "/gas-test-kit-select-property-address" },
         {
           "path": "/property-address-not-found",
           "condition": "noPropertyAddressesCondition"
@@ -257,7 +257,7 @@
       ]
     },
     {
-      "path": "/gas-test-kit-select-an-address",
+      "path": "/gas-test-kit-select-property-address",
       "title": "Select an address",
       "controller": "SelectAnAddressPageController",
       "components": [
@@ -414,7 +414,7 @@
           "path": "/property-address-confirm",
           "condition": "hasMatchedPropertyAddressCondition"
         },
-        { "path": "/gas-test-kit-select-an-address" },
+        { "path": "/gas-test-kit-select-property-address" },
         {
           "path": "/property-address-manual-not-found",
           "condition": "noPropertyAddressesCondition"
@@ -644,7 +644,7 @@
           "content": "<p class=\"govuk-body-m\"><h2 class=\"govuk-heading-m\">Is this the address you want your radon gas test results to?</h2></p>"
         },
         {
-          "name": "resultsAddressConfirmation",
+          "name": "resultAddressConfirmation",
           "type": "YesNoField",
           "title": "Is this the address you want your radon gas test results to?",
           "options": { "hideTitle": true, "exposeToContext": true }
@@ -665,134 +665,11 @@
         },
         {
           "path": "/results-recipient",
-          "condition": "correctKitAddressIncorrectResultsAddress"
+          "condition": "correctKitAddressIncorrectResultAddress"
         }
       ]
     },
-    {
-      "path": "/results-recipient",
-      "title": "Who is the recipient of radon gas test results",
-      "components": [
-        {
-          "name": "resultsTitle",
-          "type": "RadiosField",
-          "title": "Title",
-          "options": {
-            "exposeToContext": true,
-            "customValidationMessages": {
-              "any.required": "Select the title of the recipient of the radon gas test results"
-            },
-            "divider": true
-          },
-          "list": "titleList"
-        },
-        {
-          "name": "resultsFirstName",
-          "type": "TextField",
-          "title": "First name",
-          "options": {
-            "customValidationMessages": {
-              "string.empty": "Enter the first name of the recipient of the radon gas test results"
-            },
-            "exposeToContext": true
-          }
-        },
-        {
-          "name": "resultsLastName",
-          "type": "TextField",
-          "title": "Last Name",
-          "options": {
-            "customValidationMessages": {
-              "string.empty": "Enter the last name of the recipient of the radon gas test results"
-            },
-            "exposeToContext": true
-          }
-        }
-      ],
-      "next": [{ "path": "/results-address" }]
-    },
-    {
-      "path": "/results-address",
-      "title": "What address do you want your radon gas test results to be delivered to?",
-      "components": [
-        {
-          "name": "addressType",
-          "type": "HiddenField",
-          "options": {
-            "exposeToContext": true,
-            "value": "resultsAddress"
-          }
-        },
-        {
-          "name": "resultsAddress_addressLine1Lookup",
-          "type": "TextField",
-          "title": "Address Line 1",
-          "options": {
-            "customValidationMessages": {
-              "string.empty": "Enter address line 1, typically the building and street"
-            },
-            "exposeToContext": true
-          }
-        },
-        {
-          "name": "resultsAddress_addressLine2Lookup",
-          "type": "TextField",
-          "title": "Address Line 2",
-          "options": {
-            "required": false,
-            "exposeToContext": true
-          }
-        },
-        {
-          "name": "resultsAddress_townLookup",
-          "type": "TextField",
-          "title": "Town or city",
-          "options": {
-            "customValidationMessages": {
-              "string.empty": "Enter town or city"
-            },
-            "exposeToContext": true
-          }
-        },
-        {
-          "name": "resultsAddress_countyLookup",
-          "type": "TextField",
-          "title": "County",
-          "options": {
-            "required": false,
-            "exposeToContext": true
-          }
-        },
-        {
-          "name": "resultsAddress_postcodeLookup",
-          "type": "TextField",
-          "title": "Postcode",
-          "schema": {
-            "max": 10,
-            "regex": "^[\\s]*[A-z]{1,2}[0-9][A-z0-9]?[\\s]*[0-9]{1,2}[ABD-hJLNP-uW-z]{2}[\\s]*$"
-          },
-          "options": {
-            "customValidationMessages": {
-              "string.empty": "Enter postcode",
-              "string.pattern.base": "Enter a full UK postcode",
-              "string.max": "Postcode must be less than 10 characters"
-            },
-            "autocomplete": "postal-code",
-            "exposeToContext": true,
-            "format": {
-              "trim": true,
-              "case": "upper"
-            }
-          }
-        }
-      ],
-      "options": {
-        "hiddenFields": ["addressType"],
-        "disabledChangeFields": ["addressType"]
-      },
-      "controller": "ManualAddressPageController",
-      "next": [{ "path": "/summary" }]
-    },
+
     {
       "path": "/kit-recipient",
       "title": "Who is the recipient of the kit?",
@@ -833,11 +710,208 @@
           }
         }
       ],
-      "next": [{ "path": "/kit-address" }]
+      "next": [{ "path": "/gas-test-kit-kit-address-postcode" }]
+    },
+
+    {
+      "path": "/gas-test-kit-kit-address-postcode",
+      "title": "What address do you want your kit to be delivered to?",
+      "controller": "FindAnAddressPageController",
+      "components": [
+        {
+          "name": "kitAddress_postcodeLookup",
+          "type": "TextField",
+          "title": "Postcode",
+          "hint": "For example, AA3 1AB",
+          "schema": {
+            "max": 10,
+            "regex": "^[\\s]*[A-z]{1,2}[0-9][A-z0-9]?[\\s]*[0-9]{1,2}[ABD-hJLNP-uW-z]{2}[\\s]*$"
+          },
+          "options": {
+            "customValidationMessages": {
+              "string.empty": "Enter postcode",
+              "string.pattern.base": "Enter a full UK postcode",
+              "string.max": "Postcode must be less than 10 characters"
+            },
+            "autocomplete": "postal-code",
+            "exposeToContext": true,
+            "format": {
+              "trim": true,
+              "case": "upper"
+            }
+          }
+        },
+        {
+          "name": "addressType",
+          "type": "HiddenField",
+          "options": {
+            "exposeToContext": true,
+            "value": "kitAddress"
+          }
+        },
+        {
+          "name": "kitAddress_buildingLookup",
+          "type": "TextField",
+          "title": "Building number or name",
+          "hint": "For example, 15 or Prospect cottage",
+          "schema": { "max": 100 },
+          "options": {
+            "customValidationMessages": {
+              "string.empty": "Enter building number or name",
+              "string.max": "Building name must be less than 100 characters"
+            },
+            "exposeToContext": true
+          }
+        }
+      ],
+      "options": {
+        "hiddenFields": ["addressType"],
+        "disabledChangeFields": ["addressType"],
+        "customButtonText": "Find address"
+      },
+      "componentsAfter": [
+        {
+          "type": "Html",
+          "content": "<br><a href=\"kit-address-manual{% if returnUrl %}?returnUrl={{ returnUrl | urlencode }}{% endif %}\">Enter address manually</a>"
+        }
+      ],
+      "next": [
+        {
+          "path": "/kit-address-confirm",
+          "condition": "hasMatchedKitAddressCondition"
+        },
+        { "path": "/gas-test-kit-select-kit-address" },
+        {
+          "path": "/kit-address-not-found",
+          "condition": "noKitAddressesCondition"
+        }
+      ]
     },
     {
-      "path": "/kit-address",
+      "path": "/kit-address-confirm",
+      "title": "Is this the correct address?",
+      "components": [
+        {
+          "name": "kitAddress_matchedAddressDisplay",
+          "type": "DisplayAddress",
+          "content": "{{ kitAddress_matchedAddress.address }}"
+        },
+        {
+          "name": "addressType",
+          "type": "HiddenField",
+          "options": {
+            "exposeToContext": true,
+            "value": "kitAddress"
+          }
+        },
+        {
+          "name": "kitAddress_addressSelection",
+          "type": "HiddenField",
+          "title": "Property address"
+        },
+        {
+          "name": "kitAddress_isCorrectAddress",
+          "type": "YesNoField",
+          "title": "Is this the correct address?",
+          "options": {
+            "hideTitle": true,
+            "customValidationMessages": {
+              "any.required": "Select Yes if this is the correct address"
+            }
+          }
+        }
+      ],
+      "controller": "SelectAnAddressPageController",
+      "options": {
+        "changePath": "/gas-test-kit-kit-address-postcode"
+      },
+      "componentsAfter": [
+        {
+          "name": "enterAddressManuallyLink",
+          "type": "Html",
+          "content": "<br><a href=\"kit-address-manual{% if returnUrl %}?returnUrl={{ returnUrl | urlencode }}{% endif %}\">Enter address manually</a>"
+        }
+      ],
+      "next": [
+        {
+          "path": "/kit-address-results-confirm",
+          "condition": "isCorrectKitAddress"
+        },
+        {
+          "path": "/kit-address-not-found",
+          "condition": "kitAddressOnlyOneAddressCondition"
+        },
+        { "path": "/gas-test-kit-kit-address-postcode" }
+      ]
+    },
+    {
+      "path": "/gas-test-kit-select-kit-address",
+      "title": "Select an address",
+      "controller": "SelectAnAddressPageController",
+      "components": [
+        {
+          "type": "Para",
+          "content": "{{ kitAddress_numberOfAddresses }} addresses found for '{{ kitAddress_postcodeLookup }}'"
+        },
+        {
+          "name": "searchAgain",
+          "options": {},
+          "type": "Html",
+          "content": "<p class=\"govuk-body-m\"><a href=\"gas-test-kit-kit-address-postcode{% if returnUrl %}?returnUrl={{ returnUrl | urlencode }}{% endif %}\">Change your search</a> if the address you're looking for is not listed.</p><p class=\"govuk-body-m\"><a href=\"kit-address-manual{% if returnUrl %}?returnUrl={{ returnUrl | urlencode }}{% endif %}\">Enter address manually</a></p>"
+        },
+        {
+          "name": "addressType",
+          "type": "HiddenField",
+          "options": {
+            "exposeToContext": true,
+            "value": "kitAddress"
+          }
+        },
+        {
+          "name": "kitAddress_addressSelection",
+          "type": "RadiosField",
+          "title": "Property address",
+          "list": "addressesList",
+          "options": {
+            "hideTitle": true,
+            "customValidationMessages": {
+              "any.required": "Select an address"
+            }
+          }
+        }
+      ],
+      "next": [
+        {
+          "path": "/kit-address-confirm"
+        }
+      ]
+    },
+    {
+      "path": "/kit-address-not-found",
+      "title": "No addresses found for ‘{{ kitAddress_postcodeLookup }}’ and ‘{{ kitAddress_buildingLookup }}’",
+      "components": [
+        {
+          "type": "Para",
+          "content": "Check your postcode and building number or name for mistakes, then try again."
+        },
+        {
+          "type": "Para",
+          "content": "Check you have entered the postcode and building number or name correctly, then try again."
+        },
+        {
+          "type": "Html",
+          "content": "<p class=\"govuk-body-m\"><a href=\"gas-test-kit-kit-address-postcode{% if returnUrl %}?returnUrl={{ returnUrl | urlencode }}{% endif %}\">Change your search</a> or <a href=\"kit-address-manual{% if returnUrl %}?returnUrl={{ returnUrl | urlencode }}{% endif %}\">enter address manually</a></p>"
+        }
+      ],
+      "options": {
+        "hideContinueButton": true
+      },
+      "next": [{ "path": "/gas-test-kit-kit-address-postcode" }]
+    },
+    {
+      "path": "/kit-address-manual",
       "title": "What address do you want your kit to be delivered to?",
+      "controller": "FindAnAddressPageController",
       "components": [
         {
           "name": "addressType",
@@ -853,6 +927,8 @@
           "title": "Address Line 1",
           "options": {
             "customValidationMessages": {
+              "any.required": "Enter address line 1, typically the building and street",
+              "any.only": "Enter address line 1, typically the building and street",
               "string.empty": "Enter address line 1, typically the building and street"
             },
             "exposeToContext": true
@@ -873,6 +949,8 @@
           "title": "Town or city",
           "options": {
             "customValidationMessages": {
+              "any.required": "Enter town or city",
+              "any.only": "Enter town or city",
               "string.empty": "Enter town or city"
             },
             "exposeToContext": true
@@ -891,6 +969,7 @@
           "name": "kitAddress_postcodeLookup",
           "type": "TextField",
           "title": "Postcode",
+          "hint": "For example, AA3 1AB",
           "schema": {
             "max": 10,
             "regex": "^[\\s]*[A-z]{1,2}[0-9][A-z0-9]?[\\s]*[0-9]{1,2}[ABD-hJLNP-uW-z]{2}[\\s]*$"
@@ -902,11 +981,11 @@
               "string.max": "Postcode must be less than 10 characters"
             },
             "autocomplete": "postal-code",
-            "exposeToContext": true,
             "format": {
               "trim": true,
               "case": "upper"
-            }
+            },
+            "exposeToContext": true
           }
         }
       ],
@@ -914,15 +993,37 @@
         "hiddenFields": ["addressType"],
         "disabledChangeFields": ["addressType"]
       },
-      "controller": "ManualAddressPageController",
       "next": [
         {
-          "path": "/kit-address-results-confirm",
-          "condition": "incorrectKitAddressIncorrectResultsAddress"
+          "path": "/kit-address-confirm",
+          "condition": "hasMatchedKitAddressCondition"
         },
-        { "path": "/summary" }
+        { "path": "/gas-test-kit-select-kit-address" },
+        {
+          "path": "/kit-address-manual-not-found",
+          "condition": "noKitAddressesCondition"
+        }
       ]
     },
+    {
+      "path": "/kit-address-manual-not-found",
+      "title": "We cannot find your address",
+      "options": {
+        "hideContinueButton": true
+      },
+      "components": [
+        {
+          "type": "Para",
+          "content": "No address found for {{ kitAddress_addressLine1Lookup }}{% if kitAddress_addressLine2Lookup %}, {{ kitAddress_addressLine2Lookup }}{% endif %}{% if kitAddress_townLookup %}, {{ kitAddress_townLookup }}{% endif %}{% if kitAddress_countyLookup %}, {{ kitAddress_countyLookup }}{% endif %}{% if kitAddress_postcodeLookup %}, {{ kitAddress_postcodeLookup }}{% endif %}<br><br>Check your address for mistakes, then try again.<br><br>Check you have entered the address correctly, then try again."
+        },
+        {
+          "type": "Html",
+          "content": "<p class=\"govuk-body-m\"><a href=\"gas-test-kit-kit-address-postcode{% if returnUrl %}?returnUrl={{ returnUrl | urlencode }}{% endif %}\">Change your search</a> or <a href=\"kit-address-manual{% if returnUrl %}?returnUrl={{ returnUrl | urlencode }}{% endif %}\">enter address manually</a></p>"
+        }
+      ],
+      "next": [{ "path": "/kit-address-manual" }]
+    },
+
     {
       "path": "/kit-address-results-confirm",
       "title": "Delivery Details",
@@ -961,11 +1062,366 @@
       "next": [
         {
           "path": "/results-recipient",
-          "condition": "kitDetailsIncorrectResultsAddress"
+          "condition": "kitDetailsIncorrectResultAddress"
         },
         { "path": "/summary" }
       ]
     },
+
+    {
+      "path": "/results-recipient",
+      "title": "Who is the recipient of the radon gas test results?",
+      "components": [
+        {
+          "name": "resultsTitle",
+          "type": "RadiosField",
+          "title": "Title",
+          "options": {
+            "exposeToContext": true,
+            "customValidationMessages": {
+              "any.required": "Select the title of the recipient of the radon gas test results"
+            },
+            "divider": true
+          },
+          "list": "titleList"
+        },
+        {
+          "name": "resultsFirstName",
+          "type": "TextField",
+          "title": "First name",
+          "options": {
+            "customValidationMessages": {
+              "string.empty": "Enter the first name of the recipient of the radon gas test results"
+            },
+            "exposeToContext": true
+          }
+        },
+        {
+          "name": "resultsLastName",
+          "type": "TextField",
+          "title": "Last Name",
+          "options": {
+            "customValidationMessages": {
+              "string.empty": "Enter the last name of the recipient of the radon gas test results"
+            },
+            "exposeToContext": true
+          }
+        }
+      ],
+      "next": [{ "path": "/gas-test-kit-result-address-postcode" }]
+    },
+
+    {
+      "path": "/gas-test-kit-result-address-postcode",
+      "title": "What address do you want your radon gas test results to be delivered to?",
+      "controller": "FindAnAddressPageController",
+      "components": [
+        {
+          "name": "resultAddress_postcodeLookup",
+          "type": "TextField",
+          "title": "Postcode",
+          "hint": "For example, AA3 1AB",
+          "schema": {
+            "max": 10,
+            "regex": "^[\\s]*[A-z]{1,2}[0-9][A-z0-9]?[\\s]*[0-9]{1,2}[ABD-hJLNP-uW-z]{2}[\\s]*$"
+          },
+          "options": {
+            "customValidationMessages": {
+              "string.empty": "Enter postcode",
+              "string.pattern.base": "Enter a full UK postcode",
+              "string.max": "Postcode must be less than 10 characters"
+            },
+            "autocomplete": "postal-code",
+            "exposeToContext": true,
+            "format": {
+              "trim": true,
+              "case": "upper"
+            }
+          }
+        },
+        {
+          "name": "addressType",
+          "type": "HiddenField",
+          "options": {
+            "exposeToContext": true,
+            "value": "resultAddress"
+          }
+        },
+        {
+          "name": "resultAddress_buildingLookup",
+          "type": "TextField",
+          "title": "Building number or name",
+          "hint": "For example, 15 or Prospect cottage",
+          "schema": { "max": 100 },
+          "options": {
+            "customValidationMessages": {
+              "string.empty": "Enter building number or name",
+              "string.max": "Building name must be less than 100 characters"
+            },
+            "exposeToContext": true
+          }
+        }
+      ],
+      "options": {
+        "hiddenFields": ["addressType"],
+        "disabledChangeFields": ["addressType"],
+        "customButtonText": "Find address"
+      },
+      "componentsAfter": [
+        {
+          "type": "Html",
+          "content": "<br><a href=\"result-address-manual{% if returnUrl %}?returnUrl={{ returnUrl | urlencode }}{% endif %}\">Enter address manually</a>"
+        }
+      ],
+      "next": [
+        {
+          "path": "/result-address-confirm",
+          "condition": "hasMatchedResultAddressCondition"
+        },
+        { "path": "/gas-test-kit-select-result-address" },
+        {
+          "path": "/result-address-not-found",
+          "condition": "noResultAddressesCondition"
+        }
+      ]
+    },
+    {
+      "path": "/result-address-confirm",
+      "title": "Is this the correct address?",
+      "components": [
+        {
+          "name": "resultAddress_matchedAddressDisplay",
+          "type": "DisplayAddress",
+          "content": "{{ resultAddress_matchedAddress.address }}"
+        },
+        {
+          "name": "addressType",
+          "type": "HiddenField",
+          "options": {
+            "exposeToContext": true,
+            "value": "resultAddress"
+          }
+        },
+        {
+          "name": "resultAddress_addressSelection",
+          "type": "HiddenField",
+          "title": "Result address"
+        },
+        {
+          "name": "resultAddress_isCorrectAddress",
+          "type": "YesNoField",
+          "title": "Is this the correct address?",
+          "options": {
+            "hideTitle": true,
+            "customValidationMessages": {
+              "any.required": "Select Yes if this is the correct address"
+            }
+          }
+        }
+      ],
+      "controller": "SelectAnAddressPageController",
+      "options": {
+        "changePath": "/gas-test-kit-result-address-postcode"
+      },
+      "componentsAfter": [
+        {
+          "name": "enterAddressManuallyLink",
+          "type": "Html",
+          "content": "<br><a href=\"result-address-manual{% if returnUrl %}?returnUrl={{ returnUrl | urlencode }}{% endif %}\">Enter address manually</a>"
+        }
+      ],
+      "next": [
+        {
+          "path": "/summary",
+          "condition": "isCorrectResultAddress"
+        },
+        {
+          "path": "/result-address-not-found",
+          "condition": "resultAddressOnlyOneAddressCondition"
+        },
+        { "path": "/gas-test-kit-result-address-postcode" }
+      ]
+    },
+    {
+      "path": "/gas-test-kit-select-result-address",
+      "title": "Select an address",
+      "controller": "SelectAnAddressPageController",
+      "components": [
+        {
+          "type": "Para",
+          "content": "{{ resultAddress_numberOfAddresses }} addresses found for '{{ resultAddress_postcodeLookup }}'"
+        },
+        {
+          "name": "searchAgain",
+          "options": {},
+          "type": "Html",
+          "content": "<p class=\"govuk-body-m\"><a href=\"gas-test-kit-result-address-postcode{% if returnUrl %}?returnUrl={{ returnUrl | urlencode }}{% endif %}\">Change your search</a> if the address you're looking for is not listed.</p><p class=\"govuk-body-m\"><a href=\"result-address-manual{% if returnUrl %}?returnUrl={{ returnUrl | urlencode }}{% endif %}\">Enter address manually</a></p>"
+        },
+        {
+          "name": "addressType",
+          "type": "HiddenField",
+          "options": {
+            "exposeToContext": true,
+            "value": "resultAddress"
+          }
+        },
+        {
+          "name": "resultAddress_addressSelection",
+          "type": "RadiosField",
+          "title": "Result address",
+          "list": "addressesList",
+          "options": {
+            "hideTitle": true,
+            "customValidationMessages": {
+              "any.required": "Select an address"
+            }
+          }
+        }
+      ],
+      "next": [
+        {
+          "path": "/result-address-confirm"
+        }
+      ]
+    },
+    {
+      "path": "/result-address-not-found",
+      "title": "No addresses found for ‘{{ resultAddress_postcodeLookup }}’ and ‘{{ resultAddress_buildingLookup }}’",
+      "components": [
+        {
+          "type": "Para",
+          "content": "Check your postcode and building number or name for mistakes, then try again."
+        },
+        {
+          "type": "Para",
+          "content": "Check you have entered the postcode and building number or name correctly, then try again."
+        },
+        {
+          "type": "Html",
+          "content": "<p class=\"govuk-body-m\"><a href=\"gas-test-kit-result-address-postcode{% if returnUrl %}?returnUrl={{ returnUrl | urlencode }}{% endif %}\">Change your search</a> or <a href=\"result-address-manual{% if returnUrl %}?returnUrl={{ returnUrl | urlencode }}{% endif %}\">enter address manually</a></p>"
+        }
+      ],
+      "options": {
+        "hideContinueButton": true
+      },
+      "next": [{ "path": "/gas-test-kit-result-address-postcode" }]
+    },
+    {
+      "path": "/result-address-manual",
+      "title": "What address do you want your radon gas test results to be delivered to? ",
+      "controller": "FindAnAddressPageController",
+      "components": [
+        {
+          "name": "addressType",
+          "type": "HiddenField",
+          "options": {
+            "exposeToContext": true,
+            "value": "resultAddress"
+          }
+        },
+        {
+          "name": "resultAddress_addressLine1Lookup",
+          "type": "TextField",
+          "title": "Address Line 1",
+          "options": {
+            "customValidationMessages": {
+              "any.required": "Enter address line 1, typically the building and street",
+              "any.only": "Enter address line 1, typically the building and street",
+              "string.empty": "Enter address line 1, typically the building and street"
+            },
+            "exposeToContext": true
+          }
+        },
+        {
+          "name": "resultAddress_addressLine2Lookup",
+          "type": "TextField",
+          "title": "Address Line 2",
+          "options": {
+            "required": false,
+            "exposeToContext": true
+          }
+        },
+        {
+          "name": "resultAddress_townLookup",
+          "type": "TextField",
+          "title": "Town or city",
+          "options": {
+            "customValidationMessages": {
+              "any.required": "Enter town or city",
+              "any.only": "Enter town or city",
+              "string.empty": "Enter town or city"
+            },
+            "exposeToContext": true
+          }
+        },
+        {
+          "name": "resultAddress_countyLookup",
+          "type": "TextField",
+          "title": "County",
+          "options": {
+            "required": false,
+            "exposeToContext": true
+          }
+        },
+        {
+          "name": "resultAddress_postcodeLookup",
+          "type": "TextField",
+          "title": "Postcode",
+          "hint": "For example, AA3 1AB",
+          "schema": {
+            "max": 10,
+            "regex": "^[\\s]*[A-z]{1,2}[0-9][A-z0-9]?[\\s]*[0-9]{1,2}[ABD-hJLNP-uW-z]{2}[\\s]*$"
+          },
+          "options": {
+            "customValidationMessages": {
+              "string.empty": "Enter postcode",
+              "string.pattern.base": "Enter a full UK postcode",
+              "string.max": "Postcode must be less than 10 characters"
+            },
+            "autocomplete": "postal-code",
+            "format": {
+              "trim": true,
+              "case": "upper"
+            },
+            "exposeToContext": true
+          }
+        }
+      ],
+      "options": {
+        "hiddenFields": ["addressType"],
+        "disabledChangeFields": ["addressType"]
+      },
+      "next": [
+        {
+          "path": "/result-address-confirm",
+          "condition": "hasMatchedResultAddressCondition"
+        },
+        { "path": "/gas-test-kit-select-result-address" },
+        {
+          "path": "/result-address-manual-not-found",
+          "condition": "noResultAddressesCondition"
+        }
+      ]
+    },
+    {
+      "path": "/result-address-manual-not-found",
+      "title": "We cannot find your address",
+      "options": {
+        "hideContinueButton": true
+      },
+      "components": [
+        {
+          "type": "Para",
+          "content": "No address found for {{ resultAddress_addressLine1Lookup }}{% if resultAddress_addressLine2Lookup %}, {{ resultAddress_addressLine2Lookup }}{% endif %}{% if resultAddress_townLookup %}, {{ resultAddress_townLookup }}{% endif %}{% if resultAddress_countyLookup %}, {{ resultAddress_countyLookup }}{% endif %}{% if resultAddress_postcodeLookup %}, {{ resultAddress_postcodeLookup }}{% endif %}<br><br>Check your address for mistakes, then try again.<br><br>Check you have entered the address correctly, then try again."
+        },
+        {
+          "type": "Html",
+          "content": "<p class=\"govuk-body-m\"><a href=\"gas-test-kit-result-address-postcode{% if returnUrl %}?returnUrl={{ returnUrl | urlencode }}{% endif %}\">Change your search</a> or <a href=\"result-address-manual{% if returnUrl %}?returnUrl={{ returnUrl | urlencode }}{% endif %}\">enter address manually</a></p>"
+        }
+      ],
+      "next": [{ "path": "/result-address-manual" }]
+    },
+
     {
       "title": "Review your order",
       "path": "/summary",
@@ -1060,7 +1516,7 @@
                   "changeUrl": [
                     {
                       "condition": "kitAddressIncorrect",
-                      "value": "/kit-address"
+                      "value": "/gas-test-kit-kit-address-postcode"
                     },
                     { "value": "/gas-test-kit-property-address-postcode" }
                   ],
@@ -1085,7 +1541,7 @@
                       "value": "/kit-recipient"
                     },
                     {
-                      "condition": "resultsAddressIncorrect",
+                      "condition": "resultAddressIncorrect",
                       "value": "/results-recipient"
                     },
                     { "value": "/your-details" }
@@ -1099,7 +1555,7 @@
                         "value": "{{kitTitle}} {{kitFirstName}} {{kitLastName}}"
                       },
                       {
-                        "condition": "resultsAddressIncorrect",
+                        "condition": "resultAddressIncorrect",
                         "value": "{{resultsTitle}} {{resultsFirstName}} {{resultsLastName}}"
                       },
                       {
@@ -1114,16 +1570,16 @@
                   "changeUrl": [
                     {
                       "condition": "kitResultsConfirmationYes",
-                      "value": "/kit-address"
+                      "value": "/kit-address-results-confirm"
                     },
                     {
-                      "condition": "resultsAddressIncorrect",
-                      "value": "/results-address"
+                      "condition": "resultAddressIncorrect",
+                      "value": "/gas-test-kit-result-address-postcode"
                     },
                     { "value": "/gas-test-kit-property-address-postcode" }
                   ],
                   "value": {
-                    "name": "displayResultsAddress",
+                    "name": "displayResultAddress",
                     "type": "DisplayAddress",
                     "content": [
                       {
@@ -1131,8 +1587,8 @@
                         "value": "{{kitAddress_fullSelectedAddress}}"
                       },
                       {
-                        "condition": "resultsAddressIncorrect",
-                        "value": "{{resultsAddress_fullSelectedAddress}}"
+                        "condition": "resultAddressIncorrect",
+                        "value": "{{resultAddress_fullSelectedAddress}}"
                       },
                       { "value": "{{propertyAddress_fullSelectedAddress}}" }
                     ]
@@ -1306,6 +1762,7 @@
         ]
       }
     },
+
     {
       "displayName": "Has Tested",
       "name": "hasTested",
@@ -1434,13 +1891,13 @@
     },
     {
       "displayName": "Results Address Incorrect",
-      "name": "resultsAddressIncorrect",
+      "name": "resultAddressIncorrect",
       "value": {
-        "name": "resultsAddressIncorrect",
+        "name": "resultAddressIncorrect",
         "conditions": [
           {
             "field": {
-              "name": "resultsAddressConfirmation",
+              "name": "resultAddressConfirmation",
               "type": "YesNoField",
               "display": "Is this the address you want your radon gas test results to?"
             },
@@ -1468,7 +1925,7 @@
           {
             "coordinator": "and",
             "field": {
-              "name": "resultsAddressConfirmation",
+              "name": "resultAddressConfirmation",
               "type": "YesNoField",
               "display": "Is this the address you want your radon gas test results to?"
             },
@@ -1480,9 +1937,9 @@
     },
     {
       "displayName": "Correct Kit Address Incorrect Results Address",
-      "name": "correctKitAddressIncorrectResultsAddress",
+      "name": "correctKitAddressIncorrectResultAddress",
       "value": {
-        "name": "correctKitAddressIncorrectResultsAddress",
+        "name": "correctKitAddressIncorrectResultAddress",
         "conditions": [
           {
             "field": {
@@ -1496,7 +1953,7 @@
           {
             "coordinator": "and",
             "field": {
-              "name": "resultsAddressConfirmation",
+              "name": "resultAddressConfirmation",
               "type": "YesNoField",
               "display": "Is this the address you want your radon gas test results to?"
             },
@@ -1508,9 +1965,9 @@
     },
     {
       "displayName": "Incorrect Kit Address Incorrect Results Address",
-      "name": "incorrectKitAddressIncorrectResultsAddress",
+      "name": "incorrectKitAddressIncorrectResultAddress",
       "value": {
-        "name": "incorrectKitAddressIncorrectResultsAddress",
+        "name": "incorrectKitAddressIncorrectResultAddress",
         "conditions": [
           {
             "field": {
@@ -1524,7 +1981,7 @@
           {
             "coordinator": "and",
             "field": {
-              "name": "resultsAddressConfirmation",
+              "name": "resultAddressConfirmation",
               "type": "YesNoField",
               "display": "Is this the address you want your radon gas test results to?"
             },
@@ -1536,9 +1993,9 @@
     },
     {
       "displayName": "Delivery Details Incorrect Results Address",
-      "name": "kitDetailsIncorrectResultsAddress",
+      "name": "kitDetailsIncorrectResultAddress",
       "value": {
-        "name": "kitDetailsIncorrectResultsAddress",
+        "name": "kitDetailsIncorrectResultAddress",
         "conditions": [
           {
             "field": {
@@ -1552,6 +2009,80 @@
         ]
       }
     },
+
+    {
+      "name": "hasMatchedKitAddressCondition",
+      "displayName": "Has Matched Kit Address",
+      "value": {
+        "name": "hasMatchedKitAddressCondition",
+        "conditions": [
+          {
+            "field": {
+              "name": "kitAddress_hasMatchedAddress",
+              "type": "YesNoField",
+              "display": "kitAddress_hasMatchedAddress"
+            },
+            "operator": "is",
+            "value": { "type": "Value", "value": "true", "display": "true" }
+          }
+        ]
+      }
+    },
+    {
+      "name": "isCorrectKitAddress",
+      "displayName": "Is Correct Kit Address Yes",
+      "value": {
+        "name": "isCorrectKitAddress",
+        "conditions": [
+          {
+            "field": {
+              "name": "kitAddress_isCorrectAddress",
+              "type": "YesNoField",
+              "display": "kitAddress_isCorrectAddress"
+            },
+            "operator": "is",
+            "value": { "type": "Value", "value": "true", "display": "true" }
+          }
+        ]
+      }
+    },
+    {
+      "name": "noKitAddressesCondition",
+      "displayName": "No Kit Addresses Found",
+      "value": {
+        "name": "noKitAddressesCondition",
+        "conditions": [
+          {
+            "field": {
+              "name": "kitAddress_numberOfAddresses",
+              "type": "NumberField",
+              "display": "numberOfAddresses"
+            },
+            "operator": "is",
+            "value": { "type": "Value", "value": "0", "display": "0" }
+          }
+        ]
+      }
+    },
+    {
+      "name": "kitAddressOnlyOneAddressCondition",
+      "displayName": "Kit Address Only One Address",
+      "value": {
+        "name": "kitAddressOnlyOneAddressCondition",
+        "conditions": [
+          {
+            "field": {
+              "name": "kitAddress_numberOfAddresses",
+              "type": "NumberField",
+              "display": "numberOfAddresses"
+            },
+            "operator": "is",
+            "value": { "type": "Value", "value": "1", "display": "1" }
+          }
+        ]
+      }
+    },
+
     {
       "displayName": "Kit Results Confirmation Yes",
       "name": "kitResultsConfirmationYes",
@@ -1566,6 +2097,79 @@
             },
             "operator": "is",
             "value": { "type": "Value", "value": "true", "display": "true" }
+          }
+        ]
+      }
+    },
+
+    {
+      "name": "hasMatchedResultAddressCondition",
+      "displayName": "Has Matched Result Address",
+      "value": {
+        "name": "hasMatchedResultAddressCondition",
+        "conditions": [
+          {
+            "field": {
+              "name": "resultAddress_hasMatchedAddress",
+              "type": "YesNoField",
+              "display": "resultAddress_hasMatchedAddress"
+            },
+            "operator": "is",
+            "value": { "type": "Value", "value": "true", "display": "true" }
+          }
+        ]
+      }
+    },
+    {
+      "name": "isCorrectResultAddress",
+      "displayName": "Is Correct Result Address Yes",
+      "value": {
+        "name": "isCorrectResultAddress",
+        "conditions": [
+          {
+            "field": {
+              "name": "resultAddress_isCorrectAddress",
+              "type": "YesNoField",
+              "display": "resultAddress_isCorrectAddress"
+            },
+            "operator": "is",
+            "value": { "type": "Value", "value": "true", "display": "true" }
+          }
+        ]
+      }
+    },
+    {
+      "name": "noResultAddressesCondition",
+      "displayName": "No Result Addresses Found",
+      "value": {
+        "name": "noResultAddressesCondition",
+        "conditions": [
+          {
+            "field": {
+              "name": "resultAddress_numberOfAddresses",
+              "type": "NumberField",
+              "display": "numberOfAddresses"
+            },
+            "operator": "is",
+            "value": { "type": "Value", "value": "0", "display": "0" }
+          }
+        ]
+      }
+    },
+    {
+      "name": "resultAddressOnlyOneAddressCondition",
+      "displayName": "Result Address Only One Address",
+      "value": {
+        "name": "resultAddressOnlyOneAddressCondition",
+        "conditions": [
+          {
+            "field": {
+              "name": "resultAddress_numberOfAddresses",
+              "type": "NumberField",
+              "display": "numberOfAddresses"
+            },
+            "operator": "is",
+            "value": { "type": "Value", "value": "1", "display": "1" }
           }
         ]
       }

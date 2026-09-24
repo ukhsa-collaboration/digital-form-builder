@@ -140,7 +140,7 @@ describe("rpsGasTestKitOnSummarySubmit", () => {
     postcode: "LS1 1AA",
   };
 
-  const resultsAddress = {
+  const resultAddress = {
     address: "3 Results Road, Bristol",
     postcode: "BS1 1AA",
   };
@@ -192,7 +192,7 @@ describe("rpsGasTestKitOnSummarySubmit", () => {
       state: {
         ...baseState,
         kitAddressConfirmation: true,
-        resultsAddressConfirmation: true,
+        resultAddressConfirmation: true,
         kitResultsConfirmation: true,
       },
     };
@@ -218,11 +218,11 @@ describe("rpsGasTestKitOnSummarySubmit", () => {
       state: {
         ...baseState,
         kitAddressConfirmation: true,
-        resultsAddressConfirmation: false,
+        resultAddressConfirmation: false,
         resultsTitle: "Mrs",
         resultsFirstName: "Jane",
         resultsLastName: "Doe",
-        resultsAddress_selectedAddress: resultsAddress,
+        resultAddress_selectedAddress: resultAddress,
       },
     };
 
@@ -240,7 +240,7 @@ describe("rpsGasTestKitOnSummarySubmit", () => {
       lastName: "Doe",
     });
     expect(body.resultsRecipientAddress).to.equal(
-      toAddressDetails(resultsAddress)
+      toAddressDetails(resultAddress)
     );
     expect(body.resultsRecipientAddress).to.not.equal(body.kitRecipientAddress);
   });
@@ -251,7 +251,7 @@ describe("rpsGasTestKitOnSummarySubmit", () => {
       state: {
         ...baseState,
         kitAddressConfirmation: false,
-        resultsAddressConfirmation: true,
+        resultAddressConfirmation: true,
         // kitResultsConfirmation is never shown in this form path, so it is absent
         kitTitle: "Dr",
         kitFirstName: "Ken",
@@ -285,7 +285,7 @@ describe("rpsGasTestKitOnSummarySubmit", () => {
       state: {
         ...baseState,
         kitAddressConfirmation: false,
-        resultsAddressConfirmation: false,
+        resultAddressConfirmation: false,
         kitResultsConfirmation: true,
         kitTitle: "Dr",
         kitFirstName: "Ken",
@@ -314,7 +314,7 @@ describe("rpsGasTestKitOnSummarySubmit", () => {
       state: {
         ...baseState,
         kitAddressConfirmation: false,
-        resultsAddressConfirmation: false,
+        resultAddressConfirmation: false,
         kitResultsConfirmation: false,
         kitTitle: "Dr",
         kitFirstName: "Ken",
@@ -323,7 +323,7 @@ describe("rpsGasTestKitOnSummarySubmit", () => {
         resultsTitle: "Ms",
         resultsFirstName: "Amy",
         resultsLastName: "Lee",
-        resultsAddress_selectedAddress: resultsAddress,
+        resultAddress_selectedAddress: resultAddress,
       },
     };
 
@@ -343,7 +343,7 @@ describe("rpsGasTestKitOnSummarySubmit", () => {
       lastName: "Lee",
     });
     expect(body.resultsRecipientAddress).to.equal(
-      toAddressDetails(resultsAddress)
+      toAddressDetails(resultAddress)
     );
   });
 
@@ -353,11 +353,11 @@ describe("rpsGasTestKitOnSummarySubmit", () => {
       state: {
         ...baseState,
         kitAddressConfirmation: true,
-        resultsAddressConfirmation: true,
+        resultAddressConfirmation: true,
         // Leftover state from a previous journey through the form, where the
         // kit and results addresses were entered separately and differed.
         kitAddress_selectedAddress: kitAddress,
-        resultsAddress_selectedAddress: resultsAddress,
+        resultAddress_selectedAddress: resultAddress,
       },
     };
 
@@ -373,7 +373,7 @@ describe("rpsGasTestKitOnSummarySubmit", () => {
     );
     expect(body.resultsRecipientAddress).to.equal(body.kitRecipientAddress);
     expect(body.resultsRecipientAddress).to.not.equal(
-      toAddressDetails(resultsAddress)
+      toAddressDetails(resultAddress)
     );
   });
 });
