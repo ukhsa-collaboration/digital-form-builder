@@ -101,6 +101,65 @@ See [https://github.com/node-config/node-config#readme](https://github.com/node-
 
 Tests are found inside `test/cases`. For test scripts, name them `${NAME}.test.js`.
 
+## End-to-end tests
+
+E2E tests use [Playwright](https://playwright.dev) and live in `runner/e2e/`. They run against a real built server on port 3009.
+
+### Running locally
+
+Build the runner and run all e2e tests:
+
+```sh
+yarn runner test:e2e
+```
+
+Open the Playwright UI to run and debug tests interactively:
+
+```sh
+yarn runner test:e2e:ui
+```
+
+> **Note:** Locally, Playwright reuses an already-running server on port 3009 if one exists (`reuseExistingServer: true`). In CI it always starts a fresh server.
+
+### How it works
+
+| Component           | Detail                                                                                            |
+| ------------------- | ------------------------------------------------------------------------------------------------- |
+| Test runner         | Playwright (Chromium only)                                                                        |
+| Server entrypoint   | `runner/bin/e2e-server` — starts the built `dist/index.js`                                        |
+| Base URL            | `http://localhost:3009`                                                                           |
+| Server health check | `GET /health-check` (60 s timeout)                                                                |
+| Parallelism         | Fully parallel; 2 workers in CI                                                                   |
+| Retries             | 1 retry in CI, 0 locally                                                                          |
+| Artifacts           | Screenshots on failure, traces on first retry, HTML report uploaded to GitHub Actions for 14 days |
+
+The server is started with the following environment for tests:
+
+| Variable               | Value                                                             |
+| ---------------------- | ----------------------------------------------------------------- |
+| `NODE_ENV`             | `test`                                                            |
+| `ENABLE_MOCK_API`      | `true` (outbound HTTP calls are intercepted by MSW mock handlers) |
+| `PREVIEW_MODE`         | `true`                                                            |
+| `ALLOW_USER_TEMPLATES` | `true`                                                            |
+| `LOG_LEVEL`            | `trace`                                                           |
+
+### Writing tests
+
+Add `.spec.ts` files to `runner/e2e/`. Each file is a standard Playwright test file. The `baseURL` is already configured, so navigate with relative paths:
+
+```ts
+import { test, expect } from "@playwright/test";
+
+test("example", async ({ page }) => {
+  await page.goto("/your-form-path");
+  await expect(page.getByRole("heading")).toBeVisible();
+});
+```
+
+### CI
+
+E2e tests run as a separate reusable workflow (`.github/workflows/runner-e2e.yml`) called from the main branch CI pipeline. The pipeline installs Chromium via `playwright install --with-deps chromium`, builds the runner, then runs `yarn runner test:e2e`. The HTML report is uploaded as a `playwright-report` artifact on both pass and failure.
+
 # Test coverage threshold
 
 Unit test coverage threshold, code coverage below which build will fail is set by using lab's switch -t COVERAGE_LEVEL, currently threshold is configured to 83%, see unit-test-cov script in [package.json](package.json).
