@@ -176,9 +176,8 @@ export class StatusService {
         "X-HMAC-Time": requestTime.toString(),
       };
     } else {
-      const formSecurityHeaders = await this.formSecurityService.getSecurityHeaders(
-        request
-      );
+      const formSecurityHeaders =
+        await this.formSecurityService.getSecurityHeaders(request);
       if (formSecurityHeaders) {
         customSecurityHeaders = formSecurityHeaders;
       }

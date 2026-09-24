@@ -7,7 +7,8 @@ import { addClassOptionIfNone } from "./helpers";
 import joi, { Schema } from "joi";
 
 // For reference, see https://html.spec.whatwg.org/multipage/input.html#valid-e-mail-address
-export const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+export const EMAIL_REGEX =
+  /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
 const DEFAULT_MESSAGE = "Enter an email address in the correct format";
 export class EmailAddressField extends FormComponent {
   formSchema;
