@@ -14,10 +14,10 @@
 
 {% set rejectButtonText = "Reject analytics cookies" if gtmId1 or gtmId2 else "Reject additional cookies"  %}
 
+
 <div id="global-cookie-message">
   <form id="global-cookie-message-form" method="post" action="/help/cookies">
     <input type="hidden" name="crumb" value="{{crumb}}"/>
-
     {{ govukCookieBanner({
       ariaLabel: cookieBannerHeader,
       messages: [
@@ -39,7 +39,7 @@
             },
             {
               text: "View cookies",
-              href: "/help/cookies"
+              href: "cookies"
             }
           ]
         }
