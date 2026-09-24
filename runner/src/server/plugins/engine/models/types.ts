@@ -103,3 +103,16 @@ export type Detail = {
   title: Section["title"] | undefined;
   items: DetailItem[];
 };
+
+export type SummaryCard = {
+  name: string;
+  title: string;
+  index: number;
+  card: string;
+  items: Array<{
+    name: string;
+    label: string;
+    value: string;
+    url: string;
+  }>;
+};

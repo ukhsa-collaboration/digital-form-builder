@@ -33,8 +33,8 @@ export class SelectionControlField extends ListFormComponent {
         options.conditionallyRevealedComponents;
 
       for (const item of items) {
-        let conditionallyRevealedComponent = this
-          .conditionallyRevealedComponents[item.value];
+        let conditionallyRevealedComponent =
+          this.conditionallyRevealedComponents[item.value];
 
         if (conditionallyRevealedComponent != undefined) {
           // Pass custom validation messages to the conditionally revealed component
@@ -67,8 +67,8 @@ export class SelectionControlField extends ListFormComponent {
     const itemsWithConditionalComponents = this.items.filter(
       (item: any) => item.conditionallyRevealedComponents
     );
-    const selectedItemsWithConditionalComponents = itemsWithConditionalComponents?.filter(
-      (item) => {
+    const selectedItemsWithConditionalComponents =
+      itemsWithConditionalComponents?.filter((item) => {
         if (payload[this.name] && Array.isArray(payload[this.name])) {
           return payload[this.name].find(
             (nestedItem) => item.value === nestedItem
@@ -76,8 +76,7 @@ export class SelectionControlField extends ListFormComponent {
         } else {
           return item.value === payload[this.name];
         }
-      }
-    );
+      });
     // Add selected form data associated with conditionally revealed content to the state.
     selectedItemsWithConditionalComponents?.forEach((item: any) =>
       Object.assign(
@@ -87,13 +86,13 @@ export class SelectionControlField extends ListFormComponent {
     );
     // Add null values to the state for unselected form data associated with conditionally revealed content.
     // This will allow changes in the visibility of conditionally revealed content to be reflected in state correctly.
-    const unselectedItemsWithConditionalComponents = itemsWithConditionalComponents?.filter(
-      (item) => !selectedItemsWithConditionalComponents?.includes(item)
-    );
-    unselectedItemsWithConditionalComponents?.forEach((item: any) => {
-      const stateFromValidForm = item.conditionallyRevealedComponents.getStateFromValidForm(
-        payload
+    const unselectedItemsWithConditionalComponents =
+      itemsWithConditionalComponents?.filter(
+        (item) => !selectedItemsWithConditionalComponents?.includes(item)
       );
+    unselectedItemsWithConditionalComponents?.forEach((item: any) => {
+      const stateFromValidForm =
+        item.conditionallyRevealedComponents.getStateFromValidForm(payload);
       Object.values(item.conditionallyRevealedComponents.items)
         .filter(
           (conditionalItem: any) => stateFromValidForm[conditionalItem.name]
@@ -114,9 +113,8 @@ export class SelectionControlField extends ListFormComponent {
         (item: any) => item.conditionallyRevealedComponents
       );
       itemsWithConditionalComponents?.forEach((item: any) => {
-        const itemFormDataFromState = item.conditionallyRevealedComponents.getFormDataFromState(
-          state
-        );
+        const itemFormDataFromState =
+          item.conditionallyRevealedComponents.getFormDataFromState(state);
         if (
           itemFormDataFromState &&
           Object.keys(itemFormDataFromState).length > 0
@@ -220,9 +218,8 @@ export class SelectionControlField extends ListFormComponent {
     // a) When a conditional component is visible it is required.
     // b) When a conditional component is not visible it is optional.
     filteredItems?.forEach((item: any) => {
-      const conditionalSchemaKeys = item.conditionallyRevealedComponents[
-        schemaKeysFunctionName
-      ]();
+      const conditionalSchemaKeys =
+        item.conditionallyRevealedComponents[schemaKeysFunctionName]();
 
       const conditionalMessages =
         item.conditionallyRevealedComponents.items[0].options

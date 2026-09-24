@@ -80,6 +80,7 @@ export const customOperators = {
   TextField: withDefaults(textBasedFieldCustomisations),
   MultilineTextField: withDefaults(textBasedFieldCustomisations),
   EmailAddressField: withDefaults(textBasedFieldCustomisations),
+  TelephoneNumberField: withDefaults(textBasedFieldCustomisations),
 };
 
 export function getOperatorNames(fieldType) {
