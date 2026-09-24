@@ -68,7 +68,7 @@
           "name": "introText",
           "options": {},
           "type": "Para",
-          "content": "<p class=\"govuk-body-m\">Use this service order a radon risk report for a property in the UK.</p><p class=\"govuk-body-m\">The report shows the likelihood, as a percentage (such as 3-5%), of a property having radon levels above the Action Level advised by the UK Health Security Agency.</p>"
+          "content": "<p class=\"govuk-body-m\">Use this service to order a radon risk report for a property in the UK.</p><p class=\"govuk-body-m\">The report shows the likelihood, as a percentage (such as 3-5%), of a property having radon levels above the Action Level advised by the UK Health Security Agency.</p>"
         },
         {
           "name": "actionLevelInset",
