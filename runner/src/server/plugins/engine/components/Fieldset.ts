@@ -141,7 +141,7 @@ export class Fieldset extends FormComponent {
     return {
       ...viewModel,
       fieldset: { legend: viewModel.label },
-      items: (componentViewModels as unknown) as ListItem[],
+      items: componentViewModels as unknown as ListItem[],
     };
   }
 }

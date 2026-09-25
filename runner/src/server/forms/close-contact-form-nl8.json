@@ -287,18 +287,6 @@
           }
         },
         {
-          "name": "mWvTOY",
-          "options": {},
-          "type": "Html",
-          "content": "<br/><h2 class='govuk-heading-m'>How should we contact this person to provide them with advice and guidance?</h2>"
-        },
-        {
-          "name": "iulooD",
-          "options": {},
-          "type": "Para",
-          "content": "If the person is under 16 or unable to speak to us themselves, provide the contact details of a parent, carer or guardian."
-        },
-        {
           "name": "contact_directly",
           "options": {
             "customValidationMessages": {
@@ -446,18 +434,6 @@
           "schema": {
             "regex": "(?=.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*)^[\\sA-Za-zÀ-ÖØ-öø-ÿ'\\-,.]*$"
           }
-        },
-        {
-          "name": "mWvTOY",
-          "options": {},
-          "type": "Html",
-          "content": "<br/><h2 class='govuk-heading-m'>How should we contact this person to provide them with advice and guidance?</h2>"
-        },
-        {
-          "name": "iulooD",
-          "options": {},
-          "type": "Para",
-          "content": "If the person is under 16 or unable to speak to us themselves, provide the contact details of a parent, carer or guardian."
         },
         {
           "name": "contact_directly",
@@ -609,18 +585,6 @@
           }
         },
         {
-          "name": "mWvTOY",
-          "options": {},
-          "type": "Html",
-          "content": "<br/><h2 class='govuk-heading-m'>How should we contact this person to provide them with advice and guidance?</h2>"
-        },
-        {
-          "name": "iulooD",
-          "options": {},
-          "type": "Para",
-          "content": "If the person is under 16 or unable to speak to us themselves, provide the contact details of a parent, carer or guardian."
-        },
-        {
           "name": "contact_directly",
           "options": {
             "customValidationMessages": {
@@ -768,18 +732,6 @@
           "schema": {
             "regex": "(?=.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*)^[\\sA-Za-zÀ-ÖØ-öø-ÿ'\\-,.]*$"
           }
-        },
-        {
-          "name": "mWvTOY",
-          "options": {},
-          "type": "Html",
-          "content": "<br/><h2 class='govuk-heading-m'>How should we contact this person to provide them with advice and guidance?</h2>"
-        },
-        {
-          "name": "iulooD",
-          "options": {},
-          "type": "Para",
-          "content": "If the person is under 16 or unable to speak to us themselves, provide the contact details of a parent, carer or guardian."
         },
         {
           "name": "contact_directly",
@@ -931,18 +883,6 @@
           }
         },
         {
-          "name": "mWvTOY",
-          "options": {},
-          "type": "Html",
-          "content": "<br/><h2 class='govuk-heading-m'>How should we contact this person to provide them with advice and guidance?</h2>"
-        },
-        {
-          "name": "iulooD",
-          "options": {},
-          "type": "Para",
-          "content": "If the person is under 16 or unable to speak to us themselves, provide the contact details of a parent, carer or guardian."
-        },
-        {
           "name": "contact_directly",
           "options": {
             "customValidationMessages": {
@@ -1090,18 +1030,6 @@
           "schema": {
             "regex": "(?=.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*)^[\\sA-Za-zÀ-ÖØ-öø-ÿ'\\-,.]*$"
           }
-        },
-        {
-          "name": "mWvTOY",
-          "options": {},
-          "type": "Html",
-          "content": "<br/><h2 class='govuk-heading-m'>How should we contact this person to provide them with advice and guidance?</h2>"
-        },
-        {
-          "name": "iulooD",
-          "options": {},
-          "type": "Para",
-          "content": "If the person is under 16 or unable to speak to us themselves, provide the contact details of a parent, carer or guardian."
         },
         {
           "name": "contact_directly",
@@ -1253,18 +1181,6 @@
           }
         },
         {
-          "name": "mWvTOY",
-          "options": {},
-          "type": "Html",
-          "content": "<br/><h2 class='govuk-heading-m'>How should we contact this person to provide them with advice and guidance?</h2>"
-        },
-        {
-          "name": "iulooD",
-          "options": {},
-          "type": "Para",
-          "content": "If the person is under 16 or unable to speak to us themselves, provide the contact details of a parent, carer or guardian."
-        },
-        {
           "name": "contact_directly",
           "options": {
             "customValidationMessages": {
@@ -1412,18 +1328,6 @@
           "schema": {
             "regex": "(?=.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*)^[\\sA-Za-zÀ-ÖØ-öø-ÿ'\\-,.]*$"
           }
-        },
-        {
-          "name": "mWvTOY",
-          "options": {},
-          "type": "Html",
-          "content": "<br/><h2 class='govuk-heading-m'>How should we contact this person to provide them with advice and guidance?</h2>"
-        },
-        {
-          "name": "iulooD",
-          "options": {},
-          "type": "Para",
-          "content": "If the person is under 16 or unable to speak to us themselves, provide the contact details of a parent, carer or guardian."
         },
         {
           "name": "contact_directly",
@@ -1575,18 +1479,6 @@
           }
         },
         {
-          "name": "mWvTOY",
-          "options": {},
-          "type": "Html",
-          "content": "<br/><h2 class='govuk-heading-m'>How should we contact this person to provide them with advice and guidance?</h2>"
-        },
-        {
-          "name": "iulooD",
-          "options": {},
-          "type": "Para",
-          "content": "If the person is under 16 or unable to speak to us themselves, provide the contact details of a parent, carer or guardian."
-        },
-        {
           "name": "contact_directly",
           "options": {
             "customValidationMessages": {
@@ -1734,18 +1626,6 @@
           "schema": {
             "regex": "(?=.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*)^[\\sA-Za-zÀ-ÖØ-öø-ÿ'\\-,.]*$"
           }
-        },
-        {
-          "name": "mWvTOY",
-          "options": {},
-          "type": "Html",
-          "content": "<br/><h2 class='govuk-heading-m'>How should we contact this person to provide them with advice and guidance?</h2>"
-        },
-        {
-          "name": "iulooD",
-          "options": {},
-          "type": "Para",
-          "content": "If the person is under 16 or unable to speak to us themselves, provide the contact details of a parent, carer or guardian."
         },
         {
           "name": "contact_directly",
@@ -1909,18 +1789,6 @@
           }
         },
         {
-          "name": "mWvTOY",
-          "options": {},
-          "type": "Html",
-          "content": "<br/><h2 class='govuk-heading-m'>How should we contact this person to provide them with advice and guidance?</h2>"
-        },
-        {
-          "name": "iulooD",
-          "options": {},
-          "type": "Para",
-          "content": "If the person is under 16 or unable to speak to us themselves, provide the contact details of a parent, carer or guardian."
-        },
-        {
           "name": "contact_directly",
           "options": {
             "customValidationMessages": {
@@ -2065,18 +1933,6 @@
           "schema": {
             "regex": "(?=.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*)^[\\sA-Za-zÀ-ÖØ-öø-ÿ'\\-,.]*$"
           }
-        },
-        {
-          "name": "mWvTOY",
-          "options": {},
-          "type": "Html",
-          "content": "<br/><h2 class='govuk-heading-m'>How should we contact this person to provide them with advice and guidance?</h2>"
-        },
-        {
-          "name": "iulooD",
-          "options": {},
-          "type": "Para",
-          "content": "If the person is under 16 or unable to speak to us themselves, provide the contact details of a parent, carer or guardian."
         },
         {
           "name": "contact_directly",
@@ -2225,18 +2081,6 @@
           }
         },
         {
-          "name": "mWvTOY",
-          "options": {},
-          "type": "Html",
-          "content": "<br/><h2 class='govuk-heading-m'>How should we contact this person to provide them with advice and guidance?</h2>"
-        },
-        {
-          "name": "iulooD",
-          "options": {},
-          "type": "Para",
-          "content": "If the person is under 16 or unable to speak to us themselves, provide the contact details of a parent, carer or guardian."
-        },
-        {
           "name": "contact_directly",
           "options": {
             "customValidationMessages": {
@@ -2381,18 +2225,6 @@
           "schema": {
             "regex": "(?=.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*)^[\\sA-Za-zÀ-ÖØ-öø-ÿ'\\-,.]*$"
           }
-        },
-        {
-          "name": "mWvTOY",
-          "options": {},
-          "type": "Html",
-          "content": "<br/><h2 class='govuk-heading-m'>How should we contact this person to provide them with advice and guidance?</h2>"
-        },
-        {
-          "name": "iulooD",
-          "options": {},
-          "type": "Para",
-          "content": "If the person is under 16 or unable to speak to us themselves, provide the contact details of a parent, carer or guardian."
         },
         {
           "name": "contact_directly",
@@ -2541,18 +2373,6 @@
           }
         },
         {
-          "name": "mWvTOY",
-          "options": {},
-          "type": "Html",
-          "content": "<br/><h2 class='govuk-heading-m'>How should we contact this person to provide them with advice and guidance?</h2>"
-        },
-        {
-          "name": "iulooD",
-          "options": {},
-          "type": "Para",
-          "content": "If the person is under 16 or unable to speak to us themselves, provide the contact details of a parent, carer or guardian."
-        },
-        {
           "name": "contact_directly",
           "options": {
             "customValidationMessages": {
@@ -2697,18 +2517,6 @@
           "schema": {
             "regex": "(?=.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*)^[\\sA-Za-zÀ-ÖØ-öø-ÿ'\\-,.]*$"
           }
-        },
-        {
-          "name": "mWvTOY",
-          "options": {},
-          "type": "Html",
-          "content": "<br/><h2 class='govuk-heading-m'>How should we contact this person to provide them with advice and guidance?</h2>"
-        },
-        {
-          "name": "iulooD",
-          "options": {},
-          "type": "Para",
-          "content": "If the person is under 16 or unable to speak to us themselves, provide the contact details of a parent, carer or guardian."
         },
         {
           "name": "contact_directly",
@@ -2857,18 +2665,6 @@
           }
         },
         {
-          "name": "mWvTOY",
-          "options": {},
-          "type": "Html",
-          "content": "<br/><h2 class='govuk-heading-m'>How should we contact this person to provide them with advice and guidance?</h2>"
-        },
-        {
-          "name": "iulooD",
-          "options": {},
-          "type": "Para",
-          "content": "If the person is under 16 or unable to speak to us themselves, provide the contact details of a parent, carer or guardian."
-        },
-        {
           "name": "contact_directly",
           "options": {
             "customValidationMessages": {
@@ -3013,18 +2809,6 @@
           "schema": {
             "regex": "(?=.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*)^[\\sA-Za-zÀ-ÖØ-öø-ÿ'\\-,.]*$"
           }
-        },
-        {
-          "name": "mWvTOY",
-          "options": {},
-          "type": "Html",
-          "content": "<br/><h2 class='govuk-heading-m'>How should we contact this person to provide them with advice and guidance?</h2>"
-        },
-        {
-          "name": "iulooD",
-          "options": {},
-          "type": "Para",
-          "content": "If the person is under 16 or unable to speak to us themselves, provide the contact details of a parent, carer or guardian."
         },
         {
           "name": "contact_directly",
@@ -3173,18 +2957,6 @@
           }
         },
         {
-          "name": "mWvTOY",
-          "options": {},
-          "type": "Html",
-          "content": "<br/><h2 class='govuk-heading-m'>How should we contact this person to provide them with advice and guidance?</h2>"
-        },
-        {
-          "name": "iulooD",
-          "options": {},
-          "type": "Para",
-          "content": "If the person is under 16 or unable to speak to us themselves, provide the contact details of a parent, carer or guardian."
-        },
-        {
           "name": "contact_directly",
           "options": {
             "customValidationMessages": {
@@ -3329,12 +3101,6 @@
           "schema": {
             "regex": "(?=.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*[A-Za-zÀ-ÖØ-öø-ÿ]{1}.*)^[\\sA-Za-zÀ-ÖØ-öø-ÿ'\\-,.]*$"
           }
-        },
-        {
-          "name": "mWvTOY",
-          "options": {},
-          "type": "Html",
-          "content": "<br/><h2 class='govuk-heading-m'>How should we contact this person to provide them with advice and guidance?</h2>"
         },
         {
           "name": "iulooD",

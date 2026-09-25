@@ -27,6 +27,14 @@
         {% for detail in details %}
           {% if detail.card %}
             {{ summaryCard(detail, true) }}
+            {% if detail.addRepeatFieldButton %}
+            <!-- Behaviour created for Repeat multifiled edit functionality on final page -->
+            <a href="{{ detail.addRepeatFieldButton.href }}" class="govuk-button govuk-button--secondary">
+              Add{% if detail.addRepeatFieldButton.canDelete %} or delete{% endif %} {{ detail.addRepeatFieldButton.label }}
+            </a>
+            {% endif %}
+
+            <!-- Legacy logic for repeatSectionPage Controller - DO NOT CONFUSE WITH REPEAT MULTI FIELD -->
             {% if not details[loop.index].card and detail.items[0].pageId %}
               {% set splitDash = detail.items[0].pageId.split("-") %}
               {% set lastEntry = splitDash.slice(-1)[0] %}

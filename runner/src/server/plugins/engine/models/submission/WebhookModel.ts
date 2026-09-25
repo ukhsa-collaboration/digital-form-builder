@@ -18,7 +18,7 @@ export function WebhookModel(model: FormModel, state: FormSubmissionState) {
 
   const { relevantPages } = model.getRelevantPages(state);
 
-  // Sipliefied logi more extendable shown here https://github.com/XGovFormBuilder/digital-form-builder/issues/1401
+  // field logic more extendable shown here https://github.com/XGovFormBuilder/digital-form-builder/issues/1401
   const questions = relevantPages.flatMap((page) => {
     if ((page as any).isRepeatingFieldPageController === true) {
       return (page as any).toWebhookQuestions(state);
@@ -56,9 +56,10 @@ function createToFieldsMap(state: FormSubmissionState) {
 
       if (selectedItem?.conditionallyRevealedComponents) {
         const toField = createToFieldsMap(state);
-        const nestedFields = selectedItem.conditionallyRevealedComponents.formItems.flatMap(
-          toField
-        );
+        const nestedFields =
+          selectedItem.conditionallyRevealedComponents.formItems.flatMap(
+            toField
+          );
 
         return [baseField, ...nestedFields];
       }
