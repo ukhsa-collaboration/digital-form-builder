@@ -13,7 +13,7 @@
   "hooks": {
     "HeadlessSummaryPageController.onSubmit": "rpsRiskReportOnSummarySubmit",
     "TrustPaymentsAdapter.getBillingInformation": "rpsGetBillingInformation",
-    "SelectAnAddressPageController.onAddressSelection": "rpsRiskReportOnAddressSelection"
+    "SelectAnAddressPageController.onAddressSelection.reportAddress": "rpsRiskReportOnAddressSelection"
   },
   "generateReference": true,
   "paymentProvider": "trust-payments",

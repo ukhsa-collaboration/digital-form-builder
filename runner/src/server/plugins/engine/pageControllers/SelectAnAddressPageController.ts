@@ -206,7 +206,7 @@ export class SelectAnAddressPageController extends PageControllerBase {
 
         if (userSelectedYes) {
           await request.hook.run<void, { address: Address }>(
-            "SelectAnAddressPageController.onAddressSelection",
+            `SelectAnAddressPageController.onAddressSelection.${addressType}`,
             {
               model: this.model,
               state: {
