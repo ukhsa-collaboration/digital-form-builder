@@ -246,10 +246,12 @@
       "options": {
         "sectionKey": "people_you_live_with",
         "customText": {
-          "cardTitle": "Person {index}"
+          "cardTitle": "Person {index}",
+          "separatePageTitle": "Check these details are correct before continuing"
         },
         "summaryDisplayMode": {
-          "samePage": false
+          "samePage": false,
+          "yesNoSummaryQuestion": "Do you live with other people?"
         }
       },
       "components": [
@@ -382,7 +384,8 @@
       "options": {
         "sectionKey": "close_contacts",
         "customText": {
-          "cardTitle": "Close Contact {index}"
+          "cardTitle": "Close Contact {index}",
+          "separatePageTitle": "Check these details are correct before continuing"
         }
       },
       "components": [
@@ -583,13 +586,13 @@
       "hideTitle": true
     },
     {
-      "name": "PeopleYouLiveWith",
-      "title": "People you live with",
+      "name": "PeopleTheyLiveWith",
+      "title": "People they live with",
       "hideTitle": true
     },
     {
-      "name": "PeopleTheyLiveWith",
-      "title": "People they live with",
+      "name": "PeopleYouLiveWith",
+      "title": "People you live with",
       "hideTitle": true
     },
     {

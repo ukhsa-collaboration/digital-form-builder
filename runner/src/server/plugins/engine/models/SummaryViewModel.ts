@@ -228,7 +228,6 @@ export class SummaryViewModel {
             });
             if (i === cards.length - 1) {
               card.addRepeatFieldButton = {
-                // TODO: this url is probably wrong
                 href: redirectUrl(
                   request,
                   `/${model.basePath}${page.path}?view=summary`,
