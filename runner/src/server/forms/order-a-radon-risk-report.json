@@ -10,6 +10,11 @@
   "analytics": {
     "gtmId1": "GTM-5ZD9GZWX"
   },
+  "hooks": {
+    "HeadlessSummaryPageController.onSubmit": "rpsRiskReportOnSummarySubmit",
+    "TrustPaymentsAdapter.getBillingInformation": "rpsGetBillingInformation",
+    "SelectAnAddressPageController.onAddressSelection": "rpsRiskReportOnAddressSelection"
+  },
   "generateReference": true,
   "paymentProvider": "trust-payments",
   "fees": [
@@ -54,10 +59,6 @@
       "text": "Terms and Conditions"
     }
   ],
-  "hooks": {
-    "HeadlessSummaryPageController.onSubmit": "rpsRiskReportOnSummarySubmit",
-    "TrustPaymentsAdapter.getBillingInformation": "rpsGetBillingInformation"
-  },
   "pages": [
     {
       "title": "Order a radon risk report",
@@ -207,8 +208,7 @@
       ],
       "controller": "SelectAnAddressPageController",
       "options": {
-        "changePath": "/find-a-report-address",
-        "onAddressSelection": "rpsRiskReportOnAddressSelection"
+        "changePath": "/find-a-report-address"
       },
       "componentsAfter": [
         {
