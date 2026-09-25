@@ -2,6 +2,8 @@
 {% from "summary-list/macro.njk" import govukSummaryList -%}
 {% from "button/macro.njk" import govukButton %}
 {% from "partials/summary-card.html" import summaryCard %}
+{% from "radios/macro.njk" import govukRadios %}
+
 
 {% extends 'layout.html' %}
 
@@ -11,6 +13,9 @@
           <h1 class="govuk-heading-l">{{customText.separatePageTitle or pageTitle }}</h1>
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-two-thirds">
+      {% if errors %}
+        {{ govukErrorSummary(errors) }}
+      {% endif %}
       {% for detail in details %}
         {% if details.length === 1 %}
           {{ summaryCard(detail, true) }}
@@ -18,15 +23,27 @@
           {{ summaryCard(detail, false, returnUrl) }}
         {% endif %}
       {% endfor %}
-        <form action="?view=summary"  method="post" enctype="multipart/form-data">
+      <form action="?view=summary" method="post" enctype="multipart/form-data" novalidate>
+        <input type="hidden" name="crumb" value="{{ crumb }}"/>
+        {% if summaryDisplayMode.boolSummaryQuestion %}
+          {{ govukRadios({
+            name: "addAnother",
+            classes: "govuk-radios--inline",
+            fieldset: { legend: { text: summaryDisplayMode.boolSummaryQuestion, classes: "govuk-fieldset__legend--m" } },
+            errorMessage: addAnotherError,
+            items: [
+              { value: "increment", text: "Yes" },
+              { value: "continue", text: "No" }
+            ]
+          }) }}
+          <button class="govuk-button">Continue</button>
+        {% else %}
           <div class="govuk-button-group">
-            <input type="hidden" name="crumb" value="{{crumb}}"/>
-            <button name="next" value="continue" class="govuk-button">Continue</button>
-            <button name="next" value="increment" class="govuk-button govuk-button--secondary">
-              Add another
-            </button>
+            <button name="addAnother" value="continue" class="govuk-button">Continue</button>
+            <button name="addAnother" value="increment" class="govuk-button govuk-button--secondary">Add another</button>
           </div>
-        </form>
+        {% endif %}
+      </form>
       </div>
     </div>
   </div>

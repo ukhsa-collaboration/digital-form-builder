@@ -61,6 +61,7 @@ export class RepeatedMultiFieldPageController extends PageController {
       summaryDisplayMode: {
         ...DEFAULT_OPTIONS.summaryDisplayMode,
         ...providedOptions.summaryDisplayMode,
+        // ...
       },
       customText: {
         ...DEFAULT_OPTIONS.customText,
@@ -139,6 +140,7 @@ export class RepeatedMultiFieldPageController extends PageController {
 
         return response;
       }
+
       // Summary view scenario: explicit ?view=summary only.
       // returnUrl which leads to main form summary
       if (view === "summary") {
@@ -191,22 +193,9 @@ export class RepeatedMultiFieldPageController extends PageController {
       const { query } = request;
       const { cacheService } = request.services([]);
 
-      // Summary-page POSTs: either add another entry or continue to the next page.
+      // Scenario 1: post a summary page
       if (query.view === "summary") {
-        const state = await cacheService.getState(request);
-
-        //`next=increment` is sent by the "Add another" button in
-        // repeating-multi-field-summary.html. The "Continue" button sends no `next`,
-        // so it falls through to getNext(). Keep the value in sync with the template.
-        const payload = (request.payload ?? {}) as { next?: string }; // type casting for next
-        if (payload?.next === "increment") {
-          const nextIndex = this.nextIndex(state); // next free slot
-          return h.redirect(
-            `/${this.model.basePath}${this.path}?view=${nextIndex}`
-          );
-        }
-
-        return h.redirect(this.getNext(payload));
+        return this.handleSummaryPost(request, h);
       }
 
       let validated: Record<string, unknown> = {};
@@ -304,6 +293,7 @@ export class RepeatedMultiFieldPageController extends PageController {
     return {
       ...baseViewModel,
       customText: this.options.customText,
+      summaryDisplayMode: this.options.summaryDisplayMode,
       details,
       returnUrl: this.returnUrl,
     };
@@ -361,6 +351,62 @@ export class RepeatedMultiFieldPageController extends PageController {
     }
 
     return String(value);
+  }
+
+  /**
+   * Handles POSTs from the repeat summary page: either go to a new entry
+   * or continue to the next page.
+   */
+  private async handleSummaryPost(
+    request: HapiRequest,
+    h: HapiResponseToolkit
+  ) {
+    const { cacheService } = request.services([]);
+    const state = await cacheService.getState(request);
+    const payload = (request.payload ?? {}) as {
+      addAnother?: string;
+    };
+
+    const wantsAnother = this.resolveAddAnother(payload);
+
+    if (wantsAnother === undefined) {
+      return this.renderSummaryWithError(state, h);
+    }
+
+    if (wantsAnother) {
+      return h.redirect(
+        `/${this.model.basePath}${this.path}?view=${this.nextIndex(state)}`
+      );
+    }
+
+    return h.redirect(this.getNext(payload));
+  }
+
+  private resolveAddAnother(payload: {
+    addAnother?: string;
+  }): boolean | undefined {
+    if (payload.addAnother === "increment") return true;
+    if (payload.addAnother === "continue") return false;
+    // Returns undefined if a Yes/No question is configured but wasn't answered.
+    return undefined;
+  }
+
+  // TODO: render summary with errors is currently not working
+  private renderSummaryWithError(state: any, h: HapiResponseToolkit) {
+    return h
+      .view("repeating-multi-field-summary", {
+        ...this.getSummaryViewModel(state),
+        errors: {
+          titleText: "There is a problem",
+          errorList: [
+            {
+              text: "Select yes if you want to add another",
+              href: "#addAnother",
+            },
+          ],
+        },
+      })
+      .code(400);
   }
 
   toSummaryDetails(state: FormSubmissionState): Array<SummaryCard> {
