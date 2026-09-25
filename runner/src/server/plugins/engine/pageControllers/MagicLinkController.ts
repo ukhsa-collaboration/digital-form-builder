@@ -29,15 +29,12 @@ export class MagicLinkController extends PageController {
 
       //💣 Issue: As the program scales, this will need updating on a per-form basis.
       // Otherwise active on one form, will mark them active on all.
-      const isMagicLinkRecordActive = await magicLinkCacheService.searchForMagicLinkRecord(
-        email
-      );
+      const isMagicLinkRecordActive =
+        await magicLinkCacheService.searchForMagicLinkRecord(email);
 
       if (!isMagicLinkRecordActive) {
         return h.redirect(`/${this.model.basePath}/expired`).code(302);
       }
-
-      await magicLinkCacheService.deleteMagicLinkRecord(email);
 
       if (!validation.isValid) {
         // Handle different invalid token cases
@@ -53,13 +50,27 @@ export class MagicLinkController extends PageController {
         }
       }
 
+      if (this.model.def.skipSummary) {
+        this.showContinueButton = true;
+        const viewModel = this.getViewModel({});
+        viewModel.pageTitle = "Confirm your email address";
+        viewModel.components = [
+          {
+            type: "Para",
+            isFormComponent: false,
+            model: {
+              attributes: {},
+              content:
+                "Click continue to confirm your email address.",
+            },
+          },
+        ];
+        return h.view(this.viewName, viewModel);
+      }
+
       this.langFromRequest(request);
 
       const model = this.model;
-
-      if (this.model.def.skipSummary) {
-        return this.makePostRouteHandler()(request, h);
-      }
 
       const state = await cacheService.getState(request);
       const viewModel = new SummaryViewModel(this.title, model, state, request);
@@ -135,35 +146,53 @@ export class MagicLinkController extends PageController {
 
       const validation = await validateHmac(email, hmac, requestTime, hmacKey);
 
-      //Outlook safelink consumes magic link - This bypasses it
       if (!request.headers["user-agent"]) {
         return h.response("Ignored bot request").code(200);
       }
-      if (validation.isValid) {
-        const token = Jwt.token.generate(
-          { email: request.query.email },
-          {
-            key: this.model.def.jwtKey,
-            algorithm: config.initialisedSessionAlgorithm,
-          },
-          {
-            ttlSec: config.initialisedSessionTimeout / 1000,
-          }
-        );
+      const { magicLinkCacheService } = request.services([]);
 
-        // Set the JWT in a cookie
-        h.state("auth_token", token, {
-          ttl: 20 * 60 * 1000,
-          isSecure: true,
-          isHttpOnly: true,
-          encoding: "none",
-          clearInvalid: true,
-          path: "/",
-          isSameSite: "Lax",
-        });
+      const isMagicLinkRecordActive =
+        await magicLinkCacheService.searchForMagicLinkRecord(email);
+
+      if (!isMagicLinkRecordActive) {
+        return h.redirect(`/${this.model.basePath}/expired`).code(302);
       }
 
-      const { magicLinkCacheService } = request.services([]);
+      if (!validation.isValid) {
+        switch (validation.reason) {
+          case "expired":
+            return h.redirect(`/${this.model.basePath}/expired`).code(302);
+          case "invalid_signature":
+            return h
+              .redirect(`/${this.model.basePath}/incorrect-email`)
+              .code(302);
+          default:
+            return h.redirect(`/${this.model.basePath}/error`).code(302);
+        }
+      }
+
+      await magicLinkCacheService.deleteMagicLinkRecord(email);
+
+      const token = Jwt.token.generate(
+        { email: request.query.email },
+        {
+          key: this.model.def.jwtKey,
+          algorithm: config.initialisedSessionAlgorithm,
+        },
+        {
+          ttlSec: config.initialisedSessionTimeout / 1000,
+        }
+      );
+
+      h.state("auth_token", token, {
+        ttl: 20 * 60 * 1000,
+        isSecure: true,
+        isHttpOnly: true,
+        encoding: "none",
+        clearInvalid: true,
+        path: "/",
+        isSameSite: "Lax",
+      });
 
       /* Populate the current session with the form state from the session that requested the magic link */
       await magicLinkCacheService.repopulateFormStateUponMagicLinkReturn(

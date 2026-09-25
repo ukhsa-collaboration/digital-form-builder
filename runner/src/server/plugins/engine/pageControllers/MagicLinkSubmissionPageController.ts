@@ -21,6 +21,20 @@ const getCookieOptions = (timeRemaining: number) => {
   return options;
 };
 
+export function buildMagicLinkReturnPath(
+  basePath: string,
+  email: string,
+  requestTime: number | string,
+  signature: string
+) {
+  const params = new URLSearchParams({
+    email,
+    request_time: String(requestTime),
+    signature,
+  });
+  return `/${basePath}/return?${params.toString()}`;
+}
+
 // Base controller class containing shared functionality
 export class MagicLinkSubmissionPageController extends PageController {
   RETRY_TIMEOUT_SECONDS: number;
@@ -206,13 +220,12 @@ export class MagicLinkSubmissionPageController extends PageController {
         );
       }
 
-      // Construct the magic link URL
-      const hmacUrlStart = `/${model.basePath}/return?email=`;
-      const hmacUrl = hmacUrlStart.concat(
+      // Encode the email. A raw "+" in the query is parsed as a space, the
+      // cache lookup misses, and the user is sent to the expired page.
+      const hmacUrl = buildMagicLinkReturnPath(
+        model.basePath,
         email,
-        "&request_time=",
-        currentTimestamp.toString(),
-        "&signature=",
+        currentTimestamp,
         hmac.toString()
       );
 
