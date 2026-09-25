@@ -245,7 +245,7 @@
           "name": "otherWays",
           "options": {},
           "type": "Para",
-          "content": "<h2 class=\"govuk-heading-m\">Other ways to get in touch</h2><p class=\"govuk-body-m\"><p class=\"govuk-body-m\">Is your issue urgent? Would you prefer to call us? Find the appropriate phone number on our <a href=\"whp-contact-us\">contact us page</a>.</p>"
+          "content": "<h2 class=\"govuk-heading-m\">Other ways to get in touch</h2><p class=\"govuk-body-m\"><p class=\"govuk-body-m\">Is your issue urgent? Would you prefer to call us? Find the appropriate phone number on our <a href=\"https://www.gov.uk/government/guidance/contact-radiation-protection-sciences\">contact us page</a>.</p>"
         }
       ],
       "next": [{ "path": "/summary" }],
@@ -281,7 +281,7 @@
           "options": {
             "condition": "ojQCvt"
           },
-          "content": "<p class=\"govuk-body-m\">The <b>{{service}}</b> team will review your enquiry and aim to respond within 5 working days. If your enquiry is urgent, please <a href=\"https://www.gov.uk/health-protection-team\" target=”_blank”>call us.</a></p>"
+          "content": "<p class=\"govuk-body-m\">The <b>{{service}}</b> team will review your enquiry and aim to respond within 5 working days. If your enquiry is urgent, please <a href=\"https://www.gov.uk/government/guidance/contact-radiation-protection-sciences\" target=”_blank”>call us.</a></p>"
         },
         {
           "name": "introNoService",
@@ -289,7 +289,7 @@
           "options": {
             "condition": "tvCQjo"
           },
-          "content": "<p class=\"govuk-body-m\">The team will review your enquiry and aim to respond within 5 working days. If your enquiry is urgent, please <a href=\"https://www.gov.uk/health-protection-team\" target=”_blank”>call us.</a></p>"
+          "content": "<p class=\"govuk-body-m\">The team will review your enquiry and aim to respond within 5 working days. If your enquiry is urgent, please <a href=\"https://www.gov.uk/government/guidance/contact-radiation-protection-sciences\" target=”_blank”>call us.</a></p>"
         },
         {
           "name": "tableService",
@@ -310,7 +310,7 @@
         {
           "name": "final links",
           "type": "Para",
-          "content": "<p class=\"govuk-body-m\"><a href=\"https://www.gov.uk/health-protection-team\" target=”_blank”>What did you think of this service?</a> (takes 30 seconds)</p></br><p class=\"govuk-body-m\"><a href=\"https://www.gov.uk/health-protection-team\" target=”_blank”>Go to Radiation Protection Sciences homepage</a></p>"
+          "content": "<p class=\"govuk-body-m\"><a href=\"https://submit.forms.service.gov.uk/form/266710/radon-services-feedback-form\" target=”_blank”>What did you think of this service?</a> (takes 30 seconds)</p></br><p class=\"govuk-body-m\"><a href=\"https://www.gov.uk/government/organisations/radiation-protection-sciences\" target=”_blank”>Go to Radiation Protection Sciences homepage</a></p>"
         }
       ]
     }

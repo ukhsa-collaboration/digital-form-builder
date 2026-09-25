@@ -80,7 +80,7 @@
           "name": "reportDetailsText",
           "options": {},
           "type": "Para",
-          "content": "<p class=\"govuk-body-m\">The report does not tell you the radon level inside the property. To find this out, you need to do a 3‑month test using a <a href=\"/order-a-radon-home-test-kit\">radon gas test kit</a>.</p><p class=\"govuk-body-m\">Basements and cellar rooms are at a higher risk of radon. If a room you use frequently is below ground level, such as a kitchen or office, you should do a radon test, even if the property is not in a radon Affected Area.</p><p class=\"govuk-body-m\">Each report costs £3.90 and will be sent to an email address you provide. Alternatively, you can request a physical report to be sent by Royal Mail 1st Class for £5.51.</p><p class=\"govuk-body-m\"><a href=\"https://www.ukradon.org/cms/assets/gfx/content/resource_5095cs45be58330c.pdf\">Read a sample report</a></p><h3 class=\"govuk-heading-m\">Before you start</h3><p class=\"govuk-body-m\">This service is for buildings up to 25 metres in any direction (this does not refer to the height of the building or basement depth).</p><p class=\"govuk-body-m\">This report is not suitable for larger buildings. In this case, contact the <a href=\"http://shop.bgs.ac.uk/georeports\">British Geological Survey (BGS)</a>.</p><p class=\"govuk-body-m\">You'll need:</p><p class=\"govuk-body-m\"><ul class=\"govuk-list govuk-list--bullet\"><li>a valid UK address for the risk report</li><li>a valid email address or a UK postal delivery address</li><li>your payment details</li></ul></p>"
+          "content": "<p class=\"govuk-body-m\">The report does not tell you the radon level inside the property. To find this out, you need to do a 3‑month test using a <a href=\"/order-a-radon-home-test-kit\">radon gas test kit</a>.</p><p class=\"govuk-body-m\">Basements and cellar rooms are at a higher risk of radon. If a room you use frequently is below ground level, such as a kitchen or office, you should do a radon test, even if the property is not in a radon Affected Area.</p><p class=\"govuk-body-m\">Each report costs £3.90 and will be sent to an email address you provide. Alternatively, you can request a physical report to be sent by Royal Mail 1st Class for £5.51.</p><p class=\"govuk-body-m\"><a href=\"https://www.ukradon.org/cms/assets/gfx/content/resource_5095cs45be58330c.pdf\">Read a sample report</a></p><h3 class=\"govuk-heading-m\">Before you start</h3><p class=\"govuk-body-m\">This service is for buildings up to 25 metres in any direction (this does not refer to the height of the building or basement depth).</p><p class=\"govuk-body-m\">This report is not suitable for larger buildings. In this case, contact the <a href=\"https://www.bgs.ac.uk/\">British Geological Survey (BGS)</a>.</p><p class=\"govuk-body-m\">You'll need:</p><p class=\"govuk-body-m\"><ul class=\"govuk-list govuk-list--bullet\"><li>a valid UK address for the risk report</li><li>a valid email address or a UK postal delivery address</li><li>your payment details</li></ul></p>"
         }
       ],
       "next": [{ "path": "/find-a-report-address" }],
@@ -92,6 +92,7 @@
     {
       "path": "/find-a-report-address",
       "title": "What address are you ordering a risk report for?",
+      "controller": "FindAnAddressPageController",
       "components": [
         {
           "name": "reportAddress_postcodeLookup",
@@ -153,7 +154,6 @@
           "content": "<br><a href=\"enter-report-address-manually{% if returnUrl %}?returnUrl={{ returnUrl | urlencode }}{% endif %}\">Enter address manually</a>"
         }
       ],
-      "controller": "FindAnAddressPageController",
       "next": [
         {
           "path": "/is-this-the-correct-report-address",
@@ -1141,7 +1141,7 @@
         {
           "name": "final links",
           "type": "Para",
-          "content": "<p class=\"govuk-body-m\"><a href=\"https://submit.forms.service.gov.uk/form/266710/radon-services-feedback-form\">What did you think of this service?</a> (takes 30 seconds)</p><p class=\"govuk-body-m\"><a href=\"/radon-enquiry\">Contact Radon Measurement Service team</a></p><p class=\"govuk-body-m\"><a href=\"https://www.gov.uk/government/guidance/radon-services-for-homeowners-or-householders\">Go to radon services for homeowners or householders</a></p>"
+          "content": "<p class=\"govuk-body-m\"><a href=\"https://submit.forms.service.gov.uk/form/266710/radon-services-feedback-form\">What did you think of this service?</a> (takes 30 seconds)</p><p class=\"govuk-body-m\"><a href=\"https://www.gov.uk/government/guidance/contact-radiation-protection-sciences\">Contact Radon Measurement Service team</a></p><p class=\"govuk-body-m\"><a href=\"https://www.gov.uk/government/guidance/radon-services-for-homeowners-or-householders\">Go to radon services for homeowners or householders</a></p>"
         }
       ]
     }

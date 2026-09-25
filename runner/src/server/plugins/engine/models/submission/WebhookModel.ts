@@ -56,9 +56,10 @@ function createToFieldsMap(state: FormSubmissionState) {
 
       if (selectedItem?.conditionallyRevealedComponents) {
         const toField = createToFieldsMap(state);
-        const nestedFields = selectedItem.conditionallyRevealedComponents.formItems.flatMap(
-          toField
-        );
+        const nestedFields =
+          selectedItem.conditionallyRevealedComponents.formItems.flatMap(
+            toField
+          );
 
         return [baseField, ...nestedFields];
       }

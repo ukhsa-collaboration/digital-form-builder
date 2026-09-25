@@ -10,7 +10,11 @@ export type ControllerErrorMetadata = {
   /** The stack of error that caused the controller error */
   originalStack?: string;
   /** Page data */
-  data?: Record<string, unknown>;
+  data?: ControllerErrorPageState;
+};
+
+export type ControllerErrorPageState = Record<string, unknown> & {
+  feedbackLink?: string;
 };
 
 export type RenderingErrorMetadata = {

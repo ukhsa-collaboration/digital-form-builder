@@ -4,6 +4,7 @@ import config from "../config";
 import { HapiRequest, HapiResponseToolkit, HapiServer } from "../types";
 import type { ApplicationErrorMetadata } from "./engine/errors";
 import { FormModel } from "./engine/models";
+import { feedbackUrlFromRequest } from "./engine/feedback";
 
 /**
  * Extracts the Form ID from the URL path
@@ -130,10 +131,24 @@ export default {
                 response.message.includes("ControllerError") ||
                 response.message.includes("RenderingError")
               ) {
+                const page = response.data?.page || `${statusCode}`;
+
+                const globalPageState = {
+                  feedbackLink: feedbackUrlFromRequest(request, form, page),
+                };
+
+                const applicationErrorData = {
+                  ...response.data,
+                  data: {
+                    ...globalPageState,
+                    ...response.data?.data,
+                  },
+                };
+
                 return handleApplicationError(
                   request,
                   h,
-                  response.data,
+                  applicationErrorData,
                   formGroup
                 );
               }
