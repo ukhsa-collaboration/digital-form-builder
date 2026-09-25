@@ -3,6 +3,7 @@
 {% from "button/macro.njk" import govukButton %}
 {% from "partials/summary-card.html" import summaryCard %}
 {% from "radios/macro.njk" import govukRadios %}
+{% from "error-summary/macro.njk" import govukErrorSummary %}
 
 
 {% extends 'layout.html' %}
@@ -23,7 +24,7 @@
           {{ summaryCard(detail, false, returnUrl) }}
         {% endif %}
       {% endfor %}
-      <form action="?view=summary" method="post" enctype="multipart/form-data" novalidate>
+      <form action="?view=summary{% if returnUrl %}&returnUrl={{ returnUrl | urlencode }}{% endif %}" method="post" enctype="multipart/form-data" novalidate>
         <input type="hidden" name="crumb" value="{{ crumb }}"/>
         {% if summaryDisplayMode.boolSummaryQuestion %}
           {{ govukRadios({

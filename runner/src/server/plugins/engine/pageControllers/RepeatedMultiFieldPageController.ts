@@ -11,6 +11,7 @@ import joi from "joi";
 import { reach, clone } from "hoek";
 
 import type { SummaryDetailsTransformationMap } from "server/transforms/summaryDetails/types";
+
 const summaryDetailsTransformations: SummaryDetailsTransformationMap = require("../../../transforms/summaryDetails");
 
 const contentTypes: Array<ComponentDef["type"]> = [
@@ -153,7 +154,7 @@ export class RepeatedMultiFieldPageController extends PageController {
 
         return h.view(
           "repeating-multi-field-summary",
-          this.getSummaryViewModel(state)
+          this.getSummaryViewModel(state, request)
         );
       }
 
@@ -163,6 +164,7 @@ export class RepeatedMultiFieldPageController extends PageController {
   }
   async removeAtIndex(request, h) {
     const { query } = request;
+    const { returnUrl } = query;
     const { cacheService } = request.services([]);
     const state = await cacheService.getState(request);
 
@@ -183,9 +185,19 @@ export class RepeatedMultiFieldPageController extends PageController {
     );
 
     if (list.length < 1) {
-      return h.redirect(`/${this.model.basePath}${this.path}?view=0`);
+      return h.redirect(
+        this.withReturnUrl(
+          `/${this.model.basePath}${this.path}?view=0`,
+          returnUrl
+        )
+      );
     }
-    return h.redirect(`/${this.model.basePath}${this.path}?view=summary`);
+    return h.redirect(
+      this.withReturnUrl(
+        `/${this.model.basePath}${this.path}?view=summary`,
+        returnUrl
+      )
+    );
   }
 
   makePostRouteHandler() {
@@ -271,7 +283,7 @@ export class RepeatedMultiFieldPageController extends PageController {
     return this.section ? { [this.section.name]: inner } : inner;
   }
 
-  private getSummaryViewModel(state: any) {
+  private getSummaryViewModel(state: any, request: HapiRequest) {
     const baseViewModel = super.getViewModel(state);
     let details = this.toSummaryDetails(state);
 
@@ -295,7 +307,7 @@ export class RepeatedMultiFieldPageController extends PageController {
       customText: this.options.customText,
       summaryDisplayMode: this.options.summaryDisplayMode,
       details,
-      returnUrl: this.returnUrl,
+      returnUrl: request.query.returnUrl,
     };
   }
 
@@ -369,17 +381,19 @@ export class RepeatedMultiFieldPageController extends PageController {
 
     const wantsAnother = this.resolveAddAnother(payload);
 
+    const { returnUrl } = request.query;
+    const url = `/${this.model.basePath}${this.path}?view=${this.nextIndex(
+      state
+    )}`;
     if (wantsAnother === undefined) {
-      return this.renderSummaryWithError(state, h);
+      return this.renderSummaryWithError(state, h, request);
     }
 
     if (wantsAnother) {
-      return h.redirect(
-        `/${this.model.basePath}${this.path}?view=${this.nextIndex(state)}`
-      );
+      return h.redirect(this.withReturnUrl(url, returnUrl));
     }
 
-    return h.redirect(this.getNext(payload));
+    return h.redirect(this.withReturnUrl(this.getNext(payload), returnUrl));
   }
 
   private resolveAddAnother(payload: {
@@ -391,22 +405,25 @@ export class RepeatedMultiFieldPageController extends PageController {
     return undefined;
   }
 
-  // TODO: render summary with errors is currently not working
-  private renderSummaryWithError(state: any, h: HapiResponseToolkit) {
-    return h
-      .view("repeating-multi-field-summary", {
-        ...this.getSummaryViewModel(state),
-        errors: {
-          titleText: "There is a problem",
-          errorList: [
-            {
-              text: "Select yes if you want to add another",
-              href: "#addAnother",
-            },
-          ],
-        },
-      })
-      .code(400);
+  private renderSummaryWithError(
+    state: any,
+    h: HapiResponseToolkit,
+    request: HapiRequest
+  ) {
+    const errorMessage = "Select yes if you want to add another";
+    return h.view("repeating-multi-field-summary", {
+      ...this.getSummaryViewModel(state, request),
+      errors: {
+        titleText: "There is a problem",
+        errorList: [
+          {
+            text: errorMessage,
+            href: "#addAnother",
+          },
+        ],
+      },
+      addAnotherError: { text: errorMessage },
+    });
   }
 
   toSummaryDetails(state: FormSubmissionState): Array<SummaryCard> {
@@ -425,6 +442,19 @@ export class RepeatedMultiFieldPageController extends PageController {
         url: `/${this.model.basePath}${this.path}?view=${index}`,
       })),
     }));
+  }
+
+  private withReturnUrl(url: string, returnUrl?: unknown): string {
+    // allows us to persist the with return url path when we make edits to this section coming form the main summary page
+    if (
+      typeof returnUrl !== "string" ||
+      !returnUrl.startsWith("/") ||
+      returnUrl.startsWith("//")
+    ) {
+      return url;
+    }
+    const sep = url.includes("?") ? "&" : "?";
+    return `${url}${sep}returnUrl=${encodeURIComponent(returnUrl)}`;
   }
 
   toWebhookQuestions(state: FormSubmissionState) {

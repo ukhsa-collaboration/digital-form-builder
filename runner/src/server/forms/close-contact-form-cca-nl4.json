@@ -249,7 +249,8 @@
           "cardTitle": "Person {index}"
         },
         "summaryDisplayMode": {
-          "samePage": false
+          "samePage": false,
+          "boolSummaryQuestion": "Do you live with other people?"
         }
       },
       "components": [
@@ -583,13 +584,13 @@
       "hideTitle": true
     },
     {
-      "name": "PeopleYouLiveWith",
-      "title": "People you live with",
+      "name": "PeopleTheyLiveWith",
+      "title": "People they live with",
       "hideTitle": true
     },
     {
-      "name": "PeopleTheyLiveWith",
-      "title": "People they live with",
+      "name": "PeopleYouLiveWith",
+      "title": "People you live with",
       "hideTitle": true
     },
     {
