@@ -5,9 +5,9 @@ export type HookState = Record<string, any>;
 
 export type HookModel = FormModel;
 
-export interface HookContext {
+export interface HookContext<TState extends HookState = HookState> {
   model: HookModel;
-  state: HookState;
+  state: TState;
 }
 
 /**
@@ -21,7 +21,7 @@ export interface HookContext {
  * using its own tools. A failing hook should throw (e.g. `ControllerError`),
  * which is handled generically by the request lifecycle.
  */
-export type Hook<TReturn = void> = (
+export type Hook<TReturn = void, TState extends HookState = HookState> = (
   request: HapiRequest,
-  context: HookContext
+  context: HookContext<TState>
 ) => Promise<TReturn>;

@@ -7,7 +7,6 @@ import {
   resolveAddressByUdprn,
   addressTypeFormSchema,
 } from "../utils/addressUtils";
-import { addressSelectionHandlers } from "../utils/addressSelectionHandlers";
 import { ControllerError } from "../errors";
 import { Address } from "src/server/services/addressLookupService";
 import { FormData, FormSubmissionErrors, FormSubmissionState } from "../types";
@@ -63,14 +62,8 @@ export class SelectAnAddressPageController extends PageControllerBase {
 
   private readonly pageAddressType: AddressType;
   private readonly selectedFieldName: string;
-  private readonly onAddressSelection?: string;
-
   constructor(model: FormModel, pageDef: { [prop: string]: any }) {
     super(model, pageDef);
-
-    // Optional handler name (from page config) run once an address is
-    // confirmed, e.g. an RPS database check for the risk-report journey.
-    this.onAddressSelection = pageDef?.options?.onAddressSelection;
 
     // pageAddressType is declared on the hidden `addressType` component in the
     // form JSON via options.value, so one controller class serves both the
@@ -211,14 +204,16 @@ export class SelectAnAddressPageController extends PageControllerBase {
           });
         }
 
-        // Run the optional per-page handler (e.g. RPS database check) once the
-        // user confirms. Handlers throw ControllerError to render error pages.
-        const handler =
-          this.onAddressSelection &&
-          addressSelectionHandlers[this.onAddressSelection];
-
-        if (userSelectedYes && handler) {
-          await handler(request, resolvedSelectedAddress);
+        if (userSelectedYes) {
+          await request.hook.run<void, { address: Address }>(
+            `SelectAnAddressPageController.onAddressSelection.${addressType}`,
+            {
+              model: this.model,
+              state: {
+                address: resolvedSelectedAddress,
+              },
+            }
+          );
         }
 
         const savedState = await cacheService.mergeState(request, {
