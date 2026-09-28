@@ -16,6 +16,7 @@ export class MagicLinkCacheService {
   logger: HapiServer["logger"];
 
   ttl = config.sessionTimeout ?? 1000 * 60 * 10; // 10 minutes
+  magicLinkTtl = 1000 * 60 * 20; // 20 minutes
 
   constructor(server: HapiServer) {
     this.logger = server.logger;
@@ -46,7 +47,7 @@ export class MagicLinkCacheService {
       hmac: hmac,
       active: currentTimestamp,
     };
-    return this.magicLinkRecordCache.set(key, value, this.ttl);
+    return this.magicLinkRecordCache.set(key, value, this.magicLinkTtl);
   }
 
   async updateMagicLinkRecord(
@@ -60,7 +61,7 @@ export class MagicLinkCacheService {
       hmac: hmac,
       active: currentTimestamp,
     };
-    return this.magicLinkRecordCache.set(key, value, this.ttl);
+    return this.magicLinkRecordCache.set(key, value, this.magicLinkTtl);
   }
 
   async searchForMagicLinkRecord(email: string) {
