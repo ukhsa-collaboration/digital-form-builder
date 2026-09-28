@@ -261,6 +261,7 @@
         {
           "name": "first_name",
           "options": {
+            "autocomplete": "given-name",
             "customValidationMessages": {
               "string.pattern.base": "Enter a valid first (given) name"
             }
@@ -274,6 +275,7 @@
         {
           "name": "last_name",
           "options": {
+            "autocomplete": "family-name",
             "customValidationMessages": {
               "string.pattern.base": "Enter a valid last (family) name"
             }
@@ -421,6 +423,7 @@
         {
           "name": "first_name",
           "options": {
+            "autocomplete": "given-name",
             "customValidationMessages": {
               "string.pattern.base": "Enter a valid first (given) name"
             }
@@ -434,6 +437,7 @@
         {
           "name": "last_name",
           "options": {
+            "autocomplete": "family-name",
             "customValidationMessages": {
               "string.pattern.base": "Enter a valid last (family) name"
             }
@@ -581,6 +585,7 @@
         {
           "name": "first_name",
           "options": {
+            "autocomplete": "given-name",
             "customValidationMessages": {
               "string.pattern.base": "Enter a valid first (given) name"
             }
@@ -594,6 +599,7 @@
         {
           "name": "last_name",
           "options": {
+            "autocomplete": "family-name",
             "customValidationMessages": {
               "string.pattern.base": "Enter a valid last (family) name"
             }
@@ -741,6 +747,7 @@
         {
           "name": "first_name",
           "options": {
+            "autocomplete": "given-name",
             "customValidationMessages": {
               "string.pattern.base": "Enter a valid first (given) name"
             }
@@ -754,6 +761,7 @@
         {
           "name": "last_name",
           "options": {
+            "autocomplete": "family-name",
             "customValidationMessages": {
               "string.pattern.base": "Enter a valid last (family) name"
             }
@@ -901,6 +909,7 @@
         {
           "name": "first_name",
           "options": {
+            "autocomplete": "given-name",
             "customValidationMessages": {
               "string.pattern.base": "Enter a valid first (given) name"
             }
@@ -914,6 +923,7 @@
         {
           "name": "last_name",
           "options": {
+            "autocomplete": "family-name",
             "customValidationMessages": {
               "string.pattern.base": "Enter a valid last (family) name"
             }
@@ -1061,6 +1071,7 @@
         {
           "name": "first_name",
           "options": {
+            "autocomplete": "given-name",
             "customValidationMessages": {
               "string.pattern.base": "Enter a valid first (given) name"
             }
@@ -1074,6 +1085,7 @@
         {
           "name": "last_name",
           "options": {
+            "autocomplete": "family-name",
             "customValidationMessages": {
               "string.pattern.base": "Enter a valid last (family) name"
             }
@@ -1221,6 +1233,7 @@
         {
           "name": "first_name",
           "options": {
+            "autocomplete": "given-name",
             "customValidationMessages": {
               "string.pattern.base": "Enter a valid first (given) name"
             }
@@ -1234,6 +1247,7 @@
         {
           "name": "last_name",
           "options": {
+            "autocomplete": "family-name",
             "customValidationMessages": {
               "string.pattern.base": "Enter a valid last (family) name"
             }
@@ -1381,6 +1395,7 @@
         {
           "name": "first_name",
           "options": {
+            "autocomplete": "given-name",
             "customValidationMessages": {
               "string.pattern.base": "Enter a valid first (given) name"
             }
@@ -1394,6 +1409,7 @@
         {
           "name": "last_name",
           "options": {
+            "autocomplete": "family-name",
             "customValidationMessages": {
               "string.pattern.base": "Enter a valid last (family) name"
             }
@@ -1541,6 +1557,7 @@
         {
           "name": "first_name",
           "options": {
+            "autocomplete": "given-name",
             "customValidationMessages": {
               "string.pattern.base": "Enter a valid first (given) name"
             }
@@ -1554,6 +1571,7 @@
         {
           "name": "last_name",
           "options": {
+            "autocomplete": "family-name",
             "customValidationMessages": {
               "string.pattern.base": "Enter a valid last (family) name"
             }
@@ -1701,6 +1719,7 @@
         {
           "name": "first_name",
           "options": {
+            "autocomplete": "given-name",
             "customValidationMessages": {
               "string.pattern.base": "Enter a valid first (given) name"
             }
@@ -1714,6 +1733,7 @@
         {
           "name": "last_name",
           "options": {
+            "autocomplete": "family-name",
             "customValidationMessages": {
               "string.pattern.base": "Enter a valid last (family) name"
             }
@@ -1873,6 +1893,7 @@
         {
           "name": "first_name",
           "options": {
+            "autocomplete": "given-name",
             "customValidationMessages": {
               "string.pattern.base": "Enter a valid first (given) name"
             }
@@ -1886,6 +1907,7 @@
         {
           "name": "last_name",
           "options": {
+            "autocomplete": "family-name",
             "customValidationMessages": {
               "string.pattern.base": "Enter a valid last (family) name"
             }
@@ -2030,6 +2052,7 @@
         {
           "name": "first_name",
           "options": {
+            "autocomplete": "given-name",
             "customValidationMessages": {
               "string.pattern.base": "Enter a valid first (given) name"
             }
@@ -2043,6 +2066,7 @@
         {
           "name": "last_name",
           "options": {
+            "autocomplete": "family-name",
             "customValidationMessages": {
               "string.pattern.base": "Enter a valid last (family) name"
             }
@@ -2187,6 +2211,7 @@
         {
           "name": "first_name",
           "options": {
+            "autocomplete": "given-name",
             "customValidationMessages": {
               "string.pattern.base": "Enter a valid first (given) name"
             }
@@ -2200,6 +2225,7 @@
         {
           "name": "last_name",
           "options": {
+            "autocomplete": "family-name",
             "customValidationMessages": {
               "string.pattern.base": "Enter a valid last (family) name"
             }
@@ -2344,6 +2370,7 @@
         {
           "name": "first_name",
           "options": {
+            "autocomplete": "given-name",
             "customValidationMessages": {
               "string.pattern.base": "Enter a valid first (given) name"
             }
@@ -2357,6 +2384,7 @@
         {
           "name": "last_name",
           "options": {
+            "autocomplete": "family-name",
             "customValidationMessages": {
               "string.pattern.base": "Enter a valid last (family) name"
             }
@@ -2501,6 +2529,7 @@
         {
           "name": "first_name",
           "options": {
+            "autocomplete": "given-name",
             "customValidationMessages": {
               "string.pattern.base": "Enter a valid first (given) name"
             }
@@ -2514,6 +2543,7 @@
         {
           "name": "last_name",
           "options": {
+            "autocomplete": "family-name",
             "customValidationMessages": {
               "string.pattern.base": "Enter a valid last (family) name"
             }
@@ -2658,6 +2688,7 @@
         {
           "name": "first_name",
           "options": {
+            "autocomplete": "given-name",
             "customValidationMessages": {
               "string.pattern.base": "Enter a valid first (given) name"
             }
@@ -2671,6 +2702,7 @@
         {
           "name": "last_name",
           "options": {
+            "autocomplete": "family-name",
             "customValidationMessages": {
               "string.pattern.base": "Enter a valid last (family) name"
             }
@@ -2815,6 +2847,7 @@
         {
           "name": "first_name",
           "options": {
+            "autocomplete": "given-name",
             "customValidationMessages": {
               "string.pattern.base": "Enter a valid first (given) name"
             }
@@ -2828,6 +2861,7 @@
         {
           "name": "last_name",
           "options": {
+            "autocomplete": "family-name",
             "customValidationMessages": {
               "string.pattern.base": "Enter a valid last (family) name"
             }
@@ -2972,6 +3006,7 @@
         {
           "name": "first_name",
           "options": {
+            "autocomplete": "given-name",
             "customValidationMessages": {
               "string.pattern.base": "Enter a valid first (given) name"
             }
@@ -2985,6 +3020,7 @@
         {
           "name": "last_name",
           "options": {
+            "autocomplete": "family-name",
             "customValidationMessages": {
               "string.pattern.base": "Enter a valid last (family) name"
             }
@@ -3129,6 +3165,7 @@
         {
           "name": "first_name",
           "options": {
+            "autocomplete": "given-name",
             "customValidationMessages": {
               "string.pattern.base": "Enter a valid first (given) name"
             }
@@ -3142,6 +3179,7 @@
         {
           "name": "last_name",
           "options": {
+            "autocomplete": "family-name",
             "customValidationMessages": {
               "string.pattern.base": "Enter a valid last (family) name"
             }
@@ -3286,6 +3324,7 @@
         {
           "name": "first_name",
           "options": {
+            "autocomplete": "given-name",
             "customValidationMessages": {
               "string.pattern.base": "Enter a valid first (given) name"
             }
@@ -3299,6 +3338,7 @@
         {
           "name": "last_name",
           "options": {
+            "autocomplete": "family-name",
             "customValidationMessages": {
               "string.pattern.base": "Enter a valid last (family) name"
             }
