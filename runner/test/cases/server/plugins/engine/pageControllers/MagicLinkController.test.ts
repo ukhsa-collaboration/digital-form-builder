@@ -23,6 +23,7 @@ const controller = () =>
       def: {
         name: "Report an outbreak (Magic Link)",
         skipSummary: true,
+        jwtKey: "test-jwt-key-with-enough-length-for-hs512",
         outputs: [{ outputConfiguration: { hmacKey } }],
       },
       basePath: "magic-link",
@@ -49,6 +50,7 @@ const toolkit = () => {
       return redirected;
     },
     response: () => ({ code: () => "ignored" }),
+    state: () => undefined,
     redirected,
   };
 };
@@ -85,6 +87,38 @@ suite("Magic link return", () => {
     expect(result.template).to.equal("index");
     expect(result.context.pageTitle).to.equal("Confirm your email address");
     expect(result.context.page.showContinueButton).to.equal(true);
+  });
+
+  test("confirming the email does not expire the link", async () => {
+    const email = "manager@care.example";
+    const requestTime = `${Math.floor(Date.now() / 1000)}`;
+    const signature = sign(email, requestTime);
+    let deleted = false;
+    const h = toolkit();
+
+    await controller().makePostRouteHandler()(
+      {
+        query: { email, signature, request_time: requestTime },
+        params: { id: "magic-link" },
+        headers: { "user-agent": "Mozilla/5.0" },
+        services: () => ({
+          magicLinkCacheService: {
+            searchForMagicLinkRecord: async () => ({
+              hmac: signature,
+              active: Number(requestTime),
+            }),
+            deleteMagicLinkRecord: async () => {
+              deleted = true;
+            },
+            repopulateFormStateUponMagicLinkReturn: async () => undefined,
+          },
+        }),
+      } as any,
+      h as any
+    );
+
+    expect(deleted).to.equal(false);
+    expect(h.redirected.path).to.contain("/magic-link/email-confirmed");
   });
 
   test("GET still sends a missing record to the expired page", async () => {

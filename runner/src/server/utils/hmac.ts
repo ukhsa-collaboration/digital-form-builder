@@ -2,7 +2,7 @@ import crypto from "crypto";
 import { logger } from "./logger";
 
 // Configuration constants
-const TIME_THRESHOLD = 1200; // 5 minutes in seconds
+const TIME_THRESHOLD = 1200; // 20 minutes in seconds
 
 function lastSunday(month, year) {
   var d = new Date();

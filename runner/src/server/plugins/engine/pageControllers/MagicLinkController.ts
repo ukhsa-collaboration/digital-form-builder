@@ -171,8 +171,6 @@ export class MagicLinkController extends PageController {
         }
       }
 
-      await magicLinkCacheService.deleteMagicLinkRecord(email);
-
       const token = Jwt.token.generate(
         { email: request.query.email },
         {

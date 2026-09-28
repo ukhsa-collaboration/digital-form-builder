@@ -4,7 +4,7 @@ import { HapiRequest, HapiServer } from "../types";
 import { CacheService } from "./cacheService";
 
 export class MagicLinkCacheService {
-  /* This service is responsible for getting, setting and deleting magic link data in the cache. 
+  /* This service is responsible for getting, setting and deleting magic link data in the cache.
      This service has been registered by {@link createServer}
    */
   cacheService: CacheService;
@@ -16,6 +16,7 @@ export class MagicLinkCacheService {
   logger: HapiServer["logger"];
 
   ttl = config.sessionTimeout ?? 1000 * 60 * 10; // 10 minutes
+  magicLinkTtl = 1000 * 60 * 20; // 20 minutes
 
   constructor(server: HapiServer) {
     this.logger = server.logger;
@@ -46,7 +47,7 @@ export class MagicLinkCacheService {
       hmac: hmac,
       active: currentTimestamp,
     };
-    return this.magicLinkRecordCache.set(key, value, this.ttl);
+    return this.magicLinkRecordCache.set(key, value, this.magicLinkTtl);
   }
 
   async updateMagicLinkRecord(
@@ -60,7 +61,7 @@ export class MagicLinkCacheService {
       hmac: hmac,
       active: currentTimestamp,
     };
-    return this.magicLinkRecordCache.set(key, value, this.ttl);
+    return this.magicLinkRecordCache.set(key, value, this.magicLinkTtl);
   }
 
   async searchForMagicLinkRecord(email: string) {
@@ -76,7 +77,7 @@ export class MagicLinkCacheService {
 
   async saveFormIdBeforeMagicLinkRedirectToAllowResume(request: HapiRequest) {
     /* Magic Link Session Resume Step 1: Save the form id before redirecting to the Magic Link form
-       Saves form id by session id, to allow retrieval in the magic link form flow 
+       Saves form id by session id, to allow retrieval in the magic link form flow
     */
     const sessionId = request.yar.id;
 
@@ -193,7 +194,7 @@ export class MagicLinkCacheService {
     }
 
     /* Continuing in different session (different browser / new browser / new instance / tab)
-       Re-instate form states from previous session 
+       Re-instate form states from previous session
     */
     await this.mergeFormStateFromPreviousSession({
       previousSessionId,
