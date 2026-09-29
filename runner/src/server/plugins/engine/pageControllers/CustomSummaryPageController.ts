@@ -274,9 +274,11 @@ export class CustomSummaryPageController extends PageController {
       const stateSectionName = page.section?.name;
 
       const section = prev[displaySectionName] ?? [];
-      let sectionState = stateSectionName
-        ? state[stateSectionName] || {}
-        : state;
+      // Answers are saved on the root state. A section bucket must not hide them.
+      const sectionState = {
+        ...state,
+        ...(stateSectionName ? state[stateSectionName] : {}),
+      };
 
       const toRow = this.formItemsToRowByPage({
         page,
