@@ -207,10 +207,6 @@ export class MagicLinkCacheService {
       formId: previousFormId,
     });
 
-    /* Cleaning up state from previous session */
-    await this.clearFormState(previousSessionId, magicLinkFormId);
-    await this.clearFormState(previousSessionId, previousFormId);
-
     /* Delete Magic Link Lookup Entry */
     await this.magicLinkReturnDataByHmacCache.drop(
       getReturnDataByHmacKey(hmac)
@@ -230,8 +226,14 @@ export class MagicLinkCacheService {
       previousSessionId,
       formId
     );
+    const currentFormState = await this.getFormState(currentSessionId, formId);
 
-    await this.mergeFormState(currentSessionId, formId, previousFormState);
+    // A later visit must not replace setting details
+    // already saved in this session with the older copy.
+    await this.mergeFormState(currentSessionId, formId, {
+      ...previousFormState,
+      ...currentFormState,
+    });
   }
 
   private async getFormState(sessionId: string, formId: string) {
@@ -255,14 +257,6 @@ export class MagicLinkCacheService {
     );
   }
 
-  private async clearFormState(sessionId: string, formId: string) {
-    if (sessionId && formId) {
-      await this.cacheService.clearState({
-        params: { id: formId },
-        yar: { id: sessionId },
-      });
-    }
-  }
 }
 
 type TypedCache<T> = Policy<T, PolicyOptions<T>>;
