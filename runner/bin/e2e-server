@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+# Starts the built runner for Playwright.
+set -e
+
+NVM_DIR="${NVM_DIR:-$HOME/.nvm}"
+NODE20_BIN=$(ls -d "$NVM_DIR"/versions/node/v20.*/bin/node 2>/dev/null | sort -V | tail -1)
+
+if [ -n "$NODE20_BIN" ] && [ -x "$NODE20_BIN" ]; then
+  exec "$NODE20_BIN" dist/index.js
+fi
+
+exec node dist/index.js

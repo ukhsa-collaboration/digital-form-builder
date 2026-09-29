@@ -62,37 +62,103 @@ Please use a config file instead. This will give you more control over each envi
 The defaults can be found in [config](./config/default.js). Place your config files in `runner/config`
 See [https://github.com/node-config/node-config#readme](https://github.com/node-config/node-config#readme) for more info.
 
-| name                    | description                           |        required         | default      |            valid            |                                                                   notes                                                                   |
-| ----------------------- | ------------------------------------- | :---------------------: | ------------ | :-------------------------: | :---------------------------------------------------------------------------------------------------------------------------------------: |
-| NODE_ENV                | Node environment                      |           no            |              | development,test,production |                                                                                                                                           |
-| PORT                    | Port number                           |           no            | 3009         |                             |                                                                                                                                           |
-| OS_KEY                  | Ordnance Survey                       |           no            |              |                             |                                                      For address lookup by postcode                                                       |
-| PAY_API_KEY             | Pay api key                           |           yes           |              |                             |                                                                                                                                           |
-| PAY_RETURN_URL          | Pay return url                        |           yes           |              |                             |                                              For GOV.UK Pay to redirect back to our service                                               |
-| PAY_API_URL             | Pay api url                           |           yes           |              |                             |                                                                                                                                           |
-| NOTIFY_TEMPLATE_ID      | Notify api key                        |           yes           |              |                             |          Template ID required to send form payloads via [GOV.UK Notify](https://www.notifications.service.gov.uk) email service.          |
-| NOTIFY_API_KEY          | Notify api key                        |           yes           |              |                             |            API KEY required to send form payloads via [GOV.UK Notify](https://www.notifications.service.gov.uk) email service.            |
-| GTM_ID_1                | Google Tag Manager ID 1               |           no            |              |                             |                                                                                                                                           |
-| GTM_ID_2                | Google Tag Manager ID 2               |           no            |              |                             |                                                                                                                                           |
-| MATOMO_URL              | URL of Matomo                         |           no            |              |                             |                                                                                                                                           |
-| MATOMO_ID               | ID of Matomo site                     |           no            |              |                             |                                                                                                                                           |
-| SSL_KEY                 | SSL Key                               |           no            |              |                             |                                                                                                                                           |
-| SSL_CERT                | SSL Certificate                       |           no            |              |                             |                                                                                                                                           |
-| PREVIEW_MODE            | Preview mode                          |           no            | false        |                             | This should only be used in a dev or testing environment. Setting true will allow POST requests from the designer to add or mutate forms. |
-| LOG_LEVEL               | Log level                             |           no            | debug        |   trace,debug,info,error    |                                                                                                                                           |
-| PRIVACY_POLICY_URL      | The url used in footer's privacy link |           no            | help/privacy |                             |                                                                                                                                           |
-| API_ENV                 | Switch for API keys                   |           no            |              |    test,production,smoke    |             If the JSON file supplies test and live API keys, this is used to switch between which key which needs to be used             |
-| PHASE_TAG               | Tag to use for phase banner           |           no            | beta         |  alpha, beta, empty string  |                                                                                                                                           |
-| AUTH_ENABLED            | Enable auth for all form pages        |           no            | false        |                             |                                                                                                                                           |
-| AUTH_CLIENT_ID          | oAuth client ID                       | If AUTH_ENABLED is true |              |                             |                                                                                                                                           |
-| AUTH_CLIENT_SECRET      | oAuth client secret                   | If AUTH_ENABLED is true |              |                             |                                                                                                                                           |
-| AUTH_CLIENT_AUTH_URL    | oAuth client authorise endpoint       | If AUTH_ENABLED is true |              |                             |                                                                                                                                           |
-| AUTH_CLIENT_TOKEN_URL   | oAuth client token endpoint           | If AUTH_ENABLED is true |              |                             |                                                                                                                                           |
-| AUTH_CLIENT_PROFILE_URL | oAuth client user profile endpoint    | If AUTH_ENABLED is true |              |                             |                                                                                                                                           |
+> Form JSON files in `src/server/forms` may contain `${VAR_NAME}` placeholders.
+> When running with `NODE_ENV=development`, the runner resolves these placeholders
+> itself from environment variables of the same name, so forms work locally
+> without needing real secrets. See
+> [resolvePlaceholders.ts](./src/server/plugins/engine/utils/resolvePlaceholders.ts)
+
+| name                    | description                           |        required         | default      |            valid            |                                                                                       notes                                                                                        |
+| ----------------------- | ------------------------------------- | :---------------------: | ------------ | :-------------------------: | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: |
+| NODE_ENV                | Node environment                      |           no            |              | development,test,production |                                                                                                                                                                                    |
+| PORT                    | Port number                           |           no            | 3009         |                             |                                                                                                                                                                                    |
+| OS_KEY                  | Ordnance Survey                       |           no            |              |                             |                                                                           For address lookup by postcode                                                                           |
+| PAY_API_KEY             | Pay api key                           |           yes           |              |                             |                                                                                                                                                                                    |
+| PAY_RETURN_URL          | Pay return url                        |           yes           |              |                             |                                                                   For GOV.UK Pay to redirect back to our service                                                                   |
+| PAY_API_URL             | Pay api url                           |           yes           |              |                             |                                                                                                                                                                                    |
+| NOTIFY_TEMPLATE_ID      | Notify api key                        |           yes           |              |                             |                              Template ID required to send form payloads via [GOV.UK Notify](https://www.notifications.service.gov.uk) email service.                               |
+| NOTIFY_API_KEY          | Notify api key                        |           yes           |              |                             |                                API KEY required to send form payloads via [GOV.UK Notify](https://www.notifications.service.gov.uk) email service.                                 |
+| GTM_ID_1                | Google Tag Manager ID 1               |           no            |              |                             |                                                                                                                                                                                    |
+| GTM_ID_2                | Google Tag Manager ID 2               |           no            |              |                             |                                                                                                                                                                                    |
+| MATOMO_URL              | URL of Matomo                         |           no            |              |                             |                                                                                                                                                                                    |
+| MATOMO_ID               | ID of Matomo site                     |           no            |              |                             |                                                                                                                                                                                    |
+| SSL_KEY                 | SSL Key                               |           no            |              |                             |                                                                                                                                                                                    |
+| SSL_CERT                | SSL Certificate                       |           no            |              |                             |                                                                                                                                                                                    |
+| PREVIEW_MODE            | Preview mode                          |           no            | false        |                             |                     This should only be used in a dev or testing environment. Setting true will allow POST requests from the designer to add or mutate forms.                      |
+| LOG_LEVEL               | Log level                             |           no            | debug        |   trace,debug,info,error    |                                                                                                                                                                                    |
+| PRIVACY_POLICY_URL      | The url used in footer's privacy link |           no            | help/privacy |                             |                                                                                                                                                                                    |
+| API_ENV                 | Switch for API keys                   |           no            |              |    test,production,smoke    |                                 If the JSON file supplies test and live API keys, this is used to switch between which key which needs to be used                                  |
+| PHASE_TAG               | Tag to use for phase banner           |           no            | beta         |  alpha, beta, empty string  |                                                                                                                                                                                    |
+| AUTH_ENABLED            | Enable auth for all form pages        |           no            | false        |                             |                                                                                                                                                                                    |
+| AUTH_CLIENT_ID          | oAuth client ID                       | If AUTH_ENABLED is true |              |                             |                                                                                                                                                                                    |
+| AUTH_CLIENT_SECRET      | oAuth client secret                   | If AUTH_ENABLED is true |              |                             |                                                                                                                                                                                    |
+| AUTH_CLIENT_AUTH_URL    | oAuth client authorise endpoint       | If AUTH_ENABLED is true |              |                             |                                                                                                                                                                                    |
+| AUTH_CLIENT_TOKEN_URL   | oAuth client token endpoint           | If AUTH_ENABLED is true |              |                             |                                                                                                                                                                                    |
+| AUTH_CLIENT_PROFILE_URL | oAuth client user profile endpoint    | If AUTH_ENABLED is true |              |                             |                                                                                                                                                                                    |
+| ENABLE_MOCK_API         | Enable local mock API server          |           no            | false        |                             | Intercepts outbound HTTP calls matching a handler in `src/server/mocks/handlers` using [msw](https://mswjs.io), for local dev only. Cannot be enabled when NODE_ENV is production. |
 
 # Testing
 
 Tests are found inside `test/cases`. For test scripts, name them `${NAME}.test.js`.
+
+## End-to-end tests
+
+E2E tests use [Playwright](https://playwright.dev) and live in `runner/e2e/`. They run against a real built server on port 3009.
+
+### Running locally
+
+Build the runner and run all e2e tests:
+
+```sh
+yarn runner test:e2e
+```
+
+Open the Playwright UI to run and debug tests interactively:
+
+```sh
+yarn runner test:e2e:ui
+```
+
+> **Note:** Locally, Playwright reuses an already-running server on port 3009 if one exists (`reuseExistingServer: true`). In CI it always starts a fresh server.
+
+### How it works
+
+| Component           | Detail                                                                                            |
+| ------------------- | ------------------------------------------------------------------------------------------------- |
+| Test runner         | Playwright (Chromium only)                                                                        |
+| Server entrypoint   | `runner/bin/e2e-server` — starts the built `dist/index.js`                                        |
+| Base URL            | `http://localhost:3009`                                                                           |
+| Server health check | `GET /health-check` (60 s timeout)                                                                |
+| Parallelism         | Fully parallel; 2 workers in CI                                                                   |
+| Retries             | 1 retry in CI, 0 locally                                                                          |
+| Artifacts           | Screenshots on failure, traces on first retry, HTML report uploaded to GitHub Actions for 14 days |
+
+The server is started with the following environment for tests:
+
+| Variable               | Value                                                             |
+| ---------------------- | ----------------------------------------------------------------- |
+| `NODE_ENV`             | `test`                                                            |
+| `ENABLE_MOCK_API`      | `true` (outbound HTTP calls are intercepted by MSW mock handlers) |
+| `PREVIEW_MODE`         | `true`                                                            |
+| `ALLOW_USER_TEMPLATES` | `true`                                                            |
+| `LOG_LEVEL`            | `trace`                                                           |
+
+### Writing tests
+
+Add `.spec.ts` files to `runner/e2e/`. Each file is a standard Playwright test file. The `baseURL` is already configured, so navigate with relative paths:
+
+```ts
+import { test, expect } from "@playwright/test";
+
+test("example", async ({ page }) => {
+  await page.goto("/your-form-path");
+  await expect(page.getByRole("heading")).toBeVisible();
+});
+```
+
+### CI
+
+E2e tests run as a separate reusable workflow (`.github/workflows/runner-e2e.yml`) called from the main branch CI pipeline. The pipeline installs Chromium via `playwright install --with-deps chromium`, builds the runner, then runs `yarn runner test:e2e`. The HTML report is uploaded as a `playwright-report` artifact on both pass and failure.
 
 # Test coverage threshold
 

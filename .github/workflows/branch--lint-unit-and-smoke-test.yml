@@ -48,3 +48,7 @@ jobs:
   smoke-test:
     uses: ./.github/workflows/smoke-test.yml
     secrets: inherit
+
+  runner-e2e:
+    uses: ./.github/workflows/runner-e2e.yml
+    secrets: inherit

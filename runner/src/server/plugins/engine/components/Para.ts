@@ -8,9 +8,11 @@ export class Para extends ComponentBase {
     const options: any = this.options;
 
     let content = this.content;
+
     if (config.allowUserTemplates) {
       content = nunjucks.renderString(content, { ...formData });
     }
+
     const viewModel = {
       ...super.getViewModel(formData, errors),
       content: content,
@@ -19,6 +21,11 @@ export class Para extends ComponentBase {
     if (options.condition) {
       viewModel.condition = options.condition;
     }
+
+    if (options.inset) {
+      viewModel.attributes.inset = true;
+    }
+
     return viewModel;
   }
 }

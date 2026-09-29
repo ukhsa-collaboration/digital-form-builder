@@ -2,8 +2,8 @@ import Joi from "joi";
 import { redirectTo } from "./engine";
 import { healthCheckRoute, publicRoutes } from "../routes";
 import { HapiRequest, HapiResponseToolkit } from "../types";
-import config from "../config";
 import getRequestInfo from "server/utils/getRequestInfo";
+import { destroySession } from "server/utils/correlationId";
 import { FormModel } from "server/plugins/engine/models";
 import { feedbackReturnInfoKey } from "./engine/helpers";
 import { FeedbackContextInfo, RelativeUrl } from "./engine/feedback";
@@ -28,6 +28,13 @@ interface CookiePayload {
   referrer: string;
 }
 
+// Helper functions
+const resolvedUrl = (url: string) => {
+  // NOTE: allows to have multiple forms share thhe same cookie statement
+  if (url.startsWith("close-contact-form")) return "close-contact-form";
+  return url;
+};
+
 export default {
   plugin: {
     name: "router",
@@ -45,7 +52,7 @@ export default {
             const viewPath = path.join(
               __dirname,
               "../views",
-              url,
+              resolvedUrl(url),
               "privacy.html"
             );
 
@@ -54,17 +61,12 @@ export default {
               return h.view("help/privacy");
             }
 
-            // If one of the close-contact forms, display the close-contact privacy
-            if (url.includes("close-contact-form")) {
-              return h.view("close-contact-form/privacy");
-            }
-
             // Check if the file exists
             if (!form || !fs.existsSync(viewPath)) {
               return h.redirect("/help/privacy");
             }
 
-            const title = `${url}/privacy`;
+            const title = `${resolvedUrl(url)}/privacy`;
             return h.view(title, {
               name: form.name,
               serviceName: form.def.serviceName,
@@ -89,7 +91,7 @@ export default {
             const viewPath = path.join(
               __dirname,
               "../views",
-              url,
+              resolvedUrl(url),
               "cookies.html"
             );
 
@@ -98,17 +100,14 @@ export default {
               return h.view("help/cookies");
             }
 
-            // If one of the close-contact forms, display the close-contact cookies
-            if (url.includes("close-contact-form")) {
-              return h.view("close-contact-form/cookies");
-            }
-
             // Check if the file exists
             if (!form || !fs.existsSync(viewPath)) {
               return h.redirect("/help/cookies");
             }
 
-            const title = `${url}/cookies`;
+            // const title = `${url}/cookies`;
+            const title = `${resolvedUrl(url)}/cookies`;
+
             return h.view(title, {
               analytics,
               name: form.name,
@@ -116,10 +115,10 @@ export default {
               serviceStartPage: form.serviceStartPage,
               returnTo: form.returnTo,
               feedbackLink: feedbackUrlFromRequest(request, form, title),
-              matomoUrl: form.def.analytics.matomoUrl,
-              matomoId: form.def.analytics.matomoId,
-              gtmId1: form.def.analytics.gtmId1,
-              gtmId2: form.def.analytics.gtmId2,
+              matomoUrl: form.def.analytics?.matomoUrl,
+              matomoId: form.def.analytics?.matomoId,
+              gtmId1: form.def.analytics?.gtmId1,
+              gtmId2: form.def.analytics?.gtmId2,
             });
           },
         },
@@ -195,6 +194,7 @@ export default {
               {
                 isHttpOnly: false,
                 path: "/",
+                isSameSite: "Lax",
               }
             );
           },
@@ -249,7 +249,7 @@ export default {
           const viewPath = path.join(
             __dirname,
             "../views",
-            url,
+            resolvedUrl(url),
             "accessibility-statement.html"
           );
 
@@ -257,18 +257,12 @@ export default {
           if (url === "help") {
             return h.view("help/accessibility-statement");
           }
-
-          // If one of the close-contact forms, display the close-contact accessibility statement
-          if (url.includes("close-contact-form")) {
-            return h.view("close-contact-form/accessibility-statement");
-          }
-
           // Check if the file exists, if it doesn't, redirect to the default accessibility statement
           if (!form || !fs.existsSync(viewPath)) {
             return h.redirect("/help/accessibility-statement");
           }
 
-          const title = `${url}/accessibility-statement`;
+          const title = `${resolvedUrl(url)}/accessibility-statement`;
           return h.view(title, {
             name: form.name,
             serviceName: form.serviceName,
@@ -287,7 +281,20 @@ export default {
             request.yar.reset();
           }
           const { redirect } = request.query;
-          return redirectTo(request, h, (redirect as string) || "/");
+          return redirectTo(request, h, redirect || "/");
+        },
+      });
+
+      server.route({
+        method: "get",
+        path: "/end-session",
+        handler: async (request: HapiRequest, h: HapiResponseToolkit) => {
+          const { cacheService } = request.services([]);
+
+          await destroySession(request, cacheService);
+
+          const { redirect } = request.query;
+          return redirectTo(request, h, redirect || "/");
         },
       });
 

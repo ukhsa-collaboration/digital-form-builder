@@ -38,10 +38,12 @@ export class WebhookService {
     // );
 
     let request = method === "POST" ? post : put;
+
     try {
       if (!sendAdditionalPayMetadata) {
         delete data?.metadata?.pay;
       }
+
       const { payload, res } = await request(url, {
         ...DEFAULT_OPTIONS,
         headers: {

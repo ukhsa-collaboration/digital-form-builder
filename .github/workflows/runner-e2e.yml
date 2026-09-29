@@ -1,0 +1,51 @@
+name: runner e2e tests
+
+on:
+  workflow_call:
+
+jobs:
+  runner-e2e:
+    runs-on: ubuntu-latest
+    name: playwright e2e (runner)
+    steps:
+      - uses: actions/checkout@v5
+      - name: Use Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version-file: ".nvmrc"
+
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "dir=$(yarn config get cacheFolder)" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/cache@v5
+        id: yarn-cache
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-runner-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-runner
+            ${{ runner.os }}-yarn
+
+      - name: Install project deps
+        run: yarn
+
+      - name: Install runner deps
+        run: yarn runner install
+
+      - name: Build dependencies
+        run: yarn build:dependencies
+
+      - name: Install Playwright browsers
+        run: yarn runner playwright install --with-deps chromium
+
+      - name: Run e2e tests
+        run: yarn runner test:e2e
+
+      - name: Upload playwright report
+        uses: actions/upload-artifact@v6
+        if: ${{ success() || failure() }}
+        with:
+          name: playwright-report
+          path: runner/playwright-report
+          retention-days: 14

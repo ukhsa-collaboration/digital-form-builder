@@ -4,6 +4,7 @@ import { idFromFilename } from "./helpers";
 import { plugin } from "./plugin";
 import {
   FormConfiguration,
+  loadFormFile,
   loadPreConfiguredForms,
 } from "./services/configurationService";
 import { FormDefinition } from "@xgovformbuilder/model";
@@ -17,10 +18,9 @@ export const configureEnginePlugin = (formFileName, formFilePath, options) => {
     configs = [
       {
         id: idFromFilename(formFileName),
-        configuration: require(path.join(
-          formFilePath,
-          formFileName
-        )) as FormDefinition,
+        configuration: loadFormFile(
+          path.join(formFilePath, formFileName)
+        ) as FormDefinition,
       },
     ];
   } else {

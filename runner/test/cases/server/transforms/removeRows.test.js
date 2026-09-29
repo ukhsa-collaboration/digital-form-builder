@@ -53,9 +53,7 @@ suite("removeRows", () => {
       ],
     },
   ];
-  const fields = [
-    "organisation", "dob",
-  ];
+  const fields = ["organisation", "dob"];
 
   test("removeRows correctly transforms ", () => {
     expect(removeRows(details, fields)).to.equal([
@@ -63,30 +61,30 @@ suite("removeRows", () => {
         name: "Detail1",
         title: "Detail 1",
         items: [
-        {
-          name: "organisation_2",
-          title: "Which organisation do you work for?",
-          label: "Which organistation do you work for?",
-          value: "ORG 2",
-          rawValue: "ORG 2",
-          url: "/org2",
-        },
-        {
-          name: "first_name",
-          title: "First name",
-          label: "First name",
-          value: "Joe",
-          rawValue: "Joe",
-          url: "/namePage",
-        },
-        {
-          name: "last_name",
-          title: "Last name",
-          label: "Last name",
-          value: "Bloggs",
-          rawValue: "Bloggs",
-          url: "/namePage",
-        },
+          {
+            name: "organisation_2",
+            title: "Which organisation do you work for?",
+            label: "Which organistation do you work for?",
+            value: "ORG 2",
+            rawValue: "ORG 2",
+            url: "/org2",
+          },
+          {
+            name: "first_name",
+            title: "First name",
+            label: "First name",
+            value: "Joe",
+            rawValue: "Joe",
+            url: "/namePage",
+          },
+          {
+            name: "last_name",
+            title: "Last name",
+            label: "Last name",
+            value: "Bloggs",
+            rawValue: "Bloggs",
+            url: "/namePage",
+          },
         ],
       },
     ]);

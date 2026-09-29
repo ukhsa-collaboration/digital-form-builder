@@ -98,7 +98,7 @@ export class FormModel {
 
     this.def = def;
     this.lists = def.lists;
-    this.sections = def.sections;
+    this.sections = Array.isArray(def.sections) ? def.sections : [];
     this.options = options;
     this.name = def.name;
     this.serviceStartPage =
@@ -163,9 +163,9 @@ export class FormModel {
             (page) => page.pageDef.repeatField
           );
 
-          let sectionSchema:
-            | joi.ObjectSchema<any>
-            | joi.ArraySchema = joi.object().required();
+          let sectionSchema: joi.ObjectSchema<any> | joi.ArraySchema = joi
+            .object()
+            .required();
 
           sectionPages.forEach((sectionPage) => {
             sectionSchema = sectionSchema.concat(sectionPage.stateSchema);
@@ -278,10 +278,12 @@ export class FormModel {
 
   getRelevantPages(state: FormSubmissionState) {
     let nextPage = this.startPage;
-    const relevantPages: any[] = [];
-    let endPage = null;
+    const relevantPages: PageControllerBase[] = [];
+    const visitedPages = new Set<PageControllerBase>();
+    let endPage: PageControllerBase | undefined;
 
-    while (nextPage != null) {
+    while (nextPage != null && !visitedPages.has(nextPage)) {
+      visitedPages.add(nextPage);
       if (nextPage.hasFormComponents) {
         relevantPages.push(nextPage);
       } else if (

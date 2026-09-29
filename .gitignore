@@ -13,6 +13,7 @@ npm-debug.log
 
 # Environment variables
 **/.env
+**/.env.local
 **/.env_mysql
 
 # Build output
@@ -31,6 +32,8 @@ docs/**/typedoc
 # Testing
 **/test-results/*
 **/test-coverage/*
+**/playwright-report/*
+**/playwright/.cache/*
 unit-test.html
 .nyc_output
 .lighthouseci

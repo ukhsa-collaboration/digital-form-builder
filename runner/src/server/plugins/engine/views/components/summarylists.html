@@ -1,0 +1,17 @@
+{% from "summary-list/macro.njk" import govukSummaryList %}
+
+{% macro SummaryLists(component) %}
+  {% for list in component.model.summaryLists %}
+    {% set resolvedRows = [] %}
+    {% for row in list.rows %}
+      {% if row.valueComponent %}
+        {% import "components/" + row.valueComponent.type.toLowerCase() + ".html" as nestedView with context %}
+        {% set componentHtml %}{{ nestedView[row.valueComponent.type](row.valueComponent) }}{% endset %}
+        {% set resolvedRows = resolvedRows.concat([{ key: row.key, value: { html: componentHtml }, actions: row.actions }]) %}
+      {% else %}
+        {% set resolvedRows = resolvedRows.concat([row]) %}
+      {% endif %}
+    {% endfor %}
+    {{ govukSummaryList({ rows: resolvedRows, card: list.card }) }}
+  {% endfor %}
+{% endmacro %}

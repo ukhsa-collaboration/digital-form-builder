@@ -1,4 +1,5 @@
 import { HapiRequest, HapiResponseToolkit } from "server/types";
+import { getOrCreateCorrelationId } from "server/utils/correlationId";
 
 export async function checkUserCompletedSummary(
   request: HapiRequest,
@@ -11,7 +12,9 @@ export async function checkUserCompletedSummary(
   if (state?.userCompletedSummary !== true) {
     request.logger.error(
       [`/${request.params.id}/status`],
-      `${request.yar.id} user has incomplete state, redirecting to /summary`
+      `${getOrCreateCorrelationId(
+        request
+      )} user has incomplete state, redirecting to /summary`
     );
     return h.redirect(`/${request.params.id}/summary`).takeover();
   }

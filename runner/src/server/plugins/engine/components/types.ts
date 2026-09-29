@@ -15,6 +15,7 @@ export type ListItemLabel = Omit<Label, "text" | "isPageHeading">;
 
 export type ListItem = {
   text?: string;
+  html?: string;
   value: string | boolean | number;
   hint?: {
     html: string;
@@ -51,6 +52,7 @@ export type ViewModel = {
     multiple?: string;
     accept?: string;
     step?: string;
+    inset?: boolean;
   };
   content?: Content | Content[] | string;
   rows?: number;

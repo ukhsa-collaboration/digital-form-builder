@@ -4,7 +4,7 @@ This feature allows the user to achieve secure form submissions through the addi
 
 ## Form Configuration
 
-The configuration inherits the `MsalAuthorizerConfig`  
+The configuration inherits the `MsalAuthorizerConfig`
 Refer to the [`MSAL Authentication documentation`](/docs/runner/msal-apim-authentication.md) for information about `tenantId`, `clientId`, `clientSecret` and `scopes`
 
 ```json
@@ -17,8 +17,17 @@ Refer to the [`MSAL Authentication documentation`](/docs/runner/msal-apim-authen
   }
 ```
 
-> **Note: useAwsWafUserAgentWorkaround**  
-> AWS WAF requires User-Agent to be present as part of auth, setting this option to tru will make the functioality provide one to prevent 403
+## Optional parameters
+
+### useAwsWafUserAgentWorkaround
+
+AWS WAF requires User-Agent to be present as part of auth, setting this option to true will make the functionality provide one to prevent 403
+
+### routingKey
+
+Allows to set an additional header corresponding to a subscription key `Ocp-Apim-Subscription-Key` which allows us to set values based on `Subscription based Back-End Routing` which is a solution designed by the core apim team (see confluence page)
+
+[Confluence link]<https://ukhsa.atlassian.net/wiki/spaces/EAE/pages/630686901/API+-+SIT+Subscription+based+Back-End+Routing>
 
 ## How to Update env variables
 

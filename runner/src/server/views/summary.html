@@ -4,7 +4,6 @@
 {% extends 'layout.html' %}
 
 {% block content %}
-  <div class="govuk-main-wrapper">
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-two-thirds">
         <h1 class="govuk-heading-l">
@@ -28,7 +27,7 @@
         {% for detail in details %}
           {% if detail.card %}
             {{ summaryCard(detail, true) }}
-            {% if not details[loop.index].card %}
+            {% if not details[loop.index].card and detail.items[0].pageId %}
               {% set splitDash = detail.items[0].pageId.split("-") %}
               {% set lastEntry = splitDash.slice(-1)[0] %}
               {% set formAction = splitDash.slice(0, -1).concat(["added", lastEntry]).join("-") %}
@@ -99,7 +98,6 @@
 
             </form>
         {% endif %}
-      </div>
     </div>
   </div>
 

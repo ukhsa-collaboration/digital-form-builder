@@ -16,11 +16,16 @@ export function WebhookModel(model: FormModel, state: FormSubmissionState) {
     englishName = model.name.en ?? model.name;
   }
 
-  let questions;
-
   const { relevantPages } = model.getRelevantPages(state);
 
-  questions = relevantPages.map((page) => pagesToQuestions(page, state));
+  // Sipliefied logi more extendable shown here https://github.com/XGovFormBuilder/digital-form-builder/issues/1401
+  const questions = relevantPages.flatMap((page) => {
+    if ((page as any).isRepeatingFieldPageController === true) {
+      return (page as any).toWebhookQuestions(state);
+    }
+    return [pagesToQuestions(page, state)];
+  });
+
   const fees = FeesModel(model, state);
 
   return {

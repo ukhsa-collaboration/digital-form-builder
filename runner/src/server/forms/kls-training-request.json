@@ -393,11 +393,11 @@
     },
     {
       "path": "/about-you-uksa-summary",
-      "customButtonText": "Confirm and submit",
       "controller": "MiniSummaryPageController",
       "title": "Confirm your personal details before submitting",
       "section": "aboutYouUKHSA",
       "options": {
+        "customButtonText": "Confirm and submit",
         "content": "Please check your details and click the 'Submit' button.",
         "customText": {
           "title": "Check your answers"
@@ -493,9 +493,9 @@
       "path": "/about-you-laph-summary",
       "title": "Confirm your personal details before submitting",
       "controller": "MiniSummaryPageController",
-      "customButtonText": "Confirm and submit",
       "section": "aboutYouLAPH",
       "options": {
+        "customButtonText": "Confirm and submit",
         "content": "Please check your details and click the 'Submit' button.",
         "customText": {
           "title": "Check your answers"
@@ -576,11 +576,11 @@
     },
     {
       "path": "/about-you-summary",
-      "customButtonText": "Confirm and submit",
       "controller": "MiniSummaryPageController",
       "title": "Confirm your personal details before submitting",
       "section": "aboutYou",
       "options": {
+        "customButtonText": "Confirm and submit",
         "content": "Please check your details and click the 'Submit' button.",
         "customText": {
           "title": "Check your answers"
