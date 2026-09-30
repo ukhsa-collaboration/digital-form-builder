@@ -1,7 +1,6 @@
 {
   "isTest": true,
-  "previewMode": true,
+  "previewMode": false,
   "enforceCsrf": false,
-  "httpsCookieSecureAttribute": true,
   "env": "dev"
 }

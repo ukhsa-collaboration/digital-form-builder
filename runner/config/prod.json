@@ -2,6 +2,5 @@
   "env": "prod",
   "logPrettyPrint": false,
   "enforceCsrf": true,
-  "httpsCookieSecureAttribute": true,
   "previewMode": false
 }
