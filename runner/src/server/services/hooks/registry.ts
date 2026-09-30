@@ -1,5 +1,6 @@
 import { rpsGasTestKitOnSummarySubmit } from "./rps/rpsGasTestKitOnSummarySubmit";
 import { rpsGetBillingInformation } from "./rps/rpsGetBillingInformation";
+import { rpsRiskReportOnAddressSelection } from "./rps/rpsRiskReportOnAddressSelection";
 import { rpsRiskReportOnSummarySubmit } from "./rps/rpsRiskReportOnSummarySubmit";
 
 /**
@@ -20,6 +21,7 @@ import { rpsRiskReportOnSummarySubmit } from "./rps/rpsRiskReportOnSummarySubmit
 export const hookRegistry = {
   rpsGasTestKitOnSummarySubmit,
   rpsRiskReportOnSummarySubmit,
+  rpsRiskReportOnAddressSelection,
   rpsGetBillingInformation,
 } as const;
 
