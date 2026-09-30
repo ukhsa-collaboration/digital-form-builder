@@ -44,7 +44,7 @@ module.exports = {
    * Server
    */
   port: 3009,
-  env: "development",
+  env: "dev",
   previewMode: false,
   enforceCsrf: true,
   sandbox: false,
@@ -53,10 +53,10 @@ module.exports = {
    * Helper flags
    */
   isProd: deferConfig(function () {
-    return this.env === "production";
+    return this.env === "prod";
   }),
   isDev: deferConfig(function () {
-    return this.env !== "production";
+    return this.env !== "prod";
   }),
   isTest: deferConfig(function () {
     return this.env === "test";
