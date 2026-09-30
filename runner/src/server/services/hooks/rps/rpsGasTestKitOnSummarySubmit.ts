@@ -61,7 +61,7 @@ export const rpsGasTestKitOnSummarySubmit: Hook<void> = async (
   const measurementAddress = resolveSelectedAddress(state, "propertyAddress");
 
   const kitSameAsProperty = state["kitAddressConfirmation"] === true;
-  const resultsSameAsProperty = state["resultsAddressConfirmation"] === true;
+  const resultsSameAsProperty = state["resultAddressConfirmation"] === true;
   const resultsSameAsKit = state["kitResultsConfirmation"] === true;
 
   const kitRecipient: StoreGtkData["kitRecipient"] = kitSameAsProperty
@@ -100,7 +100,7 @@ export const rpsGasTestKitOnSummarySubmit: Hook<void> = async (
     ? kitRecipientAddress
     : resultsUseMeasurement
     ? measurementAddress
-    : resolveSelectedAddress(state, "resultsAddress");
+    : resolveSelectedAddress(state, "resultAddress");
 
   const uuid = getOrCreateCorrelationId(request);
 

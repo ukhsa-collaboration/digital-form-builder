@@ -138,11 +138,32 @@ const MOCK_RESPONSE = {
   totalResults: 10,
 };
 
+const MOCK_EMPTY_RESPONSE = {
+  matchedAddresses: [],
+  totalResults: 0,
+};
+
 /**
  * Lookup address API provided by OS Places API
  * @link https://www.api.gov.uk/os/os-places-api/#os-places-api
  */
-const lookupAddressEndpoint = http.get("*/matchAddress", () => {
+const lookupAddressEndpoint = http.get("*/matchAddress", (request) => {
+  const url = new URL(request.request.url);
+  const postcode = url.searchParams.get("address");
+
+  if (!postcode) {
+    return HttpResponse.json(
+      {
+        error: "Missing postcode parameter",
+      },
+      { status: 400 }
+    );
+  }
+
+  if (postcode === "AA31AB") {
+    return HttpResponse.json(MOCK_EMPTY_RESPONSE);
+  }
+
   return HttpResponse.json(MOCK_RESPONSE);
 });
 
