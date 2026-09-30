@@ -2,7 +2,6 @@
   "env": "preprod",
   "logPrettyPrint": true,
   "enforceCsrf": false,
-  "httpsCookieSecureAttribute": false,
-  "previewMode": true,
+  "previewMode": false,
   "isTest": true
 }
