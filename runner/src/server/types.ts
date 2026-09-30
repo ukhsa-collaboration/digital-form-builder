@@ -72,10 +72,10 @@ declare module "@hapi/hapi" {
     };
     hook: {
       // plugin hooks
-      run<T = void>(
+      run<TReturn = void, TState extends HookState = HookState>(
         hookName: string,
-        context: { model: HookModel; state?: HookState }
-      ): Promise<T>;
+        context: { model: HookModel; state?: TState }
+      ): Promise<TReturn>;
     };
     i18n: {
       // plugin locale
