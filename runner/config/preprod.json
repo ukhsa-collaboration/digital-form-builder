@@ -1,5 +1,5 @@
 {
-  "env": "development",
+  "env": "preprod",
   "logPrettyPrint": true,
   "enforceCsrf": false,
   "httpsCookieSecureAttribute": false,
