@@ -137,7 +137,7 @@ export default {
                   feedbackLink: feedbackUrlFromRequest(request, form, page),
                 };
 
-                const applicationErrorData = {
+                const applicationErrorData: ApplicationErrorMetadata = {
                   ...response.data,
                   data: {
                     ...globalPageState,
