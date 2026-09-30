@@ -5,9 +5,8 @@
     "localhost"
   ],
   "isTest": true,
-  "previewMode": true,
+  "previewMode": false,
   "enforceCsrf": true,
-  "httpsCookieSecureAttribute": true,
   "initialisedSessionKey": "predictable-key",
   "sessionCookiePassword": "test-only-session-cookie-password-not-a-secret",
   "env": "test",
