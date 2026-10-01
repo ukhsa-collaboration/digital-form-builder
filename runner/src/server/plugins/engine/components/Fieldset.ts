@@ -98,7 +98,11 @@ export class Fieldset extends FormComponent {
   }
 
   getStateSchemaKeys() {
-    return { [this.name]: this.stateSchema as Schema };
+    const childrenKeys = this.children.getStateSchemaKeys();
+    return {
+      ...childrenKeys,
+      [this.name]: this.stateSchema,
+    };
   }
 
   getFormDataFromState(state: FormSubmissionState) {
@@ -106,13 +110,26 @@ export class Fieldset extends FormComponent {
   }
 
   getStateValueFromValidForm(payload: FormPayload) {
-    return this.children.getStateFromValidForm(payload);
+    const childData = this.children.getStateFromValidForm(payload);
+    delete childData[this.name]; // Remove the synthetic field used for validation
+    for (const key in childData) {
+      if (childData[key] === undefined || childData[key] === null) {
+        childData[key] = "";
+      }
+    }
+    return childData;
+  }
+
+  getStateFromValidForm(payload: FormPayload) {
+    return {
+      [this.name]: this.getStateValueFromValidForm(payload),
+    };
   }
 
   getDisplayStringFromState(state: FormSubmissionState) {
     return this.children.items
+      .filter((item) => item instanceof FormComponent && item.name != this.name) // Exclude the synthetic field used for validation
       .map((item: any) => item.getDisplayStringFromState?.(state))
-      .filter(Boolean)
       .join(", ");
   }
 
@@ -141,7 +158,7 @@ export class Fieldset extends FormComponent {
     return {
       ...viewModel,
       fieldset: { legend: viewModel.label },
-      items: (componentViewModels as unknown) as ListItem[],
+      items: componentViewModels as unknown as ListItem[],
     };
   }
 }
