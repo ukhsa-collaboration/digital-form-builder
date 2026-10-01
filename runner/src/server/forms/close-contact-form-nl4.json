@@ -138,7 +138,7 @@
     },
     {
       "path": "/do-you-live-with-other-people",
-      "title": "Do you live with other people?",
+      "title": "People you live with",
       "components": [
         {
           "name": "doYouLiveWithOtherPeopleExplanation",
@@ -163,12 +163,13 @@
         {
           "name": "live_with_others",
           "options": {
-            "hideTitle": true,
             "customValidationMessages": {
               "any.required": "Select 'yes' if you live with other people"
-            }
+            },
+            "classes": "govuk-radios--inline"
           },
-          "type": "YesNoField",
+          "type": "RadiosField",
+          "list": "yes-no",
           "title": "Do you live with other people?",
           "schema": {}
         },
@@ -191,7 +192,7 @@
     },
     {
       "path": "/do-they-live-with-other-people",
-      "title": "Do they live with other people?",
+      "title": "People they live with",
       "components": [
         {
           "name": "AdEVNK",
@@ -210,12 +211,24 @@
         {
           "name": "live_with_others",
           "options": {
-            "hideTitle": true,
+            "customValidationMessages": {
+              "any.required": "Select 'yes' if you live with other people"
+            },
+            "classes": "govuk-radios--inline"
+          },
+          "type": "RadiosField",
+          "list": "yes-no",
+          "title": "Do you live with other people?",
+          "schema": {}
+        },
+        {
+          "name": "live_with_others",
+          "options": {
             "customValidationMessages": {
               "any.required": "Select 'yes' if they live with other people"
             }
           },
-          "type": "YesNoField",
+          "type": "RadiosField",
           "title": "Do they live with other people?",
           "schema": {}
         },
@@ -345,7 +358,7 @@
     },
     {
       "path": "/close-contact",
-      "title": "Have {{ PersonalInformation.for }} been in close contact with other people in the last 14 days?",
+      "title": "Close contacts in the last 14 days",
       "components": [
         {
           "name": "EiNVay",
@@ -363,13 +376,13 @@
         {
           "name": "been_in_contact",
           "options": {
-            "hideTitle": true,
             "customValidationMessages": {
               "any.required": "Select 'yes' if you need to provide one or more close contacts"
             }
           },
-          "type": "YesNoField",
-          "title": "Are there other close contacts from the last 14 days?",
+          "type": "RadiosField",
+          "list": "yes-no",
+          "title": "Have {{ PersonalInformation.for }} been in close contact with other people in the last 14 days?",
           "schema": {}
         },
         {
@@ -595,6 +608,21 @@
           "value": "travelled with in the same vehicle"
         }
       ]
+    },
+    {
+      "title": "Yes",
+      "name": "yes-no",
+      "type": "string",
+      "items": [
+        {
+          "text": "true",
+          "value": "true"
+        },
+        {
+          "text": "false",
+          "value": "false"
+        }
+      ]
     }
   ],
   "sections": [
@@ -669,7 +697,7 @@
           {
             "field": {
               "name": "PeopleYouLiveWith.live_with_others",
-              "type": "YesNoField",
+              "type": "RadiosField",
               "display": "Do you live with other people?"
             },
             "operator": "is",
@@ -687,7 +715,7 @@
           {
             "field": {
               "name": "PeopleYouLiveWith.live_with_others",
-              "type": "YesNoField",
+              "type": "RadiosField",
               "display": "Do you live with other people?"
             },
             "operator": "is",
@@ -705,7 +733,7 @@
           {
             "field": {
               "name": "PeopleTheyLiveWith.live_with_others",
-              "type": "YesNoField",
+              "type": "RadiosField",
               "display": "Do they live with other people?"
             },
             "operator": "is",
@@ -723,7 +751,7 @@
           {
             "field": {
               "name": "PeopleTheyLiveWith.live_with_others",
-              "type": "YesNoField",
+              "type": "RadiosField",
               "display": "Do they live with other people?"
             },
             "operator": "is",
@@ -741,7 +769,7 @@
           {
             "field": {
               "name": "OtherContacts.been_in_contact",
-              "type": "YesNoField",
+              "type": "RadiosField",
               "display": "Have you been in close contact with other people in the last 14 days?"
             },
             "operator": "is",
@@ -759,7 +787,7 @@
           {
             "field": {
               "name": "OtherContacts.been_in_contact",
-              "type": "YesNoField",
+              "type": "RadiosField",
               "display": "Have you been in close contact with other people in the last 14 days?"
             },
             "operator": "is",
