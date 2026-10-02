@@ -299,7 +299,6 @@
         {
           "name": "contact_directly",
           "options": {
-            "hideTitle": true,
             "customValidationMessages": {
               "any.required": "Select how we should contact this person"
             }
@@ -438,7 +437,6 @@
         {
           "name": "contact_directly",
           "options": {
-            "hideTitle": true,
             "customValidationMessages": {
               "any.required": "Select how we should contact this person"
             }
