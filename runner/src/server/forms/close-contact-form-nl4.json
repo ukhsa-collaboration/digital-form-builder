@@ -3,6 +3,7 @@
   "startPage": "/start",
   "fullStartPage": "start",
   "name": "Contact tracing",
+  "serviceName": "Contact tracing",
   "confirmationSessionTimeout": 2000,
   "pages": [
     {
@@ -296,18 +297,6 @@
           }
         },
         {
-          "name": "mWvTOY",
-          "options": {},
-          "type": "Html",
-          "content": "<br/><h2 class='govuk-heading-m'>How should we contact this person to provide them with advice and guidance?</h2>"
-        },
-        {
-          "name": "iulooD",
-          "options": {},
-          "type": "Para",
-          "content": "If the person is under 16 or unable to speak to us themselves, provide the contact details of a parent, carer or guardian."
-        },
-        {
           "name": "contact_directly",
           "options": {
             "hideTitle": true,
@@ -315,8 +304,9 @@
               "any.required": "Select how we should contact this person"
             }
           },
+          "hint": "If the person is under 16 or unable to speak to us themselves, provide the contact details of a parent, carer or guardian.",
           "type": "RadiosField",
-          "title": "How should we contact this person?",
+          "title": "How should we contact this person to provide them with advice and guidance?",
           "list": "TQfrjB",
           "schema": {}
         },
@@ -367,7 +357,8 @@
           "options": {
             "customValidationMessages": {
               "any.required": "Select 'yes' if you need to provide one or more close contacts"
-            }
+            },
+            "classes": "govuk-radios--inline"
           },
           "type": "RadiosField",
           "list": "yes-no",
@@ -445,18 +436,6 @@
           }
         },
         {
-          "name": "mWvTOY",
-          "options": {},
-          "type": "Html",
-          "content": "<br/><h2 class='govuk-heading-m'>How should we contact this person to provide them with advice and guidance?</h2>"
-        },
-        {
-          "name": "iulooD",
-          "options": {},
-          "type": "Para",
-          "content": "If the person is under 16 or unable to speak to us themselves, provide the contact details of a parent, carer or guardian."
-        },
-        {
           "name": "contact_directly",
           "options": {
             "hideTitle": true,
@@ -464,8 +443,9 @@
               "any.required": "Select how we should contact this person"
             }
           },
+          "hint": "If the person is under 16 or unable to speak to us themselves, provide the contact details of a parent, carer or guardian.",
           "type": "RadiosField",
-          "title": "How should we contact this person?",
+          "title": "How should we contact this person to provide them with advice and guidance?",
           "list": "TQfrjB",
           "schema": {}
         },
@@ -599,16 +579,16 @@
       ]
     },
     {
-      "title": "Yes",
+      "title": "Yes or No",
       "name": "yes-no",
       "type": "string",
       "items": [
         {
-          "text": "true",
+          "text": "yes",
           "value": "true"
         },
         {
-          "text": "false",
+          "text": "no",
           "value": "false"
         }
       ]
