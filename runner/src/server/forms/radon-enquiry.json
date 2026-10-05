@@ -281,7 +281,7 @@
           "options": {
             "condition": "ojQCvt"
           },
-          "content": "<p class=\"govuk-body-m\">The <b>{{service}}</b> team will review your enquiry and aim to respond within 5 working days. If your enquiry is urgent, please <a href=\"https://www.gov.uk/government/guidance/contact-radiation-protection-sciences\" target=”_blank”>call us.</a></p>"
+          "content": "<p class=\"govuk-body-m\">The <b>{{service}}</b> team will review your enquiry and aim to respond within 5 working days. If your enquiry is urgent, call us using the relevant phone number from our <a href=\"https://www.gov.uk/government/guidance/contact-radiation-protection-sciences\" >contact page.</a></p>"
         },
         {
           "name": "introNoService",
@@ -289,7 +289,7 @@
           "options": {
             "condition": "tvCQjo"
           },
-          "content": "<p class=\"govuk-body-m\">The team will review your enquiry and aim to respond within 5 working days. If your enquiry is urgent, please <a href=\"https://www.gov.uk/government/guidance/contact-radiation-protection-sciences\" target=”_blank”>call us.</a></p>"
+          "content": "<p class=\"govuk-body-m\">The team will review your enquiry and aim to respond within 5 working days. If your enquiry is urgent, call us using the relevant phone number from our <a href=\"https://www.gov.uk/government/guidance/contact-radiation-protection-sciences\" >contact page.</a></p>"
         },
         {
           "name": "tableService",
@@ -310,7 +310,7 @@
         {
           "name": "final links",
           "type": "Para",
-          "content": "<p class=\"govuk-body-m\"><a href=\"https://submit.forms.service.gov.uk/form/266710/radon-services-feedback-form\" target=”_blank”>What did you think of this service?</a> (takes 30 seconds)</p></br><p class=\"govuk-body-m\"><a href=\"https://www.gov.uk/government/organisations/radiation-protection-sciences\" target=”_blank”>Go to Radiation Protection Sciences homepage</a></p>"
+          "content": "<p class=\"govuk-body-m\"><a href=\"https://submit.forms.service.gov.uk/form/266710/radon-services-feedback-form\" target=”_blank”>What did you think of this service? (opens in a new tab)</a> (takes 30 seconds)</p></br><p class=\"govuk-body-m\"><a href=\"https://www.gov.uk/government/organisations/radiation-protection-sciences\" target=”_blank”>Go to Radiation Protection Sciences homepage</a></p>"
         }
       ]
     }
@@ -370,7 +370,7 @@
         },
         {
           "text": "Chromosome Dosimetry Services",
-          "value": "Chromosome Dosimetry Servicese",
+          "value": "Chromosome Dosimetry Services",
           "description": "Assessing the damage to DNA, caused by ionising radiation exposures, in individual blood samples, in order to give an estimation of radiation dose"
         },
         {
@@ -416,8 +416,8 @@
           "description": "Specialist training in biological dosimetry techniques, including cytogenetic methods used for individual dose assessment and emergency triage."
         },
         {
-          "text": "Non-lonising Radiation Services",
-          "value": "Non-lonising Radiation Service",
+          "text": "Non-Ionising Radiation Services",
+          "value": "Non-Ionising Radiation Service",
           "description": "Training on the health effects of electromagnetic fields, optical radiation, and other non-ionising hazards and how to comply with relevant regulations"
         },
         {
@@ -478,8 +478,8 @@
           "description": "Guidance, reports, and expert advice on radiation doses from medical and diagnostic imaging exposures, supporting clinical and regulatory decision-making"
         },
         {
-          "text": "Non-lonising Radiation Services",
-          "value": "Non-lonising Radiation Services",
+          "text": "Non-Ionising Radiation Services",
+          "value": "Non-Ionising Radiation Services",
           "description": "Advice and consultancy on electromagnetic fields, optical radiation, lasers and other non-ionising radiation hazards in the workplace"
         },
         {
