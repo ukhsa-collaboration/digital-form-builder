@@ -137,6 +137,26 @@ export class PageControllerBase {
   }
 
   /**
+   * Magic link forms (e.g. magic-link, kls-magic-link) are a sub-journey rather than a linear form: /start only
+   * redirects (so never records progress), and users re-enter from the emailed link via /return, often in a new session.
+   */
+  isMagicLinkForm(): boolean {
+    return (
+      this.model.startPage?.pageDef?.controller ===
+      "MagicLinkStartPageController"
+    );
+  }
+
+  /**
+   * The start page redirect assumes progress is recorded from the start page onwards. Magic link forms break that
+   * assumption: redirecting would loop between /email and /start, and send users arriving from the emailed link to /email
+   * instead of /expired or /incorrect-email.
+   */
+  skipStartPageRedirect(): boolean {
+    return this.isMagicLinkForm();
+  }
+
+  /**
    * Used for mapping FormData and errors to govuk-frontend's template api, so a page can be rendered
    * @param formData - contains a user's form payload, and any validation errors that may have occurred
    */
@@ -507,6 +527,7 @@ export class PageControllerBase {
       const isInitialisedSession = !!state.callback;
       const shouldRedirectToStartPage =
         !this.model.options.previewMode &&
+        !this.skipStartPageRedirect() &&
         progress.length === 0 &&
         !request.pre.hasPrepopulatedSessionFromQueryParameter &&
         !isStartPage &&
