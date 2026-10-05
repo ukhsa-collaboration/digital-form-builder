@@ -82,7 +82,7 @@ Feature: Complete a form
     * I continue
     * I enter "1" for "How many people in your household drive this vehicle?"
     * I enter "Doc Brown" for "Full name of the main driver"
-    * I enter "001" for "Contact number"
+    * I enter "07903339999" for "Contact number"
     * I continue
     * I enter "jen+forms@cautionyourblast.com" for "Your email address"
     * I continue
