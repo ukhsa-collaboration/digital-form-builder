@@ -1,7 +1,12 @@
-name: runner e2e tests
+name: playwright tests
 
 on:
+  pull_request:
+  workflow_dispatch:
   workflow_call:
+
+permissions:
+  contents: read
 
 jobs:
   runner-e2e:
