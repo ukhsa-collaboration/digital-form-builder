@@ -60,6 +60,7 @@ export class SummaryViewModel {
   callback?: InitialiseSessionOptions;
   showPaymentSkippedWarningPage: boolean = false;
   returnUrl: string;
+  backLink?: string;
 
   constructor(
     pageTitle: string,
