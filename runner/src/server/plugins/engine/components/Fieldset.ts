@@ -12,6 +12,7 @@ import {
 } from "../types";
 import { FormModel } from "../models";
 import { ListItem } from "./types";
+import { P } from "pino";
 
 export class Fieldset extends FormComponent {
   children: ComponentCollection;
@@ -106,7 +107,18 @@ export class Fieldset extends FormComponent {
   }
 
   getFormDataFromState(state: FormSubmissionState) {
-    return this.children.getFormDataFromState(state);
+    let childState: FormSubmissionState = {};
+    if (this.name in state) {
+      childState = { ...state[this.name] };
+    } else {
+      return undefined;
+    }
+
+    const childData = this.children.getFormDataFromState(childState);
+
+    return {
+      [this.name]: childData,
+    };
   }
 
   getStateValueFromValidForm(payload: FormPayload) {
@@ -117,6 +129,7 @@ export class Fieldset extends FormComponent {
         childData[key] = "";
       }
     }
+
     return childData;
   }
 
@@ -127,9 +140,14 @@ export class Fieldset extends FormComponent {
   }
 
   getDisplayStringFromState(state: FormSubmissionState) {
-    return this.children.items
-      .filter((item) => item instanceof FormComponent && item.name != this.name) // Exclude the synthetic field used for validation
-      .map((item: any) => item.getDisplayStringFromState?.(state))
+    let childState: FormSubmissionState = {};
+    if (this.name in state) {
+      childState = { ...state[this.name] };
+    }
+
+    return this.children.formItems
+      .map((item) => item.getDisplayStringFromState(childState))
+      .filter((str) => str && str.trim() !== "")
       .join(", ");
   }
 
