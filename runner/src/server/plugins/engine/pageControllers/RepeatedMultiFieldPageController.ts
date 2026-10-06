@@ -5,7 +5,7 @@ import { ComponentDef, RepeatingMultiFieldPage } from "@xgovformbuilder/model";
 import { FormComponent } from "../components";
 import { FormSubmissionState } from "server/plugins/engine/types";
 import nunjucks from "nunjucks";
-import SummaryCard from "../models/types";
+import { SummaryCard } from "../models/types";
 
 import joi from "joi";
 import { reach, clone } from "hoek";

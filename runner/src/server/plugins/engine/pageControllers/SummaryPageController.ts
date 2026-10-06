@@ -11,6 +11,7 @@ import config from "server/config";
 import { FeesModel } from "server/plugins/engine/models/submission";
 import { isMultipleApiKey } from "@xgovformbuilder/model";
 import { v4 as uuidv4 } from "uuid";
+import { FormSubmissionErrors, SubmissionError } from "../types";
 
 export class SummaryPageController extends PageController {
   /**
@@ -97,11 +98,6 @@ export class SummaryPageController extends PageController {
           progress[progress.length - 1] ?? this.backLinkFallback;
       }
 
-      const declarationError = request.yar.flash("declarationError");
-      if (declarationError.length) {
-        viewModel.declarationError = declarationError[0];
-      }
-
       return h.view("summary", viewModel);
     };
   }
@@ -156,26 +152,30 @@ export class SummaryPageController extends PageController {
       }
 
       /**
-       * If a form is configured with a declaration, a checkbox will be rendered with the configured declaration text.
-       * If the user does not agree to the declaration, the page will be rerendered with a warning.
+       * Run every submission check (declaration, etc).
+       * If any fail, re-render the summary page with the errors.
        */
-      if (
-        (summaryViewModel.declaration || summaryViewModel.declarationLabel) &&
-        !summaryViewModel.skipSummary
-      ) {
-        const { declaration } = request.payload as {
-          declaration?: any;
-        };
+      const submissionErrors = this.getSubmissionErrors(
+        request,
+        summaryViewModel
+      );
 
-        if (!declaration) {
-          request.yar.flash(
-            "declarationError",
-            "You must declare to be able to submit this application"
-          );
-          const url = request.headers.referer ?? request.path;
-          return redirectTo(request, h, `${url}#declaration`);
+      if (submissionErrors) {
+        summaryViewModel.submissionErrors = submissionErrors;
+        summaryViewModel.submissionErrorsByName =
+          this.groupErrorsByName(submissionErrors);
+
+        const { progress = [] } = state;
+        if (!this.disableBackLink) {
+          summaryViewModel.backLink =
+            progress[progress.length - 1] ?? this.backLinkFallback;
         }
 
+        return h.view("summary", summaryViewModel);
+      }
+
+      // All checks passed: add the declaration to the webhook data
+      if (this.hasDeclaration(summaryViewModel)) {
         summaryViewModel.addDeclarationAsQuestion();
       }
 
@@ -327,5 +327,67 @@ export class SummaryPageController extends PageController {
       );
     }
     return payApiKey ?? "";
+  }
+
+  /**
+   * Runs every check. Each check adds its own error to the list.
+   * Returns undefined when there are no errors.
+   */
+  private getSubmissionErrors(
+    request: HapiRequest,
+    viewModel: SummaryViewModel
+  ): FormSubmissionErrors | undefined {
+    const errorList: SubmissionError[] = [];
+
+    this.checkDeclaration(request, viewModel, errorList);
+    // add new checks here
+
+    if (!errorList.length) {
+      return undefined;
+    }
+
+    return {
+      titleText: this.errorSummaryTitle,
+      errorList,
+    };
+  }
+
+  private addError(errorList: SubmissionError[], name: string, text: string) {
+    errorList.push({ path: name, href: `#${name}`, name, text });
+  }
+
+  private hasDeclaration(viewModel: SummaryViewModel) {
+    return !!viewModel.declaration && !viewModel.skipSummary;
+  }
+
+  private groupErrorsByName(errors: FormSubmissionErrors) {
+    return errors.errorList.reduce((acc, err) => {
+      (acc[err.name] ??= []).push(err);
+      return acc;
+    }, {} as Record<string, SubmissionError[]>);
+  }
+  // CHECKS: Push additional errors to be displayed in page add a check to include error following the pattern
+
+  /**
+   * If the form has a declaration, the box must be ticked.
+   */
+  private checkDeclaration(
+    request: HapiRequest,
+    viewModel: SummaryViewModel,
+    errorList: SubmissionError[]
+  ) {
+    if (!this.hasDeclaration(viewModel)) return;
+
+    const { declaration } = (request.payload ?? {}) as {
+      declaration?: string;
+    };
+
+    if (!declaration) {
+      this.addError(
+        errorList,
+        "declaration",
+        "You must declare to be able to submit this application"
+      );
+    }
   }
 }
