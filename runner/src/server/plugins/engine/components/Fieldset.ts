@@ -12,7 +12,6 @@ import {
 } from "../types";
 import { FormModel } from "../models";
 import { ListItem } from "./types";
-import { P } from "pino";
 
 export class Fieldset extends FormComponent {
   children: ComponentCollection;
