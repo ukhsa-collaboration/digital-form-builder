@@ -1,5 +1,6 @@
 {% set mainClasses = "govuk-main-wrapper--l" %}
 {% set skipTimeoutWarning = true %}
+{% set bannerName = name or serviceName %}
 {% from "panel/macro.njk" import govukPanel %}
 {% extends 'layout.html' %}
 {% from "partials/components.html" import componentList %}
@@ -11,6 +12,10 @@
     },
     html: 'This is a new service – your <a class="govuk-link" href=' + feedbackLink + '>feedback</a> will help us to improve it.'
   }) }}
+{% endblock %}
+
+{% block pageTitle %}
+  Confirmation – {{ name if name else serviceName }}
 {% endblock %}
 
 {% block content %}
