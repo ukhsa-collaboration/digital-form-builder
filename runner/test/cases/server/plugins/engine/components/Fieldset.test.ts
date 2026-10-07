@@ -152,4 +152,62 @@ suite("Fieldset", () => {
       expect(display).to.equal("123 Street");
     });
   });
+
+  describe("getViewModel (round-trip from persisted state)", () => {
+    it("pre-fills children with previously submitted values when the page is reloaded via GET", () => {
+      const fieldset = new Fieldset(componentDefinition, formModel);
+      const payload = { line1: "123 Street", line2: "Townsville" };
+
+      // What gets persisted to session state on submit (Fieldset.getStateFromValidForm)
+      const persistedState = fieldset.getStateFromValidForm(payload);
+
+      // What PageControllerBase.getFormDataFromState builds for a GET render from that state
+      const formData: any = fieldset.getFormDataFromState(persistedState);
+      formData.lang = "en";
+
+      // What the page controller passes straight into the view
+      const viewModel = fieldset.getViewModel(formData, undefined);
+      const line1Item: any = viewModel.items.find(
+        (item: any) => item.name === "line1"
+      );
+      const line2Item: any = viewModel.items.find(
+        (item: any) => item.name === "line2"
+      );
+
+      expect(line1Item?.value).to.equal("123 Street");
+      expect(line2Item?.value).to.equal("Townsville");
+    });
+
+    it("still re-displays typed values from a flat raw payload after a validation error", () => {
+      const fieldset = new Fieldset(componentDefinition, formModel);
+      const formData: any = { line1: "123 Street", line2: "", lang: "en" };
+
+      const viewModel = fieldset.getViewModel(formData, undefined);
+      const line1Item: any = viewModel.items.find(
+        (item: any) => item.name === "line1"
+      );
+
+      expect(line1Item?.value).to.equal("123 Street");
+    });
+
+    it("still re-displays typed values from a flat raw payload that includes the synthetic carrier field", () => {
+      const fieldset = new Fieldset(
+        componentDefinitionWithValidation,
+        formModel
+      );
+      const formData: any = {
+        line1: "123 Street",
+        line2: "",
+        address: "", // the carrier field's own submitted (string) value
+        lang: "en",
+      };
+
+      const viewModel = fieldset.getViewModel(formData, undefined);
+      const line1Item: any = viewModel.items.find(
+        (item: any) => item.name === "line1"
+      );
+
+      expect(line1Item?.value).to.equal("123 Street");
+    });
+  });
 });

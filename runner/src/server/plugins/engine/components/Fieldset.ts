@@ -160,8 +160,20 @@ export class Fieldset extends FormComponent {
         }
       : errors;
 
+    // When formData comes from state (e.g. a GET render), children's values
+    // are nested under this.name - as produced by getFormDataFromState - so
+    // lift them back to the top level the children expect. When formData is
+    // a raw submitted payload (e.g. re-rendering after a validation error),
+    // this.name is either absent or a flat string (the synthetic validation
+    // carrier field), so it's left untouched.
+    const nestedState = (formData as any)[this.name];
+    const childFormData =
+      nestedState && typeof nestedState === "object"
+        ? { ...formData, ...nestedState }
+        : formData;
+
     const componentViewModels = this.children
-      .getViewModel(formData, childErrors)
+      .getViewModel(childFormData, childErrors)
       .map((vm) => vm.model);
 
     componentViewModels.forEach((viewModel: any) => {
