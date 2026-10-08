@@ -11,7 +11,8 @@ const parsedError = (key: string, error?: string) => {
 
 export async function handleUpload(
   request: HapiRequest,
-  h: HapiResponseToolkit
+  h: HapiResponseToolkit,
+  config?: { url?: string; additionalHeaders?: Record<string, string> }
 ) {
   const { cacheService, uploadService } = request.services([]);
   const state = await cacheService.getState(request);
@@ -46,7 +47,10 @@ export async function handleUpload(
     let response;
     let errors = new Set<any>();
     try {
-      response = await uploadService.uploadDocuments(streams, request);
+      response = await uploadService.uploadDocuments(streams, {
+        url: config?.url ?? request.url.href,
+        additionalHeaders: config?.additionalHeaders,
+      });
     } catch (err) {
       if (err.data?.res) {
         response = uploadService.parsedDocumentUploadResponse(err.data);
@@ -77,9 +81,8 @@ export async function handleUpload(
       );
 
       originalFilenames[fieldName] = { location, originalFilename };
-      const {
-        originalFilenames: updatedFilenames,
-      } = await cacheService.mergeState(request, { originalFilenames });
+      const { originalFilenames: updatedFilenames } =
+        await cacheService.mergeState(request, { originalFilenames });
 
       logger.info(
         { ...loggerIdentifier, allFiles: updatedFilenames },
