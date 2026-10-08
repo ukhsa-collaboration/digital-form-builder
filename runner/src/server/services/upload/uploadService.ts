@@ -130,7 +130,10 @@ export class UploadService {
     }
 
     const requestData = { headers: formHeaders, payload: form };
-    const responseData = await post(`${uploadConfig.url}`, requestData);
+    const responseData = await post(
+      `${uploadConfig.url}/v1/files`,
+      requestData
+    );
 
     return this.parsedDocumentUploadResponse(responseData);
   }

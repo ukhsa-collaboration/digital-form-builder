@@ -402,7 +402,7 @@ export const Schema = joi
     analytics: analyticsSchema.optional(),
     webhookHmacSharedKey: joi.string().optional(),
     fileUploadHmacSharedKey: joi.string().optional(),
-    documentUploadApiUrl: joi.string().uri().optional(),
+    documentUploadApiUrl: joi.string().optional(),
     fullStartPage: joi.string().optional(),
     serviceName: joi.string().optional(),
     confirmationSessionTimeout: joi.number().optional(),
