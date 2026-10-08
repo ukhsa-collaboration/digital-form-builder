@@ -25,19 +25,19 @@ jobs:
     with:
       workspace: ${{ matrix.workspace }}
 
-  build-designer:
-    name: Designer
-    uses: ./.github/workflows/build.yml
-    with:
-      app: designer
-    secrets: inherit
+  # build-designer:
+  #   name: Designer
+  #   uses: ./.github/workflows/build.yml
+  #   with:
+  #     app: designer
+  #   secrets: inherit
 
-  build-submitter:
-    name: Submitter
-    uses: ./.github/workflows/build.yml
-    with:
-      app: submitter
-    secrets: inherit
+  # build-submitter:
+  #   name: Submitter
+  #   uses: ./.github/workflows/build.yml
+  #   with:
+  #     app: submitter
+  #   secrets: inherit
 
   build-runner:
     name: Runner
