@@ -11,7 +11,7 @@ import { FormModel } from "./models";
 import * as exit from "./pluginHandlers/exit";
 import {
   getFiles,
-  handleUpload,
+  secureHandleUpload,
   validateContentTypes,
 } from "./pluginHandlers/files/prehandlers";
 import { FormPayload } from "./types";
@@ -337,7 +337,7 @@ export const plugin = {
         pre: [
           { method: getFiles, assign: "files" },
           { method: validateContentTypes, assign: "validFiles" },
-          { method: handleUpload },
+          { method: secureHandleUpload },
         ],
         handler: postHandler,
       },
