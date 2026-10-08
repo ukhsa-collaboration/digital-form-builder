@@ -1,8 +1,7 @@
 import FormData from "form-data";
 
 import config from "../../config";
-import { get, post } from "../httpService";
-import { createHmacRaw } from "../../utils/hmac";
+import { get, post, Response } from "../httpService";
 import { getOrCreateCorrelationId } from "../../utils/correlationId";
 import { HapiRequest, HapiResponseToolkit, HapiServer } from "../../types";
 
@@ -111,7 +110,10 @@ export class UploadService {
     });
   }
 
-  async uploadDocuments(streams: any[], request: HapiRequest) {
+  async uploadDocuments(
+    streams: HapiReadableStream[],
+    uploadConfig: { url: string; additionalHeaders?: Record<string, string> }
+  ) {
     const form = new FormData();
     for (const stream of streams) {
       form.append("files", stream, {
@@ -120,40 +122,20 @@ export class UploadService {
       });
     }
 
-    const formHeaders = form.getHeaders();
+    let formHeaders = form.getHeaders();
 
-    const id = request.params?.id;
-    const forms = request.server?.app?.forms;
-    const model = id && forms?.[id];
-    const hmacKey = model?.def?.fileUploadHmacSharedKey;
+    if (uploadConfig.additionalHeaders) {
+      /* Support form specific file upload api security headers */
+      formHeaders = { ...formHeaders, ...uploadConfig.additionalHeaders };
+    }
 
-    const correlationId = getOrCreateCorrelationId(request);
-    const [hmacSignature, requestTime] = await createHmacRaw(
-      correlationId,
-      hmacKey
-    );
-
-    const customSecurityHeaders = {
-      "X-Request-ID": correlationId,
-      "X-HMAC-Signature": hmacSignature.toString(),
-      "X-HMAC-Time": requestTime.toString(),
-    };
-
-    const headers = {
-      ...formHeaders,
-      ...customSecurityHeaders,
-    };
-
-    const requestData = { headers, payload: form };
-    const responseData = await post(
-      `${config.documentUploadApiUrl}/v1/files`,
-      requestData
-    );
+    const requestData = { headers: formHeaders, payload: form };
+    const responseData = await post(`${uploadConfig.url}`, requestData);
 
     return this.parsedDocumentUploadResponse(responseData);
   }
 
-  parsedDocumentUploadResponse({ res, payload }) {
+  parsedDocumentUploadResponse({ res, payload }: Response<any>) {
     const payloadString = payload?.toString?.();
     let payloadJson: any;
     let warning: string | undefined;
