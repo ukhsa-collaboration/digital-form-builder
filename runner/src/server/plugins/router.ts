@@ -47,7 +47,7 @@ const resolveTitle = (url: string, form: any, view: string) => {
 };
 
 /**
- * Get's a view from a folder
+ * Gets a view from a folder
  *
  * @param folder the folder where the view is located. If not provided the default folder is `views`.
  * @param view the name of the view
