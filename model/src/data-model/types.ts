@@ -276,6 +276,7 @@ export type FormDefinition = {
   analytics?: Analytics;
   webhookHmacSharedKey?: string | undefined;
   fileUploadHmacSharedKey?: string | undefined;
+  documentUploadApiUrl?: string | undefined;
   fullStartPage?: string | undefined;
   serviceName?: string | undefined;
   confirmationSessionTimeout?: number | undefined;
