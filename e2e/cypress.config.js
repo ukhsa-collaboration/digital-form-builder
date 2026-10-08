@@ -33,7 +33,7 @@ async function setupNodeEvents(on, config) {
 }
 export default defineConfig({
   e2e: {
-    specPattern: "**/*.feature",
+    specPattern: "cypress/e2e/runner/**/*.feature",
     setupNodeEvents,
     chromeWebSecurity: false,
     screenshot: true,

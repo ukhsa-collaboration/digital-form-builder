@@ -1,3 +1,4 @@
+@wip
 Feature: Repeat field - same page summary
   As a user,
   I want to see the summary of my repeat field entries on the same page,

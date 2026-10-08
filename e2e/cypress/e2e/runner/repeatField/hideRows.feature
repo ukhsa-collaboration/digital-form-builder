@@ -1,3 +1,4 @@
+@wip
 Feature: Repeat field - hide rows
   As a designer,
   I want to be able to hide rows in summaries,

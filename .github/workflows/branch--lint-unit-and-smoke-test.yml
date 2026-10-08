@@ -39,6 +39,10 @@ jobs:
   #     app: submitter
   #   secrets: inherit
 
+  runner-e2e:
+    uses: ./.github/workflows/runner-e2e.yml
+    secrets: inherit
+
   build-runner:
     name: Runner
     uses: ./.github/workflows/build.yml
@@ -48,8 +52,4 @@ jobs:
 
   smoke-test:
     uses: ./.github/workflows/smoke-test.yml
-    secrets: inherit
-
-  runner-e2e:
-    uses: ./.github/workflows/runner-e2e.yml
     secrets: inherit
