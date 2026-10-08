@@ -71,10 +71,6 @@ export const plugin = {
       });
     });
 
-    const enabledString = config.previewMode ? `[ENABLED]` : `[DISABLED]`;
-    const disabledRouteDetailString =
-      "A request was made however previewing is disabled. See environment variable details in runner/README.md if this error is not expected.";
-
     /**
      * The following publish endpoints (/publish, /published/{id}, /published)
      * are used from the designer for operating in 'preview' mode.
@@ -84,105 +80,78 @@ export const plugin = {
      * the designer too!
      * TODO: - Move this to ./pluginHandlers/publish/*
      */
-    server.route({
-      method: "post",
-      path: "/publish",
-      handler: (request: HapiRequest, h: HapiResponseToolkit) => {
-        if (!previewMode) {
-          request.logger.error(
-            [`POST /publish`, "previewModeError"],
-            disabledRouteDetailString
-          );
+    if (previewMode) {
+      server.route({
+        method: "post",
+        path: "/publish",
+        handler: (request: HapiRequest, h: HapiResponseToolkit) => {
+          const payload = request.payload as FormPayload;
+          const { id, configuration } = payload;
 
-          throw new RenderingError("Publishing is disabled", {
-            code: 403,
+          const parsedConfiguration =
+            typeof configuration === "string"
+              ? JSON.parse(configuration)
+              : configuration;
+          forms[id] = new FormModel(parsedConfiguration, {
+            ...modelOptions,
+            basePath: id,
           });
-        }
-
-        const payload = request.payload as FormPayload;
-        const { id, configuration } = payload;
-
-        const parsedConfiguration =
-          typeof configuration === "string"
-            ? JSON.parse(configuration)
-            : configuration;
-        forms[id] = new FormModel(parsedConfiguration, {
-          ...modelOptions,
-          basePath: id,
-        });
-        return h.response({}).code(204);
-      },
-      options: {
-        description: `${enabledString} Allows a form to be persisted (published) on the runner server. Requires previewMode to be set to true. See runner/README.md for details on environment variables`,
-      },
-    });
-
-    // TODO: - Move this to ./pluginHandlers/publish/*
-    server.route({
-      method: "get",
-      path: "/published/{id}",
-      handler: (request: HapiRequest, h: HapiResponseToolkit) => {
-        const { id } = request.params;
-        if (!previewMode) {
-          request.logger.error(
-            [`GET /published/${id}`, "previewModeError"],
-            disabledRouteDetailString
-          );
-
-          throw new RenderingError("Publishing is disabled", {
-            code: 401,
-          });
-        }
-
-        const form = forms[id];
-
-        if (!form) {
           return h.response({}).code(204);
-        }
+        },
+        options: {
+          description:
+            "Allows a form to be persisted (published) on the runner server. Only registered when previewMode is enabled.",
+        },
+      });
 
-        const { values } = forms[id];
-        return h.response(JSON.stringify({ id, values })).code(200);
-      },
-      options: {
-        description: `${enabledString} Gets a published form, by form id. Requires previewMode to be set to true. See runner/README.md for details on environment variables`,
-      },
-    });
+      // TODO: - Move this to ./pluginHandlers/publish/*
+      server.route({
+        method: "get",
+        path: "/published/{id}",
+        handler: (request: HapiRequest, h: HapiResponseToolkit) => {
+          const { id } = request.params;
+          const form = forms[id];
 
-    // TODO: - Move this to ./pluginHandlers/publish/*
-    server.route({
-      method: "get",
-      path: "/published",
-      handler: (request: HapiRequest, h: HapiResponseToolkit) => {
-        if (!previewMode) {
-          request.logger.error(
-            [`GET /published`, "previewModeError"],
-            disabledRouteDetailString
-          );
+          if (!form) {
+            return h.response({}).code(204);
+          }
 
-          throw new RenderingError("Publishing is disabled", {
-            code: 403,
-          });
-        }
-        return h
-          .response(
-            JSON.stringify(
-              Object.keys(forms).map(
-                (key) =>
-                  new FormConfiguration(
-                    key,
-                    forms[key].name,
-                    undefined,
-                    forms[key].def.feedback?.feedbackForm
-                  )
+          const { values } = forms[id];
+          return h.response(JSON.stringify({ id, values })).code(200);
+        },
+        options: {
+          description:
+            "Gets a published form by form id. Only registered when previewMode is enabled.",
+        },
+      });
+
+      // TODO: - Move this to ./pluginHandlers/publish/*
+      server.route({
+        method: "get",
+        path: "/published",
+        handler: (_request: HapiRequest, h: HapiResponseToolkit) => {
+          return h
+            .response(
+              JSON.stringify(
+                Object.keys(forms).map(
+                  (key) =>
+                    new FormConfiguration(
+                      key,
+                      forms[key].name,
+                      undefined,
+                      forms[key].def.feedback?.feedbackForm
+                    )
+                )
               )
             )
-          )
-          .code(200);
-      },
-      options: {
-        description: `${enabledString} Gets all published forms. Requires previewMode to be set to true. See runner/README.md for details on environment variables`,
-      },
-    });
+            .code(200);
+        },
+        options: {
+          description:
+            "Gets all published forms. Only registered when previewMode is enabled.",
+        },
+      });
+    }
 
     server.route({
       method: "get",
