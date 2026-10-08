@@ -4,7 +4,11 @@ import { FormModel } from "./FormModel";
 import { feedbackReturnInfoKey, redirectUrl } from "../helpers";
 import { decodeFeedbackContextInfo } from "../feedback";
 import { webhookSchema } from "server/schemas/webhookSchema";
-import { FormSubmissionState } from "../types";
+import {
+  FormSubmissionState,
+  FormSubmissionErrors,
+  SubmissionError,
+} from "../types";
 import { FEEDBACK_CONTEXT_ITEMS, SummaryCard, WebhookData } from "./types";
 import { FeesModel } from "server/plugins/engine/models/submission";
 import { HapiRequest } from "src/server/types";
@@ -34,7 +38,7 @@ export class SummaryViewModel {
    */
 
   pageTitle: string;
-  declaration: any; // TODO
+  declaration?: string;
   skipSummary: boolean;
   endPage: any; // TODO
   result: any;
@@ -46,7 +50,9 @@ export class SummaryViewModel {
   feedbackLink: string | undefined;
   serviceName: string | undefined;
   phaseTag: string | undefined;
-  declarationError: any; // TODO
+  declarationError?: any; // TODO: to be deprected is still used in magic link controller and Custom summary page - these components should inherit from summary page controller
+  submissionErrors?: FormSubmissionErrors;
+  submissionErrorsByName?: Record<string, SubmissionError[]>; // helper attribute to make errors easier to extract in the template
   errors:
     | {
         path: string;
