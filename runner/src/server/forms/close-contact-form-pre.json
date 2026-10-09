@@ -4427,11 +4427,11 @@
     }
   },
   "secureFormSubmissionConfig": {
-    "tenantId": "${SRSCoreApimTenantId_MAIN}",
-    "clientId": "${SRSCoreApimClientId_MAIN}",
-    "clientSecret": "${SRSCoreApimClientSecret_MAIN}",
-    "scopes": ["${SRSCoreApimScope_MAIN}"],
+    "tenantId": "${SRSCoreApimTenantId}",
+    "clientId": "${SRSCoreApimClientId}",
+    "clientSecret": "${SRSCoreApimClientSecret}",
+    "scopes": ["${SRSCoreApimScope1}"],
     "useAwsWafUserAgentWorkaround": true,
-    "routingKey": "${SRSRoutingKey_MAIN}"
+    "routingKey": "${SRSRoutingKey}"
   }
 }
