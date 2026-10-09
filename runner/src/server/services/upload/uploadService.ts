@@ -21,7 +21,7 @@ type DocumentUploadReponsePayload = {
   warning: string;
   maxFilesPerUpload: Number;
 };
-type ParsedDocumentuploadResponse = {
+type ParsedDocumentUploadResponse = {
   location: string | undefined;
   error: string | undefined;
   warning: string | undefined;
@@ -148,7 +148,7 @@ export class UploadService {
   parsedDocumentUploadResponse({
     res,
     payload,
-  }: Response<DocumentUploadReponsePayload>): ParsedDocumentuploadResponse {
+  }: Response<DocumentUploadReponsePayload>): ParsedDocumentUploadResponse {
     const payloadString = payload?.toString?.();
     let payloadJson: DocumentUploadReponsePayload | undefined;
     let warning: string | undefined;
