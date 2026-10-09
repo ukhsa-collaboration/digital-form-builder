@@ -16,6 +16,11 @@ type HapiReadableStream = ReadableStream & {
   };
 };
 export type ReadableStreamEntry = [string, Array<HapiReadableStream>];
+type DocumentUploadReponsePayload = {
+  errorCode: string;
+  warning: string;
+  maxFilesPerUpload: Number;
+};
 
 const parsedError = (key: string, error?: string) => {
   return {
@@ -135,9 +140,12 @@ export class UploadService {
     return this.parsedDocumentUploadResponse(responseData);
   }
 
-  parsedDocumentUploadResponse({ res, payload }: Response<any>) {
+  parsedDocumentUploadResponse({
+    res,
+    payload,
+  }: Response<DocumentUploadReponsePayload>) {
     const payloadString = payload?.toString?.();
-    let payloadJson: any;
+    let payloadJson: DocumentUploadReponsePayload | undefined;
     let warning: string | undefined;
     let errorCode: string | undefined;
 
