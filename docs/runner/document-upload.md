@@ -1,16 +1,64 @@
 # Document upload
 
-the form builder supports the use of an external document upload service. This allows users to upload files, but gives developers the flexibility to decide how they want to process the files.
+The form builder supports the use of an external document upload service. This allows users to upload files, but gives developers the flexibility to decide how they want to process the files.
 
 ## Setup
 
-In order to start using file upload files in your form, you will need to specify an endpoint to send your files to. This can be done by setting the following environment variables:
+In order to start using file upload files in your form, you will need to specify an endpoint to send your files to.
 
-| Variable name           | Definition                                             | example                         |
-| ----------------------- | ------------------------------------------------------ | ------------------------------- |
-| DOCUMENT_UPLOAD_API_URL | the root endpoint of service used to upload your files | https://document-upload-api.com |
+Configururation of the upload url is on a per form basis ([Form Config](../../model/src/data-model/types.ts)!), allowing different forms to have different file destinations.
 
-The service you're using for your document upload api will need an endpoint of /files that accepts POST requests with a file in the body. Currently, there is no support for authenticating against this endpoint, so this endpoint will need to be open.
+The service you're using for your document upload api will need an endpoint of /files that accepts POST requests with a file in the body.
+
+> [!NOTE]
+> The server level configuration used to append /v1/files
+>
+> The forms level configuration uses the value provided as is
+
+## Secure uploads
+
+Currently file uploads support header based authenticating. This can be achieved by introducing a secureHandleUpload plugin which provides securityHeaders and uses the existing handleUpload()
+
+```diff
+# runner\src\server\plugins\engine\plugin.ts
+
+pre: [
+  { method: getFiles, assign: "files" },
+  { method: validateContentTypes, assign: "validFiles" },
+-  { method: handleUpload },
++  { method: secureHandleUpload },
+],
+```
+
+```typescript
+# runner\src\server\plugins\engine\pluginHandlers\files\prehandlers\secureHandleUpload.ts
+
+/* Example of downstream team specific file upload api authentication */
+export async function secureHandleUpload(
+  request: HapiRequest,
+  h: HapiResponseToolkit
+) {
+  let url: string | undefined = undefined;
+  let securityHeaders: Record<string, string> | undefined = undefined;
+
+  const formId = request.params?.id;
+  const forms = request.server?.app?.forms;
+
+  if (formId && forms) {
+    const formModel = forms[formId];
+
+    if (formModel) {
+      url = formModel?.def?.documentUploadApiUrl;
+      securityHeaders = await getSecurityHeaders(formModel, request);
+    }
+  }
+
+  return handleUpload(request, h, {
+    url,
+    additionalHeaders: securityHeaders,
+  });
+}
+```
 
 ### Responses
 
