@@ -4,7 +4,7 @@ import { HapiRequest, HapiServer } from "../types";
 import { CacheService } from "./cacheService";
 
 export class MagicLinkCacheService {
-  /* This service is responsible for getting, setting and deleting magic link data in the cache. 
+  /* This service is responsible for getting, setting and deleting magic link data in the cache.
      This service has been registered by {@link createServer}
    */
   cacheService: CacheService;
@@ -15,7 +15,7 @@ export class MagicLinkCacheService {
 
   logger: HapiServer["logger"];
 
-  ttl = config.sessionTimeout ?? 1000 * 60 * 10; // 10 minutes
+  ttl = 1000 * 60 * 20; // 20 minutes
 
   constructor(server: HapiServer) {
     this.logger = server.logger;
@@ -76,7 +76,7 @@ export class MagicLinkCacheService {
 
   async saveFormIdBeforeMagicLinkRedirectToAllowResume(request: HapiRequest) {
     /* Magic Link Session Resume Step 1: Save the form id before redirecting to the Magic Link form
-       Saves form id by session id, to allow retrieval in the magic link form flow 
+       Saves form id by session id, to allow retrieval in the magic link form flow
     */
     const sessionId = request.yar.id;
 
@@ -193,7 +193,7 @@ export class MagicLinkCacheService {
     }
 
     /* Continuing in different session (different browser / new browser / new instance / tab)
-       Re-instate form states from previous session 
+       Re-instate form states from previous session
     */
     await this.mergeFormStateFromPreviousSession({
       previousSessionId,
@@ -206,10 +206,6 @@ export class MagicLinkCacheService {
       currentSessionId,
       formId: previousFormId,
     });
-
-    /* Cleaning up state from previous session */
-    await this.clearFormState(previousSessionId, magicLinkFormId);
-    await this.clearFormState(previousSessionId, previousFormId);
 
     /* Delete Magic Link Lookup Entry */
     await this.magicLinkReturnDataByHmacCache.drop(
@@ -230,8 +226,14 @@ export class MagicLinkCacheService {
       previousSessionId,
       formId
     );
+    const currentFormState = await this.getFormState(currentSessionId, formId);
 
-    await this.mergeFormState(currentSessionId, formId, previousFormState);
+    // A later visit must not replace setting details
+    // already saved in this session with the older copy.
+    await this.mergeFormState(currentSessionId, formId, {
+      ...previousFormState,
+      ...currentFormState,
+    });
   }
 
   private async getFormState(sessionId: string, formId: string) {
@@ -255,14 +257,6 @@ export class MagicLinkCacheService {
     );
   }
 
-  private async clearFormState(sessionId: string, formId: string) {
-    if (sessionId && formId) {
-      await this.cacheService.clearState({
-        params: { id: formId },
-        yar: { id: sessionId },
-      });
-    }
-  }
 }
 
 type TypedCache<T> = Policy<T, PolicyOptions<T>>;
