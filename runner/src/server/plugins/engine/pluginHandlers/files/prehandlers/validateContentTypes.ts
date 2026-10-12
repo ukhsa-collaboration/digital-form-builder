@@ -33,7 +33,13 @@ export async function validateContentTypes(
 
   const { id, path } = request.params;
   const form = request.server.app.forms[id];
-  const page = form.pages.find((page) => page.path === `/${path}`);
+  const page = form?.pages.find((page) => page.path === `/${path}`);
+
+  // No matching form/page - no valid files, and the route handler returns its 404
+  if (!page) {
+    return [];
+  }
+
   const components = page.components.formItems;
 
   for (const [fieldName, values] of files) {

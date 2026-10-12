@@ -1,218 +1,77 @@
-import Lab from "@hapi/lab";
-import { expect } from "@hapi/code";
+import * as Code from "@hapi/code";
+import * as Lab from "@hapi/lab";
+import FormData from "form-data";
 import createServer from "src/server";
-import sinon from "sinon";
-import config from "src/server/config";
-const {
-  before,
-  after,
-  describe,
-  suite,
-  it,
-  test,
-  beforeEach,
-} = (exports.lab = Lab.script());
 
-let server;
+const { expect } = Code;
+const lab = Lab.script();
+exports.lab = lab;
+const { after, before, suite, test } = lab;
 
-const options = {
-  callbackUrl: "https://webho.ok",
-  message: "Please fix this thing..",
-  customText: {
-    paymentSkipped: false,
-    nextSteps: false,
-  },
-  components: [
-    {
-      name: "WLskhZ",
-      options: {},
-      type: "Html",
-      content: "Thanks!",
-      schema: {},
-    },
-  ],
-};
+suite("initialiseSession plugin", () => {
+  let server;
 
-const baseRequest = {
-  options,
-  name: "undefined lawyers-mod",
-  questions: [
-    {
-      question: "Which list of lawyers do you want to be added to?",
-      fields: [
-        {
-          key: "country",
-          title: "Country list",
-          type: "list",
-          answer: "Italy",
-        },
-      ],
-    },
-    {
-      fields: [
-        {
-          key: "size",
-          title: "Company size",
-          type: "list",
-          answer: "Large firm (350+ legal professionals)",
-        },
-      ],
-    },
-    {
-      question:
-        "Which legal regulator or local bar associations are you registered with?",
-      fields: [
-        {
-          key: "regulators",
-          title: "Regulator(s)",
-          type: "text",
-          answer: "test",
-        },
-      ],
-    },
-    {
-      question: "In what areas of law are you qualified to practise? ",
-      fields: [
-        {
-          key: "areasOfLaw",
-          title: "Areas of law practised",
-          type: "list",
-          answer: ["Bankruptcy", "Corporate", "Criminal"],
-        },
-      ],
-    },
-    {
-      question: "Can you provide legal aid to British nationals?",
-      fields: [
-        {
-          key: "legalAid",
-          title: "Can you provide legal aid to British nationals?",
-          type: "list",
-          answer: true,
-        },
-      ],
-    },
-  ],
-  metadata: { woo: "ah" },
-};
-
-suite("InitialiseSession", () => {
   before(async () => {
-    server = await createServer({});
+    server = await createServer({
+      formFileName: "basic-v0.json",
+      formFilePath: __dirname,
+    });
     await server.start();
   });
 
   after(async () => {
     await server.stop();
-    sinon.restore();
-  });
-  describe("POST /session/{id}", () => {
-    test(" responds with token if file exists", async () => {
-      const serverRequestOptions = {
-        method: "POST",
-        url: `/session/test`,
-        payload: baseRequest,
-      };
-
-      const { payload } = await server.inject(serverRequestOptions);
-      expect(payload).to.not.be.undefined();
-    });
-
-    it("responds with token if form doesnt exist", async () => {
-      const serverRequestOptions = {
-        method: "POST",
-        url: `/session/four-o-four`,
-        payload: baseRequest,
-      };
-
-      const { statusCode } = await server.inject(serverRequestOptions);
-      expect(statusCode).to.equal(404);
-    });
-    test("responds with a 403 if the callbackUrl has not been safelisted", async () => {
-      let serverRequestOptions = {
-        method: "POST",
-        url: `/session/test`,
-        payload: {
-          ...baseRequest,
-          options: { ...options, callbackUrl: "gov.uk" },
-        },
-      };
-      const { statusCode } = await server.inject(serverRequestOptions);
-      expect(statusCode).to.equal(403);
-    });
   });
 
-  describe("GET /session/{token}", () => {
-    test("redirects the user to the correct form", async () => {
-      let serverRequestOptions = {
-        method: "POST",
-        url: `/session/test`,
-        payload: { ...baseRequest, options: { ...options, redirectPath: "" } },
-      };
-      let postResponse;
-      let getResponse;
-      let token;
-
-      postResponse = await server.inject(serverRequestOptions);
-      token = JSON.parse(postResponse.payload).token;
-
-      getResponse = await server.inject({
-        url: `/session/${token}`,
-      });
-
-      expect(getResponse.statusCode).to.equal(302);
-      expect(getResponse.headers.location).to.equal("/test");
-
-      serverRequestOptions.payload.options.redirectPath = "summary";
-      postResponse = await server.inject(serverRequestOptions);
-      token = JSON.parse(postResponse.payload).token;
-
-      getResponse = await server.inject({
-        url: `/session/${token}`,
-      });
-      expect(getResponse.statusCode).to.equal(302);
-      expect(getResponse.headers.location).to.equal("/test/summary");
+  test("POST /session/{formId} is not registered", async () => {
+    // Real HTTP request rather than server.inject: the request now falls
+    // through to the engine's POST /{id}/{path*} route, and a JSON body only
+    // reaches its file prehandlers on a real request stream, not shot's
+    // simulated one
+    const res = await fetch(`${server.info.uri}/session/basic-v0`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        options: { callbackUrl: "https://not-on-safelist.invalid" },
+        questions: [],
+      }),
     });
+
+    expect(res.status).to.equal(404);
   });
 
-  describe("token verification", function () {
-    let serverRequestOptions;
-
-    beforeEach(() => {
-      serverRequestOptions = {
-        method: "POST",
-        url: `/session/test`,
-        payload: {
-          ...baseRequest,
-          options: { ...options, callbackUrl: "https://webho.ok" },
-        },
-      };
-    });
-    test("When token is valid", async () => {
-      const response = await server.inject(serverRequestOptions);
-      const payload = JSON.parse(response.payload);
-      const token = payload.token;
-      const getResponse = await server.inject({
-        method: "GET",
-        url: `/session/${token}`,
-      });
-
-      expect(getResponse.statusCode).to.equal(302);
+  test("POST /session/{formId} with a file upload returns 404", async () => {
+    const form = new FormData();
+    form.append("file1", Buffer.from("an image.."), {
+      filename: "file.png",
+      contentType: "image/png",
     });
 
-    test("When token is invalid", async () => {
-      const response = await server.inject(serverRequestOptions);
-      const payload = JSON.parse(response.payload);
-      const token = payload.token;
-
-      sinon.stub(config, "initialisedSessionKey").value("incorrect key");
-
-      const getResponse = await server.inject({
-        method: "GET",
-        url: `/session/${token}`,
-      });
-
-      expect(getResponse.statusCode).to.equal(400);
+    const res = await server.inject({
+      method: "POST",
+      url: "/session/basic-v0",
+      headers: form.getHeaders(),
+      payload: form.getBuffer(),
     });
+
+    expect(res.statusCode).to.equal(404);
+  });
+
+  test("GET /session/{token} is not registered", async () => {
+    const res = await server.inject({
+      method: "GET",
+      url: "/session/eyJhbGciOiJIUzUxMiJ9.e30.sig",
+    });
+
+    expect(res.statusCode).to.equal(404);
+  });
+
+  test("POST /session/keep-alive still works", async () => {
+    const res = await server.inject({
+      method: "POST",
+      url: "/session/keep-alive",
+    });
+
+    expect(res.statusCode).to.equal(204);
   });
 });

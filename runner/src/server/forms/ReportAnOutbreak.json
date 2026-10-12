@@ -1540,7 +1540,7 @@
       "components": [
         {
           "type": "Html",
-          "content": "<p class='govuk-hint'>This is a 2SAN combo rapid test supplied for use in your setting <img src='/assets/rao-2san-covid-flu-kit.png' alt='2SAN branded packaging for combined COVID-19 and flu test kit' width='224' height='461' /></p>"
+          "content": "<p class='govuk-hint'>This test will either be a 2SAN combo rapid test or an ALL TEST combo rapid test.</p><div class='govuk-which-test-kit-images'><img src='/assets/rao-2san-covid-flu-kit.png' alt='The photo shows a picture of the 2SAN box containing the test and a picture of the test' width='224' height='461' /><img src='/assets/all-test.png' alt='A picture of the ALL TEST box is also shown alongside the test with and without the packaging' width='388' height='356' /></div>"
         },
         {
           "name": "TestKitsUsed",

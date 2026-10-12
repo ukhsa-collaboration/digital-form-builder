@@ -29,9 +29,8 @@ export class MagicLinkController extends PageController {
 
       //💣 Issue: As the program scales, this will need updating on a per-form basis.
       // Otherwise active on one form, will mark them active on all.
-      const isMagicLinkRecordActive = await magicLinkCacheService.searchForMagicLinkRecord(
-        email
-      );
+      const isMagicLinkRecordActive =
+        await magicLinkCacheService.searchForMagicLinkRecord(email);
 
       if (!isMagicLinkRecordActive) {
         return h.redirect(`/${this.model.basePath}/expired`).code(302);
