@@ -180,7 +180,7 @@ export function resolveSelectedAddress(
 }
 
 const STREET_NUMBER_PATTERN = /(^|, )(\d+[A-Z]?([-\/]\d+)?[A-Z]?),/i;
-
+const NO_LETTERS_STREET_NUMBER_PATTERN = /^\d+([-\/]\d+)?$/i;
 /**
  * Finds the correct address using building name, number or 1st line of address
  *
@@ -205,6 +205,16 @@ export const findMatchingAddress = (
     return addresses[0];
   }
 
+  const addressFirstPart = (
+    address.building ||
+    address.addressLine1 ||
+    ""
+  ).trim();
+
+  if (NO_LETTERS_STREET_NUMBER_PATTERN.test(addressFirstPart)) {
+    return matchAddressNumber(addresses, addressFirstPart);
+  }
+
   const addressQuery = [
     address.building,
     address.addressLine1,
@@ -217,6 +227,27 @@ export const findMatchingAddress = (
     .join(", ");
 
   return fuzzyMatchAddress(addresses, addressQuery);
+};
+
+const escapeRegex = (s: string): string =>
+  s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+export const matchAddressNumber = (
+  addresses: Address[],
+  number: string
+): Address | undefined => {
+  const query = number.trim();
+
+  if (!query) return undefined;
+
+  const regex = new RegExp(
+    `(?<![\\p{L}\\p{N}])${escapeRegex(query)}(?![\\p{L}\\p{N}])`,
+    "iu"
+  );
+
+  const matches = addresses.filter((addr) => regex.test(addr.address));
+
+  return matches.length === 1 ? matches[0] : undefined;
 };
 
 export const fuzzyMatchAddress = (
