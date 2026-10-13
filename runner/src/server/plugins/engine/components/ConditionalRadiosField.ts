@@ -2,22 +2,36 @@ import joi from "joi";
 import { ConditionalRadiosFieldComponent } from "@xgovformbuilder/model";
 
 import { ListFormComponent } from "./ListFormComponent";
-import { FormData, FormPayload, FormSubmissionErrors } from "../types";
+import { ListItem } from "./types";
+import {
+  FormData,
+  FormPayload,
+  FormSubmissionErrors,
+  FormSubmissionState,
+} from "../types";
 import { FormModel } from "../models";
 
 const customValue = "__custom";
 
 export class ConditionalRadiosField extends ListFormComponent {
   constructor(def: ConditionalRadiosFieldComponent, model: FormModel) {
-    const list: any = model.getList(def.list);
+    const list = model.getList(def.list);
+    const listItems = Array.isArray(list) ? [] : list.items;
 
     const normalizedList = {
-      ...list,
-      items: list.items.map((item: any) => ({
-        ...item,
-        ...(item.type === "TextField" && { value: customValue }),
-        ...(item.divider !== undefined && { value: "__divider" }),
-      })),
+      items: listItems.map((item) => {
+        const value: string | number | boolean =
+          item.type === "TextField"
+            ? customValue
+            : item.divider !== undefined
+            ? "__divider"
+            : item.value ?? "";
+
+        return {
+          ...item,
+          value,
+        };
+      }),
     };
 
     super(def, {
@@ -26,7 +40,7 @@ export class ConditionalRadiosField extends ListFormComponent {
     } as unknown as FormModel);
 
     const radioItems = this.items.filter(
-      (item: any) => item.type !== "TextField" && item.divider === undefined
+      (item) => item.type !== "TextField" && item.divider === undefined
     );
 
     const allowedValues = radioItems
@@ -37,11 +51,14 @@ export class ConditionalRadiosField extends ListFormComponent {
       .any()
       .custom((value, helpers) => {
         const values = Array.isArray(value) ? value : [value];
+
         const customText = values.find(
           (item) =>
             typeof item === "string" && item !== customValue && item.trim()
         );
+
         const hasCustomValue = values.includes(customValue);
+
         const hasRadioValue = values.some((item) =>
           allowedValues.includes(item)
         );
@@ -77,9 +94,9 @@ export class ConditionalRadiosField extends ListFormComponent {
 
   private customValue: string;
 
-  private isFixedValue(value: any) {
+  private isFixedValue(value: string | number | boolean | undefined): boolean {
     return this.items.some(
-      (item: any) =>
+      (item) =>
         item.type !== "TextField" &&
         item.divider === undefined &&
         (item.value === value || item.label === value || item.text === value)
@@ -94,13 +111,15 @@ export class ConditionalRadiosField extends ListFormComponent {
       : [submittedValue];
 
     const selectedValue = values.find((value) => this.isFixedValue(value));
+
     const selectedItem = this.items.find(
-      (item: any) =>
+      (item) =>
         item.value === selectedValue ||
         item.label === selectedValue ||
         item.text === selectedValue
     );
     const selectedLabel = selectedItem?.label ?? selectedItem?.text;
+
     const customText = values.find(
       (value) =>
         value !== this.customValue &&
@@ -134,17 +153,31 @@ export class ConditionalRadiosField extends ListFormComponent {
 
     viewModel.name = this.name;
     viewModel.id = this.name;
-    viewModel.items = this.items.map((item: any, index) => {
+
+    const renderedItems: ListItem[] = [];
+
+    this.items.forEach((item, index) => {
       if (item.divider !== undefined) {
-        return { divider: item.divider, value: "" };
+        renderedItems.push({
+          divider: item.divider,
+          value: "",
+        } as ListItem);
+
+        return;
       }
 
       const isCustom = item.type === "TextField";
-      const value = isCustom ? this.customValue : item.value;
-      const label = item.label ?? item.text ?? "";
-      const isSelected = values.includes(item.value) || values.includes(label);
 
-      return {
+      const value: string | number | boolean = isCustom
+        ? this.customValue
+        : item.value ?? "";
+
+      const label = item.label ?? item.text ?? "";
+
+      const isSelected =
+        values.includes(item.value ?? "") || values.includes(label);
+
+      renderedItems.push({
         text: label,
         value,
         checked: isCustom ? Boolean(customText) : isSelected,
@@ -158,13 +191,17 @@ export class ConditionalRadiosField extends ListFormComponent {
           },
         }),
         ...(index === 0 && { id: this.name }),
-      };
+      } as ListItem);
     });
+
+    viewModel.items = renderedItems;
 
     return viewModel;
   }
 
-  getDisplayStringFromState(state) {
-    return state[this.name];
+  getDisplayStringFromState(state: FormSubmissionState): string | string[] {
+    const value = state[this.name];
+
+    return typeof value === "string" ? value : String(value ?? "");
   }
 }

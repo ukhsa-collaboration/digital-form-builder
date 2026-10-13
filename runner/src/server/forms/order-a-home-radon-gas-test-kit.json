@@ -1659,22 +1659,18 @@
       "type": "string",
       "items": [
         {
-          "type": "HiddenField",
           "value": "Mr",
           "label": "Mr"
         },
         {
-          "type": "HiddenField",
           "value": "Mrs",
           "label": "Mrs"
         },
         {
-          "type": "HiddenField",
           "value": "Miss",
           "label": "Miss"
         },
         {
-          "type": "HiddenField",
           "value": "Ms",
           "label": "Ms"
         },

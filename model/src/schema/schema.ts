@@ -181,7 +181,7 @@ const specialPagesSchema = joi.object().keys({
 });
 
 const listItemBaseKeys = {
-  value: joi.alternatives().try(joi.number(), joi.string()),
+  value: joi.alternatives().try(joi.number(), joi.string(), joi.boolean()),
   checkpointDisplayValue: joi.alternatives().try(joi.number(), joi.string()),
   description: localisedString.optional(),
   selected: joi.boolean().optional(),
