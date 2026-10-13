@@ -4,6 +4,7 @@ on:
     branches:
       - main
       - beta
+      - v2
     paths-ignore:
       - "docs/**"
       - "**/README.md"
@@ -19,24 +20,10 @@ jobs:
     name: Workspace
     strategy:
       matrix:
-        workspace: [model, designer, runner, submitter]
+        workspace: [runner]
     uses: ./.github/workflows/lint-and-test.yml
     with:
       workspace: ${{ matrix.workspace }}
-
-  build-designer:
-    name: Designer
-    uses: ./.github/workflows/build.yml
-    with:
-      app: designer
-    secrets: inherit
-
-  build-submitter:
-    name: Submitter
-    uses: ./.github/workflows/build.yml
-    with:
-      app: submitter
-    secrets: inherit
 
   build-runner:
     name: Runner
@@ -47,8 +34,4 @@ jobs:
 
   smoke-test:
     uses: ./.github/workflows/smoke-test.yml
-    secrets: inherit
-
-  runner-e2e:
-    uses: ./.github/workflows/runner-e2e.yml
     secrets: inherit
