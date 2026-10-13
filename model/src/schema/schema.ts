@@ -204,10 +204,13 @@ const listItemSchema = joi
   .object()
   .keys({
     ...listItemBaseKeys,
+    type: joi.string().valid("HiddenField", "TextField"),
+    label: localisedString,
+    divider: joi.string(),
     html: localisedString,
     text: localisedString,
   })
-  .oxor("html", "text");
+  .oxor("html", "text", "label", "divider");
 
 const listSchema = joi.object().keys({
   name: joi.string().required(),
