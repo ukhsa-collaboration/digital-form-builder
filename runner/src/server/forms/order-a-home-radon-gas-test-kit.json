@@ -1660,22 +1660,22 @@
       "items": [
         {
           "type": "HiddenField",
-          "value": "mr",
+          "value": "Mr",
           "label": "Mr"
         },
         {
           "type": "HiddenField",
-          "value": "mrs",
+          "value": "Mrs",
           "label": "Mrs"
         },
         {
           "type": "HiddenField",
-          "value": "miss",
+          "value": "Miss",
           "label": "Miss"
         },
         {
           "type": "HiddenField",
-          "value": "ms",
+          "value": "Ms",
           "label": "Ms"
         },
         {
