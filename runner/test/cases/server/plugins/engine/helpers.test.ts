@@ -467,6 +467,32 @@ suite("Helpers", () => {
       const request = { query: { returnUrl: "//evil.example.com" } };
       expect(getBackLink(request, ["/a", "/b"], "/fallback")).to.equal("/a");
     });
+
+    test("Should use the last progress entry when the current page is not tracked", () => {
+      const request = {
+        path: "/your-details",
+        url: { search: "" },
+        query: {},
+      };
+      expect(
+        getBackLink(request, ["/previous-test-action-level"], "/fallback")
+      ).to.equal("/previous-test-action-level");
+    });
+
+    test("Should skip the current page when it is already tracked", () => {
+      const request = {
+        path: "/your-details",
+        url: { search: "" },
+        query: {},
+      };
+      expect(
+        getBackLink(
+          request,
+          ["/previous-test-action-level", "/your-details"],
+          "/fallback"
+        )
+      ).to.equal("/previous-test-action-level");
+    });
   });
 
   describe("idFromFilename", () => {

@@ -722,7 +722,7 @@ export class PageControllerBase {
        * cycles through stale pages instead of leaving the loop.
        */
       const lastVisited = progress[progress.length - 1];
-      if (!lastVisited || !lastVisited.startsWith(currentPath)) {
+      if (!lastVisited || lastVisited !== currentPath) {
         const priorIndex = progress.lastIndexOf(currentPath);
         if (priorIndex !== -1) {
           progress.length = priorIndex + 1;

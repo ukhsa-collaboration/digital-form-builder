@@ -51,7 +51,19 @@ export function getBackLink(
     return returnUrl;
   }
 
-  return progress[progress.length - 2] ?? backLinkFallback;
+  if (!request.path) {
+    return progress[progress.length - 2] ?? backLinkFallback;
+  }
+
+  const currentPath = `${request.path}${request.url.search}`;
+  const lastProgressEntry = progress[progress.length - 1];
+  const currentPageIsTracked = currentPath === lastProgressEntry;
+
+  return (
+    (currentPageIsTracked
+      ? progress[progress.length - 2]
+      : lastProgressEntry) ?? backLinkFallback
+  );
 }
 
 /**
