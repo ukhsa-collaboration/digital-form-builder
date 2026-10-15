@@ -8,6 +8,7 @@ import {
   getValidStateFromQueryParameters,
   idFromFilename,
   nonRelativeRedirectUrl,
+  normalizeUrlPath,
   proceed,
   redirectTo,
   redirectUrl,
@@ -456,6 +457,27 @@ suite("Helpers", () => {
   });
 
   describe("getBackLink", () => {
+    test("Should normalize leading and trailing slashes when matching progress", () => {
+      const request = {
+        path: "/path/",
+        url: { search: "" },
+        query: {},
+      };
+
+      expect(getBackLink(request, ["previous", "path/"], "/fallback")).to.equal(
+        "/previous"
+      );
+    });
+
+    test("Should preserve query strings when normalizing paths", () => {
+      ["/path", "path", "path/"].forEach((path) => {
+        expect(normalizeUrlPath(path)).to.equal("/path");
+      });
+      expect(normalizeUrlPath("path/?view=summary")).to.equal(
+        "/path?view=summary"
+      );
+    });
+
     test("Should use returnUrl when it is present and internal", () => {
       const request = { query: { returnUrl: "/summary" } };
       expect(getBackLink(request, ["/a", "/b"], "/fallback")).to.equal(
@@ -492,6 +514,18 @@ suite("Helpers", () => {
           "/fallback"
         )
       ).to.equal("/previous-test-action-level");
+    });
+
+    test("Should not cycle when history has been truncated to the current page", () => {
+      const request = {
+        path: "/previous-test-action-level",
+        url: { search: "" },
+        query: {},
+      };
+
+      expect(
+        getBackLink(request, ["/previous-test-action-level"], "/fallback")
+      ).to.equal("/fallback");
     });
   });
 
