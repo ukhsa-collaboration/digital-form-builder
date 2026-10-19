@@ -81,14 +81,7 @@ const index = {
             );
 
             viewModel.name = form.name;
-            const feedbackLink = form.def.feedback?.url;
-            if (!feedbackLink) {
-              request.logger.warn(
-                ["applicationStatus"],
-                `No feedback.url configured for form '${params.id}'. Confirmation page will be rendered without a feedback link.`
-              );
-            }
-            viewModel.feedbackLink = feedbackLink;
+            viewModel.feedbackLink = form.def.feedback.url;
 
             const confirmationTimeout =
               form.def.confirmationSessionTimeout ??
