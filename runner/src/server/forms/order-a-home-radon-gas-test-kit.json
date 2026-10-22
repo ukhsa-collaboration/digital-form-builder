@@ -118,7 +118,8 @@
       "next": [{ "path": "/gas-test-kit-property-address-postcode" }],
       "controller": "./pages/start.js",
       "options": {
-        "hasStartButton": true
+        "hasStartButton": true,
+        "restartSessionOnSubmit": true
       }
     },
     {
@@ -131,7 +132,7 @@
           "content": "This will be the property where your radon level will be measured"
         },
         {
-          "name": "propertyAddress_postcodeLookup",
+          "name": "propertyAddress_postcodeLookupBuilding",
           "type": "TextField",
           "title": "Postcode",
           "hint": "For example, AA3 1AB",
@@ -382,7 +383,7 @@
           }
         },
         {
-          "name": "propertyAddress_postcodeLookup",
+          "name": "propertyAddress_postcodeLookupManual",
           "type": "TextField",
           "title": "Postcode",
           "hint": "For example, AA3 1AB",
@@ -717,7 +718,7 @@
       "controller": "FindAnAddressPageController",
       "components": [
         {
-          "name": "kitAddress_postcodeLookup",
+          "name": "kitAddress_postcodeLookupBuilding",
           "type": "TextField",
           "title": "Postcode",
           "hint": "For example, AA3 1AB",
@@ -968,7 +969,7 @@
           }
         },
         {
-          "name": "kitAddress_postcodeLookup",
+          "name": "kitAddress_postcodeLookupManual",
           "type": "TextField",
           "title": "Postcode",
           "hint": "For example, AA3 1AB",
@@ -1118,7 +1119,7 @@
       "controller": "FindAnAddressPageController",
       "components": [
         {
-          "name": "resultAddress_postcodeLookup",
+          "name": "resultAddress_postcodeLookupBuilding",
           "type": "TextField",
           "title": "Postcode",
           "hint": "For example, AA3 1AB",
@@ -1365,7 +1366,7 @@
           }
         },
         {
-          "name": "resultAddress_postcodeLookup",
+          "name": "resultAddress_postcodeLookupManual",
           "type": "TextField",
           "title": "Postcode",
           "hint": "For example, AA3 1AB",

@@ -48,7 +48,9 @@ export function deriveSelectedFieldName(addressType: AddressType): string {
 export const ADDRESS_CONTEXT_SUFFIXES = [
   "_selectedAddress",
   "_matchedAddress",
-  "_postcodeLookup",
+  "_postcode",
+  "_postcodeLookupBuilding",
+  "_postcodeLookupManual",
   "_buildingLookup",
   "_addressLine1Lookup",
   "_numberOfAddresses",
@@ -237,7 +239,6 @@ export const matchAddressNumber = (
   number: string
 ): Address | undefined => {
   const query = number.trim();
-
   if (!query) return undefined;
 
   const regex = new RegExp(
@@ -246,7 +247,6 @@ export const matchAddressNumber = (
   );
 
   const matches = addresses.filter((addr) => regex.test(addr.address));
-
   return matches.length === 1 ? matches[0] : undefined;
 };
 

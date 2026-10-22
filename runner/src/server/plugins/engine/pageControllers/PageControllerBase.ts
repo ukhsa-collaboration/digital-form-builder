@@ -39,6 +39,7 @@ import Jwt from "@hapi/jwt";
 import { verifyHmacToken } from "../../initialiseSession/helpers";
 import { extractAddressContext } from "../utils/addressUtils";
 import { ConditionalCase, resolveConditionalValue } from "../conditionalValue";
+import { destroySession } from "server/utils/correlationId";
 
 const FORM_SCHEMA = Symbol("FORM_SCHEMA");
 const STATE_SCHEMA = Symbol("STATE_SCHEMA");
@@ -84,6 +85,7 @@ export class PageControllerBase {
   hideContinueButton?: boolean;
   showContinueButton?: boolean;
   hasStartButton?: boolean;
+  restartSessionOnSubmit?: boolean;
   footerLinks: FormDefinition["footerLinks"];
 
   // TODO: pageDef type
@@ -108,6 +110,8 @@ export class PageControllerBase {
       pageDef?.options?.customButtonText ?? this.defaultButtonText;
     this.honorReturnURL = pageDef?.options?.honorReturnURL ?? true;
     this.hasStartButton = pageDef?.options?.hasStartButton ?? false;
+    this.restartSessionOnSubmit =
+      pageDef?.options?.restartSessionOnSubmit ?? false;
     this.footerLinks = def.footerLinks;
 
     // force show or hide the form button. They will only have an effect if they are not undefined.
@@ -908,17 +912,61 @@ export class PageControllerBase {
   }
 
   /**
+   * Destroys the session and adds the start page to progress to allow
+   * navigation to the next page
+   *
+   * Preserves the payload for forms with user input on the first page, and
+   * will not proceed if the payload fails validation
+   */
+  async restartSession(request: HapiRequest) {
+    const { cacheService } = request.services([]);
+    const payload = (request.payload || {}) as FormData;
+
+    if (this.validateForm(payload).errors) {
+      return;
+    }
+
+    await destroySession(request, cacheService);
+
+    await cacheService.mergeState(request, {
+      progress: [
+        normalizeUrlPath(`/${this.model.basePath}${this.model.def.startPage}`),
+      ],
+    });
+  }
+
+  /**
    * Returns an async function. This is called in plugin.ts when there is a POST request at `/{id}/{path*}`
    */
   makePostRouteHandler() {
     return async (request: HapiRequest, h: HapiResponseToolkit) => {
+      const { cacheService } = request.services([]);
+
+      if (this.restartSessionOnSubmit) {
+        const state = await cacheService.getState(request);
+
+        // If state contains more than progress
+        if (Object.keys(state).length > 1) {
+          const startPage = this.model.def.startPage;
+
+          // If the current page is not the start page
+          // end session then redirect to the start page
+          if (this.path !== startPage) {
+            const redirect = `/${this.model.basePath}${startPage}`;
+            return h.redirect(
+              `/end-session?redirect=${encodeURIComponent(redirect)}`
+            );
+          }
+
+          await this.restartSession(request);
+        }
+      }
+
       const response = await this.handlePostRequest(request, h);
 
       if (response?.source?.context?.errors) {
         return response;
       }
-
-      const { cacheService } = request.services([]);
 
       if (
         this.model.def.authentication &&
