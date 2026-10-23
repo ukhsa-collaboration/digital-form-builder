@@ -769,7 +769,7 @@
       "title": "Execute API",
       "type": "webhook",
       "outputConfiguration": {
-        "url": "http://localhost:3000",
+        "url": "${SRSOutputUrl}",
         "allowRetry": true
       }
     }
@@ -793,5 +793,13 @@
         "referenceTitle": "Your reference number"
       }
     }
+  },
+  "secureFormSubmissionConfig": {
+    "tenantId": "${SRSCoreApimTenantId}",
+    "clientId": "${SRSCoreApimClientId}",
+    "clientSecret": "${SRSCoreApimClientSecret}",
+    "scopes": ["${SRSCoreApimScope1}"],
+    "useAwsWafUserAgentWorkaround": true,
+    "routingKey": "${SRSNL4RoutingKey}"
   }
 }
