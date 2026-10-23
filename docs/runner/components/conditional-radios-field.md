@@ -27,8 +27,8 @@ The list should contain fixed radio options, a divider, and a `TextField` item f
   name: "titlesList",
   type: "List",
   items: [
-    { type: "HiddenField", value: "mr", label: "Mr" },
-    { type: "HiddenField", value: "mrs", label: "Mrs" },
+    { value: "mr", label: "Mr" },
+    { value: "mrs", label: "Mrs" },
     { divider: "or" },
     { type: "TextField", label: "Other title" },
   ],
