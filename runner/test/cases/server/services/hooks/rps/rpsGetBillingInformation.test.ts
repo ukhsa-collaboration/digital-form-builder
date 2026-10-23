@@ -33,6 +33,7 @@ describe("rpsGetBillingInformation", () => {
       state: {
         firstName: "John",
         lastName: "Smith",
+        deliveryMethod: "email",
         emailAddress: "john.smith@email.com",
       },
     };
@@ -43,6 +44,31 @@ describe("rpsGetBillingInformation", () => {
       billingFirstName: "John",
       billingLastName: "Smith",
       billingEmailAddress: "john.smith@email.com",
+      billingTelephone: undefined,
+    });
+  });
+
+  it("maps postal contact information to billing information", async () => {
+    const { request } = buildRequest(false);
+    const context: any = {
+      state: {
+        firstName: "John",
+        lastName: "Smith",
+        deliveryMethod: "post",
+        contactInfo: {
+          emailAddressPost: "john.smith@email.com",
+          telephonePost: "+441234567890",
+        },
+      },
+    };
+
+    const result = await rpsGetBillingInformation(request, context);
+
+    expect(result).to.equal({
+      billingFirstName: "John",
+      billingLastName: "Smith",
+      billingEmailAddress: "john.smith@email.com",
+      billingTelephone: "+441234567890",
     });
   });
 
@@ -52,6 +78,7 @@ describe("rpsGetBillingInformation", () => {
       state: {
         firstName: "John",
         lastName: "Smith",
+        deliveryMethod: "email",
       },
     };
 
