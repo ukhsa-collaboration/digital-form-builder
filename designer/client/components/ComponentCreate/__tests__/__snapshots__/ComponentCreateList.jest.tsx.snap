@@ -48,6 +48,19 @@ exports[`ComponentCreateList should match snapshot 1`] = `
               class="govuk-link"
               href="#0"
             >
+              Display address
+            </a>
+            <div
+              class="govuk-hint"
+            >
+              Shows an address back to the user from an earlier answer, without letting them edit it
+            </div>
+          </li>
+          <li>
+            <a
+              class="govuk-link"
+              href="#0"
+            >
               Flash card
             </a>
             <div
@@ -108,6 +121,19 @@ exports[`ComponentCreateList should match snapshot 1`] = `
               A block of text
             </div>
           </li>
+          <li>
+            <a
+              class="govuk-link"
+              href="#0"
+            >
+              Summary lists
+            </a>
+            <div
+              class="govuk-hint"
+            >
+              Shows a read-only summary of previous answers, grouped into sections
+            </div>
+          </li>
         </ol>
         <hr
           class="govuk-section-break govuk-section-break--m govuk-section-break--visible"
@@ -140,6 +166,32 @@ exports[`ComponentCreateList should match snapshot 1`] = `
               class="govuk-hint"
             >
               Sets a list of values to suggest to users as they complete this field
+            </div>
+          </li>
+          <li>
+            <a
+              class="govuk-link"
+              href="#0"
+            >
+              Conditional radios
+            </a>
+            <div
+              class="govuk-hint"
+            >
+              A list for users to select one answer, with an option that reveals a text box for them to enter their own answer
+            </div>
+          </li>
+          <li>
+            <a
+              class="govuk-link"
+              href="#0"
+            >
+              Contact details
+            </a>
+            <div
+              class="govuk-hint"
+            >
+              A mobile number, landline number and email address together, requiring at least one of mobile number or email address
             </div>
           </li>
           <li>
@@ -205,6 +257,19 @@ exports[`ComponentCreateList should match snapshot 1`] = `
               class="govuk-hint"
             >
               A text box that users can enter an email address into
+            </div>
+          </li>
+          <li>
+            <a
+              class="govuk-link"
+              href="#0"
+            >
+              Fieldset
+            </a>
+            <div
+              class="govuk-hint"
+            >
+              Groups other components together under one heading, with an option to require a minimum number of them to be answered
             </div>
           </li>
           <li>
