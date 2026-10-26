@@ -5,41 +5,9 @@
   "analytics": {
     "gtmId1": "GTM-MM6VPCXX"
   },
-  "startPage": "/start",
+  "startPage": "/hpt-region",
+  "fullStartPage": "https://www.gov.uk/guidance/report-an-outbreak-of-acute-respiratory-infection-in-an-adult-social-care-setting",
   "pages": [
-    {
-      "path": "/start",
-      "title": "Report an outbreak of acute respiratory infection in an adult social care setting",
-      "components": [
-        {
-          "name": "mainContent",
-          "options": {},
-          "type": "Para",
-          "content": "<p class=\"govuk-caption-l govuk-!-margin-bottom-6\">From: <a href=\"https://www.gov.uk/government/organisations/uk-health-security-agency\">UK Health Security Agency</a><br>Applies to England</p>\n<p class=\"govuk-body-m\">You can use this service if you provide adult social care. This includes a care home, supported living or extra care.</p>\n<p class=\"govuk-body-m\">Use this service to report:</p>\n<ul class=\"govuk-list govuk-list--bullet\">\n<li>a single confirmed case of flu in your setting</li>\n<li>a new outbreak of acute respiratory infection (ARI) - 2 or more people in your setting with symptoms that started within 5 days of each other</li>\n</ul>\n<p class=\"govuk-body-m\">ARIs include COVID-19, flu, respiratory syncytial virus (RSV), and other respiratory infections.</p>\n<p class=\"govuk-body-m\">It should take about 10 minutes to complete.</p>\n<h3 class=\"govuk-heading-m\">Before you start</h3>\n<p class=\"govuk-body\">If possible, test all service users with symptoms who are <a href=\"https://www.nhs.uk/conditions/covid-19/treatments-for-covid-19/\" target=\"_blank\" class=\"govuk-link\">eligible for COVID-19 treatments</a> using a COVID-19 rapid lateral flow test. Staff with symptoms who are eligible for COVID-19 treatments should test themselves at home.</p>\n<p class=\"govuk-body\">If you cannot test people, do not wait. Report as soon as possible.</p>\n<p class=\"govuk-body\">You'll need to know the:</p>\n<ul class=\"govuk-list govuk-list--bullet\">\n<li>setting postcode</li>\n<li>Care Quality Commission (CQC) location ID, if you are CQC registered</li>\n<li>total number of service users and staff in your setting</li>\n<li>number of service users and staff with symptoms</li>\n<li>dates when people's symptoms started</li>\n<li>test results for anyone tested for any ARI, for example COVID-19, flu or RSV</li>\n<li>number of service users and staff vaccinated for COVID-19 and flu</li>\n<li>number of service users vaccinated for RSV</li>\n</ul>\n<p>You’ll need to give your email address to access this service.</p>\n<a href='/ReportAnOutbreak/hpt-region' role='button' draggable='false' class='govuk-button govuk-button--start' data-module='govuk-button' id='submit'>Start now<svg class='govuk-button__start-icon' xmlns='http://www.w3.org/2000/svg' width='17.5' height='19' viewBox='0 0 33 40' aria-hidden='true' focusable='false'><path fill='currentColor' d='M0 0h13l20 20-20 20H0l20-20z'></path></svg></a>\n<h3 class=\"govuk-heading-m\">Updating about an existing outbreak</h3>\n<p class=\"govuk-body\">Do not use this online service to give an update on an outbreak that you have already reported. If you need to give an update, contact your local <a href=\"https://www.gov.uk/health-protection-team/\" target=\"_blank\" class=\"govuk-link\">UKHSA health protection team</a> or your community infection control team.</p>\n<h3 class=\"govuk-heading-m\">Identifying an ARI outbreak</h3>\n<p class=\"govuk-body\">You only need to report 2 or more ARI cases if they could be linked by spread in your setting. If the infection could not have been spread in your setting, you should not report it as an outbreak. If in doubt, report as an outbreak.</p>\n<h3 class=\"govuk-heading-m\">Why you should report</h3>\n<p class=\"govuk-body\">Your local UKHSA health protection team, or the community infection control team, will use your information to assess your outbreak. They will help you manage the outbreak and prevent further spread.</p>\n<h3 class=\"govuk-heading-m\">Get help</h3>\n<p class=\"govuk-body\">If you need help using the service or have any other questions, contact your local <a href=\"https://www.gov.uk/health-protection-team/\" target=\"_blank\" class=\"govuk-link\">UKHSA health protection team</a>.</p>\n<h3 class=\"govuk-heading-m\">If you need urgent medical advice</h3>\n<p class=\"govuk-body\">If you need urgent medical advice, you should call NHS 111 or <a href=\"https://111.nhs.uk/\" target=\"_blank\" class=\"govuk-link\">visit 111.nhs.uk</a>. For life-threatening emergencies, call 999.</p>"
-        }
-      ],
-      "sidebarContent": {
-        "title": "Related content",
-        "subtitle": "Detailed guidance",
-        "links": [
-          {
-            "title": "Infection prevention and control in adult social care: acute respiratory infection",
-            "link": "https://www.gov.uk/government/publications/infection-prevention-and-control-in-adult-social-care-acute-respiratory-infection"
-          },
-          {
-            "title": "Identifying and treating respiratory tract infections on the NHS website",
-            "link": "https://www.nhs.uk/conditions/respiratory-tract-infection/"
-          }
-        ]
-      },
-      "controller": "MultiStartPageController",
-      "showContinueButton": false,
-      "next": [
-        {
-          "path": "/hpt-region"
-        }
-      ]
-    },
     {
       "path": "/hpt-region",
       "title": "Where is your adult social care setting?",
@@ -1540,7 +1508,7 @@
       "components": [
         {
           "type": "Html",
-          "content": "<p class='govuk-hint'>This is a 2SAN combo rapid test supplied for use in your setting <img src='/assets/rao-2san-covid-flu-kit.png' alt='2SAN branded packaging for combined COVID-19 and flu test kit' width='224' height='461' /></p>"
+          "content": "<p class='govuk-hint'>This test will either be a 2SAN combo rapid test or an ALL TEST combo rapid test.</p><div class='govuk-which-test-kit-images'><img src='/assets/rao-2san-covid-flu-kit.png' alt='The photo shows a picture of the 2SAN box containing the test and a picture of the test' width='224' height='461' /><img src='/assets/all-test.png' alt='A picture of the ALL TEST box is also shown alongside the test with and without the packaging' width='388' height='356' /></div>"
         },
         {
           "name": "TestKitsUsed",
@@ -5089,7 +5057,7 @@
   "specialPages": {
     "confirmationPage": {
       "customText": {
-        "nextSteps": "<h2 class='govuk-heading-m'>If you used a UKHSA-supplied test kit</h2><p class='govuk-body'>If you used a UKHSA-supplied test kit, you must <a href='https://www.gov.uk/government/publications/combined-covid-19-and-flu-tests-use-in-ari-outbreaks-in-adult-social-care-homes-in-south-east-england' target='_blank'>report your service users' individual test results (opens in new tab)</a> to your local UKHSA health protection team.</p><h2 class='govuk-heading-m'>What happens next</h2><p class='govuk-body'>We will send 2 automated emails to {{ MainContactEmailAddress }}.<br><br> An acknowledgement email will give you your reference number and a copy of the information you've provided. The email will tell you if you have a low-risk outbreak, a medium-risk outbreak, a high-priority outbreak, or a single case of flu. <br><br> An advice email will give you information specific to your situation to help you prevent the spread of infection. It explains what to expect from your local UKHSA health protection team or the community infection control team. <br><br>If these emails do not arrive within one hour, or you need urgent advice, telephone your local <a href='https://www.gov.uk/health-protection-team' target=”_blank”>UKHSA health protection team (opens in a new tab)</a> or community infection control team.</p><h2 class='govuk-heading-m'>If your outbreak is high priority on a weekend or bank holiday</h2><p class='govuk-body'>If your acknowledgement or advice email tells you that your outbreak is assessed as high priority on a weekend or a bank holiday, you also need to telephone your local <a href='https://www.gov.uk/health-protection-team' target=”_blank”>UKHSA health protection team (opens in a new tab)</a>. Call during the daytime if possible. If you do not call the health protection team, a member of the health protection team will only call you on the next working day. </p><h2 class='govuk-heading-m'>If you need urgent medical advice</h2><p class='govuk-body'>If you need urgent medical advice, you can call NHS 111 or visit <a href='https://111.nhs.uk' target=”_blank”>111.nhs.uk (opens in a new tab)</a>. For life-threatening emergencies, call 999.</p><h2 class='govuk-heading-m'>Give feedback on this service</h2><p class='govuk-body'>This is a new service. Help us improve it and <a href='/feedback' target=”_blank”>give your feedback (opens in new tab)</a>.</p>",
+        "nextSteps": "<h2 class='govuk-heading-m'>If you used a UKHSA-supplied test kit</h2><p class='govuk-body'>If you used a UKHSA-supplied test kit, you must <a href='https://www.gov.uk/government/publications/organisation-testing-registration-record-of-combo-rapid-lfd-test-users' target='_blank'>report your service users' individual test results (opens in new tab)</a> to your local UKHSA health protection team.</p><h2 class='govuk-heading-m'>What happens next</h2><p class='govuk-body'>We will send 2 automated emails to {{ MainContactEmailAddress }}.<br><br> An acknowledgement email will give you your reference number and a copy of the information you've provided. The email will tell you if you have a low-risk outbreak, a medium-risk outbreak, a high-priority outbreak, or a single case of flu. <br><br> An advice email will give you information specific to your situation to help you prevent the spread of infection. It explains what to expect from your local UKHSA health protection team or the community infection control team. <br><br>If these emails do not arrive within one hour, or you need urgent advice, telephone your local <a href='https://www.gov.uk/health-protection-team' target=”_blank”>UKHSA health protection team (opens in a new tab)</a> or community infection control team.</p><h2 class='govuk-heading-m'>If your outbreak is high priority on a weekend or bank holiday</h2><p class='govuk-body'>If your acknowledgement or advice email tells you that your outbreak is assessed as high priority on a weekend or a bank holiday, you also need to telephone your local <a href='https://www.gov.uk/health-protection-team' target=”_blank”>UKHSA health protection team (opens in a new tab)</a>. Call during the daytime if possible. If you do not call the health protection team, a member of the health protection team will only call you on the next working day. </p><h2 class='govuk-heading-m'>If you need urgent medical advice</h2><p class='govuk-body'>If you need urgent medical advice, you can call NHS 111 or visit <a href='https://111.nhs.uk' target=”_blank”>111.nhs.uk (opens in a new tab)</a>. For life-threatening emergencies, call 999.</p><h2 class='govuk-heading-m'>Give feedback on this service</h2><p class='govuk-body'>This is a new service. Help us improve it and <a href='/feedback' target=”_blank”>give your feedback (opens in new tab)</a>.</p>",
         "title": "Report sent",
         "referenceTitle": "Your outbreak reference number",
         "referenceContent": "Use this number if you need to contact the UKHSA health protection team about your outbreak."

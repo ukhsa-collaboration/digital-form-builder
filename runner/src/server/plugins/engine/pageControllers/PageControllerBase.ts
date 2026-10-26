@@ -7,6 +7,7 @@ import {
   getBackLink,
   getReturnUrl,
   handleFieldsetErrors,
+  normalizeUrlPath,
   proceed,
   redirectTo,
 } from "../helpers";
@@ -170,6 +171,26 @@ export class PageControllerBase {
    * @param _request the http request object
    */
   async onMakeGetRouteHandler(_request: HapiRequest) {}
+
+  /**
+   * Magic link forms (e.g. magic-link, kls-magic-link) are a sub-journey rather than a linear form: /start only
+   * redirects (so never records progress), and users re-enter from the emailed link via /return, often in a new session.
+   */
+  isMagicLinkForm(): boolean {
+    return (
+      this.model.startPage?.pageDef?.controller ===
+      "MagicLinkStartPageController"
+    );
+  }
+
+  /**
+   * The start page redirect assumes progress is recorded from the start page onwards. Magic link forms break that
+   * assumption: redirecting would loop between /email and /start, and send users arriving from the emailed link to /email
+   * instead of /expired or /incorrect-email.
+   */
+  skipStartPageRedirect(): boolean {
+    return this.isMagicLinkForm();
+  }
 
   /**
    * Used for mapping FormData and errors to govuk-frontend's template api, so a page can be rendered
@@ -566,6 +587,7 @@ export class PageControllerBase {
       const isInitialisedSession = !!state.callback;
       const shouldRedirectToStartPage =
         !this.model.options.previewMode &&
+        !this.skipStartPageRedirect() &&
         progress.length === 0 &&
         !request.pre.hasPrepopulatedSessionFromQueryParameter &&
         !isStartPage &&
@@ -700,18 +722,24 @@ export class PageControllerBase {
        * duplicate - otherwise the detour pages linger forever and the back link
        * cycles through stale pages instead of leaving the loop.
        */
-      const lastVisited = progress[progress.length - 1];
-      if (!lastVisited || !lastVisited.startsWith(currentPath)) {
-        const priorIndex = progress.lastIndexOf(currentPath);
+      const normalizedProgress = progress.map(normalizeUrlPath);
+      const normalizedCurrentPath = normalizeUrlPath(currentPath);
+      const lastVisited = normalizedProgress[normalizedProgress.length - 1];
+
+      if (!lastVisited || lastVisited !== normalizedCurrentPath) {
+        const priorIndex = normalizedProgress.lastIndexOf(
+          normalizedCurrentPath
+        );
+
         if (priorIndex !== -1) {
-          progress.length = priorIndex + 1;
+          normalizedProgress.length = priorIndex + 1;
         } else {
-          progress.push(currentPath);
+          normalizedProgress.push(normalizedCurrentPath);
         }
       }
 
       await cacheService.mergeState(request, {
-        progress,
+        progress: normalizedProgress,
         ...(this.model.def.provider && {
           paymentProvider: this.model.def.provider,
         }),
@@ -722,7 +750,7 @@ export class PageControllerBase {
       } else {
         viewModel.backLink = getBackLink(
           request,
-          progress,
+          normalizedProgress,
           this.backLinkFallback
         );
       }

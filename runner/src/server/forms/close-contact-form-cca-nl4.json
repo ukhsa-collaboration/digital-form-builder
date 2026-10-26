@@ -3,6 +3,7 @@
   "startPage": "/start",
   "fullStartPage": "start",
   "name": "Contact tracing CCA",
+  "serviceName": "Contact tracing",
   "confirmationSessionTimeout": 2000,
   "pages": [
     {
@@ -140,7 +141,7 @@
     },
     {
       "path": "/do-you-live-with-other-people",
-      "title": "Do you live with other people?",
+      "title": "People you live with",
       "components": [
         {
           "name": "doYouLiveWithOtherPeopleExplanation",
@@ -165,12 +166,13 @@
         {
           "name": "live_with_others",
           "options": {
-            "hideTitle": true,
             "customValidationMessages": {
               "any.required": "Select 'yes' if you live with other people"
-            }
+            },
+            "classes": "govuk-radios--inline"
           },
-          "type": "YesNoField",
+          "type": "RadiosField",
+          "list": "yes-no",
           "title": "Do you live with other people?",
           "schema": {}
         },
@@ -193,7 +195,7 @@
     },
     {
       "path": "/do-they-live-with-other-people",
-      "title": "Do they live with other people?",
+      "title": "People they live with",
       "components": [
         {
           "name": "AdEVNK",
@@ -212,12 +214,13 @@
         {
           "name": "live_with_others",
           "options": {
-            "hideTitle": true,
             "customValidationMessages": {
               "any.required": "Select 'yes' if they live with other people"
-            }
+            },
+            "classes": "govuk-radios--inline"
           },
-          "type": "YesNoField",
+          "type": "RadiosField",
+          "list": "yes-no",
           "title": "Do they live with other people?",
           "schema": {}
         },
@@ -296,27 +299,15 @@
           }
         },
         {
-          "name": "mWvTOY",
-          "options": {},
-          "type": "Html",
-          "content": "<br/><h2 class='govuk-heading-m'>Are they 16 and able to speak for themselves?</h2>"
-        },
-        {
-          "name": "iulooD",
-          "options": {},
-          "type": "Para",
-          "content": "If not, provide the contact details of a parent, carer or guardian."
-        },
-        {
           "name": "contact_directly",
           "options": {
-            "hideTitle": true,
             "customValidationMessages": {
               "any.required": "Select how we should contact this person"
             }
           },
+          "hint": "If the person is under 16 or unable to speak to us themselves, provide the contact details of a parent, carer or guardian.",
           "type": "RadiosField",
-          "title": "How should we contact this person?",
+          "title": "How should we contact this person to provide them with advice and guidance?",
           "list": "TQfrjB",
           "schema": {}
         },
@@ -335,7 +326,7 @@
     },
     {
       "path": "/close-contact",
-      "title": "Have {{ PersonalInformation.for }} been in close contact with other people in the last 14 days?",
+      "title": "Close contacts in the last 14 days",
       "components": [
         {
           "name": "EiNVay",
@@ -353,13 +344,14 @@
         {
           "name": "been_in_contact",
           "options": {
-            "hideTitle": true,
             "customValidationMessages": {
               "any.required": "Select 'yes' if you need to provide one or more close contacts"
-            }
+            },
+            "classes": "govuk-radios--inline"
           },
-          "type": "YesNoField",
-          "title": "Are there other close contacts from the last 14 days?",
+          "type": "RadiosField",
+          "list": "yes-no",
+          "title": "Have {{ PersonalInformation.for }} been in close contact with other people in the last 14 days?",
           "schema": {}
         },
         {
@@ -386,6 +378,10 @@
         "customText": {
           "cardTitle": "Close Contact {index}",
           "separatePageTitle": "Check these details are correct before continuing"
+        },
+        "summaryDisplayMode": {
+          "samePage": false,
+          "yesNoSummaryQuestion": "Have they been in close contact with anyone else?"
         }
       },
       "components": [
@@ -444,7 +440,6 @@
         {
           "name": "contact_directly",
           "options": {
-            "hideTitle": true,
             "customValidationMessages": {
               "any.required": "Select how we should contact this person"
             }
@@ -577,6 +572,21 @@
           "value": "traveled with in the same vehicle"
         }
       ]
+    },
+    {
+      "title": "Yes or No",
+      "name": "yes-no",
+      "type": "string",
+      "items": [
+        {
+          "text": "yes",
+          "value": "true"
+        },
+        {
+          "text": "no",
+          "value": "false"
+        }
+      ]
     }
   ],
   "sections": [
@@ -651,7 +661,7 @@
           {
             "field": {
               "name": "PeopleYouLiveWith.live_with_others",
-              "type": "YesNoField",
+              "type": "RadiosField",
               "display": "Do you live with other people?"
             },
             "operator": "is",
@@ -669,7 +679,7 @@
           {
             "field": {
               "name": "PeopleYouLiveWith.live_with_others",
-              "type": "YesNoField",
+              "type": "RadiosField",
               "display": "Do you live with other people?"
             },
             "operator": "is",
@@ -687,7 +697,7 @@
           {
             "field": {
               "name": "PeopleTheyLiveWith.live_with_others",
-              "type": "YesNoField",
+              "type": "RadiosField",
               "display": "Do they live with other people?"
             },
             "operator": "is",
@@ -705,7 +715,7 @@
           {
             "field": {
               "name": "PeopleTheyLiveWith.live_with_others",
-              "type": "YesNoField",
+              "type": "RadiosField",
               "display": "Do they live with other people?"
             },
             "operator": "is",
@@ -723,7 +733,7 @@
           {
             "field": {
               "name": "OtherContacts.been_in_contact",
-              "type": "YesNoField",
+              "type": "RadiosField",
               "display": "Have you been in close contact with other people in the last 14 days?"
             },
             "operator": "is",
@@ -741,7 +751,7 @@
           {
             "field": {
               "name": "OtherContacts.been_in_contact",
-              "type": "YesNoField",
+              "type": "RadiosField",
               "display": "Have you been in close contact with other people in the last 14 days?"
             },
             "operator": "is",
@@ -778,7 +788,7 @@
   "specialPages": {
     "confirmationPage": {
       "customText": {
-        "nextSteps": "<h2 class='govuk-heading-m'>What happens next</h2><p class='govuk-body'>We may contact the close contacts listed to ask for more information and to give them advice on what to do next.</p><h2 class='govuk-heading-m'>More information on avian flu</h2><p class='govuk-body'>If anyone they know develops symptoms of {{ (srsContexts.diseaseInfo[d].name if srsContexts.diseaseInfo[d]) | default('bird (avian) flu', true) }}, ask them to order a test kit. For urgent medical advice, they can call NHS 111 or visit 111.nhs.uk. For life-threatening emergencies, call 999.</p><p class='govuk-body'>For more advice and information on the virus visit the NHS website.</p><h2 class='govuk-heading-m'>If they need to contact us</h2><p class='govuk-body'>If they have any concerns or questions they can contact us at <a class='govuk-link' href='mailto:surgeresponse@ukhsa.gov.uk'>surgeresponse@ukhsa.gov.uk</a>.</p>",
+        "nextSteps": "<h2 class='govuk-heading-m'>What happens next</h2><p class='govuk-body'>We may contact the close contacts listed to ask for more information and to give them advice on what to do next.</p><h2 class='govuk-heading-m'>More information on avian flu</h2><p class='govuk-body'>If anyone they know develops symptoms of {{ (srsContexts.diseaseInfo[d].name if srsContexts.diseaseInfo[d]) | default('bird (avian) flu', true) }}, ask them to <a class='govuk-link' href='https://d1p7bqdn0frsqq.cloudfront.net/'>order a test kit</a>. For urgent medical advice, they can call NHS 111 or visit 111.nhs.uk. For life-threatening emergencies, call 999.</p><p class='govuk-body'>For more advice and information on the virus visit the NHS website.</p><h2 class='govuk-heading-m'>If they need to contact us</h2><p class='govuk-body'>If they have any concerns or questions they can contact us at <a class='govuk-link' href='mailto:surgeresponse@ukhsa.gov.uk'>surgeresponse@ukhsa.gov.uk</a>.</p>",
         "title": "Form submitted",
         "referenceTitle": "Your reference number"
       }

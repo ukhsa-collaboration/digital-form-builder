@@ -5,7 +5,7 @@
   "startPage": "/gas-test-kit-start",
   "fullStartPage": "gas-test-kit-start",
   "name": "Order a home radon gas test kit",
-  "serviceName": "Order a radon gas test kit",
+  "serviceName": "Order a home radon gas test kit",
   "confirmationSessionTimeout": 2000,
   "analytics": {
     "gtmId1": "GTM-5ZD9GZWX"
@@ -32,7 +32,7 @@
       "text": "Privacy"
     },
     {
-      "href": "https://www.ukhsa-protectionservices.org.uk/tc/cookies",
+      "href": "cookies",
       "text": "Cookies"
     },
     {
@@ -468,15 +468,15 @@
     },
     {
       "path": "/previous-test-action-level",
-      "title": "Was the level above the action level 200 Bq m⁻³?",
+      "title": "Was the level above the action level 100 Bq m⁻³?",
       "components": [
         {
           "name": "bqmYesNo",
           "type": "YesNoField",
-          "title": "Was the level above the action level 200 Bq m⁻³",
+          "title": "Was the level above the action level 100 Bq m⁻³?",
           "options": {
             "customValidationMessages": {
-              "any.required": "Select yes if the level was above the action level of 200 Bq m⁻³"
+              "any.required": "Select yes if the level was above the action level of 100 Bq m⁻³"
             }
           },
           "hint": "This information will be on your radon gas test results"
@@ -552,16 +552,15 @@
         },
         {
           "name": "title",
-          "type": "RadiosField",
+          "type": "ConditionalRadiosField",
           "title": "Title",
+          "list": "titlesList",
           "options": {
             "exposeToContext": true,
             "customValidationMessages": {
               "any.required": "Select a title"
-            },
-            "divider": true
-          },
-          "list": "titleList"
+            }
+          }
         },
         {
           "name": "firstName",
@@ -673,19 +672,21 @@
     {
       "path": "/kit-recipient",
       "title": "Who is the recipient of the kit?",
+      "options": {
+        "honorReturnURL": false
+      },
       "components": [
         {
           "name": "kitTitle",
-          "type": "RadiosField",
+          "type": "ConditionalRadiosField",
           "title": "Title",
+          "list": "titlesList",
           "options": {
             "exposeToContext": true,
             "customValidationMessages": {
               "any.required": "Select the title of the recipient of the radon gas test kit"
-            },
-            "divider": true
-          },
-          "list": "titleList"
+            }
+          }
         },
         {
           "name": "kitFirstName",
@@ -833,6 +834,10 @@
         }
       ],
       "next": [
+        {
+          "path": "/summary",
+          "condition": "resultAddressCorrect"
+        },
         {
           "path": "/kit-address-results-confirm",
           "condition": "isCorrectKitAddress"
@@ -1071,19 +1076,21 @@
     {
       "path": "/results-recipient",
       "title": "Who is the recipient of the radon gas test results?",
+      "options": {
+        "honorReturnURL": false
+      },
       "components": [
         {
           "name": "resultsTitle",
-          "type": "RadiosField",
+          "type": "ConditionalRadiosField",
           "title": "Title",
+          "list": "titlesList",
           "options": {
             "exposeToContext": true,
             "customValidationMessages": {
               "any.required": "Select the title of the recipient of the radon gas test results"
-            },
-            "divider": true
-          },
-          "list": "titleList"
+            }
+          }
         },
         {
           "name": "resultsFirstName",
@@ -1494,7 +1501,7 @@
                       "condition": "kitAddressIncorrect",
                       "value": "/kit-recipient"
                     },
-                    { "value": "/your-details" }
+                    { "value": "/kit-details" }
                   ],
                   "value": {
                     "name": "kitRecipient",
@@ -1518,7 +1525,7 @@
                       "condition": "kitAddressIncorrect",
                       "value": "/gas-test-kit-kit-address-postcode"
                     },
-                    { "value": "/gas-test-kit-property-address-postcode" }
+                    { "value": "/kit-details" }
                   ],
                   "value": {
                     "name": "displayKitAddress",
@@ -1544,7 +1551,7 @@
                       "condition": "resultAddressIncorrect",
                       "value": "/results-recipient"
                     },
-                    { "value": "/your-details" }
+                    { "value": "/kit-details" }
                   ],
                   "value": {
                     "name": "resultsRecipient",
@@ -1576,7 +1583,7 @@
                       "condition": "resultAddressIncorrect",
                       "value": "/gas-test-kit-result-address-postcode"
                     },
-                    { "value": "/gas-test-kit-property-address-postcode" }
+                    { "value": "/kit-details" }
                   ],
                   "value": {
                     "name": "displayResultAddress",
@@ -1653,29 +1660,40 @@
   },
   "lists": [
     {
+      "name": "titlesList",
+      "title": "titlesList",
+      "type": "string",
+      "items": [
+        {
+          "value": "Mr",
+          "label": "Mr"
+        },
+        {
+          "value": "Mrs",
+          "label": "Mrs"
+        },
+        {
+          "value": "Miss",
+          "label": "Miss"
+        },
+        {
+          "value": "Ms",
+          "label": "Ms"
+        },
+        {
+          "divider": "or"
+        },
+        {
+          "type": "TextField",
+          "label": "Other title"
+        }
+      ]
+    },
+    {
       "name": "addressesList",
       "title": "addressesList",
       "type": "string",
       "items": []
-    },
-    {
-      "name": "titleList",
-      "title": "titleList",
-      "type": "string",
-      "items": [
-        { "text": "Mr", "value": "Mr" },
-        { "text": "Mrs", "value": "Mrs" },
-        { "text": "Miss", "value": "Miss" },
-        { "text": "Ms", "value": "Ms" },
-        {
-          "text": "Prefer not to say",
-          "value": "Prefer not to say"
-        },
-        {
-          "text": "None of the above",
-          "value": "None of the above"
-        }
-      ]
     },
     {
       "title": "Terms and conditions",
@@ -1903,6 +1921,24 @@
             },
             "operator": "is",
             "value": { "type": "Value", "value": "false", "display": "false" }
+          }
+        ]
+      }
+    },
+    {
+      "displayName": "Results Address Correct",
+      "name": "resultAddressCorrect",
+      "value": {
+        "name": "resultAddressCorrect",
+        "conditions": [
+          {
+            "field": {
+              "name": "resultAddressConfirmation",
+              "type": "YesNoField",
+              "display": "Is this the address you want your radon gas test results to?"
+            },
+            "operator": "is",
+            "value": { "type": "Value", "value": "true", "display": "true" }
           }
         ]
       }

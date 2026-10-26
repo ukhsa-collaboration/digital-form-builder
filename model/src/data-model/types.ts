@@ -66,8 +66,11 @@ export interface Section {
 }
 
 export interface Item {
-  text: string;
-  value: string | number | boolean;
+  text?: string;
+  label?: string;
+  type?: "HiddenField" | "TextField";
+  divider?: string;
+  value?: string | number | boolean;
   description?: string;
   condition?: string;
 }
@@ -121,6 +124,7 @@ export type NotifyOutputConfiguration = {
     condition?: string | undefined;
   }[];
   escapeURLs?: boolean;
+  hmacKey?: string;
 };
 export type PayloadValueConfig = {
   field?: string;

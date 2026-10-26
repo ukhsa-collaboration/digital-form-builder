@@ -62,12 +62,14 @@ export type FormSubmissionState = {
 
 export type FormSubmissionErrors = {
   titleText: string; // e.b: "There is a problem"
-  errorList: {
-    path: string; // e.g: "firstName"
-    href: string; // e.g: "#firstName"
-    name: string; // e.g: "firstName"
-    text: string; // e.g: '"First name" is not allowed to be empty'
-  }[];
+  errorList: SubmissionError[];
+};
+
+export type SubmissionError = {
+  path: string; // e.g: "firstName"
+  href: string; // e.g: "#firstName"
+  name: string; // e.g: "firstName"
+  text: string; // e.g: '"First name" is not allowed to be empty'
 };
 
 export type FormPayload = {
