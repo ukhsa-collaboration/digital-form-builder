@@ -39,7 +39,13 @@ export const storeReportRequestSchema = joi.object({
     otherwise: joi
       .string()
       .email({ tlds: { allow: false } })
+      .empty("")
       .optional(),
+  }),
+  telephone: joi.when("deliveryMethod", {
+    is: "post",
+    then: joi.string().empty("").optional(),
+    otherwise: joi.forbidden(),
   }),
   fullAddress: joi.when("deliveryMethod", {
     is: "post",
@@ -74,6 +80,7 @@ export type StoreReportData =
       deliveryMethod: "post";
       fullAddress: string;
       email?: string;
+      telephone?: string;
     });
 
 export type StoreReportResponse = RpsApiResponse<{ uuid: string }>;
