@@ -16,7 +16,7 @@ const state = {
   },
   applicantDetails: {
     numberOfApplicants: 2,
-    phoneNumber: "123",
+    phoneNumber: "07911123456",
     emailAddress: "a@b",
     languagesProvided: ["fr", "it"],
     contactDate: "2024-12-25T00:00:00.000Z",
@@ -75,7 +75,7 @@ suite("WebhookModel", () => {
 });
 
 const expectedWebhookData = {
-  name: "Digital Form Builder - Runner undefined",
+  name: "Webforms undefined",
   metadata: undefined,
   questions: [
     {
@@ -201,7 +201,7 @@ const expectedWebhookData = {
           key: "phoneNumber",
           title: "Phone number",
           type: "text",
-          answer: "123",
+          answer: "07911123456",
         },
         {
           key: "emailAddress",
