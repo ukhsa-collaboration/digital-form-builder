@@ -101,6 +101,10 @@ export const plugin = {
         options: {
           description:
             "Allows a form to be persisted (published) on the runner server. Only registered when previewMode is enabled.",
+          plugins: {
+            // Called server-to-server by the designer, so it can never carry a CSRF cookie/token.
+            crumb: false,
+          },
         },
       });
 

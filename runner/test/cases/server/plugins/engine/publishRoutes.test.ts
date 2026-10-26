@@ -91,3 +91,43 @@ suite("Publish routes (previewMode guard)", () => {
     });
   });
 });
+
+// The designer calls /publish server-to-server, so it can never carry a
+// CSRF cookie/token. It must stay exempt even when ENFORCE_CSRF=true.
+suite("POST /publish (CSRF enforced)", () => {
+  let server;
+
+  before(async () => {
+    sinon.stub(config, "previewMode").value(true);
+    server = await createServer({
+      formFileName: "basic-v0.json",
+      formFilePath,
+      enforceCsrf: true,
+    });
+    await server.start();
+  });
+
+  after(async () => {
+    await server.stop();
+    sinon.restore();
+  });
+
+  test("succeeds without a CSRF token", async () => {
+    const response = await server.inject({
+      method: "post",
+      url: "/publish",
+      payload: {
+        id: "test-publish",
+        configuration: JSON.stringify({
+          pages: [],
+          startPage: "/start",
+          sections: [],
+          lists: [],
+          conditions: [],
+        }),
+      },
+    });
+
+    expect(response.statusCode).to.equal(204);
+  });
+});
