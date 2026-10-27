@@ -196,7 +196,7 @@
         {
           "name": "reportAddress_isCorrectAddress",
           "options": {
-            "hideTitle": true,
+            "legendClasses": "govuk-fieldset__legend--m govuk-visually-hidden",
             "customValidationMessages": {
               "any.required": "Select Yes if this is the correct address"
             },
@@ -916,7 +916,7 @@
         {
           "name": "deliveryAddress_isCorrectAddress",
           "options": {
-            "hideTitle": true,
+            "legendClasses": "govuk-fieldset__legend--m govuk-visually-hidden",
             "customValidationMessages": {
               "any.required": "Select Yes if this is the correct delivery address"
             },
