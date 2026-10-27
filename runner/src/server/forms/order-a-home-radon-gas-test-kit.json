@@ -227,7 +227,7 @@
           "type": "YesNoField",
           "title": "Is this the correct address?",
           "options": {
-            "hideTitle": true,
+            "legendClasses": "govuk-fieldset__legend--m govuk-visually-hidden",
             "customValidationMessages": {
               "any.required": "Select Yes if this is the correct address"
             }
@@ -568,6 +568,7 @@
           "type": "TextField",
           "title": "First name",
           "options": {
+            "autocomplete": "given-name",
             "customValidationMessages": {
               "string.empty": "Enter a first name"
             },
@@ -579,6 +580,7 @@
           "type": "TextField",
           "title": "Last name",
           "options": {
+            "autocomplete": "family-name",
             "exposeToContext": true,
             "customValidationMessages": {
               "string.empty": "Enter a last name"
@@ -622,14 +624,13 @@
           }
         },
         {
-          "type": "Para",
-          "content": "<p class=\"govuk-body-m\"><h2 class=\"govuk-heading-m\">Is this the address you want the kit delivered to?</h2></p>"
-        },
-        {
           "name": "kitAddressConfirmation",
           "type": "YesNoField",
           "title": "Is this the address you want the kit delivered to?",
-          "options": { "hideTitle": true, "exposeToContext": true }
+          "options": {
+            "legendClasses": "govuk-fieldset__legend--m govuk-heading-m govuk-!-font-weight-bold",
+            "exposeToContext": true
+          }
         },
         {
           "type": "Html",
@@ -640,14 +641,13 @@
           "content": "If the kits are delivered to a different address than where they will be used, the detectors must be placed within the measurement address within 7 days of delivery.\n</br></br>\nA kit fits through a standard letter box."
         },
         {
-          "type": "Para",
-          "content": "<p class=\"govuk-body-m\"><h2 class=\"govuk-heading-m\">Is this the address you want your radon gas test results to?</h2></p>"
-        },
-        {
           "name": "resultAddressConfirmation",
           "type": "YesNoField",
           "title": "Is this the address you want your radon gas test results to?",
-          "options": { "hideTitle": true, "exposeToContext": true }
+          "options": {
+            "legendClasses": "govuk-fieldset__legend--m govuk-heading-m govuk-!-font-weight-bold",
+            "exposeToContext": true
+          }
         },
         {
           "type": "Para",
@@ -816,7 +816,7 @@
           "type": "YesNoField",
           "title": "Is this the correct address?",
           "options": {
-            "hideTitle": true,
+            "legendClasses": "govuk-fieldset__legend--m govuk-visually-hidden",
             "customValidationMessages": {
               "any.required": "Select Yes if this is the correct address"
             }
@@ -1220,7 +1220,7 @@
           "type": "YesNoField",
           "title": "Is this the correct address?",
           "options": {
-            "hideTitle": true,
+            "legendClasses": "govuk-fieldset__legend--m govuk-visually-hidden",
             "customValidationMessages": {
               "any.required": "Select Yes if this is the correct address"
             }
@@ -1612,11 +1612,12 @@
         {
           "name": "termsAndConditions",
           "type": "CheckboxesField",
-          "title": " ",
+          "title": "Terms and conditions",
           "list": "termsAndConditionsList",
           "options": {
             "required": true,
             "html": true,
+            "legendClasses": "govuk-visually-hidden",
             "customValidationMessages": {
               "any.required": "You must accept the Privacy Policy and Terms and Conditions before continuing"
             }
@@ -1654,7 +1655,7 @@
         {
           "name": "final links",
           "type": "Para",
-          "content": "<p class=\"govuk-body-m\"><a href=\"https://submit.forms.service.gov.uk/form/266710/radon-services-feedback-form\">What did you think of this service?</a> (takes 30 seconds)</p><p class=\"govuk-body-m\"><a href=\"start\">Order another radon gas test kit</a></p><p class=\"govuk-body-m\"><a href=\"https://www.gov.uk/government/guidance/contact-radiation-protection-sciences\">Contact Radon Measurement Service team</a></p><p class=\"govuk-body-m\"><a href=\"https://www.gov.uk/government/guidance/radon-services-for-homeowners-or-householders\">Go to Radon services for homeowners or householders</a></p>"
+          "content": "<p class=\"govuk-body-m\"><a href=\"https://submit.forms.service.gov.uk/form/266710/radon-services-feedback-form\">What did you think of this service?</a> (takes 30 seconds)</p><p class=\"govuk-body-m\"><a href=\"gas-test-kit-start\">Order another radon gas test kit</a></p><p class=\"govuk-body-m\"><a href=\"https://www.gov.uk/government/guidance/contact-radiation-protection-sciences\">Contact Radon Measurement Service team</a></p><p class=\"govuk-body-m\"><a href=\"https://www.gov.uk/government/guidance/radon-services-for-homeowners-or-householders\">Go to Radon services for homeowners or householders</a></p>"
         }
       ]
     }

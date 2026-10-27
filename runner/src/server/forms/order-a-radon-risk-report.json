@@ -197,7 +197,7 @@
         {
           "name": "reportAddress_isCorrectAddress",
           "options": {
-            "hideTitle": true,
+            "legendClasses": "govuk-fieldset__legend--m govuk-visually-hidden",
             "customValidationMessages": {
               "any.required": "Select Yes if this is the correct address"
             },
@@ -917,7 +917,7 @@
         {
           "name": "deliveryAddress_isCorrectAddress",
           "options": {
-            "hideTitle": true,
+            "legendClasses": "govuk-fieldset__legend--m govuk-visually-hidden",
             "customValidationMessages": {
               "any.required": "Select Yes if this is the correct delivery address"
             },
@@ -1149,11 +1149,12 @@
         {
           "name": "termsAndConditions",
           "type": "CheckboxesField",
-          "title": " ",
+          "title": "Terms and conditions",
           "list": "termsAndConditionsList",
           "options": {
             "required": true,
             "html": true,
+            "legendClasses": "govuk-visually-hidden",
             "customValidationMessages": {
               "any.required": "You must accept the Privacy Policy and Terms and Conditions before continuing"
             }
