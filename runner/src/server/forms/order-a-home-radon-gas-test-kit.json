@@ -567,6 +567,7 @@
           "type": "TextField",
           "title": "First name",
           "options": {
+            "autocomplete": "given-name",
             "customValidationMessages": {
               "string.empty": "Enter a first name"
             },
@@ -578,6 +579,7 @@
           "type": "TextField",
           "title": "Last name",
           "options": {
+            "autocomplete": "family-name",
             "exposeToContext": true,
             "customValidationMessages": {
               "string.empty": "Enter a last name"
