@@ -22,8 +22,8 @@ const model = {
     title: "titlesList",
     type: "string",
     items: [
-      { type: "HiddenField", value: "mr", label: "Mr" },
-      { type: "HiddenField", value: "mrs", label: "Mrs" },
+      { value: "Mr", label: "Mr" },
+      { value: "Mrs", label: "Mrs" },
       { divider: "or" },
       { type: "TextField", label: "Other title" },
     ],
@@ -34,7 +34,7 @@ describe("ConditionalRadiosField", () => {
   it("accepts fixed and custom submissions and normalizes them", () => {
     const component = new ConditionalRadiosField(definition, model);
 
-    expect(component.formSchema.validate("mr").error).to.not.exist();
+    expect(component.formSchema.validate("Mr").error).to.not.exist();
     expect(
       component.formSchema.validate(["__custom", "Dr"]).error
     ).to.not.exist();
@@ -43,7 +43,7 @@ describe("ConditionalRadiosField", () => {
     ).to.not.exist();
     expect(component.formSchema.validate("Test").error).to.not.exist();
     expect(component.formSchema.validate(["__custom", ""]).error).to.exist();
-    expect(component.getStateFromValidForm({ title: "mr" })).to.equal({
+    expect(component.getStateFromValidForm({ title: "Mr" })).to.equal({
       title: "Mr",
     });
     expect(component.getStateFromValidForm({ title: "Mr" })).to.equal({
@@ -54,7 +54,7 @@ describe("ConditionalRadiosField", () => {
     ).to.equal({
       title: "Dr",
     });
-    expect(component.getStateFromValidForm({ title: ["mr", "Dr"] })).to.equal({
+    expect(component.getStateFromValidForm({ title: ["Mr", "Dr"] })).to.equal({
       title: "Mr",
     });
 

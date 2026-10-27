@@ -32,8 +32,21 @@ describe("storeReportRequestSchema", () => {
       expect(error).to.be.undefined();
     });
 
+    it("treats an empty optional post email as absent", () => {
+      const state = { ...basePostState, email: "" };
+      const { error, value } = storeReportRequestSchema.validate(state);
+      expect(error).to.be.undefined();
+      expect(value.email).to.be.undefined();
+    });
+
     it("validates a post delivery with optional email included", () => {
       const state = { ...basePostState, email: "john.doe@example.com" };
+      const { error } = storeReportRequestSchema.validate(state);
+      expect(error).to.be.undefined();
+    });
+
+    it("validates a post delivery with optional telephone included", () => {
+      const state = { ...basePostState, telephone: "+441234567890" };
       const { error } = storeReportRequestSchema.validate(state);
       expect(error).to.be.undefined();
     });
@@ -102,6 +115,13 @@ describe("storeReportRequestSchema", () => {
       const { error } = storeReportRequestSchema.validate(state);
       expect(error).to.exist();
       expect(error!.message).to.include("deliveryMethod");
+    });
+
+    it("errors when telephone is supplied for email delivery", () => {
+      const state = { ...baseEmailState, telephone: "+441234567890" };
+      const { error } = storeReportRequestSchema.validate(state);
+      expect(error).to.exist();
+      expect(error!.message).to.include("telephone");
     });
   });
 });
