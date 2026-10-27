@@ -27,6 +27,28 @@ function validHashFor(query: Record<string, string>): string {
 }
 
 suite("Server TrustPaymentsService Service", () => {
+  test("includes the optional billing telephone in the payment form", async () => {
+    const service = new TrustPaymentsService("trustPaymentsService", {
+      siteReference: "site1234",
+      hashPassword,
+      successWebhookUrl: "https://example.com/success",
+      failureWebhookUrl: "https://example.com/failure",
+    });
+
+    const html = await service.createTrustPaymentsForm({
+      amount: 1000,
+      orderReference: "order-123",
+      redirectUrl: "https://example.com/redirect",
+      billingFirstName: "John",
+      billingLastName: "Smith",
+      billingTelephone: "+441234567890",
+    });
+
+    expect(html).to.include(
+      '<input type="hidden" name="billingtelephone" value="+441234567890">'
+    );
+  });
+
   test("returns true when responsesitesecurity matches the computed hash", () => {
     const service = new TrustPaymentsService("trustPaymentsService", {
       siteReference: "site1234",
