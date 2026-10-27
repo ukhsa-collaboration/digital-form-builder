@@ -24,18 +24,22 @@ type FormSubmission = {
 
 const extractInputFromSubmission = (data: FormSubmission) => {
   const { addressType, ...rest } = data;
+  const postcodeLookupBuilding = rest[`${addressType}_postcodeLookupBuilding`];
+  const postcodeLookupManual = rest[`${addressType}_postcodeLookupManual`];
   const addressFields: AddressLookupFields = {
     building: rest[`${addressType}_buildingLookup`],
     addressLine1: rest[`${addressType}_addressLine1Lookup`],
     addressLine2: rest[`${addressType}_addressLine2Lookup`],
     town: rest[`${addressType}_townLookup`],
     county: rest[`${addressType}_countyLookup`],
-    postcode: rest[`${addressType}_postcodeLookup`],
+    postcode: postcodeLookupBuilding || postcodeLookupManual,
   };
 
   return {
     addressType,
     addressFields,
+    postcodeLookupBuilding,
+    postcodeLookupManual,
   };
 };
 
@@ -55,12 +59,20 @@ export class FindAnAddressPageController extends PageControllerBase {
       const validation = this.validate<FormSubmission>(payload, formSchema);
 
       if (validation.errors) {
-        return response;
+        throw new ControllerError(
+          `Invalid addressType on ${this.path}: ${JSON.stringify(
+            validation.errors
+          )}`,
+          { code: 500 }
+        );
       }
 
-      const { addressType, addressFields } = extractInputFromSubmission(
-        validation.value
-      );
+      const {
+        addressType,
+        addressFields,
+        postcodeLookupBuilding,
+        postcodeLookupManual,
+      } = extractInputFromSubmission(validation.value);
 
       const { cacheService, ...rest } = request.services([]);
 
@@ -97,9 +109,14 @@ export class FindAnAddressPageController extends PageControllerBase {
 
         const savedState = await cacheService.mergeState(request, {
           // save inputs
+          [`${addressType}_postcodeLookupBuilding`]: postcodeLookupBuilding,
+          [`${addressType}_postcodeLookupManual`]: postcodeLookupManual,
           [`${addressType}_postcodeLookup`]: addressFields.postcode,
           [`${addressType}_buildingLookup`]: addressFields.building,
           [`${addressType}_addressLine1Lookup`]: addressFields.addressLine1,
+          [`${addressType}_addressLine2Lookup`]: addressFields.addressLine2,
+          [`${addressType}_townLookup`]: addressFields.town,
+          [`${addressType}_countyLookup`]: addressFields.county,
           // save data
           [`${addressType}_addresses`]: addresses,
           [`${addressType}_numberOfAddresses`]: addresses.length,

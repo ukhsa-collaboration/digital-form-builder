@@ -87,7 +87,8 @@
       "next": [{ "path": "/find-a-report-address" }],
       "controller": "./pages/start.js",
       "options": {
-        "hasStartButton": true
+        "hasStartButton": true,
+        "restartSessionOnSubmit": true
       }
     },
     {
@@ -96,7 +97,7 @@
       "controller": "FindAnAddressPageController",
       "components": [
         {
-          "name": "reportAddress_postcodeLookup",
+          "name": "reportAddress_postcodeLookupBuilding",
           "options": {
             "customValidationMessages": {
               "string.empty": "Enter postcode",
@@ -275,7 +276,7 @@
     },
     {
       "path": "/no-report-addresses-found",
-      "title": "No addresses found for ‘{{ reportAddress_postcodeLookup }}’ and ‘{{ reportAddress_buildingLookup }}’",
+      "title": "No addresses found for ‘{{ reportAddress_postcode }}’ and ‘{{ reportAddress_buildingLookup }}’",
       "options": {
         "hideContinueButton": true
       },
@@ -357,7 +358,7 @@
           "title": "County"
         },
         {
-          "name": "reportAddress_postcodeLookup",
+          "name": "reportAddress_postcodeLookupManual",
           "options": {
             "customValidationMessages": {
               "string.empty": "Enter postcode",
@@ -403,7 +404,7 @@
           "name": "noAddressesFoundMessage",
           "options": {},
           "type": "Para",
-          "content": "No address found for {{ reportAddress_addressLine1Lookup }}{% if reportAddress_addressLine2Lookup %}, {{ reportAddress_addressLine2Lookup }}{% endif %}{% if reportAddress_townLookup %}, {{ reportAddress_townLookup }}{% endif %}{% if reportAddress_countyLookup %}, {{ reportAddress_countyLookup }}{% endif %}{% if reportAddress_postcodeLookup %}, {{ reportAddress_postcodeLookup }}{% endif %}<br><br>Check your address for mistakes, then try again.<br><br>Check you have entered the address correctly, then try again."
+          "content": "No address found for {{ reportAddress_addressLine1Lookup }}{% if reportAddress_addressLine2Lookup %}, {{ reportAddress_addressLine2Lookup }}{% endif %}{% if reportAddress_townLookup %}, {{ reportAddress_townLookup }}{% endif %}{% if reportAddress_countyLookup %}, {{ reportAddress_countyLookup }}{% endif %}{% if reportAddress_postcode %}, {{ reportAddress_postcode }}{% endif %}<br><br>Check your address for mistakes, then try again.<br><br>Check you have entered the address correctly, then try again."
         },
         {
           "name": "searchAgain",
@@ -752,7 +753,7 @@
           "title": "County"
         },
         {
-          "name": "deliveryAddress_postcodeLookup",
+          "name": "deliveryAddress_postcodeLookupManual",
           "options": {
             "customValidationMessages": {
               "string.empty": "Enter postcode",
@@ -815,7 +816,7 @@
       "title": "What is the delivery address for your risk report?",
       "components": [
         {
-          "name": "deliveryAddress_postcodeLookup",
+          "name": "deliveryAddress_postcodeLookupBuilding",
           "options": {
             "customValidationMessages": {
               "string.empty": "Enter postcode",
