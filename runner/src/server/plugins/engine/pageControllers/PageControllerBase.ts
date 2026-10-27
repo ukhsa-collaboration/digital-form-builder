@@ -942,11 +942,20 @@ export class PageControllerBase {
     return async (request: HapiRequest, h: HapiResponseToolkit) => {
       const { cacheService } = request.services([]);
 
-      if (this.restartSessionOnSubmit) {
+      const startPage = this.model.def.startPage;
+      const isStartPage = this.path === startPage;
+
+      if (this.restartSessionOnSubmit && isStartPage) {
         const state = await cacheService.getState(request);
 
-        // If state contains more than progress
-        if (Object.keys(state).length > 1) {
+        const startPage = normalizeUrlPath(
+          `/${this.model.basePath}${this.model.def.startPage}`
+        );
+
+        const progress = (state.progress ?? []).map(normalizeUrlPath);
+        const hasStartedJourney = progress.some((path) => path !== startPage);
+
+        if (hasStartedJourney) {
           const startPage = this.model.def.startPage;
 
           // If the current page is not the start page

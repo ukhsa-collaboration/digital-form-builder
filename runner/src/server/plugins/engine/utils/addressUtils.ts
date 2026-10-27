@@ -49,6 +49,7 @@ export const ADDRESS_CONTEXT_SUFFIXES = [
   "_selectedAddress",
   "_matchedAddress",
   "_postcode",
+  "_postcodeLookup",
   "_postcodeLookupBuilding",
   "_postcodeLookupManual",
   "_buildingLookup",

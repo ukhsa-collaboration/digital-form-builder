@@ -144,6 +144,28 @@ suite("restartSessionOnSubmit - unconditional navigation", () => {
     expect(next.statusCode).to.equal(200);
   });
 
+  test("payment provider metadata does not count as journey progress", async () => {
+    const start = await server.inject({
+      method: "get",
+      url: `${basePath}/start`,
+    });
+    const cookie = getCookies(start);
+    const idBeforeSubmit = sessionIds[sessionIds.length - 1];
+
+    const { cacheService } = server.services();
+    await cacheService.mergeState(
+      { yar: { id: idBeforeSubmit }, params: { id: formId } },
+      { paymentProvider: "trust-payments" }
+    );
+
+    const submit = await post(server, `${basePath}/start`, cookie);
+    const currentId = sessionIds[sessionIds.length - 1];
+
+    expect(submit.statusCode).to.equal(302);
+    expect(submit.headers.location).to.equal(`${basePath}/text`);
+    expect(currentId).to.equal(idBeforeSubmit);
+  });
+
   test("old session is destroyed on submit on start page", async () => {
     let cookie = await startJourneyAndSubmitText();
 
