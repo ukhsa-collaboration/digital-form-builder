@@ -948,25 +948,25 @@ export class PageControllerBase {
       if (this.restartSessionOnSubmit && isStartPage) {
         const state = await cacheService.getState(request);
 
-        const startPage = normalizeUrlPath(
-          `/${this.model.basePath}${this.model.def.startPage}`
+        const normalizedStartPage = normalizeUrlPath(
+          `/${this.model.basePath}${startPage}`
+        ).split("?")[0];
+
+        const progress = (state.progress ?? []).map(
+          (path) => normalizeUrlPath(path).split("?")[0]
         );
 
-        const progress = (state.progress ?? []).map(normalizeUrlPath);
-        const hasStartedJourney = progress.some((path) => path !== startPage);
+        const hasStartedJourney = progress.some(
+          (path) => path !== normalizedStartPage
+        );
 
-        if (hasStartedJourney) {
-          const startPage = this.model.def.startPage;
+        const schemaState = this.model
+          .makeSchema(state)
+          .validate(state, { stripUnknown: true }).value;
 
-          // If the current page is not the start page
-          // end session then redirect to the start page
-          if (this.path !== startPage) {
-            const redirect = `/${this.model.basePath}${startPage}`;
-            return h.redirect(
-              `/end-session?redirect=${encodeURIComponent(redirect)}`
-            );
-          }
+        const { progress: _progress, ...answerState } = schemaState;
 
+        if (hasStartedJourney || Object.keys(answerState).length > 0) {
           await this.restartSession(request);
         }
       }

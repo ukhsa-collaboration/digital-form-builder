@@ -164,6 +164,32 @@ suite("restartSessionOnSubmit - unconditional navigation", () => {
     expect(submit.statusCode).to.equal(302);
     expect(submit.headers.location).to.equal(`${basePath}/text`);
     expect(currentId).to.equal(idBeforeSubmit);
+    expect(
+      (await getState(server, formId, currentId)).paymentProvider
+    ).to.equal("trust-payments");
+  });
+
+  test("a saved answer triggers a restart when progress is reset", async () => {
+    const start = await server.inject({
+      method: "get",
+      url: `${basePath}/start`,
+    });
+    const cookie = getCookies(start);
+    const idBeforeSubmit = sessionIds[sessionIds.length - 1];
+
+    const { cacheService } = server.services();
+    await cacheService.mergeState(
+      { yar: { id: idBeforeSubmit }, params: { id: formId } },
+      { text: "Saved answer" }
+    );
+
+    const submit = await post(server, `${basePath}/start`, cookie);
+    const currentId = sessionIds[sessionIds.length - 1];
+
+    expect(submit.statusCode).to.equal(302);
+    expect(submit.headers.location).to.equal(`${basePath}/text`);
+    expect(currentId).to.not.equal(idBeforeSubmit);
+    expect((await getState(server, formId, currentId)).text).to.be.undefined();
   });
 
   test("old session is destroyed on submit on start page", async () => {
@@ -207,7 +233,7 @@ suite("restartSessionOnSubmit - unconditional navigation", () => {
     expect(next.statusCode).to.equal(200);
   });
 
-  test("restart on non-start page redirects to start page", async () => {
+  test("restart option does not restart a non-start page", async () => {
     let cookie = await startJourneyAndSubmitText();
 
     const restartPage = await server.inject({
@@ -217,44 +243,15 @@ suite("restartSessionOnSubmit - unconditional navigation", () => {
     });
     cookie = getCookies(restartPage, cookie);
 
-    const idBeforeRestart = sessionIds[sessionIds.length - 1];
+    const idBeforeSubmit = sessionIds[sessionIds.length - 1];
 
     const restartRes = await post(server, `${basePath}/restart`, cookie);
 
-    // The form redirects to end-session
+    // The form continues normally because only the start page can restart.
     expect(restartRes.statusCode).to.equal(302);
-    expect(restartRes.headers.location).to.equal(
-      `/end-session?redirect=${encodeURIComponent(`${basePath}/start`)}`
-    );
-
-    const endSessionRes = await server.inject({
-      method: "get",
-      url: restartRes.headers.location,
-      headers: { cookie },
-    });
-    cookie = getCookies(endSessionRes, cookie);
-
-    // Session ID is changed
     const currentId = sessionIds[sessionIds.length - 1];
-    expect(currentId).to.not.equal(idBeforeRestart);
-
-    // End session redirects to start page
-    expect(endSessionRes.statusCode).to.equal(302);
-    expect(endSessionRes.headers.location).to.equal(`${basePath}/start`);
-
-    const startAgain = await server.inject({
-      method: "get",
-      url: `${basePath}/start`,
-      headers: { cookie },
-    });
-    cookie = getCookies(startAgain, cookie);
-    const state = await getState(server, formId, currentId);
-
-    // The session state only holds first page progress and no previous answers
-    expect(state).to.equal({
-      progress: [`${basePath}/start`],
-    });
-    expect(state.text).to.be.undefined();
+    expect(restartRes.headers.location).to.equal(`${basePath}/summary`);
+    expect(currentId).to.equal(idBeforeSubmit);
   });
 });
 
