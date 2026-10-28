@@ -88,7 +88,7 @@
             "allowPrePopulationOverwrite": true,
             "classes": "govuk-!-display-none",
             "exposeToContext": true,
-            "hideTitle": true,
+            "legendClasses": "govuk-fieldset__legend--s govuk-visually-hidden",
             "disableChangingFromSummary": true,
             "required": false
           },
