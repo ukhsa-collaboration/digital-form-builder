@@ -20,7 +20,7 @@ export function WebhookModel(model: FormModel, state: FormSubmissionState) {
 
   // field logic more extendable shown here https://github.com/XGovFormBuilder/digital-form-builder/issues/1401
   const questions = relevantPages.flatMap((page) => {
-    if ((page as any).isRepeatingFieldPageController === true) {
+    if (typeof (page as any).toWebhookQuestions === "function") {
       return (page as any).toWebhookQuestions(state);
     }
     return [pagesToQuestions(page, state)];
