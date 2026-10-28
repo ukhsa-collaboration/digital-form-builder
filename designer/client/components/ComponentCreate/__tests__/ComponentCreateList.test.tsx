@@ -38,11 +38,13 @@ suite("ComponentCreateList", () => {
 
     expect(listItems).to.equal([
       "Details",
+      "Display address",
       "Flash card",
       "HTML",
       "Inset text",
       "List",
       "Paragraph",
+      "Summary lists",
     ]);
   });
 
@@ -86,11 +88,14 @@ suite("ComponentCreateList", () => {
 
     expect(listItems).to.equal([
       "Autocomplete",
+      "Conditional radios",
+      "Contact details",
       "Date",
       "Date parts",
       "Date time",
       "Date time parts",
       "Email address",
+      "Fieldset",
       "File upload",
       "Month year parts",
       "Multiline text",
@@ -124,7 +129,7 @@ suite("ComponentCreateList", () => {
       name: "AutocompleteField",
       type: "AutocompleteField",
       title: "Autocomplete field",
-      subType: "field",
+      subType: "listField",
       options: {},
       schema: {},
       list: "",
@@ -165,7 +170,7 @@ suite("ComponentCreateList", () => {
       name: "CheckboxesField",
       type: "CheckboxesField",
       title: "Checkboxes field",
-      subType: "field",
+      subType: "listField",
       options: {},
       schema: {},
       list: "",
