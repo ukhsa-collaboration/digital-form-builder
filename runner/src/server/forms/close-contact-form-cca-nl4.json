@@ -102,8 +102,7 @@
           "title": "Reference ID",
           "options": {
             "allowPrePopulation": true,
-            "allowPrePopulationOverwrite": true,
-            "exposeToContext": true
+            "allowPrePopulationOverwrite": true
           },
           "schema": {}
         }
