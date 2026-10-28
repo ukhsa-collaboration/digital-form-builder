@@ -91,9 +91,9 @@ function pagesToQuestions(
   const toFields = createToFieldsMap(sectionState);
   const components = page.components.formItems;
 
-  const pageTitle = nunjucks.renderString(page.title.en ?? page.title, {
-    ...state,
-  });
+  const pageTitle = page.title
+    ? nunjucks.renderString(page.title.en ?? page.title, { ...state })
+    : "";
 
   return {
     category: page.section?.name,
