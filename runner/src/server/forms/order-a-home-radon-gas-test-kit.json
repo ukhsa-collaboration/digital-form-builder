@@ -643,7 +643,7 @@
         {
           "name": "resultAddressConfirmation",
           "type": "YesNoField",
-          "title": "Is this the address you want your radon gas test results to?",
+          "title": "Is this the address you want your radon gas test results delivered to?",
           "options": {
             "legendClasses": "govuk-fieldset__legend--m govuk-heading-m govuk-!-font-weight-bold",
             "exposeToContext": true
@@ -1993,7 +1993,7 @@
             "field": {
               "name": "resultAddressConfirmation",
               "type": "YesNoField",
-              "display": "Is this the address you want your radon gas test results to?"
+              "display": "Is this the address you want your radon gas test results delivered to?"
             },
             "operator": "is",
             "value": { "type": "Value", "value": "false", "display": "false" }
@@ -2021,7 +2021,7 @@
             "field": {
               "name": "resultAddressConfirmation",
               "type": "YesNoField",
-              "display": "Is this the address you want your radon gas test results to?"
+              "display": "Is this the address you want your radon gas test results delivered to?"
             },
             "operator": "is",
             "value": { "type": "Value", "value": "false", "display": "false" }
