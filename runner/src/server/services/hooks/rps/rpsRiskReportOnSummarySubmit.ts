@@ -46,6 +46,19 @@ export const rpsRiskReportOnSummarySubmit: Hook<void> = async (
   const selectedDeliveryAddress = state["deliveryAddress_selectedAddress"];
 
   const deliveryMethod = state["deliveryMethod"] as "email" | "post";
+  const isPostalDelivery = deliveryMethod === "post";
+  const contactInfo = state["contactInfo"] as
+    | {
+        emailAddressPost?: string;
+        telephonePost?: string;
+      }
+    | undefined;
+
+  const email = isPostalDelivery
+    ? contactInfo?.emailAddressPost
+    : state["emailAddress"];
+
+  const telephone = isPostalDelivery ? contactInfo?.telephonePost : undefined;
 
   const data = {
     uuid: getOrCreateCorrelationId(request),
@@ -53,7 +66,8 @@ export const rpsRiskReportOnSummarySubmit: Hook<void> = async (
     firstName: state["firstName"],
     lastName: state["lastName"],
     fullAddress: selectedDeliveryAddress?.address,
-    email: state["emailAddress"] ?? undefined,
+    email: email || undefined,
+    telephone: telephone || undefined,
     amount: feesModel.total,
   } as StoreReportData;
 

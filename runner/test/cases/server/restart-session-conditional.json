@@ -1,0 +1,125 @@
+{
+  "startPage": "/start",
+  "pages": [
+    {
+      "path": "/start",
+      "title": "Start",
+      "options": {
+        "restartSessionOnSubmit": true
+      },
+      "components": [
+        {
+          "schema": {},
+          "options": {},
+          "list": "pathList",
+          "type": "RadiosField",
+          "name": "path",
+          "title": "Which path?"
+        }
+      ],
+      "next": [
+        {
+          "path": "/pathA",
+          "condition": "condA"
+        },
+        {
+          "path": "/pathB",
+          "condition": "condB"
+        }
+      ]
+    },
+    {
+      "path": "/pathA",
+      "title": "Path A",
+      "components": [],
+      "next": [
+        {
+          "path": "/summary"
+        }
+      ]
+    },
+    {
+      "path": "/pathB",
+      "title": "Path B",
+      "components": [],
+      "next": [
+        {
+          "path": "/summary"
+        }
+      ]
+    },
+    {
+      "path": "/summary",
+      "title": "Summary",
+      "controller": "./pages/summary.js",
+      "components": []
+    }
+  ],
+  "sections": [],
+  "lists": [
+    {
+      "name": "pathList",
+      "title": "Paths",
+      "type": "string",
+      "items": [
+        {
+          "text": "Path A",
+          "value": "pathA"
+        },
+        {
+          "text": "Path B",
+          "value": "pathB"
+        }
+      ]
+    }
+  ],
+  "conditions": [
+    {
+      "displayName": "condA",
+      "name": "condA",
+      "value": {
+        "name": "condA",
+        "conditions": [
+          {
+            "field": {
+              "name": "path",
+              "type": "RadiosField",
+              "display": "Which path?"
+            },
+            "operator": "is",
+            "value": {
+              "type": "Value",
+              "value": "pathA",
+              "display": "Path A"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "displayName": "condB",
+      "name": "condB",
+      "value": {
+        "name": "condB",
+        "conditions": [
+          {
+            "field": {
+              "name": "path",
+              "type": "RadiosField",
+              "display": "Which path?"
+            },
+            "operator": "is",
+            "value": {
+              "type": "Value",
+              "value": "pathB",
+              "display": "Path B"
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "outputs": [],
+  "fees": [],
+  "skipSummary": false
+}

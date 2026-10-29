@@ -468,9 +468,9 @@ export class RepeatedMultiFieldPageController extends PageController {
     const entries =
       (this.getPartialState(state) as Array<Record<string, unknown>>) ?? [];
 
-    const pageTitle = nunjucks.renderString(this.title.en ?? this.title, {
-      ...state,
-    });
+    const pageTitle = this.title
+      ? nunjucks.renderString(this.title.en ?? this.title, { ...state })
+      : "";
 
     return [
       {

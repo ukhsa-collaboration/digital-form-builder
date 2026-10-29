@@ -93,5 +93,21 @@ suite("CheckboxesField", () => {
     it("validates correctly", () => {
       expect(component.formSchema.validate({}).error).to.exist();
     });
+
+    it("uses custom legend classes", () => {
+      const customLegendComponent = new CheckboxesField(
+        {
+          ...componentDefinition,
+          options: { legendClasses: "govuk-visually-hidden" },
+        },
+        formModel
+      );
+
+      const viewModel = customLegendComponent.getViewModel({}, undefined);
+
+      expect(viewModel.fieldset.legend.classes).to.equal(
+        "govuk-visually-hidden"
+      );
+    });
   });
 });

@@ -14,7 +14,7 @@
           "name": "para1",
           "options": {},
           "type": "Para",
-          "content": "This service is for agents to contact members of the public in order to record their close contact details after they have tested positive for {{(srsContexts.diseaseInfo[d].name if srsContexts.diseaseInfo[d]) | default('bird (avian) flu', true) }}.",
+          "content": "This service is for agents to contact members of the public in order to record their close contact details after they have tested positive for {{ (srsContexts.diseaseInfo[d].name if srsContexts.diseaseInfo[d]) | default('bird (avian) flu', true) }}.",
           "schema": {}
         },
         {
@@ -78,7 +78,7 @@
           "name": "jmslVl",
           "options": {},
           "type": "Para",
-          "content": "If you need help completing this form, contact <a href=\"tel:111\">111</a>.",
+          "content": "If you need help completing this form, contact <a class=\"govuk-link mobile-only\" href=\"tel:111\">111</a><span class=\"tablet-and-up-only\">111</span>.",
           "schema": {}
         },
         {
@@ -88,7 +88,7 @@
             "allowPrePopulationOverwrite": true,
             "classes": "govuk-!-display-none",
             "exposeToContext": true,
-            "hideTitle": true,
+            "legendClasses": "govuk-fieldset__legend--s govuk-visually-hidden",
             "disableChangingFromSummary": true,
             "required": false
           },
@@ -98,16 +98,12 @@
         },
         {
           "name": "r",
+          "type": "HiddenField",
+          "title": "Reference ID",
           "options": {
             "allowPrePopulation": true,
-            "allowPrePopulationOverwrite": true,
-            "classes": "govuk-!-display-none",
-            "hideTitle": true,
-            "disableChangingFromSummary": true,
-            "required": false
+            "allowPrePopulationOverwrite": true
           },
-          "type": "TextField",
-          "title": "Reference ID",
           "schema": {}
         }
       ],
@@ -382,6 +378,10 @@
         "customText": {
           "cardTitle": "Close Contact {index}",
           "separatePageTitle": "Check these details are correct before continuing"
+        },
+        "summaryDisplayMode": {
+          "samePage": false,
+          "yesNoSummaryQuestion": "Have they been in close contact with anyone else?"
         }
       },
       "components": [
@@ -661,7 +661,7 @@
           {
             "field": {
               "name": "PeopleYouLiveWith.live_with_others",
-              "type": "YesNoField",
+              "type": "RadiosField",
               "display": "Do you live with other people?"
             },
             "operator": "is",
@@ -679,7 +679,7 @@
           {
             "field": {
               "name": "PeopleYouLiveWith.live_with_others",
-              "type": "YesNoField",
+              "type": "RadiosField",
               "display": "Do you live with other people?"
             },
             "operator": "is",
@@ -697,7 +697,7 @@
           {
             "field": {
               "name": "PeopleTheyLiveWith.live_with_others",
-              "type": "YesNoField",
+              "type": "RadiosField",
               "display": "Do they live with other people?"
             },
             "operator": "is",
@@ -715,7 +715,7 @@
           {
             "field": {
               "name": "PeopleTheyLiveWith.live_with_others",
-              "type": "YesNoField",
+              "type": "RadiosField",
               "display": "Do they live with other people?"
             },
             "operator": "is",
@@ -733,7 +733,7 @@
           {
             "field": {
               "name": "OtherContacts.been_in_contact",
-              "type": "YesNoField",
+              "type": "RadiosField",
               "display": "Have you been in close contact with other people in the last 14 days?"
             },
             "operator": "is",
@@ -751,7 +751,7 @@
           {
             "field": {
               "name": "OtherContacts.been_in_contact",
-              "type": "YesNoField",
+              "type": "RadiosField",
               "display": "Have you been in close contact with other people in the last 14 days?"
             },
             "operator": "is",
@@ -788,7 +788,7 @@
   "specialPages": {
     "confirmationPage": {
       "customText": {
-        "nextSteps": "<h2 class='govuk-heading-m'>What happens next</h2><p class='govuk-body'>We may contact the close contacts listed to ask for more information and to give them advice on what to do next.</p><h2 class='govuk-heading-m'>More information on avian flu</h2><p class='govuk-body'>If anyone they know develops symptoms of {{ (srsContexts.diseaseInfo[d].name if srsContexts.diseaseInfo[d]) | default('bird (avian) flu', true) }}, ask them to <a class='govuk-link' href='https://d1p7bqdn0frsqq.cloudfront.net/'>order a test kit</a>. For urgent medical advice, they can call NHS 111 or visit 111.nhs.uk. For life-threatening emergencies, call 999.</p><p class='govuk-body'>For more advice and information on the virus visit the NHS website.</p><h2 class='govuk-heading-m'>If they need to contact us</h2><p class='govuk-body'>If they have any concerns or questions they can contact us at <a class='govuk-link' href='mailto:surgeresponse@ukhsa.gov.uk'>surgeresponse@ukhsa.gov.uk</a>.</p>",
+        "nextSteps": "<h2 class='govuk-heading-m'>What happens next</h2><p class='govuk-body'>We may contact the close contacts listed to ask for more information and to give them advice on what to do next.</p><h2 class='govuk-heading-m'>More information on {{ (srsContexts.diseaseInfo[d].name if srsContexts.diseaseInfo[d]) | default('bird (avian) flu', true) }}</h2><p class='govuk-body'>If anyone they know develops symptoms of {{ (srsContexts.diseaseInfo[d].name if srsContexts.diseaseInfo[d]) | default('bird (avian) flu', true) }}, ask them to <a class='govuk-link' href='https://d1p7bqdn0frsqq.cloudfront.net/'>order a test kit</a>. For urgent medical advice, they can call NHS 111 or visit 111.nhs.uk. For life-threatening emergencies, call 999.</p><p class='govuk-body'>For more advice and information on the virus visit the NHS website.</p><h2 class='govuk-heading-m'>If they need to contact us</h2><p class='govuk-body'>If they have any concerns or questions they can contact us at <a class='govuk-link' href='mailto:surgeresponse@ukhsa.gov.uk'>surgeresponse@ukhsa.gov.uk</a>.</p>",
         "title": "Form submitted",
         "referenceTitle": "Your reference number"
       }

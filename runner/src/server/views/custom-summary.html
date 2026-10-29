@@ -96,7 +96,10 @@
               <input type="hidden" name="crumb" value="{{crumb}}"/>
 
                 {%if declaration %}
-                <h2 class="govuk-heading-m" id="declaration">Declaration</h2>
+                <fieldset class="govuk-fieldset">
+                  <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+                    <h2 class="govuk-fieldset__heading" id="declaration">Declaration</h2>
+                  </legend>
                   {{ declaration | safe  }}
                   <div class="govuk-form-group {{ 'govuk-form-group--error' if declarationError }}">
                     {% if declarationError %}
@@ -113,6 +116,7 @@
                      </div>
                     </div>
                   </div>
+                </fieldset>
                 {% endif %}
 
                 {% if fees and fees.details|length %}

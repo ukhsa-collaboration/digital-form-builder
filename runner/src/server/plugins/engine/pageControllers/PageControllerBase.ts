@@ -39,6 +39,7 @@ import Jwt from "@hapi/jwt";
 import { verifyHmacToken } from "../../initialiseSession/helpers";
 import { extractAddressContext } from "../utils/addressUtils";
 import { ConditionalCase, resolveConditionalValue } from "../conditionalValue";
+import { destroySession } from "server/utils/correlationId";
 
 const FORM_SCHEMA = Symbol("FORM_SCHEMA");
 const STATE_SCHEMA = Symbol("STATE_SCHEMA");
@@ -84,6 +85,7 @@ export class PageControllerBase {
   hideContinueButton?: boolean;
   showContinueButton?: boolean;
   hasStartButton?: boolean;
+  restartSessionOnSubmit?: boolean;
   footerLinks: FormDefinition["footerLinks"];
 
   // TODO: pageDef type
@@ -108,6 +110,8 @@ export class PageControllerBase {
       pageDef?.options?.customButtonText ?? this.defaultButtonText;
     this.honorReturnURL = pageDef?.options?.honorReturnURL ?? true;
     this.hasStartButton = pageDef?.options?.hasStartButton ?? false;
+    this.restartSessionOnSubmit =
+      pageDef?.options?.restartSessionOnSubmit ?? false;
     this.footerLinks = def.footerLinks;
 
     // force show or hide the form button. They will only have an effect if they are not undefined.
@@ -220,7 +224,7 @@ export class PageControllerBase {
   } {
     let showTitle = true;
     let pageTitle = this.title;
-    if (config.allowUserTemplates) {
+    if (config.allowUserTemplates && pageTitle) {
       pageTitle = nunjucks.renderString(pageTitle, {
         ...formData,
       });
@@ -908,17 +912,70 @@ export class PageControllerBase {
   }
 
   /**
+   * Destroys the session and adds the start page to progress to allow
+   * navigation to the next page
+   *
+   * Preserves the payload for forms with user input on the first page, and
+   * will not proceed if the payload fails validation
+   */
+  async restartSession(request: HapiRequest) {
+    const { cacheService } = request.services([]);
+    const payload = (request.payload || {}) as FormData;
+
+    if (this.validateForm(payload).errors) {
+      return;
+    }
+
+    await destroySession(request, cacheService);
+
+    await cacheService.mergeState(request, {
+      progress: [
+        normalizeUrlPath(`/${this.model.basePath}${this.model.def.startPage}`),
+      ],
+    });
+  }
+
+  /**
    * Returns an async function. This is called in plugin.ts when there is a POST request at `/{id}/{path*}`
    */
   makePostRouteHandler() {
     return async (request: HapiRequest, h: HapiResponseToolkit) => {
+      const { cacheService } = request.services([]);
+
+      const startPage = this.model.def.startPage;
+      const isStartPage = this.path === startPage;
+
+      if (this.restartSessionOnSubmit && isStartPage) {
+        const state = await cacheService.getState(request);
+
+        const normalizedStartPage = normalizeUrlPath(
+          `/${this.model.basePath}${startPage}`
+        ).split("?")[0];
+
+        const progress = (state.progress ?? []).map(
+          (path) => normalizeUrlPath(path).split("?")[0]
+        );
+
+        const hasStartedJourney = progress.some(
+          (path) => path !== normalizedStartPage
+        );
+
+        const schemaState = this.model
+          .makeSchema(state)
+          .validate(state, { stripUnknown: true }).value;
+
+        const { progress: _progress, ...answerState } = schemaState;
+
+        if (hasStartedJourney || Object.keys(answerState).length > 0) {
+          await this.restartSession(request);
+        }
+      }
+
       const response = await this.handlePostRequest(request, h);
 
       if (response?.source?.context?.errors) {
         return response;
       }
-
-      const { cacheService } = request.services([]);
 
       if (
         this.model.def.authentication &&
