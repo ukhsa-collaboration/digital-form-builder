@@ -91,7 +91,6 @@ export class MagicLinkController extends PageController {
         const parts = path.split(".");
         const section = parts[0];
         const property = parts.length > 1 ? parts[parts.length - 1] : null;
-        const iteration = parts.length === 3 ? Number(parts[1]) + 1 : null;
         const pageWithError = model.pages.filter((page) => {
           if (page.section && page.section.name === section) {
             let propertyMatches = true;
@@ -116,7 +115,7 @@ export class MagicLinkController extends PageController {
         if (pageWithError) {
           const params = {
             returnUrl: redirectUrl(request, `/${model.basePath}/summary`),
-            num: iteration && pageWithError.repeatField ? iteration : null,
+            num: null,
           };
           return redirectTo(
             request,
