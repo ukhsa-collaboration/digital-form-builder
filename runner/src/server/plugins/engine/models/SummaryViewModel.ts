@@ -221,7 +221,7 @@ export class SummaryViewModel {
 
       sectionPages.forEach((page) => {
         // Handles return values for components of RepatMultiFieldPageController
-        if (page.isRepeatingFieldPageController) {
+        if (typeof page.toSummaryDetails === "function") {
           const cards = page.toSummaryDetails(state);
 
           cards.forEach((card, i) => {

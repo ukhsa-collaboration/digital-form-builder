@@ -224,7 +224,7 @@ export class PageControllerBase {
   } {
     let showTitle = true;
     let pageTitle = this.title;
-    if (config.allowUserTemplates) {
+    if (config.allowUserTemplates && pageTitle) {
       pageTitle = nunjucks.renderString(pageTitle, {
         ...formData,
       });
