@@ -14,7 +14,7 @@
           "name": "para1",
           "options": {},
           "type": "Para",
-          "content": "This service is for agents to contact members of the public in order to record their close contact details after they have tested positive for {{(srsContexts.diseaseInfo[d].name if srsContexts.diseaseInfo[d]) | default('bird (avian) flu', true) }}.",
+          "content": "This service is for agents to contact members of the public in order to record their close contact details after they have tested positive for {{ (srsContexts.diseaseInfo[d].name if srsContexts.diseaseInfo[d]) | default('bird (avian) flu', true) }}.",
           "schema": {}
         },
         {
@@ -88,7 +88,7 @@
             "allowPrePopulationOverwrite": true,
             "classes": "govuk-!-display-none",
             "exposeToContext": true,
-            "hideTitle": true,
+            "legendClasses": "govuk-fieldset__legend--s govuk-visually-hidden",
             "disableChangingFromSummary": true,
             "required": false
           },
@@ -98,16 +98,12 @@
         },
         {
           "name": "r",
+          "type": "HiddenField",
+          "title": "Reference ID",
           "options": {
             "allowPrePopulation": true,
-            "allowPrePopulationOverwrite": true,
-            "classes": "govuk-!-display-none",
-            "hideTitle": true,
-            "disableChangingFromSummary": true,
-            "required": false
+            "allowPrePopulationOverwrite": true
           },
-          "type": "TextField",
-          "title": "Reference ID",
           "schema": {}
         }
       ],
@@ -788,7 +784,7 @@
   "specialPages": {
     "confirmationPage": {
       "customText": {
-        "nextSteps": "<h2 class='govuk-heading-m'>What happens next</h2><p class='govuk-body'>We may contact the close contacts listed to ask for more information and to give them advice on what to do next.</p><h2 class='govuk-heading-m'>More information on avian flu</h2><p class='govuk-body'>If anyone they know develops symptoms of {{ (srsContexts.diseaseInfo[d].name if srsContexts.diseaseInfo[d]) | default('bird (avian) flu', true) }}, ask them to <a class='govuk-link' href='https://d1p7bqdn0frsqq.cloudfront.net/'>order a test kit</a>. For urgent medical advice, they can call NHS 111 or visit 111.nhs.uk. For life-threatening emergencies, call 999.</p><p class='govuk-body'>For more advice and information on the virus visit the NHS website.</p><h2 class='govuk-heading-m'>If they need to contact us</h2><p class='govuk-body'>If they have any concerns or questions they can contact us at <a class='govuk-link' href='mailto:surgeresponse@ukhsa.gov.uk'>surgeresponse@ukhsa.gov.uk</a>.</p>",
+        "nextSteps": "<h2 class='govuk-heading-m'>What happens next</h2><p class='govuk-body'>We may contact the close contacts listed to ask for more information and to give them advice on what to do next.</p><h2 class='govuk-heading-m'>More information on {{ (srsContexts.diseaseInfo[d].name if srsContexts.diseaseInfo[d]) | default('bird (avian) flu', true) }}</h2><p class='govuk-body'>If anyone they know develops symptoms of {{ (srsContexts.diseaseInfo[d].name if srsContexts.diseaseInfo[d]) | default('bird (avian) flu', true) }}, ask them to <a class='govuk-link' href='https://d1p7bqdn0frsqq.cloudfront.net/'>order a test kit</a>. For urgent medical advice, they can call NHS 111 or visit 111.nhs.uk. For life-threatening emergencies, call 999.</p><p class='govuk-body'>For more advice and information on the virus visit the NHS website.</p><h2 class='govuk-heading-m'>If they need to contact us</h2><p class='govuk-body'>If they have any concerns or questions they can contact us at <a class='govuk-link' href='mailto:surgeresponse@ukhsa.gov.uk'>surgeresponse@ukhsa.gov.uk</a>.</p>",
         "title": "Form submitted",
         "referenceTitle": "Your reference number"
       }

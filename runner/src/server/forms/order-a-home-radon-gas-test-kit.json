@@ -227,7 +227,7 @@
           "type": "YesNoField",
           "title": "Is this the correct address?",
           "options": {
-            "hideTitle": true,
+            "legendClasses": "govuk-fieldset__legend--m govuk-visually-hidden",
             "customValidationMessages": {
               "any.required": "Select Yes if this is the correct address"
             }
@@ -264,7 +264,7 @@
       "components": [
         {
           "type": "Para",
-          "content": "{{ propertyAddress_numberOfAddresses }} addresses found for '{{ propertyAddress_postcodeLookup }}'"
+          "content": "{{ propertyAddress_numberOfAddresses }} addresses found for '{{ propertyAddress_postcodeLookup or propertyAddress_postcodeLookupManual }}'"
         },
         {
           "name": "searchAgain",
@@ -301,7 +301,7 @@
     },
     {
       "path": "/property-address-not-found",
-      "title": "No addresses found for ‘{{ propertyAddress_postcodeLookup }}’ and ‘{{ propertyAddress_buildingLookup }}’",
+      "title": "No addresses found for ‘{{ propertyAddress_postcodeLookup or propertyAddress_postcodeLookupManual }}’ and ‘{{ propertyAddress_buildingLookup }}’",
       "components": [
         {
           "type": "Para",
@@ -431,7 +431,7 @@
       "components": [
         {
           "type": "Para",
-          "content": "No address found for {{ propertyAddress_addressLine1Lookup }}{% if propertyAddress_addressLine2Lookup %}, {{ propertyAddress_addressLine2Lookup }}{% endif %}{% if propertyAddress_townLookup %}, {{ propertyAddress_townLookup }}{% endif %}{% if propertyAddress_countyLookup %}, {{ propertyAddress_countyLookup }}{% endif %}{% if propertyAddress_postcodeLookup %}, {{ propertyAddress_postcodeLookup }}{% endif %}<br><br>Check your address for mistakes, then try again.<br><br>Check you have entered the address correctly, then try again."
+          "content": "No address found for {{ propertyAddress_addressLine1Lookup }}{% if propertyAddress_addressLine2Lookup %}, {{ propertyAddress_addressLine2Lookup }}{% endif %}{% if propertyAddress_townLookup %}, {{ propertyAddress_townLookup }}{% endif %}{% if propertyAddress_countyLookup %}, {{ propertyAddress_countyLookup }}{% endif %}{% if propertyAddress_postcodeLookup or propertyAddress_postcodeLookupManual %}, {{ propertyAddress_postcodeLookup or propertyAddress_postcodeLookupManual }}{% endif %}<br><br>Check your address for mistakes, then try again.<br><br>Check you have entered the address correctly, then try again."
         },
         {
           "type": "Html",
@@ -568,6 +568,7 @@
           "type": "TextField",
           "title": "First name",
           "options": {
+            "autocomplete": "given-name",
             "customValidationMessages": {
               "string.empty": "Enter a first name"
             },
@@ -579,6 +580,7 @@
           "type": "TextField",
           "title": "Last name",
           "options": {
+            "autocomplete": "family-name",
             "exposeToContext": true,
             "customValidationMessages": {
               "string.empty": "Enter a last name"
@@ -622,14 +624,13 @@
           }
         },
         {
-          "type": "Para",
-          "content": "<p class=\"govuk-body-m\"><h2 class=\"govuk-heading-m\">Is this the address you want the kit delivered to?</h2></p>"
-        },
-        {
           "name": "kitAddressConfirmation",
           "type": "YesNoField",
           "title": "Is this the address you want the kit delivered to?",
-          "options": { "hideTitle": true, "exposeToContext": true }
+          "options": {
+            "legendClasses": "govuk-fieldset__legend--m govuk-heading-m govuk-!-font-weight-bold",
+            "exposeToContext": true
+          }
         },
         {
           "type": "Html",
@@ -640,14 +641,13 @@
           "content": "If the kits are delivered to a different address than where they will be used, the detectors must be placed within the measurement address within 7 days of delivery.\n</br></br>\nA kit fits through a standard letter box."
         },
         {
-          "type": "Para",
-          "content": "<p class=\"govuk-body-m\"><h2 class=\"govuk-heading-m\">Is this the address you want your radon gas test results to?</h2></p>"
-        },
-        {
           "name": "resultAddressConfirmation",
           "type": "YesNoField",
-          "title": "Is this the address you want your radon gas test results to?",
-          "options": { "hideTitle": true, "exposeToContext": true }
+          "title": "Is this the address you want your radon gas test results delivered to?",
+          "options": {
+            "legendClasses": "govuk-fieldset__legend--m govuk-heading-m govuk-!-font-weight-bold",
+            "exposeToContext": true
+          }
         },
         {
           "type": "Para",
@@ -816,7 +816,7 @@
           "type": "YesNoField",
           "title": "Is this the correct address?",
           "options": {
-            "hideTitle": true,
+            "legendClasses": "govuk-fieldset__legend--m govuk-visually-hidden",
             "customValidationMessages": {
               "any.required": "Select Yes if this is the correct address"
             }
@@ -857,7 +857,7 @@
       "components": [
         {
           "type": "Para",
-          "content": "{{ kitAddress_numberOfAddresses }} addresses found for '{{ kitAddress_postcodeLookup }}'"
+          "content": "{{ kitAddress_numberOfAddresses }} addresses found for '{{ kitAddress_postcodeLookup or kitAddress_postcodeLookupManual }}'"
         },
         {
           "name": "searchAgain",
@@ -894,7 +894,7 @@
     },
     {
       "path": "/kit-address-not-found",
-      "title": "No addresses found for ‘{{ kitAddress_postcodeLookup }}’ and ‘{{ kitAddress_buildingLookup }}’",
+      "title": "No addresses found for ‘{{ kitAddress_postcodeLookup or kitAddress_postcodeLookupManual }}’ and ‘{{ kitAddress_buildingLookup }}’",
       "components": [
         {
           "type": "Para",
@@ -1020,7 +1020,7 @@
       "components": [
         {
           "type": "Para",
-          "content": "No address found for {{ kitAddress_addressLine1Lookup }}{% if kitAddress_addressLine2Lookup %}, {{ kitAddress_addressLine2Lookup }}{% endif %}{% if kitAddress_townLookup %}, {{ kitAddress_townLookup }}{% endif %}{% if kitAddress_countyLookup %}, {{ kitAddress_countyLookup }}{% endif %}{% if kitAddress_postcodeLookup %}, {{ kitAddress_postcodeLookup }}{% endif %}<br><br>Check your address for mistakes, then try again.<br><br>Check you have entered the address correctly, then try again."
+          "content": "No address found for {{ kitAddress_addressLine1Lookup }}{% if kitAddress_addressLine2Lookup %}, {{ kitAddress_addressLine2Lookup }}{% endif %}{% if kitAddress_townLookup %}, {{ kitAddress_townLookup }}{% endif %}{% if kitAddress_countyLookup %}, {{ kitAddress_countyLookup }}{% endif %}{% if kitAddress_postcodeLookup or kitAddress_postcodeLookupManual %}, {{ kitAddress_postcodeLookup or kitAddress_postcodeLookupManual }}{% endif %}<br><br>Check your address for mistakes, then try again.<br><br>Check you have entered the address correctly, then try again."
         },
         {
           "type": "Html",
@@ -1220,7 +1220,7 @@
           "type": "YesNoField",
           "title": "Is this the correct address?",
           "options": {
-            "hideTitle": true,
+            "legendClasses": "govuk-fieldset__legend--m govuk-visually-hidden",
             "customValidationMessages": {
               "any.required": "Select Yes if this is the correct address"
             }
@@ -1257,7 +1257,7 @@
       "components": [
         {
           "type": "Para",
-          "content": "{{ resultAddress_numberOfAddresses }} addresses found for '{{ resultAddress_postcodeLookup }}'"
+          "content": "{{ resultAddress_numberOfAddresses }} addresses found for '{{ resultAddress_postcodeLookup or resultAddress_postcodeLookupManual }}'"
         },
         {
           "name": "searchAgain",
@@ -1294,7 +1294,7 @@
     },
     {
       "path": "/result-address-not-found",
-      "title": "No addresses found for ‘{{ resultAddress_postcodeLookup }}’ and ‘{{ resultAddress_buildingLookup }}’",
+      "title": "No addresses found for ‘{{ resultAddress_postcodeLookup or resultAddress_postcodeLookupManual }}’ and ‘{{ resultAddress_buildingLookup }}’",
       "components": [
         {
           "type": "Para",
@@ -1420,7 +1420,7 @@
       "components": [
         {
           "type": "Para",
-          "content": "No address found for {{ resultAddress_addressLine1Lookup }}{% if resultAddress_addressLine2Lookup %}, {{ resultAddress_addressLine2Lookup }}{% endif %}{% if resultAddress_townLookup %}, {{ resultAddress_townLookup }}{% endif %}{% if resultAddress_countyLookup %}, {{ resultAddress_countyLookup }}{% endif %}{% if resultAddress_postcodeLookup %}, {{ resultAddress_postcodeLookup }}{% endif %}<br><br>Check your address for mistakes, then try again.<br><br>Check you have entered the address correctly, then try again."
+          "content": "No address found for {{ resultAddress_addressLine1Lookup }}{% if resultAddress_addressLine2Lookup %}, {{ resultAddress_addressLine2Lookup }}{% endif %}{% if resultAddress_townLookup %}, {{ resultAddress_townLookup }}{% endif %}{% if resultAddress_countyLookup %}, {{ resultAddress_countyLookup }}{% endif %}{% if resultAddress_postcodeLookup or resultAddress_postcodeLookupManual %}, {{ resultAddress_postcodeLookup or resultAddress_postcodeLookupManual }}{% endif %}<br><br>Check your address for mistakes, then try again.<br><br>Check you have entered the address correctly, then try again."
         },
         {
           "type": "Html",
@@ -1612,11 +1612,12 @@
         {
           "name": "termsAndConditions",
           "type": "CheckboxesField",
-          "title": " ",
+          "title": "Terms and conditions",
           "list": "termsAndConditionsList",
           "options": {
             "required": true,
             "html": true,
+            "legendClasses": "govuk-visually-hidden",
             "customValidationMessages": {
               "any.required": "You must accept the Privacy Policy and Terms and Conditions before continuing"
             }
@@ -1654,7 +1655,7 @@
         {
           "name": "final links",
           "type": "Para",
-          "content": "<p class=\"govuk-body-m\"><a href=\"https://submit.forms.service.gov.uk/form/266710/radon-services-feedback-form\">What did you think of this service?</a> (takes 30 seconds)</p><p class=\"govuk-body-m\"><a href=\"start\">Order another radon gas test kit</a></p><p class=\"govuk-body-m\"><a href=\"https://www.gov.uk/government/guidance/contact-radiation-protection-sciences\">Contact Radon Measurement Service team</a></p><p class=\"govuk-body-m\"><a href=\"https://www.gov.uk/government/guidance/radon-services-for-homeowners-or-householders\">Go to Radon services for homeowners or householders</a></p>"
+          "content": "<p class=\"govuk-body-m\"><a href=\"https://submit.forms.service.gov.uk/form/266710/radon-services-feedback-form\">What did you think of this service?</a> (takes 30 seconds)</p><p class=\"govuk-body-m\"><a href=\"gas-test-kit-start\">Order another radon gas test kit</a></p><p class=\"govuk-body-m\"><a href=\"https://www.gov.uk/government/guidance/contact-radiation-protection-sciences\">Contact Radon Measurement Service team</a></p><p class=\"govuk-body-m\"><a href=\"https://www.gov.uk/government/guidance/radon-services-for-homeowners-or-householders\">Go to Radon services for homeowners or householders</a></p>"
         }
       ]
     }
@@ -1992,7 +1993,7 @@
             "field": {
               "name": "resultAddressConfirmation",
               "type": "YesNoField",
-              "display": "Is this the address you want your radon gas test results to?"
+              "display": "Is this the address you want your radon gas test results delivered to?"
             },
             "operator": "is",
             "value": { "type": "Value", "value": "false", "display": "false" }
@@ -2020,7 +2021,7 @@
             "field": {
               "name": "resultAddressConfirmation",
               "type": "YesNoField",
-              "display": "Is this the address you want your radon gas test results to?"
+              "display": "Is this the address you want your radon gas test results delivered to?"
             },
             "operator": "is",
             "value": { "type": "Value", "value": "false", "display": "false" }

@@ -145,6 +145,7 @@ interface ListFieldBase {
     required?: boolean;
     optionalText?: boolean;
     classes?: string;
+    legendClasses?: string;
     bold?: boolean;
     exposeToContext?: boolean;
     allowPrePopulation?: boolean;
