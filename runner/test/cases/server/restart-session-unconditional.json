@@ -1,0 +1,61 @@
+{
+  "conditions": [],
+  "startPage": "/start",
+  "pages": [
+    {
+      "path": "/start",
+      "title": "Start",
+      "options": {
+        "restartSessionOnSubmit": true
+      },
+      "components": [],
+      "next": [
+        {
+          "path": "/text"
+        }
+      ]
+    },
+    {
+      "path": "/text",
+      "title": "Text",
+      "components": [
+        {
+          "schema": {},
+          "options": {},
+          "type": "TextField",
+          "name": "text",
+          "title": "Enter some text"
+        }
+      ],
+      "next": [
+        {
+          "path": "/restart"
+        }
+      ]
+    },
+    {
+      "path": "/restart",
+      "title": "Restart",
+      "options": {
+        "restartSessionOnSubmit": true
+      },
+      "components": [],
+      "next": [
+        {
+          "path": "/summary"
+        }
+      ]
+    },
+    {
+      "path": "/summary",
+      "title": "Summary",
+      "controller": "./pages/summary.js",
+      "components": []
+    }
+  ],
+  "sections": [],
+  "lists": [],
+  "outputs": [],
+  "fees": [],
+  "skipSummary": false
+}

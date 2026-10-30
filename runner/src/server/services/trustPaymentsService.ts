@@ -28,6 +28,7 @@ export class TrustPaymentsService extends BaseService {
     const billingFirstName = details.billingFirstName;
     const billingLastName = details.billingLastName;
     const billingEmailAddress = details.billingEmailAddress;
+    const billingTelephone = details.billingTelephone;
     const orderReference = details.orderReference;
 
     const successfulUrlRedirect = details.redirectUrl;
@@ -73,6 +74,11 @@ export class TrustPaymentsService extends BaseService {
             ${
               billingEmailAddress
                 ? `<input type="hidden" name="billingemail" value="${billingEmailAddress}">`
+                : ""
+            }
+            ${
+              billingTelephone
+                ? `<input type="hidden" name="billingtelephone" value="${billingTelephone}">`
                 : ""
             }
             

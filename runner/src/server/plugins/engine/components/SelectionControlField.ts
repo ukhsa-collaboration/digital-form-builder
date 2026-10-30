@@ -8,17 +8,27 @@ import {
   FormSubmissionErrors,
   FormSubmissionState,
 } from "server/plugins/engine/types";
-import { ListItem } from "server/plugins/engine/components/types";
+import { ComponentDef, Item } from "@xgovformbuilder/model";
+import { Label, ListItem } from "server/plugins/engine/components/types";
 
 import { ComponentCollection } from "./ComponentCollection";
 
 const getSchemaKeys = Symbol("getSchemaKeys");
 
+type ConditionalComponent = ComponentDef;
+
+type SelectionControlItem = Item & {
+  hasConditionallyRevealedComponents?: boolean;
+  conditionallyRevealedComponents?: ComponentCollection;
+};
+
+type ConditionalComponents = Record<string, ConditionalComponent>;
+
 /**
  * "Selection controls" are checkboxes and radios (and switches), as per Material UI nomenclature.
  */
 export class SelectionControlField extends ListFormComponent {
-  conditionallyRevealedComponents?: any;
+  conditionallyRevealedComponents?: ConditionalComponents;
   hasConditionallyRevealedComponents: boolean = false;
 
   constructor(def, model) {
@@ -128,17 +138,26 @@ export class SelectionControlField extends ListFormComponent {
   }
 
   getViewModel(formData: FormData, errors: FormSubmissionErrors) {
-    const { name, items } = this;
+    const { name } = this;
+    const items = this.items as SelectionControlItem[];
     const options: any = this.options;
     const viewModel = super.getViewModel(formData, errors);
 
     const { label } = viewModel;
 
+    const legend: Label = {
+      text: label?.text ?? "",
+      classes:
+        options.legendClasses ??
+        "govuk-fieldset__legend govuk-fieldset__legend--s",
+      ...(label?.html ? { html: label.html } : {}),
+      ...(label?.isPageHeading !== undefined
+        ? { isPageHeading: label.isPageHeading }
+        : {}),
+    };
+
     viewModel.fieldset = {
-      legend: {
-        ...label,
-        classes: "govuk-fieldset__legend govuk-fieldset__legend--s",
-      },
+      legend,
     };
 
     viewModel.items = items.map((item: any) => {
