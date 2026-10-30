@@ -16,7 +16,7 @@ const state = {
   },
   applicantDetails: {
     numberOfApplicants: 2,
-    phoneNumber: "123",
+    phoneNumber: "07911123456",
     emailAddress: "a@b",
     languagesProvided: ["fr", "it"],
     contactDate: "2024-12-25T00:00:00.000Z",
@@ -72,10 +72,24 @@ suite("WebhookModel", () => {
     );
     expect(modifiedQuestion).exists();
   });
+
+  test("pages without a title do not crash the webhook model", () => {
+    const untitledJson = JSON.parse(JSON.stringify(json));
+    delete untitledJson.pages.find((page) => page.title === "Applicant 1")
+      .title;
+    const untitledForm = new FormModel(untitledJson, {});
+    const webhookModel = WebhookModel(untitledForm, state);
+    const untitledQuestion = webhookModel.questions.find((question) =>
+      question.fields.some(
+        (field) => field.key === "firstName" && field.answer === "Winston"
+      )
+    );
+    expect(untitledQuestion.question).to.equal("");
+  });
 });
 
 const expectedWebhookData = {
-  name: "Digital Form Builder - Runner undefined",
+  name: "Webforms undefined",
   metadata: undefined,
   questions: [
     {
@@ -201,7 +215,7 @@ const expectedWebhookData = {
           key: "phoneNumber",
           title: "Phone number",
           type: "text",
-          answer: "123",
+          answer: "07911123456",
         },
         {
           key: "emailAddress",

@@ -26,7 +26,9 @@ export class YesNoField extends ListFormComponent {
       },
     ],
   };
+
   itemsSchema = joi.boolean();
+
   get items() {
     return this.list?.items ?? [];
   }
@@ -73,12 +75,26 @@ export class YesNoField extends ListFormComponent {
   getViewModel(formData: FormData, errors: FormSubmissionErrors) {
     const viewModel = super.getViewModel(formData, errors);
 
-    viewModel.fieldset = {
-      legend: viewModel.label,
-    };
+    if (viewModel.label) {
+      viewModel.fieldset = {
+        legend: {
+          ...viewModel.label,
+          ...(this.options.legendClasses
+            ? {
+                text: this.renderUserTemplate(
+                  this.localisedString(this.title),
+                  formData
+                ),
+                classes: this.options.legendClasses,
+              }
+            : {}),
+        },
+      };
+    }
+
     viewModel.items = this.items.map(({ text, value }) => ({
-      text,
-      value,
+      text: this.localisedString(text ?? ""),
+      value: value ?? false,
       checked: `${value}` === `${formData[this.name]}`,
     }));
 

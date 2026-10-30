@@ -41,7 +41,10 @@
         { "path": "/type-of-service-software", "condition": "ffGGs" },
         { "path": "/type-of-service-collaboration", "condition": "XaNsL" },
         { "path": "/contact-us-details", "condition": "hpkaS" }
-      ]
+      ],
+      "options": {
+        "restartSessionOnSubmit": true
+      }
     },
     {
       "path": "/type-of-service-measurement",

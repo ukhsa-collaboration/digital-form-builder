@@ -1,0 +1,51 @@
+{
+  "conditions": [],
+  "startPage": "/start",
+  "authentication": true,
+  "toggle": true,
+  "jwtKey": "test-jwt-key-for-restart-session-tests",
+  "pages": [
+    {
+      "path": "/start",
+      "title": "Start",
+      "options": {
+        "restartSessionOnSubmit": true
+      },
+      "components": [],
+      "next": [
+        {
+          "path": "/your-details"
+        }
+      ]
+    },
+    {
+      "path": "/your-details",
+      "title": "Your details",
+      "components": [
+        {
+          "schema": {},
+          "options": {},
+          "type": "TextField",
+          "name": "text",
+          "title": "Enter some text"
+        }
+      ],
+      "next": [
+        {
+          "path": "/summary"
+        }
+      ]
+    },
+    {
+      "path": "/summary",
+      "title": "Summary",
+      "controller": "./pages/summary.js",
+      "components": []
+    }
+  ],
+  "sections": [],
+  "lists": [],
+  "outputs": [],
+  "fees": [],
+  "skipSummary": false
+}
