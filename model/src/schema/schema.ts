@@ -123,7 +123,6 @@ const pageSchema = joi.object().keys({
   componentsAfter: joi.array().items(componentSchema).optional(),
   disableSingleComponentAsHeading: joi.boolean(),
   next: joi.array().items(nextSchema),
-  repeatField: joi.string().optional(),
   options: joi.object().optional(),
   backLinkFallback: joi.string().optional(),
   disableBackLink: joi.bool().optional(),
