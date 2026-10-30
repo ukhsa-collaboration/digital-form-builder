@@ -579,11 +579,11 @@
       "type": "string",
       "items": [
         {
-          "text": "yes",
+          "text": "Yes",
           "value": "true"
         },
         {
-          "text": "no",
+          "text": "No",
           "value": "false"
         }
       ]
