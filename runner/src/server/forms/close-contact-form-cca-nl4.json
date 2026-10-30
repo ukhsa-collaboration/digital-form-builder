@@ -117,15 +117,17 @@
         {
           "name": "for",
           "options": {
-            "hideTitle": true,
+            "hideTitle": false,
+            "legendAsPageHeading": true,
+            "legendClasses": "govuk-fieldset__legend--l",
             "exposeToContext": true,
             "disableChangingFromSummary": true,
             "customValidationMessages": {
               "any.required": "Select 'yes' if you have received a positive test result"
             }
           },
-          "type": "RadiosField",
           "title": "Have you received a positive test result for {{ (srsContexts.diseaseInfo[d].name if srsContexts.diseaseInfo[d]) | default('bird (avian) flu', true) }}",
+          "type": "RadiosField",
           "list": "ApjoNd"
         }
       ],
@@ -487,7 +489,6 @@
       ]
     },
     {
-      "title": "Who are you completing this form for?",
       "name": "ApjoNd",
       "type": "string",
       "items": [
