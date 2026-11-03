@@ -1,4 +1,4 @@
-import { clone, reach } from "hoek";
+import { clone } from "hoek";
 import config from "server/config";
 import { FormModel } from "./FormModel";
 import { feedbackReturnInfoKey, redirectUrl } from "../helpers";
@@ -200,25 +200,6 @@ export class SummaryViewModel {
         (page) => page.section === section
       );
 
-      const repeatablePage = sectionPages.find((page) => !!page.repeatField);
-      // Currently can't handle repeatable page outside a section.
-      // In fact currently if any page in a section is repeatable it's expected that all pages in that section will be
-      // repeatable
-      if (section && repeatablePage) {
-        if (!state[section.name]) {
-          state[section.name] = sectionState = [];
-        }
-        // Make sure the right number of items
-        const requiredIterations = reach(state, repeatablePage.repeatField);
-        if (requiredIterations < sectionState.length) {
-          state[section.name] = sectionState.slice(0, requiredIterations);
-        } else {
-          for (let i = sectionState.length; i < requiredIterations; i++) {
-            sectionState.push({});
-          }
-        }
-      }
-
       sectionPages.forEach((page) => {
         // Handles return values for components of RepatMultiFieldPageController
         if (typeof page.toSummaryDetails === "function") {
@@ -297,23 +278,11 @@ export class SummaryViewModel {
       });
 
       if (items.length > 0) {
-        if (Array.isArray(sectionState)) {
-          details.push({
-            name: section?.name,
-            title: section?.title,
-            items: [...Array(reach(state, repeatablePage.repeatField))].map(
-              (_x, i) => {
-                return items.map((item) => item[i]);
-              }
-            ),
-          });
-        } else {
-          details.push({
-            name: section?.name,
-            title: section?.title,
-            items,
-          });
-        }
+        details.push({
+          name: section?.name,
+          title: section?.title,
+          items,
+        });
       }
       details.push(...repeatingCards);
     });
@@ -442,22 +411,6 @@ function Item(
     returnUrl: redirectUrl(request, `/${model.basePath}/summary`),
   }
 ) {
-  const isRepeatable = !!page.repeatField;
-
-  //TODO:- deprecate in favour of section based and/or repeatingFieldPageController
-  if (isRepeatable && Array.isArray(sectionState)) {
-    return sectionState.map((state, i) => {
-      const collated = Object.values(state).reduce(
-        (acc: {}, p: any) => ({ ...acc, ...p }),
-        {}
-      );
-      return Item(request, component, collated, page, state, model, {
-        ...params,
-        num: i + 1,
-      });
-    });
-  }
-
   const item = {
     name: component.name,
     path: page.path,

@@ -159,21 +159,11 @@ export class FormModel {
 
       if (sectionPages.length > 0) {
         if (section) {
-          const isRepeatable = sectionPages.find(
-            (page) => page.pageDef.repeatField
-          );
-
-          let sectionSchema: joi.ObjectSchema<any> | joi.ArraySchema = joi
-            .object()
-            .required();
+          let sectionSchema: joi.ObjectSchema<any> = joi.object().required();
 
           sectionPages.forEach((sectionPage) => {
             sectionSchema = sectionSchema.concat(sectionPage.stateSchema);
           });
-
-          if (isRepeatable) {
-            sectionSchema = joi.array().items(sectionSchema);
-          }
 
           schema = schema.append({
             // @ts-ignore
@@ -292,7 +282,7 @@ export class FormModel {
       ) {
         endPage = nextPage;
       }
-      nextPage = nextPage.getNextPage(state, true);
+      nextPage = nextPage.getNextPage(state);
     }
 
     return { relevantPages, endPage };
