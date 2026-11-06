@@ -106,6 +106,7 @@ export type NotifyOutputConfiguration = {
     condition?: string | undefined;
   }[];
   escapeURLs?: boolean;
+  hmacKey?: string;
 };
 
 export type WebhookOutputConfiguration = {
