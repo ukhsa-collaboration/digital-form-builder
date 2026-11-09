@@ -303,6 +303,8 @@ export class RepeatedMultiFieldPageController extends PageController {
 
     const separatePageTitle = (this.options?.customText as any)
       ?.separatePageTitle;
+    const yesNoSummaryQuestion =
+      this.options.summaryDisplayMode?.yesNoSummaryQuestion;
 
     return {
       ...baseViewModel,
@@ -310,7 +312,12 @@ export class RepeatedMultiFieldPageController extends PageController {
         ? nunjucks.renderString(separatePageTitle, { ...state })
         : baseViewModel.pageTitle,
       customText: this.options.customText,
-      summaryDisplayMode: this.options.summaryDisplayMode,
+      summaryDisplayMode: {
+        ...this.options.summaryDisplayMode,
+        yesNoSummaryQuestion: yesNoSummaryQuestion
+          ? nunjucks.renderString(yesNoSummaryQuestion, { ...state })
+          : yesNoSummaryQuestion,
+      },
       details,
       returnUrl: request.query.returnUrl,
     };
