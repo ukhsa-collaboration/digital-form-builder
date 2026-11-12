@@ -6,7 +6,7 @@
   ],
   "isTest": true,
   "disableLogRedaction": true,
-  "previewMode": true,
+  "previewMode": false,
   "enforceCsrf": false,
   "httpsCookieSecureAttribute": true,
   "initialisedSessionKey": "predictable-key",
