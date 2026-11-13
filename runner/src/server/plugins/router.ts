@@ -5,7 +5,7 @@ import { HapiRequest, HapiResponseToolkit } from "../types";
 import getRequestInfo from "server/utils/getRequestInfo";
 import { destroySession } from "server/utils/correlationId";
 import { FormModel } from "server/plugins/engine/models";
-import { feedbackReturnInfoKey, redirectUrl } from "./engine/helpers";
+import { feedbackReturnInfoKey } from "./engine/helpers";
 import { FeedbackContextInfo, RelativeUrl } from "./engine/feedback";
 
 import fs from "fs";
