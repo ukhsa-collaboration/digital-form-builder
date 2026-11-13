@@ -343,7 +343,17 @@ export default {
 
               // Clear the token after use
               await cacheService.clearTimeoutTokenData(queryTimeoutToken);
+            } else {
+              server.log(
+                ["warn"],
+                `Timeout token ${queryTimeoutToken} could not be resolved to pre-population data`
+              );
             }
+          }
+
+          // Reset the session after extracting token data
+          if (request.yar) {
+            request.yar.reset();
           }
 
           const title = "timeout";
