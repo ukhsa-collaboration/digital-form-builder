@@ -311,13 +311,50 @@ export default {
         method: "get",
         path: "/{url}/timeout",
         handler: async (request: HapiRequest, h: HapiResponseToolkit) => {
+          const { url } = request.params;
+          const form = server.app.forms[url];
+          const { cacheService } = request.services([]);
+          const { timeoutToken: queryTimeoutToken } = request.query as any;
+
+          let startPage = `/${url}`;
+
+          // Check if we have a timeout token from the client redirect
+          if (queryTimeoutToken) {
+            // Retrieve pre-population data using the timeout token
+            const timeoutTokenData = await cacheService.getTimeoutTokenData(
+              queryTimeoutToken
+            );
+
+            if (timeoutTokenData) {
+              const queryParams = new URLSearchParams();
+
+              Object.keys(timeoutTokenData).forEach((key) => {
+                if (
+                  timeoutTokenData[key] !== undefined &&
+                  timeoutTokenData[key] !== null
+                ) {
+                  queryParams.append(key, String(timeoutTokenData[key]));
+                }
+              });
+
+              if (queryParams.toString()) {
+                startPage += `?${queryParams.toString()}`;
+              }
+
+              // Clear the token after use
+              await cacheService.clearTimeoutTokenData(queryTimeoutToken);
+            } else {
+              server.log(
+                ["warn"],
+                `Timeout token ${queryTimeoutToken} could not be resolved to pre-population data`
+              );
+            }
+          }
+
+          // Reset the session after extracting token data
           if (request.yar) {
             request.yar.reset();
           }
-
-          const { url } = request.params;
-          const form = server.app.forms[url];
-          let startPage = `/${url}`;
 
           const title = "timeout";
           return h.view(title, {

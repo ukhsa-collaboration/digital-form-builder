@@ -28,6 +28,7 @@ const partition = "cache";
 enum ADDITIONAL_IDENTIFIER {
   Confirmation = ":confirmation",
   Frozen = ":frozen",
+  TimeoutToken = ":timeout_token",
 }
 
 export class CacheService {
@@ -176,6 +177,55 @@ export class CacheService {
     if (request.yar?.id) {
       this.cache.drop(this.Key(request));
     }
+  }
+
+  /**
+   * Saves query parameters and pre-population fields with a timeout token
+   * This allows pre-population parameters to be recovered when a session times out
+   * and a new session is created
+   */
+  async saveTimeoutTokenData(
+    request: HapiRequest,
+    queryParams: Record<string, any>,
+    token: string
+  ): Promise<void> {
+    const timeoutTokenKey = {
+      segment: partition,
+      id: `timeout_token:${token}`,
+    };
+
+    // Store the query parameters with a short TTL (5 minutes)
+    // This gives users time to click "Start application again" after timeout
+    const timeoutTokenTTL = 5 * 60 * 1000;
+
+    await this.cache.set(timeoutTokenKey, queryParams, timeoutTokenTTL);
+  }
+
+  /**
+   * Retrieves query parameters that were saved before session timeout
+   */
+  async getTimeoutTokenData(
+    token: string
+  ): Promise<Record<string, any> | null> {
+    const timeoutTokenKey = {
+      segment: partition,
+      id: `timeout_token:${token}`,
+    };
+
+    const data = await this.cache.get(timeoutTokenKey);
+    return data || null;
+  }
+
+  /**
+   * Clears the timeout token data after it's been used
+   */
+  async clearTimeoutTokenData(token: string): Promise<void> {
+    const timeoutTokenKey = {
+      segment: partition,
+      id: `timeout_token:${token}`,
+    };
+
+    await this.cache.drop(timeoutTokenKey);
   }
 
   /**
