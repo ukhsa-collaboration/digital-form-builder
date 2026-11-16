@@ -1,5 +1,6 @@
 import * as Code from "@hapi/code";
 import * as Lab from "@hapi/lab";
+import Joi from "joi";
 import { Fieldset } from "server/plugins/engine/components/Fieldset";
 const lab = Lab.script();
 exports.lab = lab;
@@ -208,6 +209,46 @@ suite("Fieldset", () => {
       );
 
       expect(line1Item?.value).to.equal("123 Street");
+    });
+  });
+
+  describe("synthetic carrier field", () => {
+    it("is rendered as a hidden input rather than an unlabelled text input", () => {
+      const fieldset = new Fieldset(
+        componentDefinitionWithValidation,
+        formModel
+      );
+
+      const viewModel = fieldset.getViewModel({ lang: "en" } as any, undefined);
+      const carrier: any = viewModel.items.find(
+        (item: any) => item.name === "address"
+      );
+
+      expect(carrier.type).to.equal("hidden");
+    });
+
+    it("still triggers the minRequired cross-field validation", () => {
+      const fieldset = new Fieldset(
+        componentDefinitionWithValidation,
+        formModel
+      );
+      const schema = Joi.object().keys(fieldset.getFormSchemaKeys());
+
+      const empty = schema.validate(
+        { line1: "", line2: "", address: "" },
+        { abortEarly: false }
+      );
+      const filled = schema.validate({
+        line1: "123 Street",
+        line2: "",
+        address: "",
+      });
+      const carrierError = empty.error?.details.find(
+        (d) => d.path[0] === "address"
+      );
+
+      expect(carrierError?.message).to.equal("Enter at least one line");
+      expect(filled.error).to.equal(undefined);
     });
   });
 });

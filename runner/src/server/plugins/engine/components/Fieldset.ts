@@ -28,15 +28,14 @@ export class Fieldset extends FormComponent {
           ...components,
           // Hidden carrier field for validation to attach
           // to as Joi only runs validators on keys present in the
-          // payload. Removing this field disables validation
+          // payload. Removing this field disables validation.
+          // Rendered as <input type="hidden"> so it needs no label.
           {
-            type: "TextField" as const,
+            type: "HiddenField" as const,
             name: this.name,
             title: this.title,
             schema: {},
             options: {
-              classes: "govuk-!-display-none",
-              hideTitle: true,
               disableChangingFromSummary: true,
               allowPrePopulationOverwrite: true,
               required: false,
