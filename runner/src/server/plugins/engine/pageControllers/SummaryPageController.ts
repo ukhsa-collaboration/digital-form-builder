@@ -91,11 +91,8 @@ export class SummaryPageController extends PageController {
         }
       }
 
-      const { progress = [] } = state;
-
       if (!this.disableBackLink) {
-        viewModel.backLink =
-          progress[progress.length - 1] ?? this.backLinkFallback;
+        viewModel.backLink = this.model.getSummaryBackLink(this, state);
       }
 
       return h.view("summary", viewModel);
@@ -165,10 +162,11 @@ export class SummaryPageController extends PageController {
         summaryViewModel.submissionErrorsByName =
           this.groupErrorsByName(submissionErrors);
 
-        const { progress = [] } = state;
         if (!this.disableBackLink) {
-          summaryViewModel.backLink =
-            progress[progress.length - 1] ?? this.backLinkFallback;
+          summaryViewModel.backLink = this.model.getSummaryBackLink(
+            this,
+            state
+          );
         }
 
         return h.view("summary", summaryViewModel);

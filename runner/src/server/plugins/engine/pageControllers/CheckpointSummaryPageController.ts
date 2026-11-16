@@ -67,7 +67,6 @@ export class CheckpointSummaryPageController extends PageController {
   async summaryViewModel(request: HapiRequest) {
     const { cacheService } = request.services([]);
     const state = await cacheService.getState(request);
-    const { progress = [] } = state;
 
     const { relevantPages } = this.model.getRelevantPages(state);
 
@@ -121,7 +120,7 @@ export class CheckpointSummaryPageController extends PageController {
       page: this,
       pageTitle: this.title,
       sectionTitle: this.section?.title,
-      backLink: progress[progress.length - 1] ?? this.backLinkFallback,
+      backLink: this.model.getSummaryBackLink(this, state),
       name: this.model.name,
       summaryLists,
       showTitle: true,
