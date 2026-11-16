@@ -290,7 +290,7 @@ export class FormModel {
    */
 
   /** Path of the page after `page`, given the answers in `state`. */
-  getNextUrl(page: PageControllerBase, state: any) {
+  getNextUrl(page: PageControllerBase, state: FormSubmissionState) {
     return page.getNext(state);
   }
 
@@ -299,7 +299,7 @@ export class FormModel {
     page: PageControllerBase,
     request: HapiRequest,
     h: HapiResponseToolkit,
-    state: any,
+    state: FormSubmissionState,
     honourReturnUrl?: boolean
   ) {
     const nextPage = page.getNext(state);
@@ -328,7 +328,7 @@ export class FormModel {
   }
 
   /** Back link for summary pages: the last page visited. */
-  getSummaryBackLink(page: PageControllerBase, state: any) {
+  getSummaryBackLink(page: PageControllerBase, state: FormSubmissionState) {
     const { progress = [] } = state;
     return progress[progress.length - 1] ?? page.backLinkFallback;
   }
