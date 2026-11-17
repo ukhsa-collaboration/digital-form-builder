@@ -198,7 +198,7 @@ export default {
               redirectPath = new URL(referrer).pathname;
             }
 
-            const cookieName = form.name || `${id}Page`;
+            const cookieName = form?.name || `${id}Page`;
             const accept = cookies === "accept";
 
             return h.redirect(redirectPath).state(
