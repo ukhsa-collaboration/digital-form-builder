@@ -445,6 +445,8 @@ export class PageControllerBase {
 
   /**
    * Parses the errors from joi.validate so they can be rendered by govuk-frontend templates
+   * Also applies field mapping for composite components that need error links to point to
+   * specific child fields instead of synthetic/hidden fields (e.g., ContactDetailsCollection).
    * @param validationResult - provided by joi.validate
    */
   getErrors(validationResult): FormSubmissionErrors | undefined {
@@ -452,12 +454,27 @@ export class PageControllerBase {
       const isoRegex =
         /\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z)/;
 
+      // Build a map of field names that should be redirected to other fields
+      const fieldMapping: { [key: string]: string } = {};
+      this.components.items.forEach((component: any) => {
+        if (component && typeof component.getErrorFieldMapping === "function") {
+          const mapping = component.getErrorFieldMapping();
+          Object.assign(fieldMapping, mapping);
+        }
+      });
+
       const errorList = validationResult.error.details.map((err) => {
-        const name = err.path
+        let name = err.path
           .map((name: string, index: number) =>
             index > 0 ? `__${name}` : name
           )
           .join("");
+
+        // Apply field mapping if available
+        const mappedName = fieldMapping[name];
+        if (mappedName) {
+          name = mappedName;
+        }
 
         return {
           path: err.path.join("."),
