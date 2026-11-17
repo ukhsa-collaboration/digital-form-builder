@@ -92,9 +92,9 @@ export default {
       server.route([
         {
           method: "get",
-          path: "/{url}/privacy",
+          path: "/{id}/privacy",
           handler: async (_request: HapiRequest, h: HapiResponseToolkit) => {
-            const { url } = _request.params; // Extract the dynamic page parameter
+            const { id: url } = _request.params; // Extract the dynamic page parameter
             const form = server.app.forms[url]; // Gain requested form context
 
             // Catch the default help page before processing further
@@ -120,9 +120,9 @@ export default {
         },
         {
           method: "get",
-          path: "/{url}/cookies",
+          path: "/{id}/cookies",
           handler: async (request: HapiRequest, h: HapiResponseToolkit) => {
-            const { url } = request.params; // Extract the dynamic page parameter
+            const { id: url } = request.params; // Extract the dynamic page parameter
             const cookiesPolicy = request.state.cookies_policy;
             let analytics =
               cookiesPolicy?.analytics === "on" ? "accept" : "reject";
@@ -178,9 +178,9 @@ export default {
               }).required(),
             },
           },
-          path: "/{url}/cookies",
+          path: "/{id}/cookies",
           handler: async (request: HapiRequest, h: HapiResponseToolkit) => {
-            const { url } = request.params; // Extract the dynamic page parameter
+            const { id: url } = request.params; // Extract the dynamic page parameter
 
             const { cookies } = request.payload as CookiePayload;
             const accept = cookies === "accept";
@@ -225,9 +225,9 @@ export default {
 
       server.route({
         method: "get",
-        path: "/{url}/terms-and-conditions",
+        path: "/{id}/terms-and-conditions",
         handler: async (_request: HapiRequest, h: HapiResponseToolkit) => {
-          const { url } = _request.params; // Extract the dynamic page parameter
+          const { id: url } = _request.params; // Extract the dynamic page parameter
 
           const form = server.app.forms[url]; // Gain requested form context
 
@@ -254,27 +254,27 @@ export default {
 
       server.route({
         method: "get",
-        path: "/{url}/accessibility-statement",
+        path: "/{id}/accessibility-statement",
         handler: async (_request: HapiRequest, h: HapiResponseToolkit) => {
-          const { url } = _request.params; // Extract the dynamic page parameter
+          const { id } = _request.params; // Extract the dynamic page parameter
 
-          const form = server.app.forms[url]; // Gain requested form context
+          const form = server.app.forms[id]; // Gain requested form context
 
           // Catch the default help page before processing further
-          if (url === "help") {
+          if (id === "help") {
             return h.view("help/accessibility-statement");
           }
 
           const resolvedUrl = resolveUrl(
-            getGroupByName(url),
+            getGroupByName(id),
             form,
             "accessibility-statement"
           );
 
           return h.view(resolvedUrl, {
             name: form.name,
-            serviceName: form.serviceName,
-            serviceStartPage: form.serviceStartPage,
+            serviceName: form.def.serviceName,
+            serviceStartPage: form.def.startPage,
             feedbackLink: feedbackUrlFromRequest(_request, form, resolvedUrl),
             returnTo: form.returnTo,
             footerLinks: form.def.footerLinks,
@@ -309,24 +309,24 @@ export default {
 
       server.route({
         method: "get",
-        path: "/{url}/timeout",
+        path: "/{id}/timeout",
         handler: async (request: HapiRequest, h: HapiResponseToolkit) => {
           if (request.yar) {
             request.yar.reset();
           }
 
-          const { url } = request.params;
-          const form = server.app.forms[url];
-          let startPage = `/${url}`;
+          const { id } = request.params;
+          const form = server.app.forms[id];
+          let startPage = `/${id}`;
 
           const title = "timeout";
           return h.view(title, {
-            name: form?.name,
-            serviceName: form?.serviceName,
-            serviceStartPage: form.serviceStartPage,
+            name: form?.def.name,
+            serviceName: form?.def.serviceName,
+            serviceStartPage: form.def.startPage,
             startPage: startPage,
             feedbackLink: feedbackUrlFromRequest(request, form, title),
-            returnTo: form.returnTo,
+            returnTo: form.def.returnTo,
           });
         },
       });
