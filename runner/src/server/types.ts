@@ -90,6 +90,12 @@ declare module "@hapi/hapi" {
 
   interface Response {}
 
+  interface PluginProperties {
+    crumb: {
+      generate?: (request: Request, h: ResponseToolkit) => string;
+    };
+  }
+
   interface ServerApplicationState {
     forms: { [key: string]: FormModel };
   }

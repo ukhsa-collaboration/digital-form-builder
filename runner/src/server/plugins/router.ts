@@ -84,6 +84,13 @@ export const findFirstView = (
   return `/help/${view}`;
 };
 
+const CookiePayloadSchema = Joi.object({
+  cookies: Joi.string()
+    .valid(CookieValue.Accept, CookieValue.Reject)
+    .required(),
+  crumb: Joi.string(),
+}).required();
+
 export default {
   plugin: {
     name: "router",
@@ -94,19 +101,16 @@ export default {
           method: "get",
           path: "/{id}/privacy",
           handler: async (_request: HapiRequest, h: HapiResponseToolkit) => {
-            const { id: url } = _request.params; // Extract the dynamic page parameter
-            const form = server.app.forms[url]; // Gain requested form context
+            const { id } = _request.params; // Extract the dynamic page parameter
+
+            const form = server.app.forms[id]; // Gain requested form context
 
             // Catch the default help page before processing further
-            if (url === "help") {
+            if (id === "help") {
               return h.view("help/privacy");
             }
 
-            const resolvedUrl = resolveUrl(
-              getGroupByName(url),
-              form,
-              "privacy"
-            );
+            const resolvedUrl = resolveUrl(getGroupByName(id), form, "privacy");
 
             return h.view(resolvedUrl, {
               name: form.name,
@@ -122,23 +126,20 @@ export default {
           method: "get",
           path: "/{id}/cookies",
           handler: async (request: HapiRequest, h: HapiResponseToolkit) => {
-            const { id: url } = request.params; // Extract the dynamic page parameter
+            const { id } = request.params; // Extract the dynamic page parameter
+
             const cookiesPolicy = request.state.cookies_policy;
-            let analytics =
+            const analytics =
               cookiesPolicy?.analytics === "on" ? "accept" : "reject";
 
-            const form = server.app.forms[url]; // Gain requested form context
+            const form = server.app.forms[id]; // Gain requested form context
 
             // Catch the default help page before processing further
-            if (url === "help") {
+            if (id === "help") {
               return h.view("help/cookies");
             }
 
-            const resolvedUrl = resolveUrl(
-              getGroupByName(url),
-              form,
-              "cookies"
-            );
+            const resolvedUrl = resolveUrl(getGroupByName(id), form, "cookies");
 
             return h.view(resolvedUrl, {
               analytics,
@@ -160,48 +161,45 @@ export default {
           options: {
             payload: {
               parse: true,
-              multipart: true,
+              multipart: { output: "data" },
               failAction: async (
                 request: HapiRequest,
                 h: HapiResponseToolkit
               ) => {
                 request.server.plugins.crumb.generate?.(request, h);
+
                 return h.continue;
               },
             },
             validate: {
-              payload: Joi.object({
-                cookies: Joi.string()
-                  .valid(CookieValue.Accept, CookieValue.Reject)
-                  .required(),
-                crumb: Joi.string(),
-              }).required(),
+              payload: CookiePayloadSchema,
             },
           },
           path: "/{id}/cookies",
           handler: async (request: HapiRequest, h: HapiResponseToolkit) => {
-            const { id: url } = request.params; // Extract the dynamic page parameter
+            const { id } = request.params; // Extract the dynamic page parameter
 
             const { cookies } = request.payload as CookiePayload;
-            const accept = cookies === "accept";
 
             const { referrer } = getRequestInfo(request);
-            const form = server.app.forms[url]; // Gain requested form context
 
-            let redirectPath = `/${url}/cookies`;
+            const form = server.app.forms[id]; // Gain requested form context
+
+            let redirectPath = `/${id}/cookies`;
 
             // Catch the default help page before processing further
-            if (url === "help") {
+            if (id === "help") {
               redirectPath = "help/cookies";
             } else {
-              redirectPath = resolveUrl(getGroupByName(url), form, "cookies");
+              redirectPath = resolveUrl(getGroupByName(id), form, "cookies");
             }
 
             if (referrer) {
               redirectPath = new URL(referrer).pathname;
             }
 
-            const cookieName = form?.name || `${url}Page`;
+            const cookieName = form.name || `${id}Page`;
+            const accept = cookies === "accept";
 
             return h.redirect(redirectPath).state(
               "cookies_policy",
@@ -227,17 +225,17 @@ export default {
         method: "get",
         path: "/{id}/terms-and-conditions",
         handler: async (_request: HapiRequest, h: HapiResponseToolkit) => {
-          const { id: url } = _request.params; // Extract the dynamic page parameter
+          const { id } = _request.params; // Extract the dynamic page parameter
 
-          const form = server.app.forms[url]; // Gain requested form context
+          const form = server.app.forms[id]; // Gain requested form context
 
           // Catch the default help page before processing further
-          if (url === "help") {
+          if (id === "help") {
             return h.view("help/terms-and-conditions");
           }
 
           const resolvedUrl = resolveUrl(
-            getGroupByName(url),
+            getGroupByName(id),
             form,
             "terms-and-conditions"
           );
@@ -274,7 +272,7 @@ export default {
           return h.view(resolvedUrl, {
             name: form.name,
             serviceName: form.def.serviceName,
-            serviceStartPage: form.def.startPage,
+            serviceStartPage: form.serviceStartPage,
             feedbackLink: feedbackUrlFromRequest(_request, form, resolvedUrl),
             returnTo: form.returnTo,
             footerLinks: form.def.footerLinks,
@@ -289,7 +287,9 @@ export default {
           if (request.yar) {
             request.yar.reset();
           }
+
           const { redirect } = request.query;
+
           return redirectTo(request, h, redirect || "/");
         },
       });
@@ -303,6 +303,7 @@ export default {
           await destroySession(request, cacheService);
 
           const { redirect } = request.query;
+
           return redirectTo(request, h, redirect || "/");
         },
       });
@@ -316,14 +317,15 @@ export default {
           }
 
           const { id } = request.params;
-          const form = server.app.forms[id];
-          let startPage = `/${id}`;
 
+          const form = server.app.forms[id];
+          const startPage = `/${id}`;
           const title = "timeout";
+
           return h.view(title, {
-            name: form?.def.name,
-            serviceName: form?.def.serviceName,
-            serviceStartPage: form.def.startPage,
+            name: form.def.name,
+            serviceName: form.def.serviceName,
+            serviceStartPage: form.serviceStartPage,
             startPage: startPage,
             feedbackLink: feedbackUrlFromRequest(request, form, title),
             returnTo: form.def.returnTo,
@@ -340,18 +342,22 @@ function feedbackUrlFromRequest(
   title: string
 ): string | void {
   const feedbackUrl = form.def.feedback?.url as any;
+
   if (feedbackUrl) {
     if (feedbackUrl.startsWith("http")) {
       return feedbackUrl;
     }
 
     const relativeFeedbackUrl = new RelativeUrl(feedbackUrl);
+
     const returnInfo = new FeedbackContextInfo(
       form.name,
       title,
       `${request.url.pathname}${request.url.search}`
     );
+
     relativeFeedbackUrl.setParam(feedbackReturnInfoKey, returnInfo.toString());
+
     return relativeFeedbackUrl.toString();
   }
 

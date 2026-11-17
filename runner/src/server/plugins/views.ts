@@ -10,8 +10,6 @@ import { HapiRequest } from "../types";
 import additionalContexts from "../templates/additionalContexts.json";
 import srsContexts from "../templates/srsContexts.json";
 
-const basedir = path.join(process.cwd(), "..");
-
 const getFeedbackLink = (request?: HapiRequest, model?: any) => {
   const formFeedbackLink =
     request?.url && model

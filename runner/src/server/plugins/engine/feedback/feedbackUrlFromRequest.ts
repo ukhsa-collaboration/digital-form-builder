@@ -1,19 +1,10 @@
+import { FormModel } from "../models";
 import { FeedbackContextInfo } from "./FeedbackContextInfo";
 import { RelativeUrl } from "./RelativeUrl";
 
-type FeedbackForm = {
-  name: string;
-  def: {
-    feedback?: {
-      url?: string;
-      emailAddress?: string;
-    };
-  };
-};
-
 export function feedbackUrlFromRequest(
   request: { url: { pathname: string; search: string } },
-  form: FeedbackForm | undefined,
+  form: FormModel | undefined,
   pageTitle: string
 ): string | void {
   if (!form) {
