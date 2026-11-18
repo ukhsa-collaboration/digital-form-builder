@@ -5,11 +5,23 @@ import vision from "@hapi/vision";
 
 import pkg from "../../../package.json";
 import config from "../config";
+import { feedbackUrlFromRequest } from "./engine/feedback";
 import { HapiRequest } from "../types";
 import additionalContexts from "../templates/additionalContexts.json";
 import srsContexts from "../templates/srsContexts.json";
 
-const basedir = path.join(process.cwd(), "..");
+const getFeedbackLink = (request?: HapiRequest, model?: any) => {
+  const formFeedbackLink =
+    request?.url && model
+      ? feedbackUrlFromRequest(
+          request,
+          model,
+          model.def?.serviceName || config.serviceName
+        )
+      : undefined;
+
+  return formFeedbackLink || config.feedbackLink;
+};
 
 export default {
   plugin: vision,
@@ -79,7 +91,7 @@ export default {
         returnTo:
           request?.server?.app?.forms?.[request.params?.id]?.def?.returnTo ||
           false,
-        feedbackLink: config.feedbackLink,
+        feedbackLink: getFeedbackLink(request, model),
         pageTitle:
           (request?.server?.app?.forms?.[request.params?.id]?.def
             ?.serviceName || config.serviceName) + " - GOV.UK",
@@ -100,6 +112,7 @@ export default {
           "#",
         privacyPolicyUrl: config.privacyPolicyUrl || "/help/privacy",
         phaseTag: config.phaseTag,
+        footerLinks: model?.def?.footerLinks,
         navigation: request?.auth.isAuthenticated
           ? [{ text: "Sign out", href: "/logout" }]
           : null,
