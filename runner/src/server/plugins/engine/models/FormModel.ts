@@ -23,6 +23,14 @@ import {
 } from "../pageControllers";
 import { PageController } from "../pageControllers/PageController";
 import { FormSubmissionState } from "../types";
+import { resolveConditionalValue } from "../conditionalValue";
+import { HapiRequest, HapiResponseToolkit } from "server/types";
+import {
+  getBackLink,
+  getReturnUrl,
+  normalizeUrlPath,
+  proceed,
+} from "../helpers";
 
 class EvaluationContext {
   constructor(conditions, value) {
@@ -274,6 +282,103 @@ export class FormModel {
 
   getContextState(state: FormSubmissionState) {
     return this.fieldsForContext.getFormDataFromState(state);
+  }
+
+  /**
+   * Navigation seam: every next / Back / `returnUrl` decision made by page
+   * controllers goes through the methods below, so a model can override them.
+   */
+
+  /** Path of the page after `page`, given the answers in `state`. */
+  getNextUrl(page: PageControllerBase, state: FormSubmissionState) {
+    return page.getNext(state);
+  }
+
+  /** Redirects to the next page, or to `returnUrl` when it is honoured. */
+  proceed(
+    page: PageControllerBase,
+    request: HapiRequest,
+    h: HapiResponseToolkit,
+    state: FormSubmissionState,
+    honourReturnUrl?: boolean
+  ) {
+    const nextPage = page.getNext(state);
+    const nextUrl = (nextPage as any)?.redirect ?? nextPage;
+    const resolvedHonorReturnURL = resolveConditionalValue(
+      page.honorReturnURL,
+      state,
+      this.conditions,
+      true
+    );
+    const shouldHonourReturnUrl =
+      honourReturnUrl ??
+      resolvedHonorReturnURL ??
+      getReturnUrl(request) !== undefined;
+
+    return proceed(request, h, nextUrl, shouldHonourReturnUrl);
+  }
+
+  /** Back link for a page, from the session's page history. */
+  getBackLink(
+    page: PageControllerBase,
+    request: HapiRequest,
+    progress: string[]
+  ) {
+    return getBackLink(request, progress, page.backLinkFallback);
+  }
+
+  /** Back link for summary pages: the last page visited. */
+  getSummaryBackLink(page: PageControllerBase, state: FormSubmissionState) {
+    const { progress = [] } = state;
+    return progress[progress.length - 1] ?? page.backLinkFallback;
+  }
+
+  /** Page history after the user visits `page`. */
+  recordVisit(
+    page: PageControllerBase,
+    request: HapiRequest,
+    progress: string[]
+  ): string[] {
+    const currentPath = `/${this.basePath}${page.path}${request.url.search}`;
+    const history = progress.map(normalizeUrlPath);
+    const normalizedCurrentPath = normalizeUrlPath(currentPath);
+    const lastVisited = history[history.length - 1];
+
+    if (!lastVisited || lastVisited !== normalizedCurrentPath) {
+      const priorIndex = history.lastIndexOf(normalizedCurrentPath);
+
+      // Revisiting an earlier page truncates history, except via a Change link.
+      if (priorIndex !== -1 && !getReturnUrl(request)) {
+        history.length = priorIndex + 1;
+      } else {
+        history.push(normalizedCurrentPath);
+      }
+    }
+
+    return history;
+  }
+
+  /** Whether the user has visited any page yet in this session. */
+  hasStarted(state: FormSubmissionState) {
+    return (state.progress ?? []).length > 0;
+  }
+
+  /** Page history after the user is sent to the page at `path`. */
+  pushVisit(state: FormSubmissionState, path: string) {
+    return [...(state.progress ?? []), path];
+  }
+
+  /** Page history of a freshly restarted session. */
+  startOfJourney() {
+    return [normalizeUrlPath(`/${this.basePath}${this.def.startPage}`)];
+  }
+
+  /** Whether a restarted session has any page visited beyond the start page. */
+  hasProgressedBeyondStart(state: FormSubmissionState) {
+    const startPath = this.startOfJourney()[0].split("?")[0];
+    return (state.progress ?? []).some(
+      (path) => normalizeUrlPath(path).split("?")[0] !== startPath
+    );
   }
 
   getRelevantPages(state: FormSubmissionState) {

@@ -4,11 +4,8 @@ import { validationOptions } from "server/plugins/engine/pageControllers/validat
 
 import {
   feedbackReturnInfoKey,
-  getBackLink,
   getReturnUrl,
   handleFieldsetErrors,
-  normalizeUrlPath,
-  proceed,
   redirectTo,
 } from "../helpers";
 import { ComponentCollection } from "../components/ComponentCollection";
@@ -38,7 +35,7 @@ import Joi from "joi";
 import Jwt from "@hapi/jwt";
 import { verifyHmacToken } from "../../initialiseSession/helpers";
 import { extractAddressContext } from "../utils/addressUtils";
-import { ConditionalCase, resolveConditionalValue } from "../conditionalValue";
+import { ConditionalCase } from "../conditionalValue";
 import { destroySession } from "server/utils/correlationId";
 
 const FORM_SCHEMA = Symbol("FORM_SCHEMA");
@@ -592,7 +589,7 @@ export class PageControllerBase {
       const shouldRedirectToStartPage =
         !this.model.options.previewMode &&
         !this.skipStartPageRedirect() &&
-        progress.length === 0 &&
+        !this.model.hasStarted(state) &&
         !request.pre.hasPrepopulatedSessionFromQueryParameter &&
         !isStartPage &&
         !isInitialisedSession;
@@ -725,24 +722,11 @@ export class PageControllerBase {
        * duplicate - otherwise the detour pages linger forever and the back link
        * cycles through stale pages instead of leaving the loop.
        */
-      const normalizedProgress = progress.map(normalizeUrlPath);
-      const normalizedCurrentPath = normalizeUrlPath(currentPath);
-      const lastVisited = normalizedProgress[normalizedProgress.length - 1];
-      const isChangeLinkVisit = !!getReturnUrl(request);
-
-      if (!lastVisited || lastVisited !== normalizedCurrentPath) {
-        const priorIndex = normalizedProgress.lastIndexOf(
-          normalizedCurrentPath
-        );
-
-        // If we've visited this page before and it's not a change link visit,
-        // truncate the progress to the last occurrence of this page to avoid duplicates.
-        if (priorIndex !== -1 && !isChangeLinkVisit) {
-          normalizedProgress.length = priorIndex + 1;
-        } else {
-          normalizedProgress.push(normalizedCurrentPath);
-        }
-      }
+      const normalizedProgress = this.model.recordVisit(
+        this,
+        request,
+        progress
+      );
 
       await cacheService.mergeState(request, {
         progress: normalizedProgress,
@@ -754,10 +738,10 @@ export class PageControllerBase {
       if (this.disableBackLink) {
         viewModel.backLink = undefined;
       } else {
-        viewModel.backLink = getBackLink(
+        viewModel.backLink = this.model.getBackLink(
+          this,
           request,
-          normalizedProgress,
-          this.backLinkFallback
+          normalizedProgress
         );
       }
 
@@ -931,9 +915,7 @@ export class PageControllerBase {
     await destroySession(request, cacheService);
 
     await cacheService.mergeState(request, {
-      progress: [
-        normalizeUrlPath(`/${this.model.basePath}${this.model.def.startPage}`),
-      ],
+      progress: this.model.startOfJourney(),
     });
   }
 
@@ -950,17 +932,7 @@ export class PageControllerBase {
       if (this.restartSessionOnSubmit && isStartPage) {
         const state = await cacheService.getState(request);
 
-        const normalizedStartPage = normalizeUrlPath(
-          `/${this.model.basePath}${startPage}`
-        ).split("?")[0];
-
-        const progress = (state.progress ?? []).map(
-          (path) => normalizeUrlPath(path).split("?")[0]
-        );
-
-        const hasStartedJourney = progress.some(
-          (path) => path !== normalizedStartPage
-        );
+        const hasStartedJourney = this.model.hasProgressedBeyondStart(state);
 
         const schemaState = this.model
           .makeSchema(state)
@@ -1119,22 +1091,7 @@ export class PageControllerBase {
     state,
     honourReturnUrl?: boolean
   ) {
-    const nextPage = this.getNext(state);
-    const nextUrl = nextPage?.redirect ?? nextPage;
-
-    const returnUrl = getReturnUrl(request);
-
-    const resolvedHonorReturnURL = resolveConditionalValue(
-      this.honorReturnURL,
-      state,
-      this.model.conditions,
-      true
-    );
-
-    const shouldHonourReturnUrl =
-      honourReturnUrl ?? resolvedHonorReturnURL ?? returnUrl !== undefined;
-
-    return proceed(request, h, nextUrl, shouldHonourReturnUrl);
+    return this.model.proceed(this, request, h, state, honourReturnUrl);
   }
 
   getPartialMergeState(value) {
@@ -1219,11 +1176,7 @@ export class PageControllerBase {
     if (this.disableBackLink) {
       viewModel.backLink = undefined;
     } else {
-      viewModel.backLink = getBackLink(
-        request,
-        progress,
-        this.backLinkFallback
-      );
+      viewModel.backLink = this.model.getBackLink(this, request, progress);
     }
 
     this.setPhaseTag(viewModel);
