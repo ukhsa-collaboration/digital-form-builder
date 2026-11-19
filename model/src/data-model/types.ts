@@ -267,6 +267,7 @@ export type FormDefinition = {
   phaseBanner?: PhaseBanner;
   fees: Fee[];
   skipSummary?: boolean | undefined;
+  showFilenamesOnSummaryPage?: boolean | undefined;
   outputs: Output[];
   declaration?: string | undefined;
   metadata?: Record<string, any>;

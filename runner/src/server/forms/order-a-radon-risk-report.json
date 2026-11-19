@@ -47,7 +47,7 @@
       "text": "Accessibility Statement"
     },
     {
-      "href": "https://www.ukhsa-protectionservices.org.uk/contact/",
+      "href": "https://www.ukradon.org/contactform",
       "text": "Contact"
     },
     {
@@ -59,7 +59,6 @@
     {
       "title": "Order a radon risk report",
       "path": "/start",
-      "backLinkFallback": "https://www.ukhsa-protectionservices.org.uk/",
       "components": [
         {
           "name": "introText",
@@ -1198,7 +1197,7 @@
         {
           "name": "final links",
           "type": "Para",
-          "content": "<p class=\"govuk-body-m\"><a href=\"https://submit.forms.service.gov.uk/form/266710/radon-services-feedback-form\">What did you think of this service?</a> (takes 30 seconds)</p><p class=\"govuk-body-m\"><a href=\"https://www.ukhsa-protectionservices.org.uk/contact/\">Contact Radon services team</a></p><p class=\"govuk-body-m\"><a href=\"https://www.gov.uk/government/guidance/radon-services-for-homeowners-or-householders\">Go to radon services for homeowners or householders</a></p>"
+          "content": "<p class=\"govuk-body-m\"><a href=\"https://submit.forms.service.gov.uk/form/266710/radon-services-feedback-form\">What did you think of this service?</a> (takes 30 seconds)</p><p class=\"govuk-body-m\"><a href=\"https://www.ukradon.org/contactform\">Contact Radon services team</a></p><p class=\"govuk-body-m\"><a href=\"https://www.gov.uk/guidance/radon-services-for-homeowners-or-householders\">Go to Radon services for homeowners or householders</a></p>"
         }
       ]
     }
@@ -1230,7 +1229,7 @@
       "type": "string",
       "items": [
         {
-          "html": "<p class=\"govuk-body-m\">I agree to the <a href=\"https://www.ukhsa-protectionservices.org.uk/tc/privacy-policy\" target=\"_blank\">Privacy Policy</a> and <a href=\"https://www.ukhsa-protectionservices.org.uk/tc/terms-conditions\" target=\"_blank\">Terms and Conditions</a> for this order.</p>",
+          "html": "<p class=\"govuk-body-m\">I agree to the <a href=\"./privacy\" target=\"_blank\">Privacy Policy (opens in a new tab)</a> and <a href=\"./terms-and-conditions\" target=\"_blank\">Terms and Conditions (opens in a new tab)</a> for this order.</p>",
           "value": "accept"
         }
       ]

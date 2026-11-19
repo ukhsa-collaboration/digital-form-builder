@@ -8,7 +8,6 @@
   "analytics": {
     "gtmId1": "GTM-5ZD9GZWX"
   },
-  "active": false,
   "pages": [
     {
       "path": "/type-of-support",
@@ -249,7 +248,7 @@
           "name": "otherWays",
           "options": {},
           "type": "Para",
-          "content": "<h2 class=\"govuk-heading-m\">Other ways to get in touch</h2><p class=\"govuk-body-m\"><p class=\"govuk-body-m\">Is your issue urgent? Would you prefer to call us? Find the appropriate phone number on our <a href=\"https://www.gov.uk/government/guidance/contact-radiation-protection-sciences\">contact us page</a>.</p>"
+          "content": "<h2 class=\"govuk-heading-m\">Other ways to get in touch</h2><p class=\"govuk-body-m\"><p class=\"govuk-body-m\">Is your issue urgent? Would you prefer to call us? Find the appropriate phone number on our <a href=\"https://www.gov.uk/guidance/contact-radiation-protection-sciences\">contact us page</a>.</p>"
         }
       ],
       "next": [{ "path": "/summary" }],
@@ -285,7 +284,7 @@
           "options": {
             "condition": "ojQCvt"
           },
-          "content": "<p class=\"govuk-body-m\">The <b>{{service}}</b> team will review your enquiry and aim to respond within 5 working days. If your enquiry is urgent, call us using the relevant phone number from our <a href=\"https://www.gov.uk/government/guidance/contact-radiation-protection-sciences\" >contact page.</a></p>"
+          "content": "<p class=\"govuk-body-m\">The <b>{{service}}</b> team will review your enquiry and aim to respond within 5 working days. If your enquiry is urgent, call us using the relevant phone number from our <a href=\"https://www.gov.uk/guidance/contact-radiation-protection-sciences\">contact page.</a></p>"
         },
         {
           "name": "introNoService",
@@ -293,7 +292,7 @@
           "options": {
             "condition": "tvCQjo"
           },
-          "content": "<p class=\"govuk-body-m\">The team will review your enquiry and aim to respond within 5 working days. If your enquiry is urgent, call us using the relevant phone number from our <a href=\"https://www.gov.uk/government/guidance/contact-radiation-protection-sciences\" >contact page.</a></p>"
+          "content": "<p class=\"govuk-body-m\">The team will review your enquiry and aim to respond within 5 working days. If your enquiry is urgent, call us using the relevant phone number from our <a href=\"https://www.gov.uk/guidance/contact-radiation-protection-sciences\">contact page.</a></p>"
         },
         {
           "name": "tableService",
@@ -822,7 +821,7 @@
       "text": "Accessibility Statement"
     },
     {
-      "href": "https://www.gov.uk/government/guidance/contact-radiation-protection-sciences",
+      "href": "https://www.gov.uk/guidance/contact-radiation-protection-sciences",
       "text": "Contact"
     }
   ],
