@@ -27,6 +27,7 @@ export class HiddenField extends FormComponent {
     const { options } = this as any;
     return {
       attributes: {},
+      type: "hidden",
       id: this.name,
       name: this.name,
       value: options.value ?? formData[this.name] ?? "",

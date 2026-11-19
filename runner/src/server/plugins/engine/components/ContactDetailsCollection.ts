@@ -83,15 +83,14 @@ export class ContactDetailsCollection extends FormComponent {
         // Hidden carrier field for the "at least one" cross-field rule.
         // attaches the custom validator to this name, and Joi only runs
         // validators on keys present in the payload. Removing this field
-        // silently disables the cross-field check.
+        // silently disables the cross-field check. Rendered as
+        // <input type="hidden"> so it needs no label (WCAG / WAVE).
         {
-          type: "TextField",
+          type: "HiddenField",
           name: this.name,
           title: "Contact details",
           schema: {},
           options: {
-            classes: "govuk-!-display-none",
-            hideTitle: true,
             disableChangingFromSummary: true,
             allowPrePopulationOverwrite: true,
             required: false,
