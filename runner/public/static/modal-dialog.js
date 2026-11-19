@@ -25,6 +25,7 @@
     idleMinutesBeforeTimeOut: $('#js-modal-dialog').data('minutes-idle-timeout'),
     timeOutRedirectUrl: $('#js-modal-dialog').data('url-redirect'),
     minutesTimeOutModalVisible: $('#js-modal-dialog').data('minutes-modal-visible'),
+    timeoutToken: $('#js-modal-dialog').data('timeout-token'),
     timeUserLastInteractedWithPage: '',
 
     bindUIElements: function () {
@@ -279,7 +280,14 @@
       }
     },
     redirect: function () {
-      window.location.replace(GOVUKFrontend.modalDialog.timeOutRedirectUrl)
+      let redirectUrl = GOVUKFrontend.modalDialog.timeOutRedirectUrl;
+      
+      // Add timeout token if available
+      if (GOVUKFrontend.modalDialog.timeoutToken) {
+        redirectUrl += '?timeoutToken=' + encodeURIComponent(GOVUKFrontend.modalDialog.timeoutToken);
+      }
+      
+      window.location.replace(redirectUrl);
     },
     numberToWords: function (n) {
       var string = n.toString()

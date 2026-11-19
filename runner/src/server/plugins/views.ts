@@ -2,6 +2,7 @@ import path from "path";
 import resolve from "resolve";
 import nunjucks from "nunjucks";
 import vision from "@hapi/vision";
+import crypto from "crypto";
 
 import pkg from "../../../package.json";
 import config from "../config";
@@ -63,11 +64,37 @@ export default {
     // Keep every request-dependent value below guarded with `?.`, falling
     // back to a config default -- #384 broke this by adding unguarded
     // lookups, not realising request itself could be missing.
-    context: (request?: HapiRequest) => {
+    context: async (request?: HapiRequest) => {
       const id = request?.params?.id;
       const forms = request?.server?.app?.forms;
       const model = id && forms?.[id];
       const analytics = model?.def?.analytics || {};
+
+      // Generate a timeout token for this page request to preserve query params on timeout
+      let timeoutToken = "";
+      if (request?.services) {
+        const { cacheService } = request.services([]);
+        const state = await cacheService.getState(request);
+        const prePopFields = model?.fieldsForPrePopulation || {};
+
+        // Extract only the pre-population fields from state
+        const timeoutQueryParams: Record<string, any> = {};
+        Object.keys(prePopFields).forEach((key) => {
+          if (state[key] !== undefined && state[key] !== null) {
+            timeoutQueryParams[key] = state[key];
+          }
+        });
+
+        // Generate and cache the timeout token if there are fields to pre-populate
+        if (Object.keys(timeoutQueryParams).length > 0) {
+          timeoutToken = crypto.randomBytes(32).toString("hex");
+          await cacheService.saveTimeoutTokenData(
+            request,
+            timeoutQueryParams,
+            timeoutToken
+          );
+        }
+      }
 
       return {
         appVersion: pkg.version,
@@ -103,6 +130,7 @@ export default {
         navigation: request?.auth.isAuthenticated
           ? [{ text: "Sign out", href: "/logout" }]
           : null,
+        timeoutToken,
       };
     },
   },
