@@ -445,8 +445,7 @@ export class PageControllerBase {
 
   /**
    * Parses the errors from joi.validate so they can be rendered by govuk-frontend templates
-   * Also applies field mapping for composite components that need error links to point to
-   * specific child fields instead of synthetic/hidden fields (e.g., ContactDetailsCollection).
+   * Also applies field mapping for error links of synthetic/hidden fields (e.g., ContactDetailsCollection).
    * @param validationResult - provided by joi.validate
    */
   getErrors(validationResult): FormSubmissionErrors | undefined {
@@ -470,7 +469,6 @@ export class PageControllerBase {
           )
           .join("");
 
-        // Apply field mapping if available
         const mappedName = fieldMapping[name];
         if (mappedName) {
           name = mappedName;

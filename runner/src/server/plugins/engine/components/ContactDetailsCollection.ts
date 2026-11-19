@@ -170,13 +170,7 @@ export class ContactDetailsCollection extends FormComponent {
       .join(", ");
   }
 
-  /**
-   * Maps error field names to the first visible child component.
-   * When validation fails on the synthetic carrier field (this.name),
-   * the error should link to the first child (mobile_number).
-   * This ensures error summary links work correctly when clicking on
-   * the "Provide a mobile number, email or both" error message.
-   */
+  // Error mapping workaround for hidden ContactDetailsCollection synthetic field
   getErrorFieldMapping(): { [key: string]: string } {
     const firstChild = this.children.items[0];
     if (firstChild && "name" in firstChild) {
