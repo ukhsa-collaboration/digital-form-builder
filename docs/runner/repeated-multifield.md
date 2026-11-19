@@ -130,3 +130,9 @@ Sets a custom title on the separate repeat summary page.
 Type: `string` — Default: none
 
 By default, users add another item using an **Add another** button. If you set this parameter, the button is replaced with a yes/no question, and the string you pass becomes the question text.
+
+Set it at `options.summaryDisplayMode.yesNoSummaryQuestion`. The question supports Nunjucks expressions evaluated against the current saved form state, just like `customText.separatePageTitle`.
+
+For example, `"Do {{ PersonalInformation.for }} live with other people?"` renders as "Do you live with other people?" when `PersonalInformation.for` is `"you"`, or "Do they live with other people?" when it is `"they"`.
+
+Filters and conditional expressions are also supported, for example `"Have {{ PersonalInformation.for | default('you', true) }} been in close contact with anyone else?"`. The question is rendered again when validation errors are displayed. Plain-text questions continue to work unchanged.
