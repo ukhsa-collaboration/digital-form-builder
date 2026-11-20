@@ -82,6 +82,7 @@ const index = {
 
             viewModel.name = form.name;
             viewModel.feedbackLink = form.def.feedback?.url;
+            viewModel.footerLinks = form.def.footerLinks;
 
             const confirmationTimeout =
               form.def.confirmationSessionTimeout ??

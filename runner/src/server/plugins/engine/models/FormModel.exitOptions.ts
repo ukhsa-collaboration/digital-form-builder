@@ -1,10 +1,11 @@
-import { FormModel } from "server/plugins/engine/models/FormModel";
+import { FormDefinition } from "@xgovformbuilder/model";
 import { callbackValidation } from "server/plugins/initialiseSession/helpers";
+
 export class ExitOptions {
   url: string;
   format?: "STATE" | "WEBHOOK";
 
-  constructor(exitOptions: FormModel["exitOptions"]) {
+  constructor(exitOptions: FormDefinition["exitOptions"]) {
     const { value, error } = callbackValidation().validate(exitOptions.url);
     if (error) {
       throw new Error(
