@@ -170,6 +170,17 @@ export class ContactDetailsCollection extends FormComponent {
       .join(", ");
   }
 
+  // Error mapping workaround for hidden ContactDetailsCollection synthetic field
+  getErrorFieldMapping(): { [key: string]: string } {
+    const firstChild = this.children.items[0];
+    if (firstChild && "name" in firstChild) {
+      return {
+        [this.name]: (firstChild as any).name,
+      };
+    }
+    return {};
+  }
+
   getViewModel(formData: FormData, errors: FormSubmissionErrors) {
     const viewModel = super.getViewModel(formData, errors);
 
