@@ -5,7 +5,11 @@ import { HapiRequest, HapiResponseToolkit } from "../types";
 import getRequestInfo from "server/utils/getRequestInfo";
 import { destroySession } from "server/utils/correlationId";
 import { FormModel } from "server/plugins/engine/models";
-import { feedbackReturnInfoKey } from "./engine/helpers";
+import {
+  feedbackReturnInfoKey,
+  getTimeoutParams,
+  toQueryString,
+} from "./engine/helpers";
 import { FeedbackContextInfo, RelativeUrl } from "./engine/feedback";
 
 import fs from "fs";
@@ -319,7 +323,10 @@ export default {
           const { id } = request.params;
 
           const form = server.app.forms[id];
-          const startPage = `/${id}`;
+          const queryString = toQueryString(
+            getTimeoutParams(form.fieldsForPrePopulation, request.query)
+          );
+          const startPage = queryString ? `/${id}?${queryString}` : `/${id}`;
           const title = "timeout";
 
           return h.view(title, {

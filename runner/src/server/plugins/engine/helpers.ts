@@ -180,6 +180,42 @@ export function getValidStateFromQueryParameters(
 }
 
 /**
+ * Query parameters carried over to the timeout page so they can be re-applied when the user starts again.
+ * Keep in sync with KEYS in runner/public/static/prepop-params.js.
+ */
+export const timeoutPreservedParamKeys = ["r", "d"];
+
+/**
+ * Returns only the preserved query parameters that are valid pre-population fields for the form.
+ * Existing session state is deliberately ignored so values already in the session are still returned.
+ */
+export function getTimeoutParams(
+  prePopFields: Record<string, any> = {},
+  query: Record<string, any> = {}
+): Record<string, string> {
+  const picked = timeoutPreservedParamKeys.reduce<Record<string, string>>(
+    (acc, key) => {
+      const value = query[key];
+      if (typeof value === "string") {
+        acc[key] = value;
+      }
+      return acc;
+    },
+    {}
+  );
+
+  if (Object.keys(picked).length === 0) {
+    return {};
+  }
+
+  return getValidStateFromQueryParameters(prePopFields, picked);
+}
+
+export function toQueryString(params: Record<string, string>) {
+  return new URLSearchParams(params).toString();
+}
+
+/**
  * Link the errors to their first child field to allow scrolling to the error but still display error on fieldset
  * @param errors Form submission errors
  * @param fieldsetFields Fieldset components on page

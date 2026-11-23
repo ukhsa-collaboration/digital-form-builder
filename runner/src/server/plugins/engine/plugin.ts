@@ -6,7 +6,11 @@ import { shouldLogin } from "server/plugins/auth";
 import { HapiRequest, HapiResponseToolkit, HapiServer } from "server/types";
 import config from "../../config";
 import { RenderingError } from "./errors";
-import { getValidStateFromQueryParameters, redirectTo } from "./helpers";
+import {
+  getTimeoutParams,
+  getValidStateFromQueryParameters,
+  redirectTo,
+} from "./helpers";
 import { FormModel } from "./models";
 import * as exit from "./pluginHandlers/exit";
 import {
@@ -202,6 +206,11 @@ export const plugin = {
         Object.keys(prePopFields).length === 0
       ) {
         return h.continue;
+      }
+
+      const timeoutParams = getTimeoutParams(prePopFields, query);
+      if (Object.keys(timeoutParams).length > 0) {
+        request.yar?.set(`prePopParams:${id}`, timeoutParams);
       }
 
       const { cacheService } = request.services([]);
