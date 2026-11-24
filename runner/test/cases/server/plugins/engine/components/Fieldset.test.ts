@@ -213,18 +213,24 @@ suite("Fieldset", () => {
   });
 
   describe("synthetic carrier field", () => {
-    it("is rendered as a hidden input rather than an unlabelled text input", () => {
+    it("is exposed via hiddenFields (not items), so it is rendered as a hidden input", () => {
       const fieldset = new Fieldset(
         componentDefinitionWithValidation,
         formModel
       );
 
-      const viewModel = fieldset.getViewModel({ lang: "en" } as any, undefined);
-      const carrier: any = viewModel.items.find(
-        (item: any) => item.name === "address"
+      const viewModel: any = fieldset.getViewModel(
+        { lang: "en" } as any,
+        undefined
+      );
+      const carrier: any = viewModel.hiddenFields.find(
+        (item: any) => item.model.name === "address"
       );
 
-      expect(carrier.type).to.equal("hidden");
+      expect(carrier.type).to.equal("HiddenField");
+      expect(viewModel.items.some((i: any) => i.name === "address")).to.equal(
+        false
+      );
     });
 
     it("still triggers the minRequired cross-field validation", () => {

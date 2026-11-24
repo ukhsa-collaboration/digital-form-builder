@@ -171,8 +171,17 @@ export class Fieldset extends FormComponent {
         ? { ...formData, ...nestedState }
         : formData;
 
-    const componentViewModels = this.children
-      .getViewModel(childFormData, childErrors)
+    const childViewModels = this.children.getViewModel(
+      childFormData,
+      childErrors
+    );
+    // Hidden children are rendered through the standard component pipeline
+    // (componentList) rather than as visible inputs.
+    const hiddenFields = childViewModels.filter(
+      (vm) => vm.type === "HiddenField"
+    );
+    const componentViewModels = childViewModels
+      .filter((vm) => vm.type !== "HiddenField")
       .map((vm) => vm.model);
 
     componentViewModels.forEach((viewModel: any) => {
@@ -187,6 +196,7 @@ export class Fieldset extends FormComponent {
       ...viewModel,
       fieldset: { legend: viewModel.label },
       items: componentViewModels as unknown as ListItem[],
+      hiddenFields,
     };
   }
 }

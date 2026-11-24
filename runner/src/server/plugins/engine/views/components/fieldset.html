@@ -1,5 +1,6 @@
 {% from "input/macro.njk" import govukInput %}
 {% from "fieldset/macro.njk" import govukFieldset %}
+{% from "../partials/components.html" import componentList %}
 
 {% macro Fieldset(component) %}
   <div class="govuk-form-group {{ 'govuk-form-group--error' if component.model.errorMessage }}">
@@ -21,9 +22,6 @@
       {% endif %}
 
       {% for item in component.model.items %}
-        {% if item.type == "hidden" %}
-          <input type="hidden" id="{{ item.id }}" name="{{ item.name }}" value="{{ item.value }}">
-        {% else %}
         {{ govukInput({
           label: item.label,
           hint: item.hint,
@@ -35,8 +33,8 @@
           autocomplete: item.autocomplete,
           errorMessage: item.errorMessage
         }) }}
-        {% endif %}
       {% endfor %}
+      {{ componentList(component.model.hiddenFields) }}
     {% endcall %}
   </div>
 {% endmacro %}

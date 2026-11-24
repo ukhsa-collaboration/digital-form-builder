@@ -181,8 +181,14 @@ export class ContactDetailsCollection extends FormComponent {
         }
       : errors;
 
-    const componentViewModels = this.children
-      .getViewModel(formData, childErrors)
+    const childViewModels = this.children.getViewModel(formData, childErrors);
+    // Hidden children are rendered through the standard component pipeline
+    // (componentList) rather than as visible inputs.
+    const hiddenFields = childViewModels.filter(
+      (vm) => vm.type === "HiddenField"
+    );
+    const componentViewModels = childViewModels
+      .filter((vm) => vm.type !== "HiddenField")
       .map((vm) => vm.model);
 
     componentViewModels.forEach((cvm: any) => {
@@ -195,6 +201,7 @@ export class ContactDetailsCollection extends FormComponent {
       ...viewModel,
       fieldset: { legend: viewModel.label },
       items: componentViewModels as unknown as ListItem[],
+      hiddenFields,
     };
   }
 }
