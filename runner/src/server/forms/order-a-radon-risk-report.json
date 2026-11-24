@@ -47,7 +47,7 @@
       "text": "Accessibility Statement"
     },
     {
-      "href": "https://www.ukradon.org/contactform",
+      "href": "https://contact.radiation.ukhsa.gov.uk/radiation-protection-sciences-enquiry",
       "text": "Contact"
     },
     {
@@ -1197,7 +1197,7 @@
         {
           "name": "final links",
           "type": "Para",
-          "content": "<p class=\"govuk-body-m\"><a href=\"https://submit.forms.service.gov.uk/form/266710/radon-services-feedback-form\">What did you think of this service?</a> (takes 30 seconds)</p><p class=\"govuk-body-m\"><a href=\"https://www.ukradon.org/contactform\">Contact Radon services team</a></p><p class=\"govuk-body-m\"><a href=\"https://www.gov.uk/guidance/radon-services-for-homeowners-or-householders\">Go to Radon services for homeowners or householders</a></p>"
+          "content": "<p class=\"govuk-body-m\"><a href=\"https://submit.forms.service.gov.uk/form/266710/radon-services-feedback-form\">What did you think of this service?</a> (takes 30 seconds)</p><p class=\"govuk-body-m\"><a href=\"https://contact.radiation.ukhsa.gov.uk/radiation-protection-sciences-enquiry\">Contact Radon services team</a></p><p class=\"govuk-body-m\"><a href=\"https://www.gov.uk/guidance/radon-services-for-homeowners-or-householders\">Go to Radon services for homeowners or householders</a></p>"
         }
       ]
     }
