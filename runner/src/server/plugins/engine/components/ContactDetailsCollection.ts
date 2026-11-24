@@ -24,6 +24,8 @@ import { ListItem } from "./types";
  * runs validators on keys that exist in the input being validated.
  */
 const DEFAULT_EMAIL_MESSAGE = "Enter an email address in the correct format";
+const MOBILE_NUMBER_FIELD = "mobile_number";
+const ERROR_LINK_TARGET_FIELD = MOBILE_NUMBER_FIELD;
 export class ContactDetailsCollection extends FormComponent {
   children: ComponentCollection;
 
@@ -37,7 +39,7 @@ export class ContactDetailsCollection extends FormComponent {
     this.children = new ComponentCollection(
       [
         {
-          name: "mobile_number",
+          name: MOBILE_NUMBER_FIELD,
           options: {
             required: false,
             optionalText: false,
@@ -171,14 +173,9 @@ export class ContactDetailsCollection extends FormComponent {
   }
 
   // Error mapping workaround for hidden ContactDetailsCollection synthetic field
+  // The error summary link for the hidden field targets the mobile number input.
   getErrorFieldMapping(): { [key: string]: string } {
-    const firstChild = this.children.items[0];
-    if (firstChild && "name" in firstChild) {
-      return {
-        [this.name]: (firstChild as any).name,
-      };
-    }
-    return {};
+    return { [this.name]: ERROR_LINK_TARGET_FIELD };
   }
 
   getViewModel(formData: FormData, errors: FormSubmissionErrors) {
