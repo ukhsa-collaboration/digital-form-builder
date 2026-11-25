@@ -85,15 +85,14 @@ export class ContactDetailsCollection extends FormComponent {
         // Hidden carrier field for the "at least one" cross-field rule.
         // attaches the custom validator to this name, and Joi only runs
         // validators on keys present in the payload. Removing this field
-        // silently disables the cross-field check.
+        // silently disables the cross-field check. Rendered as
+        // <input type="hidden"> so it needs no label (WCAG / WAVE).
         {
-          type: "TextField",
+          type: "HiddenField",
           name: this.name,
           title: "Contact details",
           schema: {},
           options: {
-            classes: "govuk-!-display-none",
-            hideTitle: true,
             disableChangingFromSummary: true,
             allowPrePopulationOverwrite: true,
             required: false,
@@ -190,8 +189,14 @@ export class ContactDetailsCollection extends FormComponent {
         }
       : errors;
 
-    const componentViewModels = this.children
-      .getViewModel(formData, childErrors)
+    const childViewModels = this.children.getViewModel(formData, childErrors);
+    // Hidden children are rendered through the standard component pipeline
+    // (componentList) rather than as visible inputs.
+    const hiddenFields = childViewModels.filter(
+      (vm) => vm.type === "HiddenField"
+    );
+    const componentViewModels = childViewModels
+      .filter((vm) => vm.type !== "HiddenField")
       .map((vm) => vm.model);
 
     componentViewModels.forEach((cvm: any) => {
@@ -204,6 +209,7 @@ export class ContactDetailsCollection extends FormComponent {
       ...viewModel,
       fieldset: { legend: viewModel.label },
       items: componentViewModels as unknown as ListItem[],
+      hiddenFields,
     };
   }
 }

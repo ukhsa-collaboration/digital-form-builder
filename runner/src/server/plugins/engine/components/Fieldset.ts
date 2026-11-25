@@ -28,15 +28,14 @@ export class Fieldset extends FormComponent {
           ...components,
           // Hidden carrier field for validation to attach
           // to as Joi only runs validators on keys present in the
-          // payload. Removing this field disables validation
+          // payload. Removing this field disables validation.
+          // Rendered as <input type="hidden"> so it needs no label.
           {
-            type: "TextField" as const,
+            type: "HiddenField" as const,
             name: this.name,
             title: this.title,
             schema: {},
             options: {
-              classes: "govuk-!-display-none",
-              hideTitle: true,
               disableChangingFromSummary: true,
               allowPrePopulationOverwrite: true,
               required: false,
@@ -172,8 +171,17 @@ export class Fieldset extends FormComponent {
         ? { ...formData, ...nestedState }
         : formData;
 
-    const componentViewModels = this.children
-      .getViewModel(childFormData, childErrors)
+    const childViewModels = this.children.getViewModel(
+      childFormData,
+      childErrors
+    );
+    // Hidden children are rendered through the standard component pipeline
+    // (componentList) rather than as visible inputs.
+    const hiddenFields = childViewModels.filter(
+      (vm) => vm.type === "HiddenField"
+    );
+    const componentViewModels = childViewModels
+      .filter((vm) => vm.type !== "HiddenField")
       .map((vm) => vm.model);
 
     componentViewModels.forEach((viewModel: any) => {
@@ -188,6 +196,7 @@ export class Fieldset extends FormComponent {
       ...viewModel,
       fieldset: { legend: viewModel.label },
       items: componentViewModels as unknown as ListItem[],
+      hiddenFields,
     };
   }
 }
