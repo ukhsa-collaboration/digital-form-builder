@@ -88,9 +88,7 @@ export default {
 
       return {
         formId: model ? id : undefined,
-        prePopParams: model
-          ? request?.yar?.get(`prePopParams:${id}`)
-          : undefined,
+        prePopParams: model ? request?.pre?.prePopParams : undefined,
         prePopStartPath,
         appVersion: pkg.version,
         assetPath: "/assets",

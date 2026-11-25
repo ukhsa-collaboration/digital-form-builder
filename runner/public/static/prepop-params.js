@@ -3,7 +3,6 @@
 
   // Keep in sync with timeoutPreservedParamKeys in runner/src/server/plugins/engine/helpers.ts
   var KEYS = ['r', 'd']
-  var MAX_LENGTH = 100
   var STORAGE_PREFIX = 'prepopParams:'
   var ATTEMPT_PREFIX = 'prepopRestoreAttempted:'
 
@@ -18,14 +17,14 @@
     }
   }
 
-  // Only r and d, as non-empty strings of sensible length
+  // Only r and d, as non-empty strings. The server validates the values.
   function pick (source) {
     var params = {}
 
     if (source && typeof source === 'object') {
       KEYS.forEach(function (key) {
         var value = source[key]
-        if (typeof value === 'string' && value.length > 0 && value.length <= MAX_LENGTH) {
+        if (typeof value === 'string' && value.length > 0) {
           params[key] = value
         }
       })

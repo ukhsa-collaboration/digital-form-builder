@@ -5,6 +5,8 @@ import Joi from "joi";
 import {
   getBackLink,
   getReturnUrl,
+  getTimeoutParams,
+  getTimeoutParamsFromState,
   getValidStateFromQueryParameters,
   idFromFilename,
   nonRelativeRedirectUrl,
@@ -12,6 +14,7 @@ import {
   proceed,
   redirectTo,
   redirectUrl,
+  toQueryString,
 } from "../../../../../src/server/plugins/engine/helpers";
 
 const lab = Lab.script();
@@ -431,6 +434,86 @@ suite("Helpers", () => {
         Object.keys(getValidStateFromQueryParameters(prePopFields, query))
           .length
       ).to.equal(0);
+    });
+  });
+
+  describe("getTimeoutParams", () => {
+    const prePopFields = {
+      r: { schema: Joi.string().required() },
+      d: { schema: Joi.string().valid("01F0", "01F2") },
+      other: { schema: Joi.string() },
+    };
+
+    test("Should return only r and d from the query", () => {
+      expect(
+        getTimeoutParams(prePopFields, {
+          r: "abc000",
+          d: "01F2",
+          other: "ignored",
+          unknown: "ignored",
+        })
+      ).to.equal({ r: "abc000", d: "01F2" });
+    });
+
+    test("Should drop values that fail validation or are not strings", () => {
+      expect(
+        getTimeoutParams(prePopFields, { r: ["a", "b"], d: "not-a-disease" })
+      ).to.equal({});
+    });
+
+    test("Should ignore r and d when they are not pre-population fields", () => {
+      expect(
+        getTimeoutParams({ other: { schema: Joi.string() } }, { r: "abc000" })
+      ).to.equal({});
+    });
+
+    test("Should return an empty object for an empty query", () => {
+      expect(getTimeoutParams(prePopFields, {})).to.equal({});
+    });
+  });
+
+  describe("getTimeoutParamsFromState", () => {
+    const prePopFields = {
+      r: { schema: Joi.string() },
+      d: { schema: Joi.string() },
+      other: { schema: Joi.string() },
+    };
+
+    test("Should return r and d held in the form state", () => {
+      expect(
+        getTimeoutParamsFromState(prePopFields, {
+          r: "abc000",
+          d: "01F2",
+          other: "ignored",
+        })
+      ).to.equal({ r: "abc000", d: "01F2" });
+    });
+
+    test("Should ignore empty and non-string values", () => {
+      expect(
+        getTimeoutParamsFromState(prePopFields, { r: "", d: 12 })
+      ).to.equal({});
+    });
+
+    test("Should ignore state for keys that are not pre-population fields", () => {
+      expect(
+        getTimeoutParamsFromState(
+          { other: { schema: Joi.string() } },
+          { r: "abc000" }
+        )
+      ).to.equal({});
+    });
+  });
+
+  describe("toQueryString", () => {
+    test("Should encode values", () => {
+      expect(toQueryString({ r: "a b&c", d: "01F2" })).to.equal(
+        "r=a+b%26c&d=01F2"
+      );
+    });
+
+    test("Should return an empty string when there are no params", () => {
+      expect(toQueryString({})).to.equal("");
     });
   });
 
