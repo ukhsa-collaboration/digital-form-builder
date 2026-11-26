@@ -180,7 +180,7 @@
 {% block bodyEnd %}
   {% include "partials/modal-dialog.html" %}
   {% if formId %}
-    <div id="prepop-params" hidden data-form-id="{{ formId }}" data-start-path="{{ prePopStartPath }}" data-clear="{{ 'true' if clearPrePopParams else 'false' }}" data-params="{{ (prePopParams or {}) | dump }}"></div>
+    <div id="prepop-params" hidden data-form-id="{{ formId }}"{% if prePopStartPath %} data-start-path="{{ prePopStartPath }}"{% endif %} data-clear="{{ 'true' if clearPrePopParams else 'false' }}" data-params="{{ (prePopParams or {}) | dump }}"></div>
   {% endif %}
   <script src="{{ assetPath }}/jquery-3.5.1.min.js"></script>
   <script src="{{ assetPath }}/object-from-entries-polyfill.js"></script>

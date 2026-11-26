@@ -6,12 +6,7 @@ import { shouldLogin } from "server/plugins/auth";
 import { HapiRequest, HapiResponseToolkit, HapiServer } from "server/types";
 import config from "../../config";
 import { RenderingError } from "./errors";
-import {
-  getTimeoutParamsFromState,
-  getValidStateFromQueryParameters,
-  redirectTo,
-  timeoutPreservedParamKeys,
-} from "./helpers";
+import { getValidStateFromQueryParameters, redirectTo } from "./helpers";
 import { FormModel } from "./models";
 import * as exit from "./pluginHandlers/exit";
 import {
@@ -19,6 +14,7 @@ import {
   handleUpload,
   validateContentTypes,
 } from "./pluginHandlers/files/prehandlers";
+import { getPrePopParams } from "./pluginHandlers/prePopParams";
 import { FormPayload } from "./types";
 
 configure([
@@ -228,37 +224,6 @@ export const plugin = {
       return h.continue;
     };
 
-    /**
-     * Exposes the preserved parameters (r and d) from the user's current answers to the page,
-     * so prepop-params.js only stores values the form actually holds (see views.ts).
-     */
-    const prePopParamsPreHandler = async (request: HapiRequest) => {
-      const model = forms[request.params.id];
-
-      // Only forms with pre-populated r/d need the answers read; others skip the cache call
-      const usesPreservedParams = timeoutPreservedParamKeys.some(
-        (key) => model?.fieldsForPrePopulation?.[key]
-      );
-
-      if (!usesPreservedParams || !request.yar?.id) {
-        return {};
-      }
-
-      try {
-        const { cacheService } = request.services([]);
-        const state = await cacheService.getState(request);
-
-        return getTimeoutParamsFromState(model.fieldsForPrePopulation, state);
-      } catch (error) {
-        // This only supports timeout recovery, so it must not fail the page request
-        request.logger?.warn(
-          ["prePopParams"],
-          `Unable to read preserved parameters: ${error}`
-        );
-        return {};
-      }
-    };
-
     //TODO:- Move to ./pluginHandlers/id/*
     server.route({
       method: "get",
@@ -293,7 +258,7 @@ export const plugin = {
           {
             method: queryParamPreHandler,
           },
-          { method: prePopParamsPreHandler, assign: "prePopParams" },
+          { method: getPrePopParams, assign: "prePopParams" },
         ],
       },
       handler: (request: HapiRequest, h: HapiResponseToolkit) => {
@@ -383,7 +348,7 @@ export const plugin = {
           { method: getFiles, assign: "files" },
           { method: validateContentTypes, assign: "validFiles" },
           { method: handleUpload },
-          { method: prePopParamsPreHandler, assign: "prePopParams" },
+          { method: getPrePopParams, assign: "prePopParams" },
         ],
         handler: postHandler,
       },

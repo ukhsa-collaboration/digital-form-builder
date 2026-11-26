@@ -1,0 +1,63 @@
+{
+  "name": "Timeout params",
+  "startPage": "/start",
+  "pages": [
+    {
+      "title": "Start",
+      "path": "/start",
+      "controller": "./pages/start.js",
+      "components": [
+        {
+          "name": "r",
+          "type": "HiddenField",
+          "title": "Reference ID",
+          "options": {
+            "allowPrePopulation": true,
+            "allowPrePopulationOverwrite": true
+          },
+          "schema": {}
+        },
+        {
+          "name": "d",
+          "type": "TextField",
+          "title": "Disease",
+          "options": {
+            "allowPrePopulation": true,
+            "allowPrePopulationOverwrite": true
+          },
+          "schema": {}
+        }
+      ],
+      "next": [{ "path": "/second" }]
+    },
+    {
+      "title": "Second",
+      "path": "/second",
+      "components": [
+        {
+          "name": "note",
+          "type": "TextField",
+          "title": "Note",
+          "options": {},
+          "schema": {}
+        }
+      ],
+      "next": [{ "path": "/summary" }]
+    },
+    {
+      "title": "Summary",
+      "path": "/summary",
+      "controller": "./pages/summary.js",
+      "components": [],
+      "next": []
+    }
+  ],
+  "lists": [],
+  "sections": [],
+  "conditions": [],
+  "fees": [],
+  "outputs": [],
+  "version": 2,
+  "skipSummary": false,
+  "feeOptions": {}
+}
