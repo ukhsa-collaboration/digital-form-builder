@@ -1,5 +1,6 @@
 {% from "input/macro.njk" import govukInput %}
 {% from "fieldset/macro.njk" import govukFieldset %}
+{% from "../partials/components.html" import componentList %}
 
 {% macro ContactDetailsCollection(component) %}
   <div class="govuk-form-group {{ 'govuk-form-group--error' if component.model.errorMessage }}">
@@ -33,6 +34,7 @@
           errorMessage: item.errorMessage
         }) }}
       {% endfor %}
+      {{ componentList(component.model.hiddenFields) }}
     {% endcall %}
   </div>
 {% endmacro %}

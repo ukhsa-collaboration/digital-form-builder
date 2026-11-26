@@ -24,6 +24,8 @@ import { ListItem } from "./types";
  * runs validators on keys that exist in the input being validated.
  */
 const DEFAULT_EMAIL_MESSAGE = "Enter an email address in the correct format";
+const MOBILE_NUMBER_FIELD = "mobile_number";
+const ERROR_LINK_TARGET_FIELD = MOBILE_NUMBER_FIELD;
 export class ContactDetailsCollection extends FormComponent {
   children: ComponentCollection;
 
@@ -37,7 +39,7 @@ export class ContactDetailsCollection extends FormComponent {
     this.children = new ComponentCollection(
       [
         {
-          name: "mobile_number",
+          name: MOBILE_NUMBER_FIELD,
           options: {
             required: false,
             optionalText: false,
@@ -83,15 +85,14 @@ export class ContactDetailsCollection extends FormComponent {
         // Hidden carrier field for the "at least one" cross-field rule.
         // attaches the custom validator to this name, and Joi only runs
         // validators on keys present in the payload. Removing this field
-        // silently disables the cross-field check.
+        // silently disables the cross-field check. Rendered as
+        // <input type="hidden"> so it needs no label (WCAG / WAVE).
         {
-          type: "TextField",
+          type: "HiddenField",
           name: this.name,
           title: "Contact details",
           schema: {},
           options: {
-            classes: "govuk-!-display-none",
-            hideTitle: true,
             disableChangingFromSummary: true,
             allowPrePopulationOverwrite: true,
             required: false,
@@ -170,6 +171,12 @@ export class ContactDetailsCollection extends FormComponent {
       .join(", ");
   }
 
+  // Error mapping workaround for hidden ContactDetailsCollection synthetic field
+  // The error summary link for the hidden field targets the mobile number input.
+  getErrorFieldMapping(): { [key: string]: string } {
+    return { [this.name]: ERROR_LINK_TARGET_FIELD };
+  }
+
   getViewModel(formData: FormData, errors: FormSubmissionErrors) {
     const viewModel = super.getViewModel(formData, errors);
 
@@ -182,8 +189,14 @@ export class ContactDetailsCollection extends FormComponent {
         }
       : errors;
 
-    const componentViewModels = this.children
-      .getViewModel(formData, childErrors)
+    const childViewModels = this.children.getViewModel(formData, childErrors);
+    // Hidden children are rendered through the standard component pipeline
+    // (componentList) rather than as visible inputs.
+    const hiddenFields = childViewModels.filter(
+      (vm) => vm.type === "HiddenField"
+    );
+    const componentViewModels = childViewModels
+      .filter((vm) => vm.type !== "HiddenField")
       .map((vm) => vm.model);
 
     componentViewModels.forEach((cvm: any) => {
@@ -196,6 +209,7 @@ export class ContactDetailsCollection extends FormComponent {
       ...viewModel,
       fieldset: { legend: viewModel.label },
       items: componentViewModels as unknown as ListItem[],
+      hiddenFields,
     };
   }
 }
