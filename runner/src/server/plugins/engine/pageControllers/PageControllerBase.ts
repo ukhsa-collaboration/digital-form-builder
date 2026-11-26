@@ -445,6 +445,7 @@ export class PageControllerBase {
 
   /**
    * Parses the errors from joi.validate so they can be rendered by govuk-frontend templates
+   * Also applies field mapping for error links of synthetic/hidden fields (e.g., ContactDetailsCollection).
    * @param validationResult - provided by joi.validate
    */
   getErrors(validationResult): FormSubmissionErrors | undefined {
@@ -452,12 +453,26 @@ export class PageControllerBase {
       const isoRegex =
         /\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z)/;
 
+      // Build a map of field names that should be redirected to other fields
+      const fieldMapping: { [key: string]: string } = {};
+      this.components.items.forEach((component: any) => {
+        if (component && typeof component.getErrorFieldMapping === "function") {
+          const mapping = component.getErrorFieldMapping();
+          Object.assign(fieldMapping, mapping);
+        }
+      });
+
       const errorList = validationResult.error.details.map((err) => {
-        const name = err.path
+        let name = err.path
           .map((name: string, index: number) =>
             index > 0 ? `__${name}` : name
           )
           .join("");
+
+        const mappedName = fieldMapping[name];
+        if (mappedName) {
+          name = mappedName;
+        }
 
         return {
           path: err.path.join("."),
@@ -720,22 +735,24 @@ export class PageControllerBase {
       /**
        * used for when a user clicks the "back" link. Progress is stored in the state. This is a safer alternative to running javascript that pops the history `onclick`.
        *
-       * If we're revisiting a page already further down the stack (e.g. returning to
-       * a summary page after a multi-hop detour like an address lookup or a
-       * change-link sub-journey), truncate back to that point rather than pushing a
+       * If we're revisiting a page already further down the stack (e.g. cycling
+       * through back links), truncate back to that point rather than pushing a
        * duplicate - otherwise the detour pages linger forever and the back link
        * cycles through stale pages instead of leaving the loop.
        */
       const normalizedProgress = progress.map(normalizeUrlPath);
       const normalizedCurrentPath = normalizeUrlPath(currentPath);
       const lastVisited = normalizedProgress[normalizedProgress.length - 1];
+      const isChangeLinkVisit = !!getReturnUrl(request);
 
       if (!lastVisited || lastVisited !== normalizedCurrentPath) {
         const priorIndex = normalizedProgress.lastIndexOf(
           normalizedCurrentPath
         );
 
-        if (priorIndex !== -1) {
+        // If we've visited this page before and it's not a change link visit,
+        // truncate the progress to the last occurrence of this page to avoid duplicates.
+        if (priorIndex !== -1 && !isChangeLinkVisit) {
           normalizedProgress.length = priorIndex + 1;
         } else {
           normalizedProgress.push(normalizedCurrentPath);

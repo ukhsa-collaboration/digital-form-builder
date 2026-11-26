@@ -62,6 +62,7 @@ export type ViewModel = {
     legend?: Label;
   };
   children?: ComponentCollectionViewModel;
+  hiddenFields?: ComponentCollectionViewModel;
   autocomplete?: string;
 };
 

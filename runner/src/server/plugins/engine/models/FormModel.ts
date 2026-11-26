@@ -49,8 +49,8 @@ export class FormModel {
   lists: FormDefinition["lists"];
   sections: FormDefinition["sections"] = [];
   options: any;
-  name: string;
-  serviceStartPage: any;
+  name?: string;
+  serviceStartPage: string;
   values: any;
   returnTo: any;
   DefaultPageController: any = PageController;
@@ -68,7 +68,7 @@ export class FormModel {
   allowExit: boolean = false;
   showFilenamesOnSummaryPage: boolean = false;
 
-  constructor(def, options) {
+  constructor(def: FormDefinition, options) {
     const result = Schema.validate(def, { abortEarly: false });
 
     if (result.error) {

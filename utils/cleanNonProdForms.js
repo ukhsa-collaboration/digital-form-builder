@@ -18,6 +18,9 @@ const PROD_FORMS = [
   "kls-training-magic-link.json",
   "kls-training-request.json",
   "magic-link.json",
+  "order-a-home-radon-gas-test-kit.json",
+  "order-a-radon-risk-report.json",
+  "radiation-protection-sciences-enquiry.json",
 ];
 
 function cleanNonProdForms() {

@@ -255,6 +255,8 @@ export interface DynamicServiceConfig {
 export type FormDefinition = {
   formGroup?: string;
   name?: string | undefined;
+  /** Disables all traffic to the form when resolved to `false`. Defaults to `true`. */
+  active?: boolean | undefined;
   pages: Array<Page | RepeatingFieldPage>;
   conditions: ConditionRawData[];
   lists: List[];
@@ -265,6 +267,7 @@ export type FormDefinition = {
   phaseBanner?: PhaseBanner;
   fees: Fee[];
   skipSummary?: boolean | undefined;
+  showFilenamesOnSummaryPage?: boolean | undefined;
   outputs: Output[];
   declaration?: string | undefined;
   metadata?: Record<string, any>;
