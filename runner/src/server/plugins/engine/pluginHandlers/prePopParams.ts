@@ -4,11 +4,7 @@ import {
   timeoutPreservedParamKeys,
 } from "../helpers";
 
-/**
- * Exposes the preserved parameters (r and d) from the user's current answers to the page,
- * so prepop-params.js only stores values the form actually holds (see views.ts).
- * Read-only, and must never fail the page request.
- */
+// Exposes the preserved parameters (r and d) from the user's current answers to the page
 export async function getPrePopParams(
   request: HapiRequest
 ): Promise<Record<string, string>> {

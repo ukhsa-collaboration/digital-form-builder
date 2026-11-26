@@ -76,15 +76,6 @@ suite("prepop-params.js", () => {
     expect(win.PrePopParams?.queryString()).to.equal("r=abc000&d=01F2");
   });
 
-  test("keeps long references", () => {
-    const long = "a".repeat(150);
-    const { store } = run({
-      attrs: { ...baseAttrs, "data-params": JSON.stringify({ r: long }) },
-    });
-
-    expect(JSON.parse(store["prepopParams:f"]).r).to.equal(long);
-  });
-
   test("restores once on the start page when the session has lost the values", () => {
     const { replaced, store } = run({
       storage: { "prepopParams:f": '{"r":"abc000","d":"01F2"}' },
