@@ -254,7 +254,7 @@
         },
         "summaryDisplayMode": {
           "samePage": false,
-          "yesNoSummaryQuestion": "Do you live with other people?"
+          "yesNoSummaryQuestion": "Do {{ PersonalInformation.for }} live with other people?"
         }
       },
       "components": [
@@ -383,7 +383,7 @@
         },
         "summaryDisplayMode": {
           "samePage": false,
-          "yesNoSummaryQuestion": "Have they been in close contact with anyone else?"
+          "yesNoSummaryQuestion": "Have {{ PersonalInformation.for }} been in close contact with anyone else?"
         }
       },
       "components": [
