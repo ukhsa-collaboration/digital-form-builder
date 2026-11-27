@@ -3,6 +3,7 @@ import { HapiRequest, HapiResponseToolkit } from "server/types";
 import { reach } from "@hapi/hoek";
 import _ from "lodash";
 import { FormSubmissionErrors } from "./types";
+import type { Schema } from "joi";
 
 export const feedbackReturnInfoKey = "f_t";
 
@@ -177,6 +178,67 @@ export function getValidStateFromQueryParameters(
     },
     {}
   );
+}
+
+/**
+ * Query parameters carried over to the timeout page so they can be re-applied when the user starts again.
+ * Keep in sync with KEYS in runner/public/static/prepop-params.js.
+ */
+export const timeoutPreservedParamKeys = ["r", "d"];
+
+type PrePopField = {
+  schema: Schema;
+  allowPrePopulationOverwrite?: boolean;
+};
+
+/**
+ * Returns only the preserved query parameters that are valid pre-population fields for the form.
+ * Existing session state is deliberately ignored so values already in the session are still returned.
+ */
+export function getTimeoutParams(
+  prePopFields: Record<string, PrePopField> = {},
+  query: Record<string, unknown> = {}
+): Record<string, string> {
+  const picked = timeoutPreservedParamKeys.reduce<Record<string, string>>(
+    (acc, key) => {
+      const value = query[key];
+      if (typeof value === "string") {
+        acc[key] = value;
+      }
+      return acc;
+    },
+    {}
+  );
+
+  if (Object.keys(picked).length === 0) {
+    return {};
+  }
+
+  return getValidStateFromQueryParameters(prePopFields, picked);
+}
+
+/**
+ * Returns the preserved parameters held in the form's current answers (state).
+ * State is the accepted result of pre-population, so overwrite rules have already been applied.
+ */
+export function getTimeoutParamsFromState(
+  prePopFields: Record<string, PrePopField> = {},
+  state: Record<string, unknown> = {}
+): Record<string, string> {
+  return timeoutPreservedParamKeys.reduce<Record<string, string>>(
+    (acc, key) => {
+      const value = state[key];
+      if (prePopFields[key] && typeof value === "string" && value.length > 0) {
+        acc[key] = value;
+      }
+      return acc;
+    },
+    {}
+  );
+}
+
+export function toQueryString(params: Record<string, string>) {
+  return new URLSearchParams(params).toString();
 }
 
 /**

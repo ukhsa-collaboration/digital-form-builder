@@ -279,7 +279,14 @@
       }
     },
     redirect: function () {
-      window.location.replace(GOVUKFrontend.modalDialog.timeOutRedirectUrl)
+      var url = GOVUKFrontend.modalDialog.timeOutRedirectUrl
+      // Carry r and d across the session reset so the user can start again with them
+      var queryString = global.PrePopParams ? global.PrePopParams.queryString() : ''
+
+      if (queryString) {
+        url += (url.indexOf('?') === -1 ? '?' : '&') + queryString
+      }
+      window.location.replace(url)
     },
     numberToWords: function (n) {
       var string = n.toString()

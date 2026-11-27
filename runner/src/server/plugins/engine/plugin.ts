@@ -14,6 +14,7 @@ import {
   handleUpload,
   validateContentTypes,
 } from "./pluginHandlers/files/prehandlers";
+import { getPrePopParams } from "./pluginHandlers/prePopParams";
 import { FormPayload } from "./types";
 
 configure([
@@ -257,6 +258,7 @@ export const plugin = {
           {
             method: queryParamPreHandler,
           },
+          { method: getPrePopParams, assign: "prePopParams" },
         ],
       },
       handler: (request: HapiRequest, h: HapiResponseToolkit) => {
@@ -346,6 +348,7 @@ export const plugin = {
           { method: getFiles, assign: "files" },
           { method: validateContentTypes, assign: "validFiles" },
           { method: handleUpload },
+          { method: getPrePopParams, assign: "prePopParams" },
         ],
         handler: postHandler,
       },

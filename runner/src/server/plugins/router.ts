@@ -1,11 +1,16 @@
 import Joi from "joi";
 import { redirectTo } from "./engine";
+import { RenderingError } from "./engine/errors";
 import { healthCheckRoute, publicRoutes } from "../routes";
 import { HapiRequest, HapiResponseToolkit } from "../types";
 import getRequestInfo from "server/utils/getRequestInfo";
 import { destroySession } from "server/utils/correlationId";
 import { FormModel } from "server/plugins/engine/models";
-import { feedbackReturnInfoKey } from "./engine/helpers";
+import {
+  feedbackReturnInfoKey,
+  getTimeoutParams,
+  toQueryString,
+} from "./engine/helpers";
 import { FeedbackContextInfo, RelativeUrl } from "./engine/feedback";
 
 import fs from "fs";
@@ -319,7 +324,15 @@ export default {
           const { id } = request.params;
 
           const form = server.app.forms[id];
-          const startPage = `/${id}`;
+
+          if (!form) {
+            throw new RenderingError("No form found for id", { code: 404 });
+          }
+
+          const queryString = toQueryString(
+            getTimeoutParams(form.fieldsForPrePopulation, request.query)
+          );
+          const startPage = queryString ? `/${id}?${queryString}` : `/${id}`;
           const title = "timeout";
 
           return h.view(title, {
@@ -327,6 +340,8 @@ export default {
             serviceName: form.def.serviceName,
             serviceStartPage: form.serviceStartPage,
             startPage: startPage,
+            // Only clear the browser's copy once r/d have been handed to the start link
+            clearPrePopParams: queryString.length > 0,
             feedbackLink: feedbackUrlFromRequest(request, form, title),
             returnTo: form.def.returnTo,
           });

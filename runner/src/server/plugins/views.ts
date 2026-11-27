@@ -80,8 +80,16 @@ export default {
       const forms = request?.server?.app?.forms;
       const model = id && forms?.[id];
       const analytics = model?.def?.analytics || {};
+      const startPage: string | undefined = model?.def?.startPage;
+      const prePopStartPath =
+        model && startPage && !startPage.startsWith("http")
+          ? `/${id}/${startPage.replace(/^\/|\/$/g, "")}`
+          : undefined;
 
       return {
+        formId: model ? id : undefined,
+        prePopParams: model ? request?.pre?.prePopParams : undefined,
+        prePopStartPath,
         appVersion: pkg.version,
         assetPath: "/assets",
         cookiesPolicy: request?.state?.cookies_policy,

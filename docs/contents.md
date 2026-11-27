@@ -47,6 +47,8 @@ Features and configuration options for the runner.
   - Run named, per-form side effects at fixed points in a form's lifecycle without branching in controllers
 - [log redaction](runner/log-redaction.md)
   - PII detection and path-based redaction for runner log output
+- [timeout query parameters](runner/timeout-query-parameters.md)
+  - Keep the `r` and `d` query parameters when a session times out, so they are applied when the user starts again
 
 #### Components
 
